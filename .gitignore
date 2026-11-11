@@ -46,6 +46,9 @@ htmlcov/
 custom_addons/*/__pycache__/
 custom_addons/*/*.pyc
 
+# --- Local Odoo checkout (not tracked by this repo) ---
+/odoo/
+
 # --- OS ---
 .DS_Store
 Thumbs.db

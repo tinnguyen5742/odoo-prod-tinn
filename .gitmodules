@@ -32,5 +32,5 @@
 	branch = internal/pat
 [submodule "custom_addons/ps_elearning"]
 	path = custom_addons/ps_elearning
-	url = https://github.com/patsoft-dev/ps_elearning.git
+	url = git@github.com:patsoft-dev/ps_elearning.git
 	branch = internal/pat

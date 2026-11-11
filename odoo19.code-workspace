@@ -21,7 +21,7 @@
       "${workspaceFolder:custom_addons}/odoo-sale",
       "${workspaceFolder:custom_addons}/odoo-share-addons",
     ],
-    "python.languageServer": "Default",
+    "python.languageServer": "None",
   },
   "tasks": {
     "version": "2.0.0",
