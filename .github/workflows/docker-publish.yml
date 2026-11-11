@@ -1,0 +1,142 @@
+name: Build and push to GHCR
+
+# Docs: docs/docker-publish.md
+# Private repo: image stays private on GHCR (inherits repo visibility).
+# Triggers:
+#   - push of tag v*      -> build (depends check inside the image), push (X.Y.Z, latest, sha)
+#   - manual dispatch     -> same, from the selected ref (manual-<sha> or custom input)
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Extra tag for the image (default: manual-<sha>)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: docker-publish-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: patsoft-dev/odoo-prod
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    steps:
+      # Main repo clones with GITHUB_TOKEN.
+      # Private submodules cannot use GITHUB_TOKEN (repo-scoped, no cross-repo
+      # access), so the next step uses SUBMODULE_PAT (fine-grained PAT,
+      # contents:read on every private repo listed in .gitmodules).
+      # .gitmodules stays SSH for local dev; CI rewrites SSH -> HTTPS.
+      - name: Checkout (without submodules)
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          submodules: false
+          persist-credentials: true
+
+      - name: Checkout submodules via PAT
+        run: |
+          set -euo pipefail
+          if [ -z "${{ secrets.SUBMODULE_PAT }}" ]; then
+            echo "::error::SUBMODULE_PAT secret is missing or empty."
+            exit 1
+          fi
+          git config --global url."https://x-access-token:${{ secrets.SUBMODULE_PAT }}@github.com/".insteadOf "git@github.com:"
+          git submodule update --init --recursive
+          git submodule status --recursive
+
+      - name: Verify submodules
+        run: |
+          set -euo pipefail
+          mapfile -t paths < <(git config --file .gitmodules --get-regexp '^submodule\..*\.path$' | awk '{print $2}')
+          if [ "${#paths[@]}" -eq 0 ]; then
+            echo "::error::.gitmodules has no submodule path"
+            exit 1
+          fi
+          for path in "${paths[@]}"; do
+            if [ ! -d "${path}" ] || [ -z "$(bash scripts/discover-addons.sh modules "${path}")" ]; then
+              echo "::error::Submodule ${path} has no __manifest__.py. SUBMODULE_PAT needs contents:read on every private repo in .gitmodules."
+              exit 1
+            fi
+          done
+
+      - name: Reject unpinned requirements
+        run: |
+          set -euo pipefail
+          status=0
+          req_list=$(bash scripts/discover-addons.sh requirements custom_addons)
+          if [ -z "${req_list}" ]; then
+            exit 0
+          fi
+          while IFS= read -r req; do
+            [ -z "${req}" ] && continue
+            while IFS= read -r line || [ -n "${line}" ]; do
+              trimmed="${line#"${line%%[![:space:]]*}"}"
+              trimmed="${trimmed%"${trimmed##*[![:space:]]}"}"
+              [ -z "${trimmed}" ] && continue
+              case "${trimmed}" in
+                \#*) continue ;;
+              esac
+              case "${trimmed}" in
+                *==*) ;;
+                *)
+                  echo "::error::Unpinned requirement in ${req}: ${trimmed}"
+                  status=1
+                  ;;
+              esac
+            done < "${req}"
+          done <<< "${req_list}"
+          exit "${status}"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          # Tag push v1.2.3 -> 1.2.3, latest, sha-<short>
+          # Manual run      -> manual-<sha>, plus optional user input tag
+          tags: |
+            type=semver,pattern={{version}},enable=${{ startsWith(github.ref, 'refs/tags/v') }}
+            type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/v') }}
+            type=sha,prefix=sha-,format=short
+            type=raw,value=manual-{{sha}},enable=${{ github.event_name == 'workflow_dispatch' }}
+            type=raw,value=${{ inputs.tag }},enable=${{ github.event_name == 'workflow_dispatch' && inputs.tag != '' }}
+
+      # Depends check runs in the Dockerfile. A failed check fails this
+      # step, and BuildKit pushes only after the build succeeds.
+      # :buildcache is a cache manifest, not a runnable tag. It is shared
+      # across tag builds; the Actions cache is not (each v* ref is its own scope).
+      # ignore-error keeps a cache-export failure from failing the release.
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64
+          push: true
+          provenance: false
+          sbom: false
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache,mode=max,ignore-error=true

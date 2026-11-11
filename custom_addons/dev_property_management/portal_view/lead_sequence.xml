@@ -1,0 +1,49 @@
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+  -->
+<odoo>
+    <record id="lead_sequence_property_form_view" model="ir.ui.view">
+        <field name="name">lead.sequence.property.form.view</field>
+        <field name="model">crm.lead</field>
+         <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+<!--           active-->
+
+
+                            
+    		 <xpath expr="//header" position="inside">
+    		 	<field name="property_purpose" invisible="1" />
+    		 	<field name="tenancy_id" invisible="1"  />
+                      <button name="action_property_book" string="Book Property" type="object"  title="Book Property" 
+                      invisible="property_purpose != 'sell'"
+                            class="oe_highlight"/>
+                    	<button name="action_view_booking" string="View Booking" type="object"  title="View Booking" 
+                    		invisible="probability &lt; 100 or property_purpose != 'sell'"
+                            class="oe_highlight"/>
+                            
+                        <button name="action_property_book" string="Book Rental Property" type="object"  title="Book Property" 
+                        context="{'book_for_rental': True}"
+                      	invisible="property_purpose != 'rent' or type != 'opportunity' or  tenancy_id != False "
+                            class="oe_highlight"/>
+                    	<button name="action_view_booking" string="View Rental Booking" type="object"  title="View Booking" 
+                    		context="{'book_for_rental': True}"
+                    		invisible="probability &lt; 100 or property_purpose != 'rent' or  tenancy_id == False"
+                            class="oe_highlight"/>
+                            
+              </xpath> 
+            <xpath expr="//sheet//field[@name='active']" position="after">
+                      <field name="number" style="font-size: 30px;font-weight: bold;"/>
+              </xpath>           
+             <xpath expr="//sheet//group//group//field[@name='website']" position="after">            
+                         <field name="property_id" />
+            </xpath>
+            
+             <xpath expr="//field[@name='tag_ids']" position="after">
+                     <field name="property_id"/>
+                </xpath>
+            
+        </field>
+    </record>
+</odoo>

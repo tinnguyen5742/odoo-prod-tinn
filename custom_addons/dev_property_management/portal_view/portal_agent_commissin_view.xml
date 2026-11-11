@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo>
+    <!-- <template id="portal_agent_commission_property" inherit_id="portal.portal_my_home" name="Portal agent commission Property Details" customize_show="True" priority="20">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/portal/static/src/img/portal-addresses.svg'" style="height:64px;width:64px;" />
+                <t t-set="title">Agent Commission Property</t>
+                <t t-set="text">Follow, view or print your Agent Commission Property</t>
+                <t t-set="url" t-value="'/my/agent_commission_property_details'" />
+                <t t-set="placeholder_count" t-value="'agent_commission_property_count'" />
+            </t>
+        </xpath>
+    </template> -->
+
+    <template id="portal_agent_commission_property" name="Portal agent commission Property Details" customize_show="True" inherit_id="portal.portal_my_home" priority="20">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <t t-set="portal_client_category_enable" t-value="True"/>
+        </xpath>
+        <div id="portal_client_category" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="placeholder_count" t-value="'agent_commission_property_count'"/>
+                <t t-set="icon" t-value="'/portal/static/src/img/portal-addresses.svg'" />
+                <t t-set="title">Agent Commission Property</t>
+                <t t-set="url" t-value="'/my/agent_commission_property_details'"/>
+                <t t-set="text">Follow, view or print your Agent Commission Property</t>
+            </t>
+        </div>
+    </template>
+
+    
+    <template id="portal_agent_commission_properties_details" name="agent Commission Property Details">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True" />
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Agent Commission Property Details</t>
+            </t>
+            <t t-if="not property_details">
+                <p>There are currently no Property for your account.</p>
+            </t>
+            <t t-if="property_details" t-call="portal.portal_table">
+                <t t-foreach="grouped_property" t-as="property_group">
+                    <thead>
+                        <tr t-attf-class="{{'thead-light' if not groupby == 'none' else ''}}">
+                            <th t-if="groupby == 'none'">Reference #</th>
+                            <th t-else="">
+                                <t t-if="groupby == 'rent_id'">
+                                    <em class="font-weight-normal text-muted">Rent Property :</em>
+                                    <span t-field="property_group[0].sudo().rent_id"/>
+                                </t>
+                                <t t-if="groupby == 'state'">
+                                    <em class="font-weight-normal text-muted">Status :</em>
+                                    <span t-field="property_group[0].sudo().state"/>
+                                </t>
+                                <t t-if="groupby == 'sell_id'">
+                                    <em class="font-weight-normal text-muted">Sell Property :</em>
+                                    <span t-field="property_group[0].sudo().sell_id"/>
+                                </t>
+                            </th>
+                            
+                            <th>Property</th>
+                            <th>Property Price</th>
+                            <th>Commission Type</th>
+                            <th>Commission amount</th>
+                            <th class="text-center">State</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="property_group" t-as="l">
+                            <tr>
+                                <td>
+                                    <span t-field="l.name" />     
+                                </td>
+                                <t t-if="l.rent_id">
+                                    <td>
+                                    <span t-field="l.rent_id" />
+                                </td>
+                                </t>
+                                <t t-else="">
+                                <td>
+                                    <span t-field="l.sell_id" />
+                                </td>
+                                </t>
+                                
+                                
+                                <td>
+                                    <span t-field="l.amount" />
+                                </td>
+                                
+                                <td>
+                                    <span t-field="l.commission_type" />
+                                </td>
+                                <t t-if="l.commission_type == 'percentage'">
+                                    <td>
+                                    <span t-field="l.percentage_amount" />
+                                </td>
+                                </t>
+                                <t t-else="">
+                                <td>
+                                    <span t-field="l.commission_fixed_amount" />
+                                </td>
+                                </t>
+                                
+                                <td style="text-align:center;">
+                                    <t t-if="l.state == 'draft'" name="status_draft">
+                                        <span class="badge rounded-pill text-bg-info" t-field="l.state"/>
+                                    </t>
+                                    <t t-else=" " name="status_on_done">
+                                        <span class="badge rounded-pill text-bg-success" t-field="l.state"/>
+                                    </t>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </t>
+            </t>
+            <br/>
+        </t>
+    </template>
+
+    
+</odoo>

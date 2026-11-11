@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.ps.currency.exchange</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='account']/block[1]" position="before">
+                <block title="Tỷ giá ngoại tệ (Vietcombank)" name="ps_currency_exchange_api_block">
+                    <setting id="ps_currency_exchange_api_url" string="FX API URL"
+                             help="Endpoint JSON Vietcombank. Hệ thống tự thêm ?date=YYYY-MM-DD khi gọi.">
+                        <field name="fx_api_base_url" placeholder="https://www.vietcombank.com.vn/api/exchangerates"/>
+                        <div class="mt-2">
+                            <button name="action_test_fx_connection"
+                                    type="object"
+                                    string="Kiểm tra kết nối"
+                                    class="btn btn-secondary"/>
+                        </div>
+                    </setting>
+                    <setting id="ps_currency_exchange_api_token" string="FX API Token"
+                             help="Để trống với API công khai của Vietcombank.">
+                        <field name="fx_api_token" password="True"/>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

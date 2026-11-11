@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo noupdate="1">
+    <record id="1_bhk" model="flat.type">
+        <field name="name">1 BHK</field>
+    </record>
+    <record id="2_bhk" model="flat.type">
+        <field name="name">2 BHK</field>
+    </record>
+    <record id="3_bhk" model="flat.type">
+        <field name="name">3 BHK</field>
+    </record>
+    
+</odoo>

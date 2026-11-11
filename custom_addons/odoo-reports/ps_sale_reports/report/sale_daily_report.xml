@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_sale_daily_pdf" model="ir.actions.report">
+        <field name="name">Chi tiết bán hàng theo ngày (xuất bán)</field>
+        <field name="model">ps.sale.history.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ps_sale_reports.sale_daily_pdf</field>
+        <field name="report_file">ps_sale_reports.sale_daily_pdf</field>
+        <field name="paperformat_id" ref="ps_sale_reports.paperformat_sale_history"/>
+        <field name="print_report_name">'Chi_tiet_ban_hang_theo_ngay_%s_%s' % (object.date_from, object.date_to)</field>
+    </record>
+    <template id="sale_daily_pdf">
+        <t t-call="web.html_container">
+            <div class="footer" style="font-family:'Times New Roman','DejaVu Serif',serif;text-align:center;font-size:8pt">Trang <span class="page"/> / <span class="topage"/></div>
+            <t t-foreach="reports" t-as="report">
+                <t t-set="wizard" t-value="report['wizard']"/>
+                <div class="article" t-att-data-oe-model="wizard._name" t-att-data-oe-id="wizard.id">
+                    <t t-call="ps_sale_reports.sale_preview_styles"/>
+                    <style>
+                        .ps-daily {font-family:'Times New Roman','Nimbus Roman','DejaVu Serif',serif;font-size:9pt;page-break-after:always;color:#111;}
+                        .ps-daily:last-child {page-break-after:auto;}
+                        .ps-daily h1 {text-align:center;font-size:18px;font-weight:bold;margin:8px 0;}
+                        .ps-daily .period {text-align:center;font-style:italic;margin-bottom:10px;}
+                        .ps-daily .filters {font-size:8pt;margin-bottom:7px;}
+                        .ps-daily .unit {text-align:right;margin-bottom:5px;font-size:8pt;}
+                        .ps-daily table {width:100%;table-layout:fixed;border-collapse:collapse;font-size:8pt;}
+                        .ps-daily th,.ps-daily td {border:1px solid #444;padding:4px 3px;line-height:1.25;word-wrap:break-word;vertical-align:middle;}
+                        .ps-daily th {background:#edf1f6;text-align:center;font-weight:bold;}
+                        .ps-daily tr {page-break-inside:avoid;}
+                        .ps-daily .num {text-align:right;}
+                        .ps-daily .day,.ps-daily .customer {font-weight:bold;color:#0645AD;}
+                        .ps-daily .total {font-weight:bold;background:#edf1f6;}
+                        .ps-daily .center {text-align:center;}
+                    </style>
+                    <t t-foreach="report['pages']" t-as="page">
+                        <div class="page ps-report ps-contract ps-daily">
+                            <div class="company"><strong t-out="wizard.company_id.name"/></div>
+                            <h1>BÁO CÁO CHI TIẾT BÁN HÀNG THEO NGÀY</h1>
+                            <div class="period">Từ ngày <t t-out="format_date(wizard.date_from)"/> đến ngày <t t-out="format_date(wizard.date_to)"/></div>
+                            <div class="filters" t-if="report['sales_filter'] or report['customer_filter'] or report['product_filter']">
+                                <span t-if="report['sales_filter']">Sales: <t t-out="report['sales_filter']"/>. </span>
+                                <span t-if="report['customer_filter']">Khách hàng: <t t-out="report['customer_filter']"/>. </span>
+                                <span t-if="report['product_filter']">Sản phẩm: <t t-out="report['product_filter']"/></span>
+                            </div>
+                            <div class="unit">ĐVT tiền: <t t-out="report['currency'].name"/></div>
+                            <table>
+                                <colgroup><col style="width:3%"/><col style="width:35%"/><col style="width:5%"/><col style="width:8%"/><col style="width:9%"/><col style="width:10%"/><col style="width:8%"/><col style="width:10%"/><col style="width:12%"/></colgroup>
+                                <thead><tr><th t-foreach="report['headers']" t-as="heading" t-out="heading"/></tr></thead>
+                                <tbody>
+                                    <tr t-foreach="page" t-as="row" t-att-class="row['kind']">
+                                        <t t-if="row['kind'] == 'item'">
+                                            <td t-foreach="row['values']" t-as="value" t-att-class="'center' if value_index in (0, 2) else 'num' if value_index in (3, 4, 5, 6, 7) else ''">
+                                                <t t-if="value_index in (3, 4, 5, 6, 7)" t-out="format_number(value, 2 if value_index == 3 else report['currency'].decimal_places)"/>
+                                                <t t-else="" t-out="value or '&#160;'"/>
+                                            </td>
+                                        </t>
+                                        <t t-elif="row['kind'] == 'day'"><td colspan="9"><t t-out="row['label']"/><t t-if="row.get('continued')"> (tiếp)</t></td></t>
+                                        <t t-else="">
+                                            <td colspan="5"><t t-out="row['label']"/><t t-if="row.get('continued')"> (tiếp)</t></td>
+                                            <td t-foreach="row['totals']" t-as="value" class="num"><t t-if="not row.get('continued')" t-out="format_number(value, report['currency'].decimal_places)"/></td>
+                                            <td>&#160;</td>
+                                        </t>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <t t-if="page_last" t-call="ps_sale_reports.sale_report_signature"/>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

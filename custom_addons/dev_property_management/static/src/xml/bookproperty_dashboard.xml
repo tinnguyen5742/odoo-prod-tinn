@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Template for the project dashboard -->
+<templates id="bookingDashboard" xml:space="preserve">
+    <t t-name="bookingDashboard">
+        <!-- <div style="height:1000px; max-height: -webkit-fill-available; overflow-y: scroll;"> -->
+        <div class="gridstack-wrapper" style="background-color:#fff7fd">
+            <div class="mx-5">
+                <div class="row gx-0 mt-3">
+                    <div class="col-12 d-flex justify-content-end ">
+                        <button id="downloadBtn" t-on-click="(e) => this.downloadReport(e)" class="btn btn-primary p-2">
+                            <i class="fa fa-file-pdf-o p-1" aria-hidden="true"></i> Print
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="mx-5" id="dashboard" >
+                <t t-call="bookingpropertyfilters"/>
+                <t t-call="calender"/>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="bookingpropertyfilters">
+        <div class="card mt-4 mb-5 filters">
+            <div class="row p-2 m-2 gx-0 gy-2" >  
+                <div class="col-lg-1 d-flex my-auto justify-content-center">
+                    <img t-att-src="'data:image/png;base64,' + state.user_img.value" class="css-shadow"/>
+                </div>
+                <div class="col-lg-4 pl-1 my-auto">
+                    <h1> <t t-esc="greetings"/>, <t t-esc="state.user_name.value"/>.</h1>
+                    <h3>Welcome to your Booking Dashboard.</h3>
+                </div>
+                <div class="col-lg-7">  
+                    <div class="row gy-2">
+                        <div class="col-lg-2 m-0">
+                        </div>                       
+                        <div class="col-lg-2 m-0">
+                            <label for="propertyy_selection" class="form-label fw-bolder">Property </label>
+                            <select class="form-select" id="propertyy_selection" t-on-change="(ev) => this._onchangebookingFilter(ev)">
+                                <option value="all">All Property</option>
+                                <!-- <option value="parent">Parent Property</option> -->
+                                <option value="rent">Rent</option>
+                                <option value="sell">Sell</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 m-0">
+                            <label for="ownerr_selection" class="form-label fw-bolder">Owner</label>
+                            <select class="form-select" id="ownerr_selection" t-on-change="(ev) => this._onchangebookingFilter(ev)">
+                                <option value="all">All Owner</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 m-0">
+                            <label for="book_unbook_selection" class="form-label fw-bolder">Booking</label>
+                            <select class="form-select" id="book_unbook_selection" t-on-change="(ev) => this._onchangebookingFilter(ev)">
+                                <option value="all">All Booking</option>
+                                <option value="booking">Booking</option>
+                                <option value="unbooking">Unbooking</option>
+                                
+                            </select>
+                        </div>
+                        <div class="col-lg-2 m-0">
+                            <label for="main_property_selection" class="form-label fw-bolder">Main Property</label>
+                            <select class="form-select" id="main_property_selection" t-on-change="(ev) => this._onchangebookingFilter(ev)">
+                                <option value="all">All Property</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 m-0">
+                            <label for="sub_property_selection" class="form-label fw-bolder">Sub Property</label>
+                            <select class="form-select" id="sub_property_selection" t-on-change="(ev) => this._onchangebookingFilter(ev)">
+                                <option value="all">All Property</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-primary" role="alert">
+            <div class="row d-flex align-items-center">
+                <div class="col-auto">
+                    <h3><b>Note :</b></h3>
+                </div>
+                <div class="col-auto">
+                    <h4>[<b>NB :</b> No Booking] , [<b>BO :</b> Booking],[<b>ONR :</b> ON Rent]</h4>
+                </div>
+                <div class="col-auto">
+                    
+                </div>
+                <div class="col-auto">
+                    
+                </div>
+                <div class="col-auto">
+                    
+                </div>
+                <div class="col-auto">
+                    
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="calender">
+        <div class="card">
+            <table id="bookingCalender">
+                <thead>
+                   <!-- Table headers will be dynamically generated here -->
+                </thead>
+                <tbody>
+                    <!-- Table body will be dynamically generated here -->
+                </tbody>
+            </table>
+        </div>
+    </t>
+</templates>

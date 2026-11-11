@@ -1,0 +1,31 @@
+[tools]
+python = "3.12"
+uv = "latest"
+ruff = "latest"
+
+[settings]
+experimental = true
+python.uv_venv_auto = true
+
+[env]
+_.python.venv = { path = ".venv", create = true }
+
+# Install Odoo Python deps and link Odoo editable after the venv exists,
+# and again when odoo/requirements.txt changes.
+[deps.odoo]
+auto = true
+description = "Install Odoo Python dependencies & link Odoo editable"
+sources = ["odoo/requirements.txt"]
+outputs = [".venv/.odoo-deps-stamp"]
+run = "uv pip install -r odoo/requirements.txt && uv pip install --no-deps -e ./odoo && touch .venv/.odoo-deps-stamp"
+
+# Install dev & linter tools (ruff, pylint-odoo) into .venv when pyproject.toml changes
+[deps.dev]
+auto = true
+description = "Install dev & linter dependencies"
+sources = ["pyproject.toml"]
+outputs = [".venv/.dev-deps-stamp"]
+run = "uv pip install --group dev && touch .venv/.dev-deps-stamp"
+
+[hooks]
+enter = "mise deps"

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_ps_fixed_assets_accounting" 
+              name="Fixed Assets" 
+              parent="account.menu_finance" 
+              sequence="25"/>
+
+    <menuitem id="menu_ps_asset_segment_action_menu" 
+              name="Asset Segment Categories" 
+              parent="menu_ps_fixed_assets_accounting" 
+              action="action_ps_asset_segment" 
+              sequence="10"/>
+
+    <menuitem id="menu_ps_asset_group_action_menu" 
+              name="Asset Group" 
+              parent="menu_ps_fixed_assets_accounting" 
+              action="action_ps_asset_group" 
+              sequence="20"/>
+
+    <menuitem id="menu_ps_asset_standard" 
+              name="Assets" 
+              parent="menu_ps_fixed_assets_accounting" 
+              action="om_account_asset.action_account_asset_asset_form" 
+              sequence="30"/>
+
+</odoo>

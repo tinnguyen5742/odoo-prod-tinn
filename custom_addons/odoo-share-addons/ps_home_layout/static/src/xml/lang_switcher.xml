@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="custom_navbar.LangSwitcherSystray">
+        <!-- Chỉ hiển thị khi đang ở Developer Mode -->
+        <div class="o_menu_systray_item dropdown" t-if="state.isDebugMode">
+            <a class="dropdown-toggle o-no-caret d-flex align-items-center px-2 py-1 text-white" 
+               data-bs-toggle="dropdown" 
+               data-bs-display="static" 
+               href="#" 
+               role="button" 
+               title="Quick Language Preferences">
+                <i class="fa fa-language fs-5 me-1"/>
+                <span class="small fw-bold" t-esc="state.currentLangCode"/>
+            </a>
+
+            <div class="dropdown-menu dropdown-menu-end p-3 shadow-lg" style="width: 280px;">
+                <h6 class="dropdown-header text-uppercase fw-bold text-primary px-0 pb-2 border-bottom mb-2">
+                    Quick Language Setup
+                </h6>
+                
+                <div class="mb-3">
+                    <label class="form-label text-muted small fw-semibold">Language</label>
+                    <select class="form-select form-select-sm" t-model="state.selectedLang">
+                        <t t-foreach="state.languages" t-as="lang" t-key="lang[0]">
+                            <option t-att-value="lang[0]" t-esc="lang[1]"/>
+                        </t>
+                    </select>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                    <button class="btn btn-primary btn-sm px-3" t-on-click="updatePreferences">
+                        Update Preferences
+                    </button>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

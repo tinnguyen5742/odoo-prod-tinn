@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle 
+ -->
+<odoo>
+    <!--pivot-->
+    <record id="pivot_tenancy_analysis" model="ir.ui.view">
+         <field name="name">pivot_tenancy_analysis_name</field>
+         <field name="model">tenancy.analysis</field>
+         <field name="arch" type="xml">
+             <pivot string="Tenancy Analysis" disable_linking="True" sample="1">
+                 <field name="partner_id" type="col"/>
+                 <field name="date" interval="month" type="row"/>
+                 <field name="rent_amount" type="measure"/>
+             </pivot>
+         </field>
+    </record>
+
+    <!--graph-->
+    <record id="graph_tenancy_analysis" model="ir.ui.view">
+         <field name="name">graph_tenancy_analysis_name</field>
+         <field name="model">tenancy.analysis</field>
+         <field name="arch" type="xml">
+             <graph string="Tenancy Analysis" type="bar" sample="1" disable_linking="1">
+                 <field name="partner_id" type="col"/>
+                 <field name="date" interval="month" type="row"/>
+                 <field name="rent_amount" type="measure"/>
+             </graph>
+         </field>
+    </record>
+
+    <!--search-->
+    <record id="search_tenancy_analysis" model="ir.ui.view">
+        <field name="name">Tenancy Analysis - Search</field>
+        <field name="model">tenancy.analysis</field>
+        <field name="arch" type="xml">
+            <search string="Property Analysis Search">
+                <field name="name"/>
+                <field name="property_id"/>
+                <field name="partner_id"/>
+                <field name="agent_partner_id"/>
+                <filter name='state_draft' string="Draft" domain="[('state','=','draft')]"/>
+                <filter name='state_running' string="Running" domain="[('state','=','running')]"/>
+                <filter name='state_closed' string="Closed" domain="[('state','=','closed')]"/>
+                <filter name='state_cancelled' string="Cancelled" domain="[('state','=','cancelled')]"/>
+                    <filter name="property_id" string="Property" context="{'group_by':'property_id'}"/>
+                    <filter name="partner_id" string="Tenant" context="{'group_by':'partner_id'}"/>
+                    <filter name="agent_partner_id" string="Agent" context="{'group_by':'agent_partner_id'}"/>
+                    <filter name="rent_type_id" string="Rent Type" context="{'group_by':'rent_type_id'}"/>
+                    <separator/>
+                    <filter name="state" string="Status" context="{'group_by':'state'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_tenancy_analysis" model="ir.actions.act_window">
+        <field name="name">Tenancy Analysis</field>
+        <field name="res_model">tenancy.analysis</field>
+        <field name="view_mode">graph,pivot</field>
+        <field name="view_id"></field>  <!-- force empty -->
+    </record>
+
+	<!--  Menu Items-->
+    <menuitem name="Tenancy Analysis"
+              id="menu_tenancy_analysis"
+              parent="dev_property_management.root_menu_property_reporting"
+              action="action_tenancy_analysis"
+              sequence="1"/>
+</odoo>

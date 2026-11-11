@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="ps_worker_salary_view_list" model="ir.ui.view">
+        <field name="name">ps.worker.salary.view.list</field>
+        <field name="model">ps.worker.salary</field>
+        <field name="arch" type="xml">
+            <list string="Salary Matrices">
+                <field name="x_name" />
+                <field name="x_year" />
+                <field name="x_profession_id" />
+                <field name="x_active" widget="boolean_toggle" />
+            </list>
+        </field>
+    </record>
+
+    <record id="ps_worker_salary_view_form" model="ir.ui.view">
+        <field name="name">ps.worker.salary.view.form</field>
+        <field name="model">ps.worker.salary</field>
+        <field name="arch" type="xml">
+            <form string="Salary Matrix">
+                <header>
+                    <button name="action_generate_lines" type="object" string="Generate Lines" />
+                    <button name="action_export_csv" type="object" string="Export CSV" />
+                    <button name="%(ps_worker_salary_import_action)d" type="action" string="Import Excel" />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="x_name" />
+                        <h1>
+                            <field name="x_name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="x_year" />
+                            <field name="x_profession_id" />
+                        </group>
+                        <group>
+                            <field name="x_active" widget="boolean_toggle" />
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="x_note" nolabel="1" />
+                    </group>
+                    <notebook>
+                        <page string="Salary Lines">
+                            <field name="x_line_ids">
+                                <list >
+                                    <field name="x_sequence" widget="handle" />
+                                    <field name="x_grade_id" />
+                                    <field name="x_formula_id" />
+                                    <field name="x_basic_salary" />
+                                    <field name="x_kpi_amount" />
+                                    <field name="x_working_days" />
+                                    <field name="x_total_26_basic" />
+                                    <field name="x_total_26_kpi" />
+                                    <field name="x_total_26_total" />
+                                    <field name="x_total_28_basic" />
+                                    <field name="x_total_28_kpi" />
+                                    <field name="x_total_28_total" />
+                                    <field name="x_total_allowance" />
+                                    <field name="x_total_26_income" />
+                                    <field name="x_total_28_income" />
+                                </list>
+                                <form string="Salary Line">
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="x_grade_id" />
+                                                <field name="x_formula_id" />
+                                                <field name="x_basic_salary" />
+                                                <field name="x_kpi_amount" />
+                                            </group>
+                                            <group>
+                                                <field name="x_hourly_basic" />
+                                                <field name="x_hourly_kpi" />
+                                                <field name="x_hourly_total" />
+                                            </group>
+                                        </group>
+                                        <group string="Shift Lines">
+                                            <field name="x_shift_line_ids" nolabel="1">
+                                                <list editable="bottom">
+                                                    <field name="x_shift_type_id" />
+                                                    <field name="x_count" />
+                                                    <field name="x_basic_amount" />
+                                                    <field name="x_kpi_amount" />
+                                                    <field name="x_total" />
+                                                </list>
+                                            </field>
+                                        </group>
+                                        <group string="Allowance Lines">
+                                            <field name="x_allowance_line_ids" nolabel="1">
+                                                <list editable="bottom">
+                                                    <field name="x_allowance_id" />
+                                                    <field name="x_amount" />
+                                                    <field name="x_note" />
+                                                </list>
+                                            </field>
+                                        </group>
+                                        <group string="Totals">
+                                            <group>
+                                                <field name="x_total_26_total" />
+                                                <field name="x_total_26_income" />
+                                            </group>
+                                            <group>
+                                                <field name="x_total_28_total" />
+                                                <field name="x_total_28_income" />
+                                            </group>
+                                            <group>
+                                                <field name="x_total_allowance" />
+                                            </group>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ps_worker_salary_view_search" model="ir.ui.view">
+        <field name="name">ps.worker.salary.view.search</field>
+        <field name="model">ps.worker.salary</field>
+        <field name="arch" type="xml">
+            <search string="Search Salary Matrix">
+                <field name="x_name" />
+                <field name="x_year" />
+                <field name="x_profession_id" />
+                <filter string="Active" name="active" domain="[('x_active', '=', True)]" />
+                <filter string="Inactive" name="inactive" domain="[('x_active', '=', False)]" />
+                <group>
+                    <filter string="Profession" name="group_profession" context="{'group_by': 'x_profession_id'}" />
+                    <filter string="Year" name="group_year" context="{'group_by': 'x_year'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="ps_worker_salary_action" model="ir.actions.act_window">
+        <field name="name">Salary Matrices</field>
+        <field name="res_model">ps.worker.salary</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="ps_worker_salary_view_search" />
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first salary matrix
+            </p>
+        </field>
+    </record>
+
+</odoo>

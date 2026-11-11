@@ -1,0 +1,22 @@
+{
+    'name': 'PatSoft CRM Real Estates',
+    'version': '1.0.2',
+    'category': 'PatSoft',
+    'summary': 'Property commission defaults and metric display labels',
+    'author': 'PatSoft',
+    'depends': ['dev_property_management'],
+    'data': [
+        'security/ir.model.access.csv',
+        'security/consultation_call_security.xml',
+        'data/property_facing_data.xml',
+        'data/consultation_result_data.xml',
+        'views/property_views.xml',
+        'views/property_area_templates.xml',
+        'views/crm_lead_views.xml',
+        'views/consultation_call_dashboard_views.xml',
+    ],
+    'installable': True,
+    'application': True,
+    'auto_install': False,
+    'license': 'LGPL-3',
+}

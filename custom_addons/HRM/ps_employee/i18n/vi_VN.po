@@ -1,0 +1,1445 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* ps_employee
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0-20260324\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-30 08:24+0000\n"
+"PO-Revision-Date: 2026-06-30 08:24+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: ps_employee
+#: model:ir.model,name:ps_employee.model_ps_hr_employee_insurance_accident
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__accident_insurance_ids
+msgid "Accident Insurance"
+msgstr "Bảo hiểm tai nạn"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhtn__is_active
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhxh__is_active
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhyt__is_active
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_accident__is_active
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_level__active
+msgid "Active"
+msgstr "Đang sử dụng"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__representative_address
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__address
+msgid "Address"
+msgstr "Địa chỉ"
+
+#. module: ps_employee
+#. odoo-python
+#: code:addons/ps_employee/models/hr_employee.py:0
+msgid "Address Conversion Failed"
+msgstr "Không chuyển đổi được địa chỉ"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_salary_history__allowance
+msgid "Allowance"
+msgstr "Phụ cấp"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__x_applicant_id
+msgid "Applicant"
+msgstr "Ứng viên"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__x_sale_province
+msgid "Assigned Province/City"
+msgstr "Tỉnh/Thành phụ trách"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "BHTN"
+msgstr "BHTN"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "BHXH"
+msgstr "BHXH"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "BHYT"
+msgstr "BHYT"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_salary_history__basic_salary
+msgid "Basic Salary"
+msgstr "Lương cơ bản"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__biography
+msgid "Biography Summary"
+msgstr "Tóm tắt tiểu sử"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__birth_certificate
+msgid "Birth Certificate Number"
+msgstr "Số khai sinh"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__book_number
+msgid "Book Number"
+msgstr "Quyển số"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "Bên A (Người sử dụng lao động)"
+msgstr "Bên A (Người sử dụng lao động)"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "Bên B (Người lao động)"
+msgstr "Bên B (Người lao động)"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "Bảo Hiểm"
+msgstr "Bảo Hiểm"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "Bảo hiểm ngoài"
+msgstr "Bảo hiểm ngoài"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "Bảo hiểm tai nạn"
+msgstr "Bảo hiểm tai nạn"
+
+#. module: ps_employee
+#: model:ir.model.fields.selection,name:ps_employee.selection__ps_hr_employee_family__relationship__child
+msgid "Child"
+msgstr "Con"
+
+#. module: ps_employee
+#: model:ir.ui.menu,name:ps_employee.menu_ps_hr_level_professional
+msgid "Professional"
+msgstr "Chuyên môn"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "Chỉnh sửa địa chỉ"
+msgstr "Chỉnh sửa địa chỉ"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "Chọn người đại diện"
+msgstr "Chọn người đại diện"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__job_title
+msgid "Chức vụ"
+msgstr "Chức vụ"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_hospital__code
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_level__code
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_province__code
+msgid "Code"
+msgstr "Mã"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__representative_company
+msgid "Company"
+msgstr "Công ty"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_accident__compensation_per_case
+msgid "Compensation per Case"
+msgstr "Mức bồi thường/Vụ"
+
+#. module: ps_employee
+#: model:ir.actions.act_window,name:ps_employee.action_ps_hr_level_it
+msgid "Computer Skill Levels"
+msgstr "Trình độ vi tính"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhtn__insurance_level
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhxh__insurance_level
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhyt__insurance_level
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_accident__insurance_level
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_external__insurance_level
+msgid "Contribution Rate"
+msgstr "Mức đóng"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__create_uid
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhtn__create_uid
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhxh__create_uid
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhyt__create_uid
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__create_uid
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_accident__create_uid
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_external__create_uid
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_salary_history__create_uid
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_hospital__create_uid
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_level__create_uid
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_province__create_uid
+msgid "Created by"
+msgstr "Được tạo bởi"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__create_date
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhtn__create_date
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhxh__create_date
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhyt__create_date
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__create_date
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_accident__create_date
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_external__create_date
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_salary_history__create_date
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_hospital__create_date
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_level__create_date
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_province__create_date
+msgid "Created on"
+msgstr "Được tạo vào"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__x_current_address_edit_mode
+msgid "Current Address Edit Mode"
+msgstr "Đang chỉnh sửa địa chỉ hiện tại"
+
+#. module: ps_employee
+#: model:ir.ui.menu,name:ps_employee.menu_hr_level_root
+msgid "Qualification Categories"
+msgstr "Danh mục trình độ"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__date_of_birth
+msgid "Date of Birth"
+msgstr "Ngày sinh"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__is_dependent
+msgid "Dependent"
+msgstr "Phụ thuộc"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__display_name
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__display_name
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhtn__display_name
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhxh__display_name
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhyt__display_name
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__display_name
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_accident__display_name
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_external__display_name
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_salary_history__display_name
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_hospital__display_name
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_level__display_name
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_province__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "Diễn biến lương"
+msgstr "Diễn biến lương"
+
+#. module: ps_employee
+#: model:ir.model.fields.selection,name:ps_employee.selection__ps_hr_level__type__education
+msgid "Education"
+msgstr "Học vấn"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__education_level_id
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__education_level
+msgid "Education Level"
+msgstr "Trình độ học vấn"
+
+#. module: ps_employee
+#: model:ir.actions.act_window,name:ps_employee.action_ps_hr_level_education
+msgid "Education Levels"
+msgstr "Trình độ học vấn"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__representative_email
+msgid "Email"
+msgstr "Email"
+
+#. module: ps_employee
+#: model:ir.model,name:ps_employee.model_hr_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhtn__employee_id
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhxh__employee_id
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhyt__employee_id
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__employee_id
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_accident__employee_id
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_external__employee_id
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_salary_history__employee_id
+msgid "Employee"
+msgstr "Nhân viên"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__x_employee_code
+msgid "Employee Code"
+msgstr "Mã nhân viên"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_accident__date_end
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_external__date_end
+msgid "End Date"
+msgstr "Ngày kết thúc"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__x_ethnicity
+msgid "Ethnicity"
+msgstr "Dân tộc"
+
+#. module: ps_employee
+#: model:ir.model,name:ps_employee.model_ps_hr_employee_insurance_external
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__external_insurance_ids
+msgid "External Insurance"
+msgstr "Bảo hiểm ngoài"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "Family"
+msgstr "Gia đình"
+
+#. module: ps_employee
+#: model:ir.model,name:ps_employee.model_ps_hr_employee_family
+msgid "Family Member"
+msgstr "Thành viên gia đình"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__family_ids
+msgid "Family Members"
+msgstr "Thành phần gia đình"
+
+#. module: ps_employee
+#: model:ir.model.fields.selection,name:ps_employee.selection__ps_hr_employee_family__relationship__father
+msgid "Father"
+msgstr "Cha"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__representative_fax
+msgid "Fax Number"
+msgstr "Số fax"
+
+#. module: ps_employee
+#: model:ir.actions.act_window,name:ps_employee.action_ps_hr_level_language
+msgid "Foreign Language Levels"
+msgstr "Trình độ ngoại ngữ"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__date_from
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_salary_history__date_from
+msgid "From Date"
+msgstr "Từ ngày"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__name
+msgid "Full Name"
+msgstr "Họ tên"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__note
+msgid "Ghi chú"
+msgstr "Ghi chú"
+
+#. module: ps_employee
+#. odoo-python
+#: code:addons/ps_employee/models/hr_contract.py:0
+msgid "End Date must be later than Start Date."
+msgstr "Ngày kết thúc phải sau ngày bắt đầu."
+
+#. module: ps_employee
+#. odoo-python
+#: code:addons/ps_employee/models/hr_contract.py:0
+msgid "Wage must be greater than 0."
+msgstr "Lương phải lớn hơn 0."
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_grade_search_view
+msgid "Archived"
+msgstr "Không sử dụng"
+
+#. module: ps_employee
+#: model:ir.model,name:ps_employee.model_ps_hr_contract
+msgid "HR Contract"
+msgstr "Hợp đồng lao động"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__state
+msgid "Status"
+msgstr "Trạng thái"
+
+#. module: ps_employee
+#: model:ir.model.fields.selection,name:ps_employee.selection__ps_hr_contract__state__draft
+msgid "Draft"
+msgstr "Nháp"
+
+#. module: ps_employee
+#: model:ir.model.fields.selection,name:ps_employee.selection__ps_hr_contract__state__running
+msgid "Running"
+msgstr "Đang chạy"
+
+#. module: ps_employee
+#: model:ir.model.fields.selection,name:ps_employee.selection__ps_hr_contract__state__expiring
+msgid "Expiring Soon"
+msgstr "Sắp hết hạn"
+
+#. module: ps_employee
+#: model:ir.model.fields.selection,name:ps_employee.selection__ps_hr_contract__state__expired
+msgid "Expired"
+msgstr "Hết hạn"
+
+#. module: ps_employee
+#: model:ir.model.fields.selection,name:ps_employee.selection__ps_hr_contract__state__cancelled
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__is_cancelled
+msgid "Cancelled"
+msgstr "Đã hủy"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.view_ps_hr_contract_form
+msgid "Cancel Contract"
+msgstr "Hủy hợp đồng"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.view_ps_hr_contract_form
+msgid "Reopen"
+msgstr "Mở lại"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.view_ps_hr_contract_form
+msgid "Are you sure you want to cancel this contract?"
+msgstr "Bạn có chắc chắn muốn hủy hợp đồng này?"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.view_ps_hr_contract_form
+msgid "Are you sure you want to reopen this contract?"
+msgstr "Bạn có chắc chắn muốn mở lại hợp đồng này?"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_contract_mass_view_form
+msgid "Load a Template"
+msgstr "Tải hợp đồng mẫu"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract_mass__contract_template_id
+msgid "Contract Template"
+msgstr "Hợp đồng mẫu"
+
+#. module: ps_employee
+#: model:ir.ui.menu,name:ps_employee.menu_ps_hr_contract_config
+msgid "Configuration"
+msgstr "Danh mục"
+
+#. module: ps_employee
+#: model:ir.ui.menu,name:ps_employee.menu_ps_hr_grade
+msgid "Grade"
+msgstr "Cấp bậc"
+
+#. module: ps_employee
+#: model:ir.ui.menu,name:ps_employee.menu_ps_hr_salary_grade
+msgid "Salary Grade"
+msgstr "Ngạch lương"
+
+#. module: ps_employee
+#: model:ir.ui.menu,name:ps_employee.menu_ps_hr_contract_root
+msgid "Employment Contracts"
+msgstr "Hợp đồng lao động"
+
+#. module: ps_employee
+#: model:ir.model,name:ps_employee.model_ps_hr_employee_other
+msgid "Visa & Work Permit Document"
+msgstr "Giấy tờ Visa & Giấy phép lao động"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_other__x_document_type
+msgid "Document Type"
+msgstr "Loại giấy tờ"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_other__x_document_no
+msgid "Document No"
+msgstr "Số giấy tờ"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__x_other_document_ids
+msgid "Visa & Work Permit Documents"
+msgstr "Giấy tờ Visa & Giấy phép lao động"
+
+#. module: ps_employee
+#: model:ir.model.fields.selection,name:ps_employee.selection__ps_hr_employee_other__x_document_type__work_permit
+msgid "Work Permit"
+msgstr "Giấy phép lao động"
+
+#. module: ps_employee
+#: model:ir.model.fields.selection,name:ps_employee.selection__ps_hr_employee_other__x_document_type__temporary_residence
+msgid "Temporary Residence"
+msgstr "Tạm trú"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_other__x_issue_date
+msgid "Issue Date"
+msgstr "Ngày cấp"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_other__x_issue_place
+msgid "Issue Place"
+msgstr "Nơi cấp"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_other__x_expiry_date
+msgid "Expiry Date"
+msgstr "Ngày hết hạn"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_other__x_document_file
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_other_view_form
+msgid "Attachment"
+msgstr "Tài liệu"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_other__x_document_filename
+msgid "File Name"
+msgstr "Tên tệp"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_other__x_notes
+msgid "Notes"
+msgstr "Ghi chú"
+
+#. module: ps_employee
+#: model:ir.model.fields.selection,name:ps_employee.selection__ps_hr_employee_other__x_document_type__visa
+msgid "Visa"
+msgstr "Visa"
+
+#. module: ps_employee
+#: model:ir.model.fields.selection,name:ps_employee.selection__ps_hr_employee_other__x_document_type__other
+msgid "Other"
+msgstr "Khác"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "Open"
+msgstr "Mở"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_other_view_form
+msgid "Preview"
+msgstr "Xem chứng chỉ"
+
+#. module: ps_employee
+#: model:ir.actions.act_window,name:ps_employee.action_ps_hr_contract
+#. odoo-python
+#: code:addons/ps_employee/models/hr_contract_mass.py:0
+msgid "Contracts"
+msgstr "Hợp đồng"
+
+#. module: ps_employee
+#: model:ir.ui.menu,name:ps_employee.menu_ps_hr_contract_list
+msgid "Contract List"
+msgstr "Danh sách hợp đồng"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.view_ps_hr_contract_form
+msgid "Representative (Part A)"
+msgstr "Bên A (Người sử dụng lao động)"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.view_ps_hr_contract_form
+msgid "Employee (Part B)"
+msgstr "Bên B (Người lao động)"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.view_ps_hr_contract_mass_form
+msgid "Create Contracts"
+msgstr "Tạo hợp đồng"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.view_ps_hr_contract_mass_form
+msgid "Cancel"
+msgstr "Hủy"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.view_ps_hr_contract_mass_form
+#: model_terms:ir.ui.view,arch_db:ps_employee.view_ps_hr_contract_form
+msgid "Contract Info"
+msgstr "Thông tin hợp đồng"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.view_ps_hr_contract_mass_form
+#: model_terms:ir.ui.view,arch_db:ps_employee.view_ps_hr_contract_form
+msgid "Job Info"
+msgstr "Thông tin công việc"
+
+#. module: ps_employee
+#: model:ir.model,name:ps_employee.model_ps_hr_grade
+msgid "Grade"
+msgstr "Cấp bậc"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_grade__code
+msgid "Code"
+msgstr "Mã cấp bậc"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_grade__name
+msgid "Name"
+msgstr "Tên cấp bậc"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_grade__sequence
+msgid "Sequence"
+msgstr "Thứ tự"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_grade__active
+msgid "Active"
+msgstr "Đang sử dụng"
+
+#. module: ps_employee
+#: model:ir.model,name:ps_employee.model_ps_hr_salary_grade
+msgid "Salary Grade"
+msgstr "Ngạch lương"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_salary_grade__code
+msgid "Code"
+msgstr "Mã ngạch lương"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_salary_grade__name
+msgid "Name"
+msgstr "Tên ngạch lương"
+
+#. module: ps_employee
+#: model:ir.model,name:ps_employee.model_ps_hr_level
+msgid "HR Qualification"
+msgstr "Trình độ nhân sự"
+
+#. module: ps_employee
+#: model:ir.model,name:ps_employee.model_ps_hr_employee_bhyt
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__bhyt_ids
+msgid "Health Insurance (BHYT)"
+msgstr "Bảo hiểm y tế (BHYT)"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhyt__kcb_code
+msgid "Healthcare Examination Code"
+msgstr "Mã số khám chữa bệnh (KCB)"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhyt__kcb_ticket
+msgid "Healthcare Examination Ticket Number"
+msgstr "Số phiếu khám chữa bệnh (KCB)"
+
+#. module: ps_employee
+#: model:ir.model,name:ps_employee.model_ps_hr_hospital
+msgid "Hospital"
+msgstr "Bệnh viện"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_hospital__name
+msgid "Hospital Name"
+msgstr "Tên bệnh viện"
+
+#. module: ps_employee
+#: model:ir.ui.menu,name:ps_employee.menu_ps_hr_level_education
+msgid "Education"
+msgstr "Học vấn"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__id
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__id
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhtn__id
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhxh__id
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhyt__id
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__id
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_accident__id
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_external__id
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_salary_history__id
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_hospital__id
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_level__id
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_province__id
+msgid "ID"
+msgstr "ID"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__identification_date
+msgid "ID Card Issue Date"
+msgstr "Ngày cấp CCCD"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__identification_address
+msgid "ID Card Issue Place"
+msgstr "Nơi cấp CCCD"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__id_number
+msgid "ID Card/Visa/Passport"
+msgstr "CCCD/Visa/Hộ chiếu"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__it_level_id
+msgid "IT Level"
+msgstr "Trình độ vi tính"
+
+#. module: ps_employee
+#: model:ir.model.fields.selection,name:ps_employee.selection__ps_hr_level__type__it
+msgid "Information Technology"
+msgstr "Công nghệ thông tin"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhxh__insurance_category
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_accident__insurance_category
+msgid "Insurance Category"
+msgstr "Loại bảo hiểm"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhxh__insurance_number
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_accident__insurance_number
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_external__insurance_number
+msgid "Insurance Number"
+msgstr "Số bảo hiểm"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__representative_job_title
+msgid "Job Title"
+msgstr "Chức vụ"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhtn__date_joined
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhxh__date_joined
+msgid "Join Date"
+msgstr "Ngày tham gia"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhxh__join_method
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhyt__join_method
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_accident__join_method
+msgid "Join Method"
+msgstr "Hình thức tham gia"
+
+#. module: ps_employee
+#: model:ir.ui.menu,name:ps_employee.menu_ps_hr_level_other
+msgid "Other"
+msgstr "Khác"
+
+#. module: ps_employee
+#: model:res.groups,name:ps_employee.group_sale_province
+msgid "Kinh Doanh"
+msgstr "Kinh Doanh"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "Kinh nghiệm &amp; chứng chỉ"
+msgstr "Kinh nghiệm &amp; chứng chỉ"
+
+#. module: ps_employee
+#: model:ir.model.fields.selection,name:ps_employee.selection__ps_hr_level__type__language
+msgid "Language"
+msgstr "Ngoại ngữ"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__language_level_id
+msgid "Language Level"
+msgstr "Trình độ ngoại ngữ"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__write_uid
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhtn__write_uid
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhxh__write_uid
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhyt__write_uid
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__write_uid
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_accident__write_uid
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_external__write_uid
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_salary_history__write_uid
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_hospital__write_uid
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_level__write_uid
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_province__write_uid
+msgid "Last Updated by"
+msgstr "Cập nhật lần cuối bởi"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__write_date
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhtn__write_date
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhxh__write_date
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhyt__write_date
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__write_date
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_accident__write_date
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_external__write_date
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_salary_history__write_date
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_hospital__write_date
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_level__write_date
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_province__write_date
+msgid "Last Updated on"
+msgstr "Cập nhật lần cuối vào"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_salary_history__decision_type
+msgid "Loại HĐ/QĐ/PL"
+msgstr "Loại HĐ/QĐ/PL"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__representative_mobile
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__mobile
+msgid "Mobile"
+msgstr "Di động"
+
+#. module: ps_employee
+#: model:ir.model.fields.selection,name:ps_employee.selection__ps_hr_employee_family__relationship__mother
+msgid "Mother"
+msgstr "Mẹ"
+
+
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__wage
+msgid "Mức lương"
+msgstr "Mức lương"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_level__name
+msgid "Name"
+msgstr "Tên"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__nationality
+msgid "Nationality"
+msgstr "Quốc tịch"
+
+#. module: ps_employee
+#: model:ir.ui.menu,name:ps_employee.menu_ps_hr_level_language
+msgid "Languages"
+msgstr "Ngoại ngữ"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__date_sign
+msgid "Ngày ký"
+msgstr "Ngày ký"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__employee_id
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "Nhân viên"
+msgstr "Nhân viên"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "Nhập địa chỉ cũ, hệ thống tự chuyển đổi"
+msgstr "Nhập địa chỉ cũ, hệ thống tự chuyển đổi"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "Nhập địa chỉ thường trú"
+msgstr "Nhập địa chỉ thường trú"
+
+#. module: ps_employee
+#. odoo-python
+#: code:addons/ps_employee/models/hr_employee.py:0
+msgid "No matching new address found for: %s"
+msgstr "Không tìm thấy địa chỉ mới nào khớp với địa chỉ của bạn: %s"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__note
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_salary_history__note
+msgid "Note"
+msgstr "Ghi chú"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__job
+msgid "Occupation"
+msgstr "Công việc"
+
+#. module: ps_employee
+#: model:ir.model.fields.selection,name:ps_employee.selection__ps_hr_employee_family__relationship__other
+#: model:ir.model.fields.selection,name:ps_employee.selection__ps_hr_level__type__other
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "Other"
+msgstr "Khác"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__other_level_id
+msgid "Other Level"
+msgstr "Trình độ khác"
+
+#. module: ps_employee
+#: model:ir.actions.act_window,name:ps_employee.action_ps_hr_level_other
+msgid "Other Qualification Levels"
+msgstr "Trình độ khác"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__party_join_date
+msgid "Party Join Date"
+msgstr "Ngày vào đảng"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__party_member
+msgid "Party Member"
+msgstr "Đảng viên"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__x_permanent_address
+msgid "Permanent Address"
+msgstr "Địa chỉ thường trú"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__percent_salary
+msgid "Phần trăm lương"
+msgstr "Phần trăm lương"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__allowance
+msgid "Phụ cấp"
+msgstr "Phụ cấp"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhtn__place_joined
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhxh__place_joined
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhyt__place_joined
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_accident__place_joined
+msgid "Place Joined"
+msgstr "Nơi tham gia"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__x_address_old
+msgid "Pre-Merger Address"
+msgstr "Địa chỉ trước sáp nhập"
+
+#. module: ps_employee
+#: model:ir.model.fields.selection,name:ps_employee.selection__ps_hr_level__type__professional
+msgid "Professional"
+msgstr "Chuyên môn"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__professional_level_id
+msgid "Professional Level"
+msgstr "Trình độ chuyên môn"
+
+#. module: ps_employee
+#: model:ir.actions.act_window,name:ps_employee.action_ps_hr_level_professional
+msgid "Professional Qualification Levels"
+msgstr "Trình độ chuyên môn"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_external__provider_name
+msgid "Provider Name"
+msgstr "Tên công ty cung cấp"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_hospital__province_id
+msgid "Province"
+msgstr "Tỉnh/Thành"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_province__name
+msgid "Province Name"
+msgstr "Tên tỉnh"
+
+#. module: ps_employee
+#: model:ir.model,name:ps_employee.model_ps_hr_province
+msgid "Province/City"
+msgstr "Tỉnh/Thành phố"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.view_ps_hr_level_form
+msgid "Qualification Level"
+msgstr "Trình độ"
+
+#. module: ps_employee
+#: model:ir.actions.act_window,name:ps_employee.action_ps_hr_level
+#: model_terms:ir.ui.view,arch_db:ps_employee.view_ps_hr_level_list
+msgid "Qualification Levels"
+msgstr "Trình độ"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "Quản lý hợp đồng"
+msgstr "Quản lý hợp đồng"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhyt__hospital_id
+msgid "Registered Hospital"
+msgstr "Bệnh viện đăng ký"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhyt__province_id
+msgid "Registered Province"
+msgstr "Tỉnh đăng ký"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__relationship
+msgid "Relationship"
+msgstr "Quan hệ"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__x_religion
+msgid "Religion"
+msgstr "Tôn giáo"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__representative_employee_id
+msgid "Representative"
+msgstr "Người đại diện"
+
+#. module: ps_employee
+#: model:ir.model,name:ps_employee.model_ps_hr_employee_salary_history
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__salary_history_ids
+msgid "Salary History"
+msgstr "Diễn biến lương"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_level__sequence
+msgid "Sequence"
+msgstr "Thứ tự"
+
+#. module: ps_employee
+#: model:ir.model.fields.selection,name:ps_employee.selection__ps_hr_employee_family__relationship__sibling
+msgid "Sibling"
+msgstr "Anh/Chị/Em"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "Sinh nhật"
+msgstr "Sinh nhật"
+
+#. module: ps_employee
+#: model:ir.model,name:ps_employee.model_ps_hr_employee_bhxh
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__bhxh_ids
+msgid "Social Insurance (BHXH)"
+msgstr "Bảo hiểm xã hội (BHXH)"
+
+#. module: ps_employee
+#: model:ir.model.fields.selection,name:ps_employee.selection__ps_hr_employee_family__relationship__spouse
+msgid "Spouse"
+msgstr "Vợ/Chồng"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_bhyt__date_start
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_accident__date_start
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_external__date_start
+msgid "Start Date"
+msgstr "Ngày bắt đầu"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_salary_history__contract_number
+msgid "Số HĐLĐ"
+msgstr "Số HĐLĐ"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_salary_history__decision_number
+msgid "Số QĐ/PL"
+msgstr "Số QĐ/PL"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__tax_code
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__tax_code
+msgid "Tax Code"
+msgstr "Mã số thuế"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "Thành phần gia đình"
+msgstr "Thành phần gia đình"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_family__date_to
+msgid "To Date"
+msgstr "Đến ngày"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_insurance_accident__total_compensation
+msgid "Total Compensation"
+msgstr "Tổng đền bù"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_employee_salary_history__total_income
+msgid "Total Income"
+msgstr "Tổng thu nhập"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__trade_union_join_date
+msgid "Trade Union Join Date"
+msgstr "Ngày vào công đoàn"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__trade_union
+msgid "Trade Union Member"
+msgstr "Công đoàn"
+
+#. module: ps_employee
+#: model:ir.ui.menu,name:ps_employee.menu_ps_hr_config_root
+msgid "Qualifications"
+msgstr "Trình độ"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "Trình độ"
+msgstr "Trình độ"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_level__type
+msgid "Type"
+msgstr "Loại"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__total_income
+msgid "Tổng thu nhập"
+msgstr "Tổng thu nhập"
+
+#. module: ps_employee
+#: model:ir.model,name:ps_employee.model_ps_hr_employee_bhtn
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__bhtn_ids
+msgid "Unemployment Insurance (BHTN)"
+msgstr "Bảo hiểm thất nghiệp (BHTN)"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__union_join_date
+msgid "Union Join Date"
+msgstr "Ngày vào đoàn"
+
+#. module: ps_employee
+#: model:ir.ui.menu,name:ps_employee.menu_ps_hr_level_it
+msgid "Computer Skills"
+msgstr "Vi tính"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__x_employee_code_readonly
+msgid "X Employee Code Readonly"
+msgstr "Mã NV"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_employee__union_member
+msgid "Youth Union Member"
+msgstr "Đoàn viên"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "Địa chỉ cá nhân"
+msgstr "Địa chỉ cá nhân"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__work_address
+msgid "Địa chỉ làm việc"
+msgstr "Địa chỉ làm việc"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_employee_view_form
+msgid "Địa chỉ thường trú"
+msgstr "Địa chỉ thường trú"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__name
+msgid "Contract Code"
+msgstr "Mã HĐTD"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__employee_id
+#: model_terms:ir.ui.view,arch_db:ps_employee.view_ps_hr_contract_search
+msgid "Employee"
+msgstr "Nhân viên"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__x_contract_type
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract_mass__x_contract_type
+#: model_terms:ir.ui.view,arch_db:ps_employee.view_ps_hr_contract_search
+msgid "Contract Type"
+msgstr "Loại Hợp Đồng"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__date_sign
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract_mass__date_sign
+msgid "Sign Date"
+msgstr "Ngày ký"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__x_date_start
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract_mass__x_date_start
+msgid "Start Date"
+msgstr "Từ Ngày"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__x_date_end
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract_mass__x_date_end
+msgid "End Date"
+msgstr "Đến Ngày"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__x_date_create
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract_mass__x_date_create
+msgid "Create Date"
+msgstr "Ngày lập"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__percent_salary
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract_mass__percent_salary
+msgid "Salary Percent"
+msgstr "Phần trăm lương"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__wage
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract_mass__wage
+msgid "Wage"
+msgstr "Mức lương"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__allowance
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract_mass__allowance
+msgid "Allowance"
+msgstr "Phụ cấp"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__total_income
+msgid "Total Income"
+msgstr "Tổng thu nhập"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__x_grade
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract_mass__x_grade
+msgid "Grade"
+msgstr "Cấp bậc"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__x_job_title
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract_mass__x_job_title
+msgid "Job Title"
+msgstr "Chức danh"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__x_position
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract_mass__x_position
+msgid "Position"
+msgstr "Chức vụ"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__x_salary_grade
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract_mass__x_salary_grade
+msgid "Salary Grade"
+msgstr "Ngạch lương"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__x_ins_salary
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract_mass__x_ins_salary
+msgid "Insured Salary"
+msgstr "Lương đóng BH"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__work_address
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract_mass__work_address
+msgid "Work Address"
+msgstr "Địa chỉ làm việc"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__note
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract_mass__note
+msgid "Note"
+msgstr "Ghi chú"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__x_rep_id
+msgid "Representative"
+msgstr "Người đại diện"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__x_rep_job
+msgid "Representative Job Title"
+msgstr "Chức vụ (Bên A)"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__x_rep_company
+msgid "Company"
+msgstr "Công ty"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__x_rep_address
+msgid "Address"
+msgstr "Địa chỉ"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__x_rep_mobile
+msgid "Mobile"
+msgstr "Số điện thoại"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__x_rep_fax
+msgid "Fax"
+msgstr "Số fax"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__x_rep_email
+msgid "Email"
+msgstr "Email"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__x_emp_name
+msgid "Employee Name"
+msgstr "Họ tên nhân viên"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__x_emp_birthday
+msgid "Birthday"
+msgstr "Ngày sinh"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__x_emp_id_num
+msgid "ID Number"
+msgstr "Số CCCD"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__x_emp_id_date
+msgid "ID Issue Date"
+msgstr "Ngày cấp"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract__x_emp_id_place
+msgid "ID Issue Place"
+msgstr "Nơi cấp"
+
+#. module: ps_employee
+#: model:ir.model,name:ps_employee.model_ps_hr_contract_mass
+msgid "Mass Create Contracts"
+msgstr "Tạo hợp đồng hàng loạt"
+
+#. module: ps_employee
+#: model:ir.ui.menu,name:ps_employee.menu_ps_hr_contract_mass
+msgid "Mass Contract Creation"
+msgstr "Tạo hợp đồng hàng loạt"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract_mass__employee_ids
+msgid "Employee"
+msgstr "Nhân viên"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_ps_hr_contract_mass__x_rep_id
+msgid "Representative"
+msgstr "Người đại diện"
+
+#. module: ps_employee
+#: model:ir.model,name:ps_employee.model_ps_hr_contract
+msgid "HR Contract"
+msgstr "Hợp đồng lao động"
+
+#. module: ps_employee
+#: model:ir.model,name:ps_employee.model_hr_department
+msgid "Department"
+msgstr "Phòng ban"
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_department__is_operating
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_department_view_search
+msgid "Operating"
+msgstr "Đang hoạt động"
+
+#. module: ps_employee
+#: model:ir.model.fields,help:ps_employee.field_hr_department__is_operating
+msgid "Tick if this workshop/department is currently operating."
+msgstr "Đánh dấu nếu phòng ban/nhà xưởng này đang hoạt động."
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_department__is_workshop
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_department_view_search
+msgid "Workshop"
+msgstr "Nhà xưởng"
+
+#. module: ps_employee
+#: model:ir.model.fields,help:ps_employee.field_hr_department__is_workshop
+msgid "Tick if this department is a workshop/factory."
+msgstr "Đánh dấu nếu phòng ban này là nhà xưởng."
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_department__workshop_code
+msgid "Workshop Code"
+msgstr "Mã xưởng"
+
+#. module: ps_employee
+#: model:ir.model.fields,help:ps_employee.field_hr_department__workshop_code
+msgid "Short workshop code, e.g. A. Prefixes become LSXA, YCA, DNA."
+msgstr "Mã ngắn của xưởng, ví dụ A. Tiền tố sẽ thành LSXA, YCA, DNA."
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_department__lsx_prefix
+msgid "LSX Prefix"
+msgstr "Lệnh sản xuất (LSX)"
+
+#. module: ps_employee
+#: model:ir.model.fields,help:ps_employee.field_hr_department__lsx_prefix
+msgid "Prefix for manufacturing orders (Lệnh sản xuất), e.g. LSXA."
+msgstr "Tiền tố cho lệnh sản xuất, ví dụ LSXA."
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_department__yc_prefix
+msgid "YC Prefix"
+msgstr "Yêu cầu (YC)"
+
+#. module: ps_employee
+#: model:ir.model.fields,help:ps_employee.field_hr_department__yc_prefix
+msgid "Prefix for requests (Yêu cầu), e.g. YCA."
+msgstr "Tiền tố cho yêu cầu, ví dụ YCA."
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_department__dn_prefix
+msgid "DN Prefix"
+msgstr "Đề nghị (DN)"
+
+#. module: ps_employee
+#: model:ir.model.fields,help:ps_employee.field_hr_department__dn_prefix
+msgid "Prefix for proposals (Đề nghị), e.g. DNA."
+msgstr "Tiền tố cho đề nghị, ví dụ DNA."
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_department__material_cost_account_id
+msgid "Raw Material Cost Account"
+msgstr "Tài khoản chi phí NVL"
+
+#. module: ps_employee
+#: model:ir.model.fields,help:ps_employee.field_hr_department__material_cost_account_id
+msgid "Account used for raw material costs (Chi phí NVL). Defaults to account 621."
+msgstr "Tài khoản dùng cho chi phí nguyên vật liệu. Mặc định tài khoản 621."
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_department__wip_account_id
+msgid "WIP Account"
+msgstr "Tài khoản dở dang"
+
+#. module: ps_employee
+#: model:ir.model.fields,help:ps_employee.field_hr_department__wip_account_id
+msgid "Account used for work in progress (Tài khoản dở dang). Defaults to account 154."
+msgstr "Tài khoản dùng cho chi phí sản xuất kinh doanh dở dang. Mặc định tài khoản 154."
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_department__material_warehouse_id
+msgid "Default Materials Warehouse"
+msgstr "Kho vật tư mặc định"
+
+#. module: ps_employee
+#: model:ir.model.fields,help:ps_employee.field_hr_department__material_warehouse_id
+msgid "Default warehouse for raw materials. Defaults to the company warehouse in Inventory."
+msgstr "Kho mặc định cho vật tư. Nếu chưa nhập thì lấy kho đang có trong Inventory."
+
+#. module: ps_employee
+#: model:ir.model.fields,field_description:ps_employee.field_hr_department__finished_warehouse_id
+msgid "Default Finished Goods Warehouse"
+msgstr "Kho thành phẩm mặc định"
+
+#. module: ps_employee
+#: model:ir.model.fields,help:ps_employee.field_hr_department__finished_warehouse_id
+msgid "Default warehouse for finished goods. Defaults to the company warehouse in Inventory."
+msgstr "Kho mặc định cho thành phẩm. Nếu chưa nhập thì lấy kho đang có trong Inventory."
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_department_view_form
+msgid "Accounts"
+msgstr "Tài khoản"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_department_view_form
+msgid "Warehouses"
+msgstr "Kho"
+
+#. module: ps_employee
+#: model_terms:ir.ui.view,arch_db:ps_employee.ps_hr_department_view_form
+msgid "Workshop Prefixes"
+msgstr "Tiền tố xưởng"

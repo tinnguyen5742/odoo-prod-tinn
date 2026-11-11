@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="ps_stock_onhand_view_list" model="ir.ui.view">
+            <field name="name">onhand.view.list</field>
+            <field name="model">ps.stock.onhand</field>
+            <field name="arch" type="xml">
+                <list edit="false" create="false" delete="false">
+                    <field name="year"/>
+                    <field name="product_id"/>
+                    <field name="location_id"/>
+                    <field name="opening_quantity"/>
+                    <field name="opening_amount"/>
+                    <field name="received_quantity"/>
+                    <field name="received_amount"/>
+                    <field name="issued_quantity"/>
+                    <field name="issued_amount"/>
+                    <field name="closing_quantity"/>
+                    <field name="closing_amount"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="onhand_view_search" model="ir.ui.view">
+            <field name="name">onhand.view.search</field>
+            <field name="model">ps.stock.onhand</field>
+            <field name="arch" type="xml">
+                <search string="Search Title">
+                    <field name="year"/>
+                    <field name="location_id"/>
+                    <separator/>
+                    <group>
+                        <filter string="Year" name="year" context="{'group_by':'year'}"/>
+                        <filter string="Product" name="product_id" context="{'group_by':'product_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="ps_stock_onhand_action" model="ir.actions.act_window">
+            <field name="name">Product Onhand</field>
+            <field name="res_model">ps.stock.onhand</field>
+            <field name="view_mode">list</field>
+            <field name="search_view_id" ref="onhand_view_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first record
+                </p>
+            </field>
+        </record>
+
+        <menuitem
+            id="menu_ps_stock_onhand"
+            name="Product Onhand"
+            action="ps_stock_onhand_action"
+            parent="stock.menu_warehouse_report"
+            sequence="10"
+            />
+    </data>
+</odoo>

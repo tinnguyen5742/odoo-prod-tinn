@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="survey_user_input_view_tree_inherit" model="ir.ui.view">
+        <field name="name">survey.user_input.view.list.inherit.ps.elearning</field>
+        <field name="model">survey.user_input</field>
+        <field name="inherit_id" ref="survey.survey_user_input_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="after">
+                <field name="certificate_url" string="Xem giấy chứng nhận"
+                       widget="url" text="Xem giấy chứng nhận"
+                       invisible="not certificate_url"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

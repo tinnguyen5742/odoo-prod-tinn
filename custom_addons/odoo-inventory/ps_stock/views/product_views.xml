@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="product_list_view_inherit" model="ir.ui.view">
+            <field name="name">product.list.view.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="arch" type="xml">
+                <!-- Add fields to an existing group -->
+                <xpath expr="//field[@name='default_code']" position="before">
+                    <field name="x_product_code" optional="show" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="product_normal_form_view_x_product_code" model="ir.ui.view">
+            <field name="name">product.product.form.x_product_code</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('oe_title')]" position="after">
+                    <div class="o_row">
+                        <label for="x_product_code" string="Product Code"/>
+                        <field name="x_product_code" readonly="1"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

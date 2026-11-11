@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo noupdate="1">
+<!--TAGS-->
+   <record id="property_tags_1" model="property.tags">
+        <field name="name">rentalproperty</field>
+    </record>
+    <record id="property_tags_2" model="property.tags">
+        <field name="name">sales</field>
+    </record>
+    <record id="property_tags_3" model="property.tags">
+        <field name="name">tenants</field>
+    </record>
+
+
+<!--   LAND TITLE-->
+    <record id="land_title_1" model="land.title">
+        <field name="name">Joint Tenancy</field>
+    </record>
+    <record id="land_title_2" model="land.title">
+        <field name="name">Tenancy In Common</field>
+    </record>
+    <record id="land_title_3" model="land.title">
+        <field name="name">Partnership Owners</field>
+    </record>
+     <record id="land_title_4" model="land.title">
+        <field name="name">Community Property</field>
+    </record>
+    
+<!--  PARKING SPACE-->
+    <record id="parking_space_1" model="parking.space">
+        <field name="name">Cars and Parking</field>
+    </record>
+    <record id="parking_space_2" model="parking.space">
+        <field name="name">DriveOnPark</field>
+    </record>
+    <record id="parking_space_3" model="parking.space">
+        <field name="name">Mile2Parking</field>
+    </record>
+    
+<!--   FACING -->
+    <record id="facing_1" model="property.facing">
+        <field name="name">East</field>
+    </record>
+    <record id="facing_2" model="property.facing">
+        <field name="name">West</field>
+    </record>
+    <record id="facing_3" model="property.facing">
+        <field name="name">North</field>
+    </record>
+    <record id="facing_3" model="property.facing">
+        <field name="name">South</field>
+    </record>
+    
+<!--   AREA MENAGEMENT  -->
+    <record id="area_management_1" model="area.manage">
+        <field name="name">Bedroom</field>
+    </record>
+    <record id="area_management_2" model="area.manage">
+        <field name="name">Living room</field>
+    </record>
+    <record id="area_management_3" model="area.manage">
+        <field name="name">Balconies</field>
+    </record>
+    <record id="area_management_4" model="area.manage">
+        <field name="name">Washingarea</field>
+    </record>
+   
+   
+<!--   AGREEMENT TEMPLATE -->
+    <record id="agreement_tmpl_1" model="agreement.template">
+        <field name="name">PROPERTY MANAGEMENT AGREEMENT</field>
+        <field name="description">
+
+     								 AGENT RESPONSIBILITIES
+                     Rent Collection: Collect rent from tenants in a timely manner, ensuring consistent cash flow.
+	​             Maintenance: Oversee the general upkeep and maintenance of the property, performing regular inspections and organising repairs as necessary. 
+	​             Communication: Act as the main point of contact for tenants, responding to concerns and complaints promptly and professionally.
+	​             Legal and Regulatory Compliance: Comply with all relevant federal, state, and local laws and regulations relating to property management, and ensure that the property is also in compliance. 
+	​             Financial Reporting: Provide the Owner with regular detailed financial reports on income, expenses, and any outstanding matters. 
+          </field>
+    </record>
+   
+</odoo>

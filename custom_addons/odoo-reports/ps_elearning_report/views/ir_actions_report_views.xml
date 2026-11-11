@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Hiện ô binding_view_types trên form Report Action (bản module của report_action_form_binding.xml). -->
+    <record id="act_report_xml_view_binding_view_types" model="ir.ui.view">
+        <field name="name">ir.actions.report.form.binding.view.types</field>
+        <field name="model">ir.actions.report</field>
+        <field name="inherit_id" ref="base.act_report_xml_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='report_name']" position="after">
+                <field name="binding_view_types" string="Hiển thị thao tác In ở"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

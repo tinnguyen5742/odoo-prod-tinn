@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_asset_asset_form_inherit_ps" model="ir.ui.view">
+        <field name="name">account.asset.asset.form.inherit.ps</field>
+        <field name="model">account.asset.asset</field>
+        <field name="inherit_id" ref="om_account_asset.view_account_asset_asset_form"/>
+        <field name="arch" type="xml">
+            
+            <!-- ĐÃ SỬA TÊN NÚT: Đổi từ action_set_to_draft thành set_to_draft -->
+            <xpath expr="//button[@name='set_to_draft']" position="attributes">
+                <attribute name="invisible">ps_hide_draft_btn</attribute>
+            </xpath>
+
+            <xpath expr="//header" position="inside">
+                <button name="%(ps_fixed_asset.action_ps_asset_upgrade_wizard)d" 
+                        string="Upgrade / Evaluate" 
+                        type="action" 
+                        class="oe_highlight"/>
+                
+                <button name="%(ps_fixed_asset.action_ps_asset_dispose_wizard)d" 
+                        string="Dispose / Cancel" 
+                        type="action" 
+                        class="btn-secondary"/>
+                <button name="%(ps_fixed_asset.action_ps_asset_transfer_wizard)d" string="Transfer Asset" type="action" class="btn-secondary"/>
+                <button name="%(ps_fixed_asset.action_ps_asset_pause_wizard)d" 
+                        string="Pause / Resume" 
+                        type="action" 
+                        class="btn-secondary"/>
+            </xpath>
+
+            <xpath expr="//div[hasclass('oe_title')]" position="replace">
+                <div class="oe_title">
+                   <label for="ps_code" class="oe_edit_only" string="Asset Code"/>
+                    <div class="d-flex align-items-center" style="margin-bottom: 10px;">
+                        <h1 style="margin-bottom: 0; margin-right: 30px;">
+                            <field name="ps_code" readonly="1"/>
+                        </h1>
+                        <div class="d-flex align-items-center" style="background-color: #e9ecef; padding: 5px 15px; border-radius: 5px;">
+                            <field name="is_opening" style="transform: scale(1.3); margin-right: 8px;"/>
+                            <label for="is_opening" style="font-size: 16px; margin-bottom: 0; font-weight: bold; color: #017e84;"/>
+                        </div>
+                    </div>
+                    
+                    <label for="name" class="oe_edit_only" string="Asset Name"/>
+                    <h1>
+                        <field name="name" placeholder="Ví dụ: Máy thổi 3 lớp..."/>
+                    </h1>
+                </div>
+            </xpath>
+
+            <xpath expr="//field[@name='category_id']" position="after">
+                <!-- Khai báo trường tàng hình để giao diện nhận diện logic chặn -->
+                <field name="ps_capitalization_move_id" invisible="1"/>
+                <field name="ps_hide_draft_btn" invisible="1"/>
+                
+                <field name="ps_account_asset_id"/>
+                <field name="ps_account_counterpart_id"/>
+                <field name="ps_account_depreciation_expense_id"/>
+                <field name="ps_account_depreciation_id"/>
+                <field name="ps_analytic_plan_id"/>
+                <field name="ps_account_evaluation_id"/>
+                <field name="ps_account_other_income_id"/>
+                <field name="ps_account_other_expense_id"/>
+                <field name="ps_machine_equipment"/>
+            </xpath>
+
+            <xpath expr="//group/group[1]" position="after">
+                <group string="Technical Information">
+                    <field name="technical_spec"/>
+                    <field name="manufacturer"/>
+                    <field name="manufacture_year"/>
+                    <field name="made_in"/>
+                    <field name="ps_department_code"/>
+                    <field name="department_id"/>
+                    <field name="employee_id"/>
+                </group>
+                <group string="Related Documents">
+                    <field name="receipt_number"/>
+                    <field name="invoice_number"/>
+                    <field name="notes"/>
+                </group>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <page string="Accessories">
+                    <field name="accessory_line_ids">
+                        <list editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="description"/>
+                            <field name="quantity"/>
+                            <field name="uom_id"/>
+                            <field name="notes"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+            
+            <xpath expr="//field[@name='depreciation_line_ids']//field[@name='move_posted_check']" position="attributes">
+                <attribute name="invisible">0</attribute>
+                <attribute name="column_invisible">0</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="action_ps_asset_segment" model="ir.actions.act_window">
+        <field name="name">Asset Segment Categories</field>
+        <field name="res_model">ps.asset.segment</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

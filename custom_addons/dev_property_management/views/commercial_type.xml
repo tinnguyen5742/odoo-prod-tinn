@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo>
+    <record id="tree_commercial_type" model="ir.ui.view">
+		<field name="name">tree_commercial_type_name</field>
+		<field name="model">commercial.type</field>
+		<field name="arch" type="xml">
+		    <list string="Commercial Type Tree" editable="bottom">
+                <field name="name"/>
+ 		    </list>
+		</field>
+	</record>
+
+	<!--Action-->
+	<record id="action_commercial_type" model="ir.actions.act_window">
+        <field name="name">Type of Commercial</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">commercial.type</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="tree_commercial_type"/>
+    </record>
+
+    <!--Menus-->
+ 	<menuitem name="Type of Commercial"
+              id="menu_commercial_type"
+              parent="confing_root_for_property"
+              action="action_commercial_type"
+              sequence="5"/>
+</odoo>

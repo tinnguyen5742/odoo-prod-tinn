@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="certification_report_view_general_inherit"
+              inherit_id="survey.certification_report_view_general">
+        <xpath expr="//div[@id='o_survey_certification']" position="replace">
+            <div id="o_survey_certification" class="article certification-wrapper"
+                 data-oe-mode="readonly"
+                 t-att-data-oe-model="user_input._name"
+                 t-att-data-oe-id="user_input.id">
+
+                <t t-set="company" t-value="user_input.cert_company_id or user_input.env.company"/>
+                <t t-set="primary_color" t-value="company.cert_primary_hex or '#006b2e'"/>
+                <t t-set="secondary_color" t-value="company.cert_secondary_color or '#d4af37'"/>
+                <t t-set="company_name" t-value="company.cert_company_name or company.name or ''"/>
+                <t t-set="logo_src" t-value="('data:image/png;base64,' + company.logo.decode('utf-8')) if company.logo else ''"/>
+                <t t-set="signature_src" t-value="('data:image/png;base64,' + company.cert_signature.decode('utf-8')) if company.cert_signature else ''"/>
+
+                <div t-attf-style="width:100%; min-height:700px; padding:10px; box-sizing:border-box; background:#fff; border:6px solid {{ primary_color }}; position:relative; font-family:Arial,sans-serif; overflow:hidden;">
+
+                    <div t-attf-style="border:2px solid {{ secondary_color }}; min-height:670px; padding:22px 50px; box-sizing:border-box; position:relative;">
+
+                        <div style="position:absolute; top:18px; left:30px; width:190px; text-align:left;">
+                            <t t-if="logo_src">
+                                <img t-att-src="logo_src" style="max-width:180px; max-height:80px; object-fit:contain;"/>
+                            </t>
+                        </div>
+
+                        <div style="text-align:center;">
+                            <h1 t-attf-style="color:{{ primary_color }}; font-size:40px; font-weight:900; margin-top:16px; margin-bottom:5px;">
+                                CERTIFICATE OF COMPLETION
+                            </h1>
+                            <div t-attf-style="color:{{ secondary_color }}; font-size:20px; margin-bottom:16px;">
+                                ★ ★ ★
+                            </div>
+                        </div>
+
+                        <t t-if="user_input.scoring_success">
+                            <div style="text-align:center;">
+                                <p style="font-size:19px; margin-bottom:8px;">
+                                    <span t-out="company_name"/> is proud to certify
+                                </p>
+                                <t t-set="certified_name" t-value="user_input.partner_id.name or user_input.email or ''"/>
+                                <h2 t-attf-style="color:{{ primary_color }}; font-size:50px; font-style:italic; font-family:Georgia,serif; margin:8px 0 15px 0;">
+                                    <span t-out="certified_name"/>
+                                </h2>
+                                <p style="font-size:21px; margin-bottom:12px;">
+                                    has successfully completed the course
+                                </p>
+                                <div t-attf-style="background:{{ primary_color }}; color:white; padding:11px; width:85%; margin:auto; border:2px solid {{ secondary_color }}; font-size:23px; font-weight:bold;">
+                                    <span t-field="user_input.survey_id.display_name"/>
+                                </div>
+                                <p style="margin-top:16px; font-size:17px;">
+                                    and met the assessment requirements of the company's internal training program.
+                                </p>
+                            </div>
+
+                            <table style="width:90%; margin:28px auto 0 auto; text-align:center; font-size:15px;">
+                                <tr>
+                                    <td>
+                                        <b t-attf-style="color:{{ primary_color }};">Completion Date</b>
+                                        <br/>
+                                        <span t-field="user_input.create_date" t-options="{&quot;widget&quot;:&quot;date&quot;}"/>
+                                    </td>
+                                    <td>
+                                        <b t-attf-style="color:{{ primary_color }};">Certificate No.</b>
+                                        <br/>
+                                        CERT-<span t-out="str(user_input.id).rjust(8,'0')"/>
+                                    </td>
+                                    <td>
+                                        <b t-attf-style="color:{{ primary_color }};">Assessment Method</b>
+                                        <br/>
+                                        Multiple Choice Test
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table style="width:90%; margin:auto; margin-top:35px; text-align:center;">
+                                <tr>
+                                    <td width="50%" t-attf-style="vertical-align:top;">
+                                        <b t-attf-style="font-size:18px;">TRAINING DEPARTMENT</b>
+                                        <div style="height: 140px;"></div>
+                                        <span t-attf-style="font-style:italic; font-size:16px;">(Signature and full name)</span>
+                                    </td>
+                                    <td width="50%" t-attf-style="text-align:center; vertical-align:top;">
+                                        <b t-attf-style="font-size:18px;">COMPANY REPRESENTATIVE</b>
+                                        <div style="height: 140px; padding-top: 5px;">
+                                            <t t-if="signature_src">
+                                                <img t-att-src="signature_src" style="width:220px; max-height:110px; object-fit:contain;"/>
+                                            </t>
+                                        </div>
+                                        <span t-attf-style="font-style:italic; font-size:16px;">(Signature and stamp)</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </t>
+
+                        <t t-else="">
+                            <div style="text-align:center; margin-top:230px;">
+                                <h1 style="color:red;">CERTIFICATION NOT PASSED</h1>
+                            </div>
+                        </t>
+
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="ps_theme_company_color_assets" inherit_id="web.layout">
+        <xpath expr="//head" position="inside">
+            <t t-if="env and env.company and env.company.theme_primary_color">
+                <t t-set="primary_color" t-value="env.company.theme_primary_color"/>
+                <style id="ps_theme_company_color_style">
+                    <![CDATA[
+                        :root, [data-bs-theme="light"] {
+                            --o-brand-odoo: ]]> <t t-out="primary_color"/> <![CDATA[ !important;
+                            --o-brand-primary: ]]> <t t-out="primary_color"/> <![CDATA[ !important;
+                            --primary: ]]> <t t-out="primary_color"/> <![CDATA[ !important;
+                            --o-color-1: ]]> <t t-out="primary_color"/> <![CDATA[ !important;
+                            --o-cc4-bg: ]]> <t t-out="primary_color"/> <![CDATA[ !important;
+                            --o-navbar-bg: ]]> <t t-out="primary_color"/> <![CDATA[ !important;
+                            --o-navbar-entry-bg: transparent !important;
+                            --NavBar-background-color: ]]> <t t-out="primary_color"/> <![CDATA[ !important;
+                            --NavBar-entry-color--hover: #FFFFFF !important;
+                            --link-color: ]]> <t t-out="primary_color"/> <![CDATA[ !important;
+                            --link-hover-color: ]]> <t t-out="primary_color"/> <![CDATA[ !important;
+                        }
+
+                        .o_main_navbar, header.o_navbar, nav.o_main_navbar {
+                            background-color: ]]> <t t-out="primary_color"/> <![CDATA[ !important;
+                        }
+
+                        .o_main_navbar .o_menu_brand,
+                        .o_main_navbar .o_menu_sections,
+                        .o_main_navbar .o_menu_sections > a,
+                        .o_main_navbar .o_menu_sections .dropdown-toggle,
+                        .o_main_navbar .o_nav_entry,
+                        .o_main_navbar .o_navbar_apps_menu {
+                            background-color: transparent !important;
+                        }
+
+                        .o_main_navbar .o_menu_sections > a:hover,
+                        .o_main_navbar .o_menu_sections .show > a {
+                            background-color: rgba(255, 255, 255, 0.15) !important;
+                        }
+
+                        .btn-primary, .btn-check:checked + .btn-outline-primary {
+                            --btn-bg: ]]> <t t-out="primary_color"/> <![CDATA[ !important;
+                            --btn-border-color: ]]> <t t-out="primary_color"/> <![CDATA[ !important;
+                            --btn-hover-bg: ]]> <t t-out="primary_color"/> <![CDATA[ !important;
+                            --btn-hover-border-color: ]]> <t t-out="primary_color"/> <![CDATA[ !important;
+                            --btn-active-bg: ]]> <t t-out="primary_color"/> <![CDATA[ !important;
+                            --btn-active-border-color: ]]> <t t-out="primary_color"/> <![CDATA[ !important;
+                            background-color: ]]> <t t-out="primary_color"/> <![CDATA[ !important;
+                            border-color: ]]> <t t-out="primary_color"/> <![CDATA[ !important;
+                        }
+                    ]]>
+                </style>
+            </t>
+        </xpath>
+    </template>
+</odoo>

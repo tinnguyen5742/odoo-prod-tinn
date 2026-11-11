@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- List view nhỏ gọn dùng khi chọn ca trong dropdown (3 cột: Mã ca, Bắt đầu, Kết thúc) -->
+    <record id="ps_shift_view_list_select" model="ir.ui.view">
+        <field name="name">ps.work.shift.view.list.select</field>
+        <field name="model">ps.work.shift</field>
+        <field name="priority">1000</field>
+        <field name="arch" type="xml">
+            <list string="Work Shift">
+                <field name="x_shift_code" />
+                <field name="x_start_time" widget="float_time" />
+                <field name="x_end_time" widget="float_time" />
+            </list>
+        </field>
+    </record>
+
+    <!-- List view của vòng lặp ca -->
+    <record id="ps_shift_rotation_view_list" model="ir.ui.view">
+        <field name="name">ps.shift.rotation.view.list</field>
+        <field name="model">ps.shift.rotation</field>
+        <field name="arch" type="xml">
+            <list string="Shift Rotation">
+                <field name="x_name" />
+                <field name="x_method" />
+                <field name="x_company_id" groups="base.group_multi_company" />
+                <field name="x_active" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Form view của vòng lặp ca: tên + danh sách dòng T2-CN -->
+    <record id="ps_shift_rotation_view_form" model="ir.ui.view">
+        <field name="name">ps.shift.rotation.view.form</field>
+        <field name="model">ps.shift.rotation</field>
+        <field name="arch" type="xml">
+            <form string="Shift Rotation" class="ps_rotation_form">
+                <header>
+                    <button name="action_regenerate_slots" type="object" string="Regenerate Slots"
+                        invisible="x_method != 'cycle'" />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="x_name" />
+                        <h1>
+                            <field name="x_name" placeholder="e.g. CA_XƯỞNG1" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="x_company_id" groups="base.group_multi_company" />
+                            <field name="x_method" widget="radio" />
+                        </group>
+                        <group>
+                            <field name="x_active" />
+                        </group>
+                    </group>
+                    <group string="Cycle Rotation" invisible="x_method != 'cycle'">
+                        <group>
+                            <field name="x_reference_date" />
+                            <field name="x_shift_length" />
+                        </group>
+                        <group>
+                            <field name="x_shift1_id" options="{'no_create': True}" />
+                            <field name="x_shift2_id" options="{'no_create': True}" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Danh sách vòng lặp ca" invisible="x_method != 'weekly'">
+                            <field name="x_line_ids" nolabel="1">
+                                <list string="Rotation Lines" editable="bottom" open_form_view="True">
+                                    <field name="x_week" class="ps_week_col" />
+                                    <field name="x_t2_id" string="T2" class="ps_day_cell"
+                                        options="{'no_create': True}"
+                                        context="{'tree_view_ref': 'ps_attendance_management.ps_shift_view_list_select'}" />
+                                    <field name="x_t3_id" string="T3" class="ps_day_cell"
+                                        options="{'no_create': True}"
+                                        context="{'tree_view_ref': 'ps_attendance_management.ps_shift_view_list_select'}" />
+                                    <field name="x_t4_id" string="T4" class="ps_day_cell"
+                                        options="{'no_create': True}"
+                                        context="{'tree_view_ref': 'ps_attendance_management.ps_shift_view_list_select'}" />
+                                    <field name="x_t5_id" string="T5" class="ps_day_cell"
+                                        options="{'no_create': True}"
+                                        context="{'tree_view_ref': 'ps_attendance_management.ps_shift_view_list_select'}" />
+                                    <field name="x_t6_id" string="T6" class="ps_day_cell"
+                                        options="{'no_create': True}"
+                                        context="{'tree_view_ref': 'ps_attendance_management.ps_shift_view_list_select'}" />
+                                    <field name="x_t7_id" string="T7" class="ps_day_cell"
+                                        options="{'no_create': True}"
+                                        context="{'tree_view_ref': 'ps_attendance_management.ps_shift_view_list_select'}" />
+                                    <field name="x_cn_id" string="CN" class="ps_day_cell"
+                                        options="{'no_create': True}"
+                                        context="{'tree_view_ref': 'ps_attendance_management.ps_shift_view_list_select'}" />
+                                </list>
+                            </field>
+
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+
+    <!-- Search view -->
+    <record id="ps_shift_rotation_view_search" model="ir.ui.view">
+        <field name="name">ps.shift.rotation.view.search</field>
+        <field name="model">ps.shift.rotation</field>
+        <field name="arch" type="xml">
+            <search string="Search Rotation">
+                <field name="x_name" />
+                <filter string="Active" name="active" domain="[('x_active', '=', True)]" />
+                <filter string="Inactive" name="inactive" domain="[('x_active', '=', False)]" />
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="ps_shift_rotation_action" model="ir.actions.act_window">
+        <field name="name">Shift Rotation</field>
+        <field name="res_model">ps.shift.rotation</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="ps_shift_rotation_view_search" />
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first shift rotation
+            </p>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo>
+    <record id="popup_maintenance_invoice" model="ir.ui.view">
+        <field name="name">popup_maintenance_invoice</field>
+        <field name="model">maintenance.invoice</field>
+        <field name="arch" type="xml">
+            <form string="Maintenance Invoice">
+                <field name="maintenance_ids">
+                    <list string="Maintenances" editable="bottom">
+                        <field name="maintenance_type_id"/>
+                        <field name="maintenance_amount"/>
+                        <field name="check_invoice"/>
+                    </list>
+                </field>
+                <footer>
+                    <button string="Generate Invoice" name="load_maintenance" type="object" class="oe_highlight"/>&#160;&#160;or&#160;&#160;
+                    <button string="Close Window" class="oe_link" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+	<record id="action_maintenance_invoice" model="ir.actions.act_window">
+        <field name="name">Maintenance Invoice</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">maintenance.invoice</field>
+        <!-- <field name="context">{'default_agreement_id': active_id}</field> -->
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="popup_maintenance_invoice"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

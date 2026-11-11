@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Danh sách Cost center -->
+        <record id="ps_view_cost_center_list" model="ir.ui.view">
+            <field name="name">ps.vn.accounting.cost.center.list</field>
+            <field name="model">ps.vn.accounting.cost.center</field>
+            <field name="arch" type="xml">
+                <list string="Cost Center" editable="bottom" open_form_view="1">
+                    <field name="sequence" widget="handle"/>
+                    <field name="company_id" column_invisible="True"/>
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="complete_name" readonly="1"/>
+                    <field name="parent_id" options="{'no_create': True}"/>
+                    <field name="manager_id"/>
+                    <field name="enabled" widget="boolean_toggle"/>
+                </list>
+            </field>
+        </record>
+
+        
+        <!-- Form Cost center -->
+        <record id="ps_view_cost_center_form" model="ir.ui.view">
+            <field name="name">ps.vn.accounting.cost.center.form</field>
+            <field name="model">ps.vn.accounting.cost.center</field>
+            <field name="arch" type="xml">
+                <form string="Cost Center">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="company_id" options="{'no_create': True}" invisible="1"/>
+                                <field name="code" placeholder="Cost Center Code"/>
+                                <field name="name"/>
+                                <field name="parent_id" options="{'no_create': True}"/>
+                                <field name="manager_id"/>
+                            </group>
+                            <group>
+                                <field name="sequence"/>
+                                <field name="enabled" widget="boolean_toggle"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Bộ lọc tìm kiếm Cost center -->
+        <record id="ps_view_cost_center_search" model="ir.ui.view">
+            <field name="name">ps.vn.accounting.cost.center.search</field>
+            <field name="model">ps.vn.accounting.cost.center</field>
+            <field name="arch" type="xml">
+                <search string="Cost Center">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="manager_id"/>
+                    <separator/>
+                    <filter string="Enabled Records" name="enabled" domain="[('enabled', '=', True)]"/>
+                    <filter string="Disabled Records" name="disabled" domain="[('enabled', '=', False)]"/>
+                    <separator/>
+                    <filter string="Company" name="group_by_company" context="{'group_by': 'company_id'}"/>
+                    <filter string="Cost center Parent" name="group_by_parent" context="{'group_by': 'parent_id'}"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action mở danh sách Cost center -->
+        <record id="ps_action_cost_center" model="ir.actions.act_window">
+            <field name="name">Cost Center</field>
+            <field name="res_model">ps.vn.accounting.cost.center</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_ids"
+                   eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'list', 'view_id': ref('ps_view_cost_center_list')}),
+                          (0, 0, {'view_mode': 'form', 'view_id': ref('ps_view_cost_center_form')})]"/>
+            <field name="search_view_id" ref="ps_view_cost_center_search"/>
+        </record>
+
+    </data>
+</odoo>

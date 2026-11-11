@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_ps_mfg_cutting_stock_problem" model="ir.actions.act_url">
+        <field name="name">Cutting Stock Problem</field>
+        <field name="type">ir.actions.act_url</field>
+        <field name="target">new</field>
+        <field name="url">https://baitoan-toiuu-v13.vercel.app/?rong=2200&amp;dai=3000&amp;trai=25&amp;phai=25&amp;tren=0&amp;duoi=0&amp;n=3&amp;items=A,700,1000,3|B,800,1000,3|C,650,1000,3&amp;xoay=1&amp;xoayTo=0#plan-1</field>
+    </record>
+
+    <menuitem id="menu_ps_mfg_root" name="Patsoft MFG" sequence="140" web_icon="ps_mfg,static/description/icon.png">
+        <menuitem id="menu_ps_mfg_operations" name="Productions" sequence="10"/>
+        <menuitem id="menu_ps_mfg_products" name="Products" sequence="20"/>
+        <menuitem id="menu_ps_mfg_cutting_stock_problem"
+            name="Cutting Stock Problem"
+            action="action_ps_mfg_cutting_stock_problem"
+            sequence="95"/>
+        <menuitem id="menu_ps_mfg_configuration" name="Configuration" sequence="100"/>
+    </menuitem>
+
+    <menuitem id="menu_ps_mfg_production"
+        name="Manufacturing Orders"
+        parent="menu_ps_mfg_operations"
+        action="ps_mfg_production_action"
+        sequence="10"/>
+
+    <menuitem id="menu_ps_mfg_production_sequencing"
+        name="Production Sequencing"
+        parent="menu_ps_mfg_operations"
+        action="ps_mfg_production_sequencing_action"
+        sequence="15"/>
+
+    <menuitem id="menu_ps_mfg_component_request"
+        name="Move Order"
+        parent="menu_ps_mfg_operations"
+        action="ps_mfg_component_request_action"
+        sequence="20"/>
+
+    <menuitem id="menu_ps_mfg_proposal"
+        name="Proposals"
+        parent="menu_ps_mfg_operations"
+        action="ps_mfg_proposal_action"
+        groups="base.group_no_one"
+        sequence="30"/>
+
+    <menuitem id="menu_ps_mfg_workorder_move"
+        name="Move Transaction"
+        parent="menu_ps_mfg_operations"
+        action="ps_mfg_workorder_move_action"
+        sequence="40"/>
+
+    <menuitem id="menu_ps_mfg_proposal_finish"
+        name="Receipt Finish Goods"
+        parent="menu_ps_mfg_operations"
+        action="ps_mfg_proposal_finish_action"
+        sequence="50"/>
+
+    <menuitem id="menu_ps_mfg_wip"
+        name="WIP Closings"
+        parent="menu_ps_mfg_operations"
+        action="ps_mfg_wip_action"
+        sequence="60"/>
+
+    <menuitem id="menu_ps_mfg_bom"
+        name="Bills of Materials"
+        parent="menu_ps_mfg_products"
+        action="ps_mfg_bom_action"
+        sequence="10"/>
+
+    <menuitem id="menu_ps_mfg_cost_item"
+        name="Cost Items"
+        parent="menu_ps_mfg_configuration"
+        action="ps_mfg_cost_item_action"
+        sequence="10"/>
+
+    <menuitem id="menu_ps_mfg_resource"
+        name="Resources"
+        parent="menu_ps_mfg_configuration"
+        action="ps_mfg_resource_action"
+        sequence="20"/>
+
+    <menuitem id="menu_ps_mfg_work_center"
+        name="Work Centers"
+        parent="menu_ps_mfg_configuration"
+        action="ps_mfg_work_center_action"
+        sequence="30"/>
+
+    <menuitem id="menu_ps_mfg_operation"
+        name="Operations"
+        parent="menu_ps_mfg_configuration"
+        action="ps_mfg_operation_action"
+        sequence="40"/>
+</odoo>

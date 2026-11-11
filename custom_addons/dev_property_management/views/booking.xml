@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo>
+    <!--form-->
+    <record id="form_property_booking" model="ir.ui.view">
+        <field name="name">form_property_booking_name</field>
+        <field name="model">property.booking</field>
+        <field name="arch" type="xml">
+            <form string="Property Booking Form">
+                <header>
+                    <button name="confirm_booking" type="object" string="Confirm" class="oe_highlight" invisible="state != 'draft'" />
+
+                    <button name="%(dev_property_management.action_agreement_window_dev_property_management)d" type="action" string="&#160;Generate Sell Agreement" icon="fa-file-text-o" class="oe_highlight" invisible="state != 'confirmed'" />
+
+                    <button name="cancel_booking" type="object" string="Cancel" invisible="state != 'confirmed'" />
+
+                    <button name="set_to_new" type="object" string="Set to New" invisible="state != 'cancelled'" />
+                    <button name="create_commission" type="object" string="Create Commission" class="oe_highlight" invisible="state in ('cancelled','draft')" />
+
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" name="view_agreements" class="oe_stat_button" icon="fa-file-text-o" invisible="agreement_count == 0">
+
+                            <field string="Agreement" name="agreement_count" widget="statinfo"/>
+                        </button>
+                        <button name="action_view_commission_agent" type="object" class="oe_stat_button" icon="fa-book" invisible="not sell_agent_id">
+                            <field string="Agent Commission" name="count_commission_agent" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h3>
+                            <field name="name" readonly="1" force_save="1"/>
+                        </h3>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="property_type" readonly="state != 'draft'"/>
+                            <field name="property_id" readonly="state != 'draft'" domain="[('property_type', '=', property_type), ('property_purpose', '=', 'sell'),('state','!=','sold')]"/>
+                            <field name="parent_id" force_save="1" invisible="1"/>
+                            <field name="parent_ids" force_save="1" />
+                            <field name="owner_partner_id" readonly="1" force_save="1"/>
+                            <field name="price_amount" readonly="state != 'draft'" />
+                        </group>
+                        <group>
+                            <field name="partner_id" readonly="state != 'draft'" />
+                            <field name="create_uid" string="Booked By" readonly="state != 'draft'" />
+                            <field name="booking_date" readonly="state != 'draft'" />
+                            <field name="confirmation_date" readonly="1" force_save="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="sell_agent_id" readonly="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="ask_price_amount" readonly="state != 'draft'" />
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Booking Details" name="booking_desc">
+                            <field name="description" readonly="state != 'draft'" />
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!--tree-->
+    <record id="tree_property_booking" model="ir.ui.view">
+        <field name="name">tree_property_booking_name</field>
+        <field name="model">property.booking</field>
+        <field name="arch" type="xml">
+            <list string="Property Booking Tree">
+                <field name="name"/>
+                <field name="property_id"/>
+                <field name="owner_partner_id"/>
+                <field name="create_uid" string="Booked By"/>
+                <field name="partner_id"/>
+                <field name="booking_date"/>
+                <field name="ask_price_amount"/>
+                <field name="confirmation_date"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!--search-->
+    <record id="search_property_booking" model="ir.ui.view">
+        <field name="name">Property Booking - Search</field>
+        <field name="model">property.booking</field>
+        <field name="arch" type="xml">
+            <search string="Property Booking Search">
+                <field name="name"/>
+                <field name="property_id"/>
+                <field name="agent_partner_id"/>
+                <filter name='state_draft' string="New" domain="[('state','=','draft')]"/>
+                <filter name='state_confirmed' string="Confirmed" domain="[('state','=','confirmed')]"/>
+                <filter name='state_cancelled' string="Cancelled" domain="[('state','=','cancelled')]"/>
+                    <filter name="property_id" string="Property" context="{'group_by':'property_id'}"/>
+                    <filter name="create_uid" string="Booked By" context="{'group_by':'create_uid'}"/>
+                    <filter name="partner_id" string="Contact" context="{'group_by':'partner_id'}"/>
+                    <filter name="agent_partner_id" string="Agent" context="{'group_by':'agent_partner_id'}"/>
+                    <separator/>
+                    <filter name="property_type" string="Property Type" context="{'group_by':'property_type'}"/>
+                    <filter name="state" string="Status" context="{'group_by':'state'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!--Action-->
+    <record id="action_property_booking" model="ir.actions.act_window">
+        <field name="name">Bookings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">property.booking</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!--Menus-->
+    <menuitem name="Bookings" id="menu_property_booking" parent="root_menu_property_booking" action="action_property_booking" sequence="2"/>
+</odoo>

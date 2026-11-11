@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_ps_hr_level_list" model="ir.ui.view">
+        <field name="name">ps.hr.level.list</field>
+        <field name="model">ps.hr.level</field>
+        <field name="arch" type="xml">
+            <list string="Qualification Levels" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="active" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ps_hr_level_form" model="ir.ui.view">
+        <field name="name">ps.hr.level.form</field>
+        <field name="model">ps.hr.level</field>
+        <field name="arch" type="xml">
+            <form string="Qualification Level">
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="sequence"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Danh mục trình độ -->
+    <record id="action_ps_hr_level" model="ir.actions.act_window">
+        <field name="name">Qualification Levels</field>
+        <field name="res_model">ps.hr.level</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_group_type': 1}</field>
+    </record>
+
+    <!-- Trình độ học vấn -->
+    <record id="action_ps_hr_level_education" model="ir.actions.act_window">
+        <field name="name">Education Levels</field>
+        <field name="res_model">ps.hr.level</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('type', '=', 'education')]</field>
+        <field name="context">{'default_type': 'education'}</field>
+    </record>
+
+    <!-- Trình độ chuyên môn -->
+    <record id="action_ps_hr_level_professional" model="ir.actions.act_window">
+        <field name="name">Professional Qualification Levels</field>
+        <field name="res_model">ps.hr.level</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('type', '=', 'professional')]</field>
+        <field name="context">{'default_type': 'professional'}</field>
+    </record>
+
+    <!-- Trình độ ngoại ngữ -->
+    <record id="action_ps_hr_level_language" model="ir.actions.act_window">
+        <field name="name">Foreign Language Levels</field>
+        <field name="res_model">ps.hr.level</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('type', '=', 'language')]</field>
+        <field name="context">{'default_type': 'language'}</field>
+    </record>
+
+    <!-- Trình độ vi tính -->
+    <record id="action_ps_hr_level_it" model="ir.actions.act_window">
+        <field name="name">Computer Skill Levels</field>
+        <field name="res_model">ps.hr.level</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('type', '=', 'it')]</field>
+        <field name="context">{'default_type': 'it'}</field>
+    </record>
+
+    <!-- Trình độ khác -->
+    <record id="action_ps_hr_level_other" model="ir.actions.act_window">
+        <field name="name">Other Qualification Levels</field>
+        <field name="res_model">ps.hr.level</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('type', '=', 'other')]</field>
+        <field name="context">{'default_type': 'other'}</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,13 @@
+.o_list_view {
+    td.o_field_cell[name="x_has_lunch_break"] {
+        display: flex !important;
+        justify-content: center !important;
+    }
+}
+
+.o_list_view {
+    td.o_field_cell.o_boolean_toggle_cell {
+        display: flex !important;
+        justify-content: center !important;
+    }
+}

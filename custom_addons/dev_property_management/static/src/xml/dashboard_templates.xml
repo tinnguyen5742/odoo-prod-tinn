@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Template for the project dashboard -->
+<templates id="template" xml:space="preserve">
+    <t t-name="propertyDashboard">
+        <div style="max-height: -webkit-fill-available; overflow-y: scroll; background-color:#fff7fd">
+            <div class="mx-5">
+              <div class="row gx-0 mt-3">
+                    <div class="col-12 d-flex justify-content-end">
+                        <button id="downloadBtn" t-on-click="(e) => this.downloadReport(e)" class="btn btn-primary p-2">
+                            <i class="fa fa-file-pdf-o p-1" aria-hidden="true"></i> Print
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="mx-5" id="dashboard" >
+               <t t-call="Propertyfilters"/>
+               <t t-call="Propertycounters"/>
+               <t t-call="Propertycharts"/>
+               <t t-call="PropertyTables"/>
+            </div>
+        </div>
+    </t>
+
+    <!-- Filter -->
+    <t t-name="Propertyfilters">
+        <div class="card mt-4 filters">
+            <div class="row p-2 m-2 gx-0 gy-2" >  
+                <div class="col-lg-1 my-auto">
+                    <img t-att-src="'data:image/png;base64,' + user_img" class="css-shadow"/>
+                </div>
+                <div class="col-lg-4 pl-1 my-auto">
+                    <h1> <t t-esc="greetings"/>, <t t-esc="user_name"/>.</h1>
+                    <h4>Welcome to your Property Management Dashboard.</h4>
+                </div>
+                <div class="col-lg-7">
+                    <div class="row gy-2">
+                        <div class="col-lg-3 m-0">
+                            <label for="owner_selection" class="form-label fw-bolder">Owner Filter</label>
+                            <select class="form-select" id="owner_selection" t-on-change="(ev) => this._onchangePropertyFilter(ev)">
+                                <option value="all">All Owner</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3 m-0">
+                            <label for="partner_selection" class="form-label fw-bolder">Tenant Filter</label>
+                            <select class="form-select" id="partner_selection" t-on-change="(ev) => this._onchangePropertyFilter(ev)">
+                                <option value="all">All Tenant</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-lg-3 m-0">
+                            <label for="property_selection" class="form-label fw-bolder">Property Filter</label>
+                            <select class="form-select" id="property_selection" t-on-change="(ev) => this._onchangePropertyFilter(ev)">
+                                <option value="all">All Property</option>
+                                <option value="parent">Parent Property</option>
+                                <option value="rent">Rent</option>
+                                <option value="sell">Sell</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3 m-0">
+                            <label for="recidency_selection" class="form-label fw-bolder">Recidency Filter</label>
+                            <select class="form-select" id="recidency_selection" t-on-change="(ev) => this._onchangePropertyFilter(ev)">
+                                <option value="all">All Recidency</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3 m-0">
+                            <label for="duration_selection" class="form-label fw-bolder">Date Filter</label>
+                            <select class="form-select" id="duration_selection"
+                                    t-on-change="(ev) => this._onchangePropertyFilter(ev)">
+                                <option value="0">Today</option>
+                                <option value="7">Last 7 Days</option>
+                                <option value="28">Last 28 Days</option>
+                                <option value="90">Last 90 Days</option>
+                                <option value="365">Last 365 Days</option>
+                                <option value="all">Lifetime</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <!-- ============Counters========== -->
+    <t t-name="Propertycounters">
+    	<style>
+		.col-lg-1-5 {
+		  flex: 0 0 auto;
+		  width: 12.5%; /* 1.5 / 12 = 12.5% of the row width */
+		}
+		</style>
+        <div class="mt-5 mb-5">
+        
+        <div class="row text-center gy-2">
+        	<div class="col-lg-3"> 
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card box-header">
+                                <div class="card-body box-body" >
+                                    <span style="font-size:20px;"> All Booking </span>
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-6">
+                            <div id="total_lead_datas" class="card box" t-on-click="(e) => this.action_property_lead(e)">
+                                <div class="card-body box-body">
+                                    <h1 id="total_lead_data">
+                                        <t t-esc="total_lead_data.length" />
+                                    </h1>
+                                    <h5>Lead</h5>
+                                </div>
+                             </div>
+                        </div>
+                        <div class="col-6">
+                            <div id="total_oppertunity_datas" class="card box" t-on-click="(e) => this.action_property_lead(e)">
+                                <div class="card-body box-body">
+                                    <h1 id="total_oppertunity_data">
+                                        <t t-esc="total_oppertunity_data.length" />
+                                    </h1>
+                                    <h5>Opportunity</h5>
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        
+                        <div class="col-12">
+                            <div id="all_booking_datas" class="card box" t-on-click="(e) => this.action_booking_property(e)">
+                                <div class="card-body box-body">
+                                    <h1 id="all_booking_data">
+                                        <t t-esc="all_booking_data.length" />
+                                    </h1>
+                                    <h5>All Booking</h5>
+                                </div>
+                             </div>
+                        </div>
+                    </div>    
+                </div>
+            
+            	<div class="col-lg-1-5"> 
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card box-header">
+                                <div class="card-body box-body" >
+                                    <span style="font-size:20px;"> Owner Pay </span>
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-12">
+                            <div id="owner_draft_pays" class="card box" t-on-click="(e) => this.action_owner_pay(e)">
+                                <div class="card-body box-body">
+                                    <h1 id="owner_draft_pay">
+                                        <t t-esc="owner_draft_pay.length" />
+                                    </h1>
+                                    <h5>Draft</h5>
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <div id="owner_paids" class="card box" t-on-click="(e) => this.action_owner_pay(e)">
+                                <div class="card-body box-body">
+                                    <h1 id="owner_paid">
+                                        <t t-esc="owner_paid.length" />
+                                    </h1>
+                                    <h5>Paid</h5>
+                                </div>
+                             </div>
+                        </div>
+                    </div>    
+                </div>
+            
+            
+            
+                <div class="col-lg-1-5"> 
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card box-header">
+                                <div class="card-body box-body" >
+                                    <span style="font-size:20px;"> Total Owner </span>
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <div id="all_owner_datas" class="card box" t-on-click="(e) => this.action_all_owner(e)">
+                                <div class="card-body box-body">
+                                    <h1 id="all_owner_data">
+                                        <t t-esc="all_owner_data.length" />
+                                    </h1>
+                                    <h5>All Owner</h5>
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <div id="all_tenancy_datas" class="card box" t-on-click="(e) => this.action_all_tenancy(e)">
+                                <div class="card-body box-body">
+                                    <h1 id="all_tenancy_data">
+                                        <t t-esc="all_tenancy_data.length" />
+                                    </h1>
+                                    <h5>All Tenancy</h5>
+                                </div>
+                             </div>
+                        </div>
+                    </div>    
+                </div>
+                
+                <div class="col-lg-3"> 
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card box-header">
+                                <div class="card-body box-body" >
+                                    <span style="font-size:20px;"> All Property </span>
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-6">
+                            <div id="rented_property_datas" class="card box" t-on-click="(e) => this.action_rented_property(e)">
+                                <div class="card-body box-body">
+                                    <h1 id="rented_property_data">
+                                        <t t-esc="rented_property_data.length" />
+                                    </h1>
+                                    <h5>Rent</h5>
+                                </div>
+                             </div>
+                        </div>
+                        <div class="col-6">
+                            <div id="sellable_property_datas" class="card box" t-on-click="(e) => this.action_rented_property(e)">
+                                <div class="card-body box-body">
+                                    <h1 id="sellable_property_data">
+                                        <t t-esc="sellable_property_data.length" />
+                                    </h1>
+                                    <h5>Sell </h5>
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        
+                        <div class="col-12">
+                            <div id="total_property_datas" class="card box" t-on-click="(e) => this.action_rented_property(e)">
+                                <div class="card-body box-body">
+                                    <h1 id="total_property_data">
+                                        <t t-esc="total_property_data.length" />
+                                    </h1>
+                                    <h5>Property</h5>
+                                </div>
+                             </div>
+                        </div>
+                    </div>    
+                </div>
+                <div class="col-lg-3"> 
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card box-header">
+                                <div class="card-body box-body" >
+                                    <span style="font-size:20px;"> All Payment </span>
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-6">
+                            <div id="due_payment_datas" class="card box" t-on-click="(e) => this.action_payment_property(e)">
+                                <div class="card-body box-body">
+                                    <h1 id="due_payment_data">
+                                        <t t-esc="due_payment_data.length" />
+                                    </h1>
+                                    <h5>Due</h5>
+                                </div>
+                             </div>
+                        </div>
+                        <div class="col-6">
+                            <div id="done_payment_datas" class="card box" t-on-click="(e) => this.action_payment_property(e)">
+                                <div class="card-body box-body">
+                                    <h1 id="done_payment_data">
+                                        <t t-esc="done_payment_data.length" />
+                                    </h1>
+                                    <h5>Done </h5>
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <div id="payment_datas" class="card box" t-on-click="(e) => this.action_payment_property(e)">
+                                <div class="card-body box-body">
+                                    <h1 id="payment_data">
+                                        <t t-esc="payment_data.length" />
+                                    </h1>
+                                    <h5>Total Payment</h5>
+                                </div>
+                             </div>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </t>
+    <t t-name="Propertycharts">
+        <div class="mt-5">
+            <div class="row gy-2">
+                <div class="col-lg-6 col-md-6 col-6">
+                    <div class="card table-card" style="overflow-x:clip;">
+                        <div class="card-header">
+                            <div class="row">
+                                
+                                <div class="col-6 ">    
+                                     <label for="source_chart_selection"
+                                            class="form-label fw-bolder">Chart Type</label>
+                                    <select id="source_chart_selection" class="form-select form-control pull-left"
+                                            t-on-change="(ev) => this._onchangeSourceChart(ev)">
+                                        <option value="bar">Bar</option>
+                                        <option value="line">Line</option>
+                                        <option value="pie">Pie</option>
+                                        <option value="doughnut">Doughnut</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-title text-center p-3" style="font-weight:600; font-size:23px;">
+                          <div class="row">
+                             <div class="col-10">Lead Source</div>
+                                <div class="col-2">
+                                  <i class="fa fa-download" style="cursor: pointer;" aria-hidden="true" t-on-click="(e) => this._downloadChart(e)"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body text-center">
+                            <canvas id="source_chart_data" class="bar-chart" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-6">
+                    <div class="card table-card" style="overflow-x:clip;">
+                        <div class="card-header">
+                            <div class="row">
+                                
+                                <div class="col-6 ">    
+                                     <label for="deal_chart_selection"
+                                            class="form-label fw-bolder">Chart Type</label>
+                                    <select id="deal_chart_selection" class="form-select form-control pull-left"
+                                            t-on-change="(ev) => this._onchangeDealChart(ev)">
+                                        <option value="bar">Bar</option>
+                                        <option value="line">Line</option>
+                                        <option value="pie">Pie</option>
+                                        <option value="doughnut">Doughnut</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-title text-center p-3" style="font-weight:600; font-size:23px;">
+                          <div class="row">
+                             <div class="col-10">Booking Deal Month Wise</div>
+                                <div class="col-2">
+                                  <i class="fa fa-download" style="cursor: pointer;" aria-hidden="true" t-on-click="(e) => this._downloadChart(e)"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body text-center">
+                            <canvas id="deal_chart_data" class="bar-chart" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3 gy-2">
+                    <div class="col-lg-6 col-md-6 col-6">
+                        <div class="card table-card" style="overflow-x:clip;">
+                            <div class="card-header">
+                                <div class="row">
+                                    
+                                    <div class="col-6 ">    
+                                        <label for="type_chart_selection"
+                                                class="form-label fw-bolder">Chart Type</label>
+                                        <select id="type_chart_selection" class="form-select form-control pull-left"
+                                                t-on-change="(ev) => this._onchangeTypeChart(ev)">
+                                            <option value="bar">Bar</option>
+                                            <option value="line">Line</option>
+                                            <option value="pie">Pie</option>
+                                            <option value="doughnut">Doughnut</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-title text-center p-3" style="font-weight:600; font-size:23px;">
+                            <div class="row">
+                                <div class="col-10">Property Type</div>
+                                    <div class="col-2">
+                                    <i class="fa fa-download" style="cursor: pointer;" aria-hidden="true" t-on-click="(e) => this._downloadChart(e)"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body text-center">
+                                <canvas id="type_chart_data" class="bar-chart" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-6">
+                        <div class="card table-card" style="overflow-x:clip;">
+                            <div class="card-header">
+                                <div class="row">
+                                    
+                                    <div class="col-6 ">    
+                                        <label for="all_payment_chart_selection"
+                                                class="form-label fw-bolder">Chart Type</label>
+                                        <select id="all_payment_chart_selection" class="form-select form-control pull-left"
+                                                t-on-change="(ev) => this._onchangePaymentChart(ev)">
+                                            <option value="bar">Bar</option>
+                                            <option value="line">Line</option>
+                                            <option value="pie">Pie</option>
+                                            <option value="doughnut">Doughnut</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-title text-center p-3" style="font-weight:600; font-size:23px;">
+                            <div class="row">
+                                <div class="col-10">All Payment</div>
+                                    <div class="col-2">
+                                    <i class="fa fa-download" style="cursor: pointer;" aria-hidden="true" t-on-click="(e) => this._downloadChart(e)"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body text-center">
+                                <canvas id="all_payment_chart_data" class="bar-chart" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            dashboard
+        </div>
+    </t>
+    <!-- =======================List================ -->
+    <t t-name="PropertyTables">
+        <div class="row mt-4 gy-2">
+            <div class='col-lg-6 col-md-6 col-12'>
+                <div class="card table-card">
+                    <div class="card-header table-header">
+                        <span>Upcoming Opportunity</span>
+                    </div>
+                    <table id="my_table_upcoming_lead_list" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Customer</th>
+                                <th>Phone</th>
+                                <th>Date</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class='col-lg-6 col-md-6 col-12'>
+                <div class="card table-card">
+                    <div class="card-header table-header">
+                        <span>
+                            Rent Pending
+                        </span>
+                    </div>
+                    <table id="my_table_pending_rent_list" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Number</th>
+                                <th>Property</th>
+                                <th>Tenancy</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+               
+        </div>
+    </t>    
+    
+</templates>
+
+
+
+    

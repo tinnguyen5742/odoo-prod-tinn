@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--
+        Override trang "Bắt đầu bài test lấy chứng nhận" (survey_fill_form_start)
+        - Fullscreen, không scroll
+        - Nền gradient theo màu giấy chứng nhận (primary -> secondary)
+        - Logo công ty làm watermark mờ
+        - Nội dung trong card kính mờ căn giữa màn hình
+    -->
+    <template id="survey_fill_form_start_inherit"
+              name="Patsoft - Survey start form (certification)"
+              inherit_id="survey.survey_fill_form_start">
+
+        <!-- Lấy thông tin công ty + màu brand + logo -->
+        <xpath expr="//div[hasclass('o_survey_start')]" position="before">
+            <t t-set="ps_company" t-value="request.env.company"/>
+            <t t-set="ps_primary" t-value="ps_company.cert_primary_hex or '#006b2e'"/>
+            <t t-set="ps_secondary" t-value="ps_company.cert_secondary_color or '#d4af37'"/>
+            <t t-set="ps_logo_src"
+               t-value="('data:image/png;base64,' + ps_company.logo.decode('utf-8')) if ps_company.logo else ''"/>
+            <t t-set="ps_company_name" t-value="ps_company.cert_company_name or ps_company.name or ''"/>
+        </xpath>
+
+        <!-- Thay toàn bộ nội dung khối .o_survey_start -->
+        <xpath expr="//div[hasclass('o_survey_start')]" position="replace">
+            <div class="wrap o_survey_start o_ps_survey_start"
+                 t-attf-style="background: linear-gradient(135deg, {{ ps_primary }} 0%, {{ ps_primary }} 55%, {{ ps_secondary }} 100%);">
+
+                <t t-set="is_cert" t-value="bool(survey.certification)"/>
+                <t t-set="total_questions" t-value="len(survey.question_ids) if survey.question_ids else 0"/>
+                <t t-set="total_pages" t-value="len(survey.page_ids) if survey.page_ids else 0"/>
+
+                <!-- Card kính mờ căn giữa màn hình -->
+                <div class="o_ps_card">
+                    <div class="o_ps_card_inner position-relative">
+
+                        <!-- Logo công ty + tên -->
+                        <div class="o_ps_brand text-center mb-3" t-if="ps_logo_src or ps_company_name">
+                            <img t-if="ps_logo_src" t-att-src="ps_logo_src"
+                                 class="o_ps_brand_logo mb-1" alt=""/>
+                            <div class="o_ps_brand_name" t-if="ps_company_name">
+                                <t t-esc="ps_company_name"/>
+                            </div>
+                        </div>
+
+                        <!-- Badge + tiêu đề + mô tả -->
+                        <div class="o_ps_hero text-center mb-3">
+                            <div class="o_ps_survey_badge mb-2" t-if="is_cert">
+                                <span class="badge rounded-pill">
+                                    <i class="fa fa-certificate me-1"/> Bài thi chứng nhận
+                                </span>
+                            </div>
+
+                            <h1 t-out="survey.title"
+                                class="o_survey_main_title o_ps_survey_title mb-1"/>
+
+                            <div t-field='survey.description'
+                                 class="o_ps_survey_description oe_no_empty text-break mx-auto"
+                                 t-if="not is_html_empty(survey.description)"/>
+                        </div>
+
+                        <!-- Card thông tin bài test -->
+                        <div class="o_ps_survey_info row g-2 justify-content-center mb-3"
+                             t-if="not answer.is_session_answer">
+
+                            <div class="col-6 col-md-3" t-if="survey.is_time_limited">
+                                <div class="o_ps_info_card text-center">
+                                    <div class="o_ps_info_icon"><i class="fa fa-clock-o"/></div>
+                                    <div class="o_ps_info_value fw-bold">
+                                        <span t-field="survey.time_limit"
+                                              t-options="{'widget': 'duration', 'unit': 'minute'}"/>
+                                    </div>
+                                    <div class="o_ps_info_label">Thời gian</div>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-3"
+                                 t-if="survey.scoring_type != 'no_scoring' and survey.scoring_success_min">
+                                <div class="o_ps_info_card text-center">
+                                    <div class="o_ps_info_icon"><i class="fa fa-trophy"/></div>
+                                    <div class="o_ps_info_value fw-bold">
+                                        <t t-esc="int(survey.scoring_success_min)"/>%
+                                    </div>
+                                    <div class="o_ps_info_label">Điểm đạt</div>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-3" t-if="total_questions">
+                                <div class="o_ps_info_card text-center">
+                                    <div class="o_ps_info_icon"><i class="fa fa-question-circle-o"/></div>
+                                    <div class="o_ps_info_value fw-bold">
+                                        <t t-esc="total_questions"/>
+                                    </div>
+                                    <div class="o_ps_info_label">Câu hỏi</div>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-3" t-if="total_pages">
+                                <div class="o_ps_info_card text-center">
+                                    <div class="o_ps_info_icon"><i class="fa fa-list-ol"/></div>
+                                    <div class="o_ps_info_value fw-bold">
+                                        <t t-esc="total_pages"/>
+                                    </div>
+                                    <div class="o_ps_info_label">Phần</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lưu ý -->
+                        <div class="o_ps_survey_notice mb-3" t-if="is_cert">
+                            <i class="fa fa-info-circle me-1"/>
+                            Bạn chỉ được làm bài một lần. Khi đã bấm
+                            <strong>“Bắt đầu”</strong>, đồng hồ sẽ chạy và không thể tạm dừng.
+                        </div>
+
+                        <!-- Session live -->
+                        <t t-if="answer.is_session_answer">
+                            <div class="fw-bold text-center mb-2">
+                                Buổi thi sẽ bắt đầu tự động khi người quản trị khởi động.
+                            </div>
+                        </t>
+
+                        <!-- Nút bắt đầu -->
+                        <div class="o_ps_survey_start_actions text-center"
+                             t-if="not answer.is_session_answer">
+                            <button type="submit" value="start"
+                                    class="o_ps_start_btn btn btn-lg disabled"
+                                    t-attf-style="background: linear-gradient(135deg, {{ ps_primary }} , {{ ps_secondary }});">
+                                <i class="fa fa-play-circle me-2"/>
+                                <t t-if="is_cert">Bắt đầu bài thi chứng nhận</t>
+                                <t t-else="">Bắt đầu bài khảo sát</t>
+                            </button>
+                            <div class="o_survey_enter mt-2 d-none d-md-inline">
+                                hoặc nhấn <kbd>Enter</kbd>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

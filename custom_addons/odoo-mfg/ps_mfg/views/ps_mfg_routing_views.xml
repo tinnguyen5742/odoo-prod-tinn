@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ps_mfg_routing_view_list" model="ir.ui.view">
+        <field name="name">ps.mfg.routing.view.list</field>
+        <field name="model">ps.mfg.routing</field>
+        <field name="arch" type="xml">
+            <list string="Routings" multi_edit="1">
+                <field name="company_id" column_invisible="True"/>
+                <field name="sequence" widget="handle"/>
+                <field name="operation_code"/>
+                <field name="operation_id"/>
+                <field name="bom_id"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                <field name="possible_bom_product_template_attribute_value_ids" column_invisible="True"/>
+                <field name="bom_product_template_attribute_value_ids" optional="hide" widget="many2many_tags"
+                       options="{'no_create': True}" groups="product.group_product_variant"/>
+                <field name="enabled" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="ps_mfg_routing_bom_list" model="ir.ui.view">
+        <field name="name">ps.mfg.routing.view.bom.list</field>
+        <field name="model">ps.mfg.routing</field>
+        <field name="priority">100</field>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <list string="Operations" editable="bottom">
+                <control>
+                    <button name="action_open_operation_form" type="object" class="btn-link"
+                            string="Add an operation" context="{'ps_mfg_bom_id': parent.id}"/>
+                    <create string="Select existing operation"/>
+                </control>
+                <field name="sequence" widget="handle"/>
+                <field name="operation_code"/>
+                <field name="operation_id"
+                       options="{'no_quick_create': True, 'no_create': True}"
+                       context="{'default_company_id': parent.company_id}"/>
+                <field name="bom_id" column_invisible="True"/>
+                <field name="possible_bom_product_template_attribute_value_ids" column_invisible="True"/>
+                <field name="bom_product_template_attribute_value_ids" optional="hide" widget="many2many_tags"
+                       options="{'no_create': True}" column_invisible="parent.product_id"
+                       groups="product.group_product_variant"/>
+                <field name="enabled" widget="boolean_toggle"/>
+                <button name="action_open_routing" type="object" icon="fa-arrow-right" title="Open operation"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="ps_mfg_routing_view_form" model="ir.ui.view">
+        <field name="name">ps.mfg.routing.view.form</field>
+        <field name="model">ps.mfg.routing</field>
+        <field name="arch" type="xml">
+            <form string="BoM Operation">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_operation" type="object" class="oe_stat_button" icon="fa-cogs"
+                                invisible="not operation_id">
+                            <span class="o_stat_text">Operation Catalog</span>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="operation_id"/>
+                        <h1>
+                            <field name="operation_id" options="{'no_quick_create': True}"
+                                   placeholder="Select an operation..." context="{'default_company_id': company_id}"/>
+                        </h1>
+                        <h3>
+                            <field name="bom_id" readonly="id or context.get('default_bom_id')"
+                                   options="{'no_create': True}" placeholder="Bill of Materials"/>
+                        </h3>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="operation_code"/>
+                            <field name="sequence"/>
+                            <field name="enabled" widget="boolean_toggle"/>
+                        </group>
+                        <group>
+                            <field name="possible_bom_product_template_attribute_value_ids" invisible="1"/>
+                            <field name="bom_product_template_attribute_value_ids" widget="many2many_tags"
+                                   options="{'no_create': True}" groups="product.group_product_variant"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Components" name="components">
+                            <div class="text-muted mb-2">Components consumed at this operation. Edit them in the
+                                Components tab of the Bill of Materials.</div>
+                            <field name="bom_line_ids" nolabel="1" readonly="1">
+                                <list string="Components">
+                                    <field name="product_id"/>
+                                    <field name="bom_version_id" optional="show"/>
+                                    <field name="quantity"/>
+                                    <field name="product_uom_id" groups="uom.group_uom" widget="many2one_uom"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Resources" name="resources">
+                            <div class="text-muted mb-2">
+                                <span>Resources and costs are defined on the operation.</span>
+                                <button name="action_open_operation" type="object"
+                                        class="btn btn-link p-0 align-baseline" string="Edit on the operation"
+                                        invisible="not operation_id"/>
+                            </div>
+                            <field name="resource_ids" nolabel="1" readonly="1">
+                                <list string="Routing Resources">
+                                    <field name="resource_id"/>
+                                    <field name="resource_code" optional="hide"/>
+                                    <field name="resource_name" optional="hide"/>
+                                    <field name="cost_item_id"/>
+                                    <field name="cost_item_code" optional="hide"/>
+                                    <field name="cost_item_name" optional="hide"/>
+                                    <field name="account_id" optional="show"/>
+                                    <field name="resource_cost"/>
+                                    <field name="currency_id" column_invisible="True"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Description" name="description">
+                            <field name="description" nolabel="1" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="ps_mfg_routing_view_search" model="ir.ui.view">
+        <field name="name">ps.mfg.routing.view.search</field>
+        <field name="model">ps.mfg.routing</field>
+        <field name="arch" type="xml">
+            <search string="Search Routing">
+                <field name="operation_id"/>
+                <field name="bom_id"/>
+                <filter string="Enabled" name="enabled" domain="[('enabled', '=', True)]"/>
+                <filter string="Disabled" name="disabled" domain="[('enabled', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="ps_mfg_routing_action" model="ir.actions.act_window">
+        <field name="name">Routing</field>
+        <field name="res_model">ps.mfg.routing</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="ps_mfg_routing_view_list"/>
+        <field name="search_view_id" ref="ps_mfg_routing_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your first routing</p>
+        </field>
+    </record>
+</odoo>

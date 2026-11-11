@@ -1,0 +1,50 @@
+$o-cert-logo-width: 100px;
+$o-cert-logo-height: 60px;
+$o-cert-sig-width: 160px;
+$o-cert-sig-height: 100px;
+
+.o_form_view {
+    .o_field_image.oe_cert_image,
+    .o_field_image.oe_cert_signature {
+        width: auto !important;
+        max-width: none !important;
+        display: inline-block !important;
+
+        > div {
+            width: auto !important;
+            max-width: none !important;
+            height: auto !important;
+            display: inline-block !important;
+        }
+
+        .o_image_uploader_container {
+            max-width: none !important;
+            max-height: none !important;
+        }
+
+        img.img,
+        img.img-fluid {
+            width: auto !important;
+            max-width: none !important;
+            max-height: none !important;
+            height: auto !important;
+            object-fit: contain !important;
+        }
+    }
+
+    .o_field_image.oe_cert_image {
+        img.img,
+        img.img-fluid {
+            max-width: #{$o-cert-logo-width} !important;
+            max-height: #{$o-cert-logo-height} !important;
+        }
+    }
+
+    .o_field_image.oe_cert_signature {
+        img.img,
+        img.img-fluid {
+            max-width: #{$o-cert-sig-width} !important;
+            max-height: #{$o-cert-sig-height} !important;
+        }
+    }
+}

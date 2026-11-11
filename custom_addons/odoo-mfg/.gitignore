@@ -1,0 +1,48 @@
+# --- Meta / env ---
+.env
+.env.*
+!.env.example
+*.local
+
+# --- Odoo dev & translation ---
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.po~
+
+# --- Python & Testing ---
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.tox/
+
+# --- Frontend / Assets ---
+node_modules/
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- IDEs & Editors ---
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*.swo
+*~
+*.bak
+*.tmp
+
+# --- Office temporary & lock files ---
+.~lock.*#
+~$*

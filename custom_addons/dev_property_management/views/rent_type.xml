@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo>
+    <!--tree-->
+	<record id="tree_rent_type" model="ir.ui.view">
+		<field name="name">tree_rent_type_name</field>
+		<field name="model">rent.type</field>
+		<field name="arch" type="xml">
+		    <list string="Tent Type Tree" editable="bottom">
+                <field name="name"/>
+                <field name="duration"/>
+                <field name="interval"/>
+ 		    </list>
+		</field>
+	</record>
+
+	<!--Action-->
+	<record id="action_rent_type" model="ir.actions.act_window">
+        <field name="name">Rent Type</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">rent.type</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="tree_rent_type"/>
+    </record>
+
+    <!--Menus-->
+ 	<menuitem name="Rent Type"
+              id="menu_rent_type"
+              parent="confing_root_for_tenancy"
+              action="action_rent_type"
+              sequence="8"/>
+</odoo>

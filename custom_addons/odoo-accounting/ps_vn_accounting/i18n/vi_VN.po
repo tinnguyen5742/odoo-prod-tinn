@@ -1,0 +1,349 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* ps_vn_accounting
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-06 00:00+0000\n"
+"PO-Revision-Date: 2026-09-06 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: vi_VN\n"
+
+#. module: ps_vn_accounting
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_account_common_report_preview_button
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_account_tax_report_preview_button
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_account_aged_partner_preview_button
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_account_daybook_preview_button
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_account_cashbook_preview_button
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_account_bankbook_preview_button
+msgid "Preview"
+msgstr "Xem trước"
+
+#. module: ps_vn_accounting
+#: model:ir.actions.act_window,name:ps_vn_accounting.ps_action_vat_list
+#: model:ir.ui.menu,name:ps_vn_accounting.ps_menu_vat_list
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_vat_list
+msgid "VAT Invoice List"
+msgstr "Danh sách hóa đơn VAT"
+
+#. module: ps_vn_accounting
+#: model:ir.ui.menu,name:ps_vn_accounting.ps_menu_einvoice
+msgid "E-Invoice"
+msgstr "Hóa đơn điện tử"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_account_move__x_vn_einvoice_status
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_vat_search
+msgid "E-Invoice Status"
+msgstr "Trạng thái HĐĐT"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,help:ps_vn_accounting.field_account_move__x_vn_einvoice_status
+msgid "E-Invoice issuance status of the VAT invoice."
+msgstr "Trạng thái xuất hóa đơn điện tử của hóa đơn VAT."
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields.selection,name:ps_vn_accounting.selection__account_move__x_vn_einvoice_status__not_issued
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_vat_search
+msgid "Not Issued"
+msgstr "Chưa xuất"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields.selection,name:ps_vn_accounting.selection__account_move__x_vn_einvoice_status__processing
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_vat_search
+msgid "Processing"
+msgstr "Đang xử lý"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields.selection,name:ps_vn_accounting.selection__account_move__x_vn_einvoice_status__issued
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_vat_search
+msgid "Issued"
+msgstr "Đã xuất"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields.selection,name:ps_vn_accounting.selection__account_move__x_vn_einvoice_status__failed
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_vat_search
+msgid "Failed"
+msgstr "Xuất lỗi"
+
+#. module: ps_vn_accounting
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_vat_list
+msgid "Partner"
+msgstr "Đối tác"
+
+#. module: ps_vn_accounting
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_vat_list
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_gl_transaction_all_list
+msgid "Total"
+msgstr "Tổng cộng"
+
+#. module: ps_vn_accounting
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_vat_search
+msgid "Group By"
+msgstr "Nhóm theo"
+
+#. module: ps_vn_accounting
+#: model:ir.actions.server,name:ps_vn_accounting.ps_action_mark_issued
+msgid "Mark as E-Invoice Issued"
+msgstr "Đánh dấu Đã xuất HĐĐT"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_account_move__x_vn_invoice_symbol
+msgid "Invoice Symbol"
+msgstr "Kí hiệu hóa đơn"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_account_move__x_vn_customs_rate
+msgid "Customs Exchange Rate"
+msgstr "Tỉ giá hải quan"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_account_move__x_vn_declaration_no
+msgid "Declaration Number"
+msgstr "Số tờ khai"
+
+#. module: ps_vn_accounting
+#: model:ir.actions.act_window,name:ps_vn_accounting.ps_action_cost_center
+#: model:ir.ui.menu,name:ps_vn_accounting.ps_menu_cost_center
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_account_move__cost_center_id
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_account_move_line__cost_center_id
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_gl_transaction_all__cost_center_id
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_cost_center_list
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_cost_center_form
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_cost_center_search
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_gl_transaction_all_search
+msgid "Cost Center"
+msgstr "Trung tâm chi phí"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_ps_vn_accounting_cost_center__code
+msgid "Code"
+msgstr "Mã"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_ps_vn_accounting_cost_center__name
+msgid "Name"
+msgstr "Tên"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_ps_vn_accounting_cost_center__complete_name
+msgid "Complete Name"
+msgstr "Tên đầy đủ"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_ps_vn_accounting_cost_center__parent_id
+msgid "Parent Cost Center"
+msgstr "Cost center parent"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_ps_vn_accounting_cost_center__child_ids
+msgid "Child Cost Centers"
+msgstr "Cost center childs"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_ps_vn_accounting_cost_center__manager_id
+msgid "Manager"
+msgstr "Người phụ trách"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_ps_vn_accounting_cost_center__sequence
+msgid "Sequence"
+msgstr "Thứ tự"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_ps_vn_accounting_cost_center__description
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_gl_transaction_all__description
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_cost_center_form
+msgid "Description"
+msgstr "Diễn giải"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_ps_vn_accounting_cost_center__enabled
+msgid "Enabled"
+msgstr "Kích hoạt"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_ps_vn_accounting_cost_center__company_id
+msgid "Company"
+msgstr "Công ty"
+
+#. module: ps_vn_accounting
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_cost_center_search
+msgid "Enabled Records"
+msgstr "Bản ghi đang kích hoạt"
+
+#. module: ps_vn_accounting
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_cost_center_search
+msgid "Disabled Records"
+msgstr "Bản ghi đã tắt"
+
+#. module: ps_vn_accounting
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_cost_center_search
+msgid "Company"
+msgstr "Công ty"
+
+#. module: ps_vn_accounting
+#: model:ir.model.constraint,message:ps_vn_accounting.constraint_ps_vn_accounting_cost_center_unique_code_per_company
+msgid "The cost center code must be unique per company."
+msgstr "The Cost center code must be unique per company."
+
+#. module: ps_vn_accounting
+#: code:addons/ps_vn_accounting/models/cost_center.py:0
+msgid "You cannot create recursive cost centers."
+msgstr "You cannot create recursive Cost centers."
+
+#. module: ps_vn_accounting
+#: model:ir.actions.act_window,name:ps_vn_accounting.ps_action_financial_report_formula
+#: model:ir.actions.act_window,name:ps_vn_accounting.ps_action_financial_report_template
+#: model:ir.ui.menu,name:ps_vn_accounting.ps_menu_financial_report_formula
+msgid "Financial Report Formulas"
+msgstr "Bảng công thức báo cáo tài chính"
+
+#. module: ps_vn_accounting
+#: model:ir.model,name:ps_vn_accounting.model_ps_financial_report_formula
+msgid "Financial Report Formula"
+msgstr "Công thức báo cáo tài chính"
+
+#. module: ps_vn_accounting
+#: model:ir.model,name:ps_vn_accounting.model_ps_financial_report_template
+msgid "Financial Report Template"
+msgstr "Mẫu báo cáo tài chính"
+
+#. module: ps_vn_accounting
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_financial_report_template_list
+msgid "Financial Report Templates"
+msgstr "Danh sách mẫu báo cáo tài chính"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_ps_financial_report_template__x_code
+msgid "Template Code"
+msgstr "Mã mẫu báo cáo"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_ps_financial_report_template__x_name
+msgid "Template Name"
+msgstr "Tên mẫu báo cáo"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_ps_financial_report_template__x_formula_count
+msgid "Formula Count"
+msgstr "Số lượng công thức"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_ps_financial_report_formula__x_template_id
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_ps_financial_report_template__x_formula_ids
+msgid "Report Template"
+msgstr "Mẫu báo cáo"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_ps_financial_report_formula__x_code
+msgid "Formula Code"
+msgstr "Mã công thức"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_ps_financial_report_formula__x_formula
+msgid "Formula"
+msgstr "Công thức"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_ps_financial_report_formula__x_note
+msgid "Note"
+msgstr "Ghi chú"
+
+#. module: ps_vn_accounting
+#: model:ir.model.constraint,message:ps_vn_accounting.constraint_ps_financial_report_template_unique_x_code
+msgid "The template code must be unique."
+msgstr "Mã mẫu báo cáo phải là duy nhất."
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_ps_financial_report_template__x_active
+msgid "Active"
+msgstr "Đang sử dụng"
+
+#. module: ps_vn_accounting
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_financial_report_template_search
+msgid "Inactive"
+msgstr "Không sử dụng"
+
+#. module: ps_vn_accounting
+#: model:ir.actions.act_window,name:ps_vn_accounting.ps_action_gl_transaction_all
+#: model:ir.ui.menu,name:ps_vn_accounting.ps_menu_gl_transaction_all
+#: model:ir.model,name:ps_vn_accounting.model_gl_transaction_all
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_gl_transaction_all_list
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_gl_transaction_all_form
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_gl_transaction_all_search
+msgid "Transaction All"
+msgstr "Nhật ký chung"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_gl_transaction_all__date
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_gl_transaction_all_search
+msgid "Date"
+msgstr "Ngày"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_gl_transaction_all__move_name
+msgid "Document Number"
+msgstr "Số chứng từ"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_gl_transaction_all__partner_id
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_gl_transaction_all_search
+msgid "Customer/Vendor"
+msgstr "Khách hàng/Nhà cung cấp"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_gl_transaction_all__debit_account_id
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_gl_transaction_all_search
+msgid "Debit Account"
+msgstr "Tài khoản nợ"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_gl_transaction_all__credit_account_id
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_gl_transaction_all_search
+msgid "Credit Account"
+msgstr "Tài khoản có"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_gl_transaction_all__amount
+msgid "Amount"
+msgstr "Số tiền"
+
+#. module: ps_vn_accounting
+#: model:ir.actions.server,name:ps_vn_accounting.ps_action_export_gl_transaction_all_xlsx
+#: model_terms:ir.ui.view,arch_db:ps_vn_accounting.ps_view_gl_transaction_all_list
+msgid "Export Excel"
+msgstr "Xuất Excel"
+
+#. module: ps_vn_accounting
+#. odoo-python
+#: code:addons/ps_vn_accounting/models/gl_transaction_all.py:0
+msgid "TRANSACTION ALL - GENERAL JOURNAL"
+msgstr "TRANSACTION ALL - NHẬT KÝ CHUNG"
+
+#. module: ps_vn_accounting
+#. odoo-python
+#: code:addons/ps_vn_accounting/models/gl_transaction_all.py:0
+msgid "Period: %s    Exported: %s"
+msgstr "Kỳ: %s    Ngày xuất: %s"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_gl_transaction_all__debit_move_line_id
+msgid "Debit Journal Item"
+msgstr "Bút toán nợ"
+
+#. module: ps_vn_accounting
+#: model:ir.model.fields,field_description:ps_vn_accounting.field_gl_transaction_all__credit_move_line_id
+msgid "Credit Journal Item"
+msgstr "Bút toán có"
+
+#. module: ps_vn_accounting
+#: model:ir.model.constraint,message:ps_vn_accounting.constraint_gl_transaction_all_debit_credit_line_unique
+msgid "Each debit/credit pair can only appear once in Transaction All."
+msgstr "Mỗi cặp Nợ/Có chỉ được xuất hiện một lần trên Nhật ký chung."

@@ -1,0 +1,270 @@
+<odoo>
+    
+    <data>
+       <record id="maintenance_request_menu" model="website.menu">
+           <field name="name">Maintenance Request</field> 
+           <field name="url">/create/maintenance_request_new</field>
+           <field name="parent_id" ref="website.main_menu"/>
+           <field name="sequence" type="int">80</field>
+              <!--sequence of the menu-->
+       </record>
+   </data>
+    
+	<template id="website_maintenance_request_siu" name="Maintenance Request" customize_show="True">
+        <t t-call="website.layout">
+            <div class="container" >
+                <div class="card m-3">
+                    
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">Maintenance Request</h4>
+                        
+<!--                        <a data-toggle="modal" href="#timeslotModal" aria-controls="timeslotModal" class="btn btn-primary" style="margin-top:0px;padding:5px;margin-left:55%">-->
+<!--                            Working Hours-->
+<!--                        </a>-->
+                    </div>
+                    <div class="card-body">
+                        <form action="/dev_maintenance_portal/maintenance_request_submitted_siu" method="post" enctype="multipart/form-data" class="container mt-3">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+<!--                            <div class="mb-3 o_hidden">-->
+<!--                                <label for="client_id" class="control-label">Customer</label>-->
+<!--                                <input type="text" class="form-control" name="partner_id" t-att-value="partner_id and partner_id.id or ''"/>-->
+<!--                            </div>-->
+<!--                            -->
+<!--                            <div t-if="partner_id" class="mb-3 o_hidden">-->
+<!--                                <label for="partner_id" class="form-label">Customer</label>-->
+<!--                                <input type="text" class="form-control" name="partner_name" t-attf-value="#{partner_id.name}" readonly="True"/>-->
+<!--                            </div>-->
+                            <div class="row mb-3" >
+                            	<div class="col-md-4">
+		                            <label for="ticket_name" class="form-label fw-bold">Property</label>
+		                            <input type="text" class="form-control" name="property_id"  readonly="1" t-att-value="tenancy_id.property_id.name"/>
+		                            <input type="hidden"  class="form-control" name="property_ids" t-att-value="tenancy_id.property_id.id"/>
+		                             <input type="hidden"  class="form-control" name="tenancy_id" t-att-value="tenancy_id.id"/>
+	                            </div>
+	                            <div class="col-md-4">
+		                            <label for="ticket_name" class="form-label fw-bold">Owner</label>
+		                            <input type="text" class="form-control" name="name" id="name" readonly="1" t-att-value="tenancy_id.owner_partner_id.name"/>
+	                            </div>
+	                            <div class="col-md-4">
+		                            <label for="ticket_name" class="form-label fw-bold">Owner Number</label>
+		                            <input type="text" class="form-control" name="name" id="name" readonly="1" t-att-value="tenancy_id.owner_partner_id.phone"/>
+	                            </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label fw-bold">Customer Email</label>
+                                    <input type="text" class="form-control" name="email" 
+                                           t-att-value="tenancy_id.partner_id.email or ''" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label fw-bold">Customer Phone</label>
+                                    <input type="text" class="form-control" name="phone" required="True"
+                                           t-att-value="tenancy_id.partner_id.phone or ''" />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="subject_id" class="form-label fw-bold">Maintenance Subject</label>
+                                    <input type="text" name="subject" class="form-control" placeholder= "Light Problem"  required="True"/>
+                                </div>
+                                 <div class="col-md-6">
+                                    <label for="user_name" class="form-label fw-bold">Priority</label>
+									<select class="form-control" name="priority_name" id="priority_name" required="True" >
+									    <t t-foreach="priority or []" t-as="prio">
+									        <option t-att-value="prio"><t t-esc="prio"/></option>
+									    </t>
+									 </select>
+                                </div>
+                                
+                                
+                                
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="subject_id" class="form-label fw-bold">Details</label>
+                                     <textarea class="form-control"
+									  id="issue_details"
+									  name="issue_details"
+									  rows="4"
+									  placeholder="Enter issue details..."
+									  required="true"></textarea>
+                                </div>
+                            </div>
+                            <div  class="row mb-3">
+                            	<center>
+		                            <button id="submitBtn" type="submit" class="btn btn-primary" style="width:1030px;">
+		                                   
+		                                Submit
+		                            </button>
+                                </center>
+                            </div>
+<!--                            <div class="row mb-3">-->
+<!--                                <div class="col-md-6">-->
+<!--                                    <label for="subject_id" class="form-label">Subject</label>-->
+<!--                                    <select class="form-select" name="subject_id" id="subject_id" required="True" style="width:505px;height:35px;">-->
+<!--                                        <t t-foreach="subject_ids or []" t-as="subject_id">-->
+<!--                                            <option t-att-value="subject_id.id">-->
+<!--                                                <t t-esc="subject_id.name"/>-->
+<!--                                            </option>-->
+<!--                                        </t>-->
+<!--                                    </select>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-6">-->
+<!--                                    <label for="ticket_type" class="form-label">Ticket Type</label>-->
+<!--                                    <select class="form-select" name="ticket_type" id="ticket_type" required="True" style="width:505px;height:35px;">-->
+<!--                                        <t t-foreach="ticket_type_ids or []" t-as="type_id">-->
+<!--                                            <option t-att-value="type_id.id">-->
+<!--                                                <t t-esc="type_id.name"/>-->
+<!--                                            </option>-->
+<!--                                        </t>-->
+<!--                                    </select>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row mb-3">-->
+<!--                                <div class="col-md-6">-->
+<!--                                    <label for="priority" class="form-label">Priority</label>-->
+<!--                                    <select class="form-select" name="priority" id="priority" required="True" style="width:505px; height:35px;">-->
+<!--                                        <option t-att-value="1">Medium</option>-->
+<!--                                        <option t-att-value="2">Urgent</option>-->
+<!--                                        <option t-att-value="3">Very Urgent</option>-->
+<!--                                    </select>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-6">-->
+<!--                                    <label for="document_file" class="form-label">Document</label>-->
+<!--                                    <input type="file" class="form-control" name="document_file" multiple="True" data-show-upload="true"/>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="mb-3">-->
+<!--                                <label for="description" class="form-label">Description</label>-->
+<!--                                <textarea class="form-control" name="description" rows="4"></textarea>-->
+<!--                            </div>-->
+<!--                            <t t-if="request.env.company.enable_recaptcha and request.env.company.recaptcha_site_key">-->
+<!--                                <div class="mb-3">-->
+<!--                                    <div class="g-recaptcha"-->
+<!--                                         t-att-data-sitekey="request.env.company.recaptcha_site_key"-->
+<!--                                         data-callback="recaptchaVerified"></div>-->
+<!--                                </div>-->
+<!--                            </t>-->
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+<!--    <template id="website_maintenance_request_siu" name="Maintenance Request Genarate"-->
+<!--                  customize_show="True">-->
+<!--        <t t-call="website.layout">-->
+<!--            <form action="/dev_maintenance_portal/maintenance_request_submitted_siu" method="post" class="oe_signup_form" enctype="multipart/form-data">-->
+<!--                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>-->
+<!--                <t t-if="error_message">-->
+<!--                    <p class="alert alert-danger" t-if="error_message" role="alert">-->
+<!--                        <t t-esc="e_message"/>-->
+<!--                    </p>-->
+<!--                </t>-->
+<!--                <div class="form-group field-login">-->
+<!--                    <label for="from">Name</label>-->
+<!--                    <input type="Char" class="form-control form-control-sm" name="name" required="True"  /> -->
+<!--                </div>-->
+<!--                <div class="form-group field-login">-->
+<!--                    <label for="from">Equipment</label>-->
+<!--                    <input type="Char" class="form-control form-control-sm" name="equipment" required="True"  /> -->
+<!--                </div>-->
+<!--                <div class="form-group field-login">-->
+<!--                    <label for="user_name">Maintenance Type</label>-->
+<!--                    <select class="form-control" name="maintenance_type" id="maintenance_type" >-->
+<!--                        <t t-foreach="mai_type or []" t-as="maintenance">-->
+<!--                            <option t-att-value="maintenance"><t t-esc="maintenance"/></option>-->
+<!--                        </t>-->
+<!--                     </select>-->
+<!--                </div>-->
+<!--                -->
+<!--                 <div class="form-group field-login">-->
+<!--                    <label for="user_name">Priority</label>-->
+<!--                    <select class="form-control" name="priority_name" id="priority_name" required="True" >-->
+<!--                        <t t-foreach="priority or []" t-as="prio">-->
+<!--                            <option t-att-value="prio"><t t-esc="prio"/></option>-->
+<!--                        </t>-->
+<!--                     </select>-->
+<!--                </div>-->
+<!--                <div class="form-group field-login">-->
+<!--                    <label for="from">Contact Number</label>-->
+<!--                    <input type="Char" class="form-control form-control-sm" name="contact_number" required="True"  /> -->
+<!--                </div>-->
+<!--                <div class="form-group field-login">-->
+<!--                    <label for="from">Email</label>-->
+<!--                    <input type="Char" class="form-control form-control-sm" name="email"  /> -->
+<!--                </div>-->
+<!--                -->
+<!--                 <div class="form-group field-login">-->
+<!--                    <label for="from">Description</label>-->
+<!--                    <textarea id="contact6" class="form-control s_website_form_input" name="description" required=""></textarea>-->
+<!--                </div>-->
+<!--                -->
+<!--                -->
+<!--                -->
+<!--                <div class="text-center oe_login_buttons pt-3">-->
+<!--                    <button type="submit" class="btn btn-primary btn-block">Submit</button>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </t>-->
+<!--    </template>-->
+    
+     <template id="website_maintenance_thank_you" name="Maintenance Success"
+                  customize_show="True">
+        <t t-call="website.layout">
+          <div id="wrap">
+            <div class="oe_structure" id="oe_structure_website_form_contact_us_thanks_1"/>
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-lg-7 col-xl-6 mr-lg-auto oe_structure">
+                        <section class="pt40 s_text_block pb40 o_colored_level o_cc o_cc1" data-snippet="s_text_block" data-name="Text">
+                            <div class="container">
+                                <span class="d-block fa fa-4x fa-thumbs-up mx-auto rounded-circle bg-primary"/><br/>
+                                <h1 class="text-center">Thank You!</h1>
+                                <div class="pb16 pt16 s_hr" data-snippet="s_hr" data-name="Separator">
+                                    <hr class="mx-auto border-top w-50 border-dark text-center"/>
+                                </div>
+                                <h5 class="text-center">
+                                    <span class="fa fa-check-circle"/>
+                                    <span>Your Maintenance Request has been create <b>successfully</b></span>
+<!--                                     <br/>Ticket Number is <b><t t-esc="ticket_number"/></b>-->
+                                </h5>
+                                <p class="text-center">We will get back to you shortly.</p>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="col-lg-4">
+<!--                        <t t-call="website.company_description"/>-->
+                    </div>
+                </div>
+            </div>
+            <div class="oe_structure" id="oe_structure_website_form_contact_us_thanks_2"/>
+          </div>
+        </t>
+    </template>
+    
+    
+<!--    <template id="website_successfully" name="Successfully Submit"-->
+<!--                  customize_show="True">-->
+<!--        <t t-call="website.layout">-->
+<!--                 <div id="wrap">-->
+<!--                            <div class="oe_structure">-->
+<!--                                <section class="pt8 pb8">-->
+<!--                                    <div class="container">-->
+<!--                                        <div class="row s_nb_column_fixed">-->
+<!--                                            <div class="col-lg-6 s_title pt16 pb16">-->
+<!--                                                <h1 style='color: #4F8A10;-->
+<!--    background-color: #DFF2BF;'>Successfully Submitted</h1>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </section>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </t>-->
+<!--            </template>-->
+
+</odoo>

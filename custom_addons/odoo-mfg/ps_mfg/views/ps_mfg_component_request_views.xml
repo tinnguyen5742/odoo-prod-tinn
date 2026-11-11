@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="ps_mfg_component_request_view_list" model="ir.ui.view">
+            <field name="name">ps.mfg.component.request.view.list</field>
+            <field name="model">ps.mfg.component.request</field>
+            <field name="arch" type="xml">
+                <list decoration-muted="state == 'cancelled'" decoration-bf="state == 'pending'">
+                    <field name="code"/>
+                    <field name="request_date"/>
+                    <field name="production_id"/>
+                    <field name="workcenter_id" optional="show"/>
+                    <field name="location_id" optional="show"/>
+                    <field name="product_qty" optional="hide"/>
+                    <field name="transfer_status" widget="badge"
+                           decoration-info="transfer_status == 'partial'"
+                           decoration-success="transfer_status == 'full'"/>
+                    <field name="state" widget="badge"
+                           decoration-muted="state == 'draft'"
+                           decoration-warning="state == 'pending'"
+                           decoration-info="state == 'approved'"
+                           decoration-success="state == 'done'"
+                           decoration-danger="state == 'cancelled'"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="ps_mfg_component_request_view_search" model="ir.ui.view">
+            <field name="name">ps.mfg.component.request.view.search</field>
+            <field name="model">ps.mfg.component.request</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="code"/>
+                    <field name="production_id"/>
+                    <field name="workcenter_id"/>
+                    <field name="location_id"/>
+                    <filter name="not_cancelled" string="Active" domain="[('state', '!=', 'cancelled')]"/>
+                    <separator/>
+                    <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                    <filter name="pending" string="Pending Approval" domain="[('state', '=', 'pending')]"/>
+                    <filter name="approved" string="Approved" domain="[('state', '=', 'approved')]"/>
+                    <filter name="done" string="Done" domain="[('state', '=', 'done')]"/>
+                    <filter name="cancelled" string="Cancelled" domain="[('state', '=', 'cancelled')]"/>
+                    <separator/>
+                    <filter name="has_remaining" string="Has Remaining Components"
+                            domain="[('has_remaining', '=', True)]"/>
+                    <separator/>
+                    <filter name="request_date" string="Request Date" date="request_date"/>
+                    <group>
+                        <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                        <filter name="group_production" string="Manufacturing Order"
+                                context="{'group_by': 'production_id'}"/>
+                        <filter name="group_workcenter" string="Work Center"
+                                context="{'group_by': 'workcenter_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="ps_mfg_component_request_view_form" model="ir.ui.view">
+            <field name="name">ps.mfg.component.request.view.form</field>
+            <field name="model">ps.mfg.component.request</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_submit_approval" type="object" string="Submit" class="oe_highlight"
+                                invisible="state != 'draft'"/>
+                        <button name="action_approve" type="object" string="Approve" class="oe_highlight"
+                                invisible="state != 'pending'"/>
+                        <button name="action_force_done" type="object" string="Close Request"
+                                invisible="state != 'approved' or transfer_status == 'full'"/>
+                        <button name="action_cancel" type="object" string="Cancel"
+                                confirm="Are you sure you want to cancel this component request?"
+                                invisible="state not in ('draft', 'pending')"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,pending,approved,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_open_pick_lines" type="object" class="oe_stat_button"
+                                    icon="fa-cubes" string="Pick Components"
+                                    invisible="state != 'approved' or not has_remaining or legacy_transfer"/>
+                            <button name="action_view_pickings" type="object" class="oe_stat_button"
+                                    icon="fa-truck" invisible="not picking_count">
+                                <field name="picking_count" widget="statinfo" string="Transfers"/>
+                            </button>
+                            <button name="action_view_proposals" type="object" class="oe_stat_button"
+                                    icon="fa-file-text-o" invisible="not proposal_count">
+                                <field name="proposal_count" widget="statinfo" string="Proposals"/>
+                            </button>
+                        </div>
+                        <widget name="web_ribbon" title="Cancelled" bg_color="text-bg-danger"
+                                invisible="state != 'cancelled'"/>
+                        <widget name="web_ribbon" title="Done" bg_color="text-bg-success"
+                                invisible="state != 'done'"/>
+                        <field name="company_id" invisible="1"/>
+                        <field name="is_readonly" invisible="1"/>
+                        <field name="has_remaining" invisible="1"/>
+                        <field name="legacy_transfer" invisible="1"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="code" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group name="request_info" string="Request">
+                                <field name="production_id" readonly="is_readonly"
+                                       options="{'no_quick_create': True, 'no_create': True}"/>
+                                <field name="product_qty" readonly="is_readonly"/>
+                                <field name="request_date" readonly="is_readonly"/>
+                            </group>
+                            <group name="location_info" string="Locations">
+                                <field name="workcenter_id"/>
+                                <field name="location_id" readonly="is_readonly" options="{'no_create': True}"
+                                       domain="[('usage', '=', 'internal'), ('id', '!=', destination_location_id)]"/>
+                                <field name="destination_location_id" string="Destination (Workshop)" readonly="1"/>
+                                <field name="transfer_status" widget="badge"
+                                       decoration-info="transfer_status == 'partial'"
+                                       decoration-success="transfer_status == 'full'"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Components">
+                                <field name="component_line_ids" readonly="is_readonly"
+                                       context="{'default_company_id': company_id, 'default_location_id': location_id}">
+                                    <list editable="bottom"
+                                          decoration-success="qty_planned &gt; 0 and qty_transferred &gt;= qty_planned"
+                                          decoration-warning="qty_transferred &gt; 0 and qty_transferred &lt; qty_planned">
+                                        <!-- <delete invisible> is supported by the Odoo 19 web client
+                                             (web/static/tests/views/fields/one2many_field.test.js);
+                                             the PyCharm RNG error "Element delete is not allowed here" is a false positive. -->
+                                        <control>
+                                            <create string="Add a line"/>
+                                            <delete invisible="is_from_bom"/>
+                                        </control>
+                                        <field name="company_id" column_invisible="1"/>
+                                        <field name="is_from_bom" column_invisible="1" force_save="1"/>
+                                        <field name="destination_location_id" column_invisible="1"/>
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="product_id" options="{'no_quick_create': True}"/>
+                                        <field name="location_id" options="{'no_create': True}"
+                                               domain="[('usage', '=', 'internal'), ('id', '!=', destination_location_id)]"/>
+                                        <field name="qty_planned"/>
+                                        <field name="qty_transferred" optional="show"/>
+                                        <field name="qty_to_propose" optional="show"/>
+                                        <field name="qty_bom" optional="hide"/>
+                                        <field name="product_uom_id" groups="uom.group_uom" widget="many2one_uom"
+                                               options="{'no_open': True, 'no_create': True}"/>
+                                        <field name="workorder_id"
+                                               options="{'no_quick_create': True, 'no_create_edit': True}"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="ps_mfg_component_request_line_view_list_pick" model="ir.ui.view">
+            <field name="name">ps.mfg.component.request.line.view.list.pick</field>
+            <field name="model">ps.mfg.component.request.line</field>
+            <field name="priority">100</field>
+            <field name="arch" type="xml">
+                <list editable="bottom" create="0" delete="0"
+                      decoration-success="qty_planned &gt; 0 and qty_transferred &gt;= qty_planned"
+                      decoration-warning="qty_open &gt; 0">
+                    <header>
+                        <button name="action_create_pick_transfer" type="object"
+                                string="Create Transfer &amp; Print" class="btn-primary"/>
+                        <button name="action_print_pick_request" type="object" display="always"
+                                string="Print Pick Request" icon="fa-print"/>
+                    </header>
+                    <field name="company_id" column_invisible="1"/>
+                    <field name="request_id" readonly="1" optional="hide"/>
+                    <field name="product_id" readonly="1"/>
+                    <field name="location_id" readonly="1"/>
+                    <field name="qty_planned" readonly="1"/>
+                    <field name="qty_transferred" readonly="1"/>
+                    <field name="qty_open" readonly="1" optional="show"/>
+                    <field name="qty_to_propose" string="Remaining" readonly="1"/>
+                    <field name="qty_to_pick"/>
+                    <field name="product_uom_id" groups="uom.group_uom" readonly="1"
+                           options="{'no_open': True}"/>
+                    <field name="workorder_id" readonly="1" optional="show"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="ps_mfg_component_request_line_view_search_pick" model="ir.ui.view">
+            <field name="name">ps.mfg.component.request.line.view.search.pick</field>
+            <field name="model">ps.mfg.component.request.line</field>
+            <field name="priority">100</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="product_id"/>
+                    <field name="location_id"/>
+                    <filter name="remaining" string="Remaining to Pick"
+                            domain="[('qty_to_propose', '&gt;', 0)]"/>
+                    <group>
+                        <filter name="group_location" string="Source Location"
+                                context="{'group_by': 'location_id'}"/>
+                        <filter name="group_workorder" string="Work Order"
+                                context="{'group_by': 'workorder_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="stock_picking_view_list_component_pick" model="ir.ui.view">
+            <field name="name">stock.picking.view.list.component.pick</field>
+            <field name="model">stock.picking</field>
+            <field name="priority">100</field>
+            <field name="arch" type="xml">
+                <list create="0" delete="0" default_order="id">
+                    <header>
+                        <button name="action_print_component_pick" type="object"
+                                string="Print Selected" class="btn-primary" icon="fa-print"/>
+                    </header>
+                    <field name="name"/>
+                    <field name="location_id"/>
+                    <field name="location_dest_id" optional="hide"/>
+                    <field name="scheduled_date"/>
+                    <field name="origin" optional="hide"/>
+                    <field name="state" widget="badge"
+                           decoration-success="state == 'done'"
+                           decoration-info="state not in ('done', 'cancel')"/>
+                    <button name="action_print_component_pick" type="object"
+                            string="Print" icon="fa-print" class="btn-link"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="ps_mfg_component_request_action" model="ir.actions.act_window">
+            <field name="name">Component Requests</field>
+            <field name="res_model">ps.mfg.component.request</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="ps_mfg_component_request_view_search"/>
+            <field name="context">{'search_default_not_cancelled': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a component request
+                </p>
+                <p>
+                    Request components from the warehouse to the workshop of a confirmed manufacturing order.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

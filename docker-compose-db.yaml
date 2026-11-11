@@ -1,0 +1,19 @@
+services:
+  db:
+    image: docker.io/library/postgres:18
+    ports:
+      - "5445:5432"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odooodoo
+    volumes:
+      - odoo-db-data-db:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U odoo"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  odoo-db-data-db:

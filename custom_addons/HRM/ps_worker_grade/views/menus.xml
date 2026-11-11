@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem id="ps_worker_grade_menu_root"
+                name="Bậc thợ"
+                parent="hr_attendance.menu_hr_attendance_view_attendances_management"
+                sequence="100" />
+        <menuitem id="ps_worker_profession_menu_item"
+                name="Ngành nghề"
+                parent="ps_worker_grade_menu_root"
+                action="ps_worker_profession_action"
+                sequence="10" />
+        <menuitem id="ps_worker_grade_menu_item"
+                name="Danh mục bậc thợ"
+                parent="ps_worker_grade_menu_root"
+                action="ps_worker_grade_action"
+                sequence="20" />
+        <menuitem id="ps_worker_allowance_menu_root"
+                name="Phụ cấp"
+                parent="hr_attendance.menu_hr_attendance_view_attendances_management"
+                sequence="101" />
+        <menuitem id="ps_worker_allowance_menu_item"
+                name="Danh mục phụ cấp"
+                parent="ps_worker_allowance_menu_root"
+                action="ps_worker_allowance_action"
+                sequence="10" />
+    </data>
+</odoo>

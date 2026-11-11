@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle 
+ -->
+<odoo>
+    <!--pivot-->
+    <record id="pivot_booking_analysis" model="ir.ui.view">
+         <field name="name">pivot_booking_analysis_name</field>
+         <field name="model">booking.analysis</field>
+         <field name="arch" type="xml">
+             <pivot string="Booking Analysis" disable_linking="True" sample="1">
+                 <field name="partner_id" type="col"/>
+                 <field name="booking_date" interval="month" type="row"/>
+                 <field name="ask_price_amount" type="measure"/>
+             </pivot>
+         </field>
+    </record>
+
+    <!--graph-->
+    <record id="graph_booking_analysis" model="ir.ui.view">
+         <field name="name">graph_booking_analysis_name</field>
+         <field name="model">booking.analysis</field>
+         <field name="arch" type="xml">
+             <graph string="Booking Analysis" type="bar" sample="1" disable_linking="1">
+                 <field name="partner_id" type="col"/>
+                 <field name="booking_date" interval="month" type="row"/>
+                 <field name="ask_price_amount" type="measure"/>
+             </graph>
+         </field>
+    </record>
+
+    <!--search-->
+    <record id="search_booking_analysis" model="ir.ui.view">
+        <field name="name">Booking Analysis - Search</field>
+        <field name="model">booking.analysis</field>
+        <field name="arch" type="xml">
+            <search string="Booking Analysis Search">
+                <field name="name"/>
+                <field name="property_id"/>
+                <field name="agent_partner_id"/>
+                <filter name='state_draft' string="New" domain="[('state','=','draft')]"/>
+                <filter name='state_confirmed' string="Confirmed" domain="[('state','=','confirmed')]"/>
+                <filter name='state_cancelled' string="Cancelled" domain="[('state','=','cancelled')]"/>
+                    <filter name="property_id" string="Property" context="{'group_by':'property_id'}"/>
+                    <filter name="create_uid" string="Booked By" context="{'group_by':'create_uid'}"/>
+                    <filter name="partner_id" string="Contact" context="{'group_by':'partner_id'}"/>
+                    <filter name="agent_partner_id" string="Agent" context="{'group_by':'agent_partner_id'}"/>
+                    <separator/>
+                    <filter name="property_type" string="Property Type" context="{'group_by':'property_type'}"/>
+                    <filter name="state" string="Status" context="{'group_by':'state'}"/>
+            </search>
+        </field>
+    </record>
+    
+    <record id="action_booking_analysis" model="ir.actions.act_window">
+        <field name="name">Booking Analysis</field>
+        <field name="res_model">booking.analysis</field>
+        <field name="view_mode">graph,pivot</field>
+        <field name="view_id"></field>  <!-- force empty -->
+    </record>
+
+	<!--  Menu Items-->
+    <menuitem name="Booking Analysis"
+              id="menu_booking_analysis"
+              parent="dev_property_management.root_menu_property_reporting"
+              action="action_booking_analysis"
+              sequence="2"/>
+</odoo>

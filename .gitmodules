@@ -1,0 +1,36 @@
+[submodule "custom_addons/odoo-share-addons"]
+	path = custom_addons/odoo-share-addons
+	url = git@github.com:patsoft-dev/odoo-share-addons.git
+	branch = internal/pat
+[submodule "custom_addons/odoo-mfg"]
+	path = custom_addons/odoo-mfg
+	url = git@github.com:patsoft-dev/odoo-mfg.git
+	branch = internal/pat
+[submodule "custom_addons/odoo-inventory"]
+	path = custom_addons/odoo-inventory
+	url = git@github.com:patsoft-dev/odoo-inventory.git
+	branch = internal/pat
+[submodule "custom_addons/odoo-accounting"]
+	path = custom_addons/odoo-accounting
+	url = git@github.com:patsoft-dev/odoo-accounting.git
+	branch = main
+[submodule "custom_addons/dev_property_management"]
+	path = custom_addons/dev_property_management
+	url = git@github.com:patsoft-dev/dev_property_management.git
+	branch = main
+[submodule "custom_addons/odoo-reports"]
+	path = custom_addons/odoo-reports
+	url = git@github.com:patsoft-dev/odoo-reports.git
+	branch = main
+[submodule "custom_addons/odoo-sale"]
+	path = custom_addons/odoo-sale
+	url = git@github.com:patsoft-dev/odoo-sale.git
+	branch = demo/crm-real-estates
+[submodule "custom_addons/HRM"]
+	path = custom_addons/HRM
+	url = git@github.com:patsoft-dev/HRM.git
+	branch = internal/pat
+[submodule "custom_addons/ps_elearning"]
+	path = custom_addons/ps_elearning
+	url = https://github.com/patsoft-dev/ps_elearning.git
+	branch = internal/pat

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Paper format cho Tax Report: tắt header line để tránh số trang ở trên cùng -->
+        <record id="paperformat_tax_report" model="report.paperformat">
+            <field name="name">Tax Report A4</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <!-- Gán paperformat tùy chỉnh cho report action Tax Report -->
+        <record id="accounting_pdf_reports.action_report_account_tax" model="ir.actions.report">
+            <field name="paperformat_id" ref="ps_vn_accounting.paperformat_tax_report"/>
+        </record>
+
+        <!-- Template Tax Report custom: dùng basic_layout, không header, không số trang -->
+        <template id="report_tax_custom" inherit_id="accounting_pdf_reports.report_tax">
+            <xpath expr="." position="replace">
+                <t t-call="web.html_container">
+                    <t t-set="data_report_margin_top" t-value="12"/>
+                    <t t-set="data_report_header_spacing" t-value="0"/>
+                    <t t-set="data_report_dpi" t-value="110"/>
+                    <t t-call="web.basic_layout">
+                        <div class="page" style="font-family: 'Times New Roman', DejaVu, serif; font-size: 12px; padding:24px !important;">
+
+                            <!-- Title: centered, bold, uppercase -->
+                            <div style="text-align: center; margin-bottom: 15px;">
+                                <h2 style="text-align: center; font-weight: bold; margin: 0; font-size: 18px; text-transform: uppercase;">
+                                    Báo Cáo Thuế
+                                </h2>
+                            </div>                            <!-- Date range: centered under title -->
+                            <div style="text-align: center; margin-bottom: 15px; font-size: 12px;">
+                                <strong>Từ ngày:</strong> <span t-esc="data['date_from']"/>
+                                &#160;&#160;&#160;&#160;&#160;&#160;
+                                <strong>Đến ngày:</strong> <span t-esc="data['date_to']"/>
+                            </div>
+
+                            <!-- Filter info: 2 columns -->
+                            <table style="width: 100%; margin-bottom: 15px; border: none; font-size: 12px;">
+                                <tr>
+                                    <td style="width: 50%; vertical-align: top; padding: 3px 0;">
+                                        <strong>Công ty:</strong>
+                                        <span t-esc="res_company.name"/>
+                                    </td>
+                                    <td style="width: 50%; vertical-align: top; padding: 3px 0;">
+                                        <strong>Bút toán:</strong>
+                                        <span t-if="data['target_move'] == 'all'">Tất cả bút toán</span>
+                                        <span t-if="data['target_move'] == 'posted'">Chỉ bút toán đã đăng</span>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Data table with visible borders and bold header -->
+                            <table style="border-collapse: collapse; width: 100%; border: 1px solid #000;">
+                                <thead>
+                                    <tr style="background-color: #d9d9d9; font-weight: bold;">
+                                        <th style="border: 1px solid #000 !important; text-align: center; padding: 5px; font-weight: bold;">Tên thuế</th>
+                                        <th style="border: 1px solid #000 !important; text-align: center; padding: 5px; font-weight: bold;">Tiền hàng</th>
+                                        <th style="border: 1px solid #000 !important; text-align: center; padding: 5px; font-weight: bold;">Tiền thuế</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Sale section -->
+                                    <tr style="font-weight: bold; background-color: #f2f2f2;">
+                                        <td colspan="3" style="border: 1px solid #000 !important; padding: 4px;">Bán hàng</td>
+                                    </tr>
+                                    <tr t-foreach="lines['sale']" t-as="line">
+                                        <td style="border: 1px solid #000 !important; padding: 4px;">
+                                            <span t-esc="line.get('name')"/>
+                                        </td>
+                                        <td class="text-end" style="border: 1px solid #000 !important; padding: 4px;">
+                                            <span t-att-style="style" t-esc="line.get('net')" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                        </td>
+                                        <td class="text-end" style="border: 1px solid #000 !important; padding: 4px;">
+                                            <span t-att-style="style" t-esc="line.get('tax')" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <!-- Purchase section -->
+                                    <tr style="font-weight: bold; background-color: #f2f2f2;">
+                                        <td colspan="3" style="border: 1px solid #000 !important; padding: 4px;">Mua hàng</td>
+                                    </tr>
+                                    <tr t-foreach="lines['purchase']" t-as="line">
+                                        <td style="border: 1px solid #000 !important; padding: 4px;">
+                                            <span t-esc="line.get('name')"/>
+                                        </td>
+                                        <td class="text-end" style="border: 1px solid #000 !important; padding: 4px;">
+                                            <span t-att-style="style" t-esc="line.get('net')" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                        </td>
+                                        <td class="text-end" style="border: 1px solid #000 !important; padding: 4px;">
+                                            <span t-att-style="style" t-esc="line.get('tax')" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        <!-- Footer -->
+                        <div style="margin-top: 30px; font-size: 12px;">
+                            <div style="text-align: right; font-style: italic; margin-bottom: 40px;">
+                                Lập ngày <span t-esc="time.strftime('%d')"/> tháng <span t-esc="time.strftime('%m')"/> năm <span t-esc="time.strftime('%Y')"/>
+                            </div>
+                            <table style="width: 100%; border: none;">
+                                <tr>
+                                    <td style="width: 33%; text-align: center; vertical-align: top;">
+                                        <div style="font-weight: bold; text-transform: uppercase;">Người lập</div>
+                                        <div style="font-style: italic;">Ký, họ tên</div>
+                                    </td>
+                                    <td style="width: 33%; text-align: center; vertical-align: top;">
+                                        <div style="font-weight: bold; text-transform: uppercase;">Kế toán trưởng</div>
+                                        <div style="font-style: italic;">Ký, họ tên</div>
+                                    </td>
+                                    <td style="width: 33%; text-align: center; vertical-align: top;">
+                                        <div style="font-weight: bold; text-transform: uppercase;">Tổng giám đốc</div>
+                                        <div style="font-style: italic;">Ký, họ tên, đóng dấu</div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        </div>
+                    </t>
+                </t>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>

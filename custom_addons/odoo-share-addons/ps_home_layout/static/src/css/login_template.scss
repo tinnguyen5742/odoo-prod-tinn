@@ -1,0 +1,145 @@
+body.o_web_login {
+  background-color: #f4f6f9 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+form.oe_login_form,
+.oe_login_form {
+  background: #ffffff !important;
+  padding: 2.5rem !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  max-width: 440px;
+  width: 100%;
+}
+
+.o_login_auth,
+.oe_login_form hr,
+[t-if*="passkey"],
+.o_passkey_login,
+button[name="action_passkey"] {
+  display: none !important;
+}
+
+.oe_login_form .input-group > .form-control,
+.oe_login_form .input-group > .form-select {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-color: #dee2e6 !important;
+}
+
+/* Sử dụng biến màu động được truyền từ backend */
+.oe_login_form .form-control:focus,
+.oe_login_form .form-select:focus {
+  border-color: var(--login-primary, #71639e) !important;
+  box-shadow: 0 0 0 0.25rem var(--login-primary-rgb, rgba(113, 99, 158, 0.15)) !important;
+  z-index: 2;
+}
+
+/* Set màu chủ đạo động cho nút Log in */
+.oe_login_form button[type="submit"].btn-primary,
+.oe_login_form .btn-primary {
+  color: #ffffff !important;
+  background-color: var(--login-primary, #71639e) !important;
+  border-color: var(--login-primary, #71639e) !important;
+  border-radius: 0.5rem !important;
+  padding: 0.75rem !important;
+  font-weight: 600;
+  width: 100%;
+}
+
+.oe_login_form button[type="submit"].btn-primary:hover {
+  filter: brightness(90%);
+}
+
+@media (max-width: 576px) {
+  form.oe_login_form,
+  .oe_login_form {
+    width: 95% !important;
+  }
+}
+
+.o_database_selector a[href*="/web/database/manager"],
+.o_database_selector .text-center a,
+.o_database_selector a.text-muted {
+  display: none !important;
+}
+
+/* 1. Ẩn hoàn toàn thẻ chứa dòng chữ "Manage databases" */
+.container .text-center.mt-2,
+a[href*="/web/database/manager"] {
+  display: none !important;
+}
+
+/* 2. Căn giữa và làm đẹp khung chứa danh sách database */
+body.o_database_selector {
+  background-color: #f4f6f9 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* Ép khung chứa (container chính của trang selector) ra giữa và có giao diện thẻ card bo góc */
+.o_database_selector > .container {
+  background: #ffffff !important;
+  padding: 2.5rem !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  max-width: 440px !important;
+  width: 100% !important;
+  margin: auto !important;
+}
+
+/* Tinh chỉnh lại cột bọc danh sách bên trong để không bị lệch lề */
+.o_database_selector .col-md-3.offset-md-4,
+.o_database_selector div[class*="col-"] {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Bo góc và làm đẹp các mục database */
+.o_database_selector .list-group-item {
+  border-radius: 0.5rem !important;
+  border-color: #dee2e6 !important;
+  margin-bottom: 0.5rem;
+}
+
+.o_database_selector .list-group-item a {
+  color: var(--login-primary, #71639e) !important;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.o_database_selector .list-group-item:hover {
+  background-color: #f8f9fa !important;
+  border-color: var(--login-primary, #71639e) !important;
+}
+
+/* Outer card now narrower */
+.o_database_list {
+  max-width: 640px !important;
+  width: 100% !important;
+}
+.o_database_list img.img-fluid {
+  display: none !important;
+}
+
+.o_database_list img.img-fluid,
+.o_database_selector img[src*="logo"],
+body[class*="database"] img.img-fluid {
+  display: none !important;
+}
+
+/* 2. Ẩn thẻ chứa liên kết "Manage databases" */
+.o_database_list .text-center.mt-2,
+a[href*="/web/database/manager"] {
+  display: none !important;
+}

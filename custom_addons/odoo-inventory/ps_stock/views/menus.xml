@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--   Stock menu     -->
+        <!-- Prefix menu removed: prefix builder is now integrated into ir.sequence form. -->
+    </data>
+</odoo>

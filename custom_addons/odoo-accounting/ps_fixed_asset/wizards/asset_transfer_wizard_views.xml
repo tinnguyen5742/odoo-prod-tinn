@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ps_asset_transfer_wizard_form" model="ir.ui.view">
+        <field name="name">ps.asset.transfer.wizard.form</field>
+        <field name="model">ps.asset.transfer.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Asset Transfer">
+                <sheet>
+                    <field name="asset_id" invisible="1"/>
+                    <group>
+                        <group>
+                            <field name="ps_code"/>
+                            <field name="transfer_date"/>
+                            <field name="notes"/>
+                            <field name="status"/>
+                        </group>
+                        <group>
+                            <field name="name"/>
+                            <field name="receipt_number"/>
+                            <field name="invoice_number"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Old Department" class="oe_inline">
+                            <field name="old_department_code"/>
+                            <field name="old_department_id"/>
+                            <field name="old_employee_id"/>
+                            <field name="old_machine_code"/>
+                            <field name="old_expense_account_id"/>
+                            <field name="old_analytic_id"/>
+                        </group>
+                        <group string="New Department" class="oe_inline">
+                            <field name="new_department_code"/>
+                            <field name="new_department_id"/>
+                            <field name="new_employee_id"/>
+                            <field name="new_machine_code"/>
+                            <field name="new_expense_account_id"/>
+                            <field name="new_analytic_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_confirm" string="Save" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ps_asset_transfer_wizard" model="ir.actions.act_window">
+        <field name="name">Asset Transfer</field>
+        <field name="res_model">ps.asset.transfer.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_asset_id': active_id}</field>
+    </record>
+</odoo>

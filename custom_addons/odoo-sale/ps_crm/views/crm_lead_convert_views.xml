@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Wizard chuyển đổi Lead thành Cơ hội: dropdown "Liên kết với một khách hàng hiện có"
+         gộp cả khách hàng Odoo và khách hàng đọc từ Acumatica (Customer Name + Customer ID_Accu) -->
+    <record id="view_crm_lead2opportunity_partner_acu" model="ir.ui.view">
+        <field name="name">crm.lead2opportunity.partner.form.acu</field>
+        <field name="model">crm.lead2opportunity.partner</field>
+        <field name="inherit_id" ref="crm.view_crm_lead2opportunity_partner"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="attributes">
+                <attribute name="context">{'res_partner_search_mode': 'customer', 'show_vat': True, 'ps_search_accu': True, 'ps_show_acu_id': True}</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>

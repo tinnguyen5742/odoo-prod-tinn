@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <div t-name="ps_mfg.BomOverview" class="o_action">
+        <PsMfgBomControlPanel
+            variants="state.variants"
+            showVariants="state.showVariants"
+            currentVariantId="state.currentVariantId"
+            unfoldAll="state.unfoldAll"
+            changeVariant.bind="onChangeVariant"
+            toggleFoldAll.bind="toggleFoldAll"/>
+        <PsMfgBomTable
+            data="state.bomData"
+            precision="state.precision"
+            showUom="state.showUom"
+            unfoldAll="state.unfoldAll"
+            foldSeq="state.foldSeq"/>
+    </div>
+
+    <div t-name="ps_mfg.BomOverviewControlPanel">
+        <ControlPanel display="controlPanelDisplay">
+            <t t-set-slot="layout-actions">
+                <div t-if="props.showVariants" class="d-flex align-items-center gap-2">
+                    <span class="fw-bold">Variant</span>
+                    <select class="form-select" t-on-change="updateVariant">
+                        <option value="">Default</option>
+                        <t t-foreach="variantEntries" t-as="entry" t-key="entry[0]">
+                            <option t-att-value="entry[0]" t-att-selected="props.currentVariantId == entry[0]" t-esc="entry[1]"/>
+                        </t>
+                    </select>
+                </div>
+            </t>
+            <t t-set-slot="control-panel-always-buttons">
+                <button type="button" class="btn btn-secondary" t-on-click="() => this.props.toggleFoldAll()" t-esc="props.unfoldAll ? 'Fold all' : 'Unfold all'"/>
+            </t>
+        </ControlPanel>
+    </div>
+
+    <div t-name="ps_mfg.BomOverviewTable" class="o_content">
+        <div class="o_ps_mfg_bom_overview py-3 py-lg-5 px-0 overflow-auto border-bottom bg-view">
+            <div t-if="props.data &amp;&amp; props.data.type" class="container-fluid">
+                <div class="d-flex mb-5">
+                    <div class="me-auto">
+                        <h2><a href="#" t-on-click.prevent="goToProduct" t-esc="props.data.name"/></h2>
+                        <h6 t-if="props.data.bom_code">Reference: <t t-esc="props.data.bom_code"/></h6>
+                        <h6>Version: <t t-esc="props.data.bom_version"/></h6>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th class="text-end">Quantity</th>
+                            <th t-if="props.showUom"/>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <PsMfgBomLine
+                            data="props.data"
+                            precision="props.precision"
+                            showUom="props.showUom"/>
+                        <PsMfgBomComponentsBlock
+                            data="props.data"
+                            precision="props.precision"
+                            showUom="props.showUom"
+                            unfoldAll="props.unfoldAll"
+                            foldSeq="props.foldSeq"/>
+                    </tbody>
+                </table>
+            </div>
+            <div t-else="" class="d-flex align-items-center justify-content-center h-50">
+                <h4 class="text-muted">No data available.</h4>
+            </div>
+        </div>
+    </div>
+
+    <t t-name="ps_mfg.BomOverviewComponentsBlock">
+        <t t-foreach="unassignedComponents" t-as="line" t-key="line.index">
+            <PsMfgBomLine
+                data="line"
+                precision="props.precision"
+                showUom="props.showUom"
+                isFolded="isLineFolded(foldIdentifier(line))"
+                toggleFolded.bind="toggleLineFolded"/>
+            <t t-if="isSubBom(line) &amp;&amp; !isLineFolded(foldIdentifier(line))">
+                <PsMfgBomComponentsBlock
+                    data="line"
+                    precision="props.precision"
+                    showUom="props.showUom"
+                    unfoldAll="props.unfoldAll"
+                    foldSeq="props.foldSeq"/>
+            </t>
+        </t>
+        <t t-if="hasOperations">
+            <tr class="table-light fw-bold" t-on-click="toggleOperationsFolded">
+                <td>
+                    <div class="text-truncate">
+                        <span class="btn btn-light p-0" style="margin-right: 1px">
+                            <i t-attf-class="fa fa-fw fa-caret-{{ state.opsFolded ? 'right' : 'down' }}" role="img"/>
+                        </span>
+                        <span>Operations</span>
+                    </div>
+                </td>
+                <td/>
+                <td t-if="props.showUom"/>
+            </tr>
+            <t t-if="!state.opsFolded">
+                <t t-foreach="data.operations" t-as="op" t-key="op.index">
+                    <tr class="o_ps_mfg_op_group" t-on-click="() => this.toggleOpFolded(op.index)">
+                        <td>
+                            <div class="d-flex align-items-center gap-2" t-attf-style="margin-left: {{ (op.level - 1) * 20 }}px">
+                                <span class="btn btn-light btn-sm p-0 px-1">
+                                    <i t-attf-class="fa fa-fw fa-caret-{{ isOpFolded(op.index) ? 'right' : 'down' }}" role="img"/>
+                                </span>
+                                <i class="fa fa-cogs text-secondary" title="Operation"/>
+                                <span t-if="op.line_code" class="text-muted fw-normal" t-esc="op.line_code"/>
+                                <a href="#" class="o_ps_mfg_op_name" t-on-click.prevent="() => this.goToOperation(op)" t-esc="op.name"/>
+                                <span class="badge rounded-pill text-bg-light border fw-normal">
+                                    <t t-esc="opComponentCount(op)"/> components
+                                </span>
+                            </div>
+                        </td>
+                        <td/>
+                        <td t-if="props.showUom"/>
+                    </tr>
+                    <t t-if="!isOpFolded(op.index)">
+                    <t t-foreach="op.ps_components || []" t-as="line" t-key="line.index">
+                        <PsMfgBomLine
+                            data="line"
+                            precision="props.precision"
+                            showUom="props.showUom"
+                            isFolded="isLineFolded(foldIdentifier(line))"
+                            toggleFolded.bind="toggleLineFolded"/>
+                        <t t-if="isSubBom(line) &amp;&amp; !isLineFolded(foldIdentifier(line))">
+                            <PsMfgBomComponentsBlock
+                                data="line"
+                                precision="props.precision"
+                                showUom="props.showUom"
+                                unfoldAll="props.unfoldAll"
+                                foldSeq="props.foldSeq"/>
+                        </t>
+                    </t>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </t>
+
+    <tr t-name="ps_mfg.BomOverviewLine" t-on-click="() => this.props.toggleFolded(identifier)">
+        <td>
+            <div class="text-truncate" t-attf-style="margin-left: {{ marginMultiplicator * 20 }}px">
+                <t t-if="hasFoldButton">
+                    <span class="o_mrp_bom_unfoldable btn btn-light p-0" style="margin-right: 1px">
+                        <i t-attf-class="fa fa-fw fa-caret-{{ props.isFolded ? 'right' : 'down' }}" role="img"/>
+                    </span>
+                </t>
+                <span t-if="data.line_code" class="me-1 text-muted" t-esc="data.line_code + '.'"/>
+                <a href="#" t-on-click.prevent="goToRecord" t-esc="data.name"/>
+                <span t-if="data.type === 'operation'" class="ms-1 badge text-bg-primary">Operation</span>
+                <span t-if="data.type === 'bom'" class="ms-1 badge text-bg-secondary">v<t t-esc="data.bom_version"/></span>
+                <span t-if="data.type === 'component'" class="ms-1 badge fw-normal text-muted border">v0</span>
+            </div>
+        </td>
+        <td class="text-end">
+            <t t-if="data.type !== 'operation'" t-esc="formatFloat(data.quantity, {'digits': [false, props.precision]})"/>
+        </td>
+        <td t-if="props.showUom" class="text-start" t-esc="data.uom_name"/>
+    </tr>
+
+</templates>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo>
+
+	<record id="account_move_form_view" model="ir.ui.view">
+        <field name="name">account.move.form.view</field>
+        <field name="model">account.move</field>
+         <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='delivery_date']" position="before">
+                      <field name="rent_schedule_id"/>
+              </xpath>           
+        </field>
+    </record>
+
+</odoo>

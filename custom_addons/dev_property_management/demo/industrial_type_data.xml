@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo noupdate="1">
+    <record id="workshop_industrial_type" model="industrial.type">
+        <field name="name">Workshop</field>
+    </record>
+    <record id="warehouse_industrial_type" model="industrial.type">
+        <field name="name">Warehouse</field>
+    </record>
+    <record id="cold_storage_industrial_type" model="industrial.type">
+        <field name="name">Cold Storage</field>
+    </record>
+</odoo>

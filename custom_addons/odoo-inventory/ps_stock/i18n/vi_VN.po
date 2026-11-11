@@ -1,0 +1,90 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* ps_stock
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-28 03:15+0000\n"
+"PO-Revision-Date: 2026-08-28 03:15+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: vi_VN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: ps_stock
+#. odoo-python
+#: code:addons/ps_stock/__init__.py:0
+msgid "Cannot initialize PS Inventory required stock settings.\n"
+msgstr "Không thể khởi tạo các cài đặt kho bắt buộc của PS Inventory.\n"
+
+#. module: ps_stock
+#: model_terms:ir.ui.view,arch_db:ps_stock.ps_inv_product_category_form_view_inherit
+msgid "Create Sequence"
+msgstr "Tạo trình tự"
+
+#. module: ps_stock
+#: model:ir.model.fields,field_description:ps_stock.field_product_category__display_name
+#: model:ir.model.fields,field_description:ps_stock.field_product_product__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: ps_stock
+#: model:ir.model.fields,field_description:ps_stock.field_product_category__id
+#: model:ir.model.fields,field_description:ps_stock.field_product_product__id
+msgid "ID"
+msgstr ""
+
+#. module: ps_stock
+#. odoo-python
+#: code:addons/ps_stock/__init__.py:0
+msgid "Missing settings fields: %s"
+msgstr "Thiếu các trường cài đặt: %s"
+
+#. module: ps_stock
+#: model:ir.model,name:ps_stock.model_product_category
+msgid "Product Category"
+msgstr ""
+
+#. module: ps_stock
+#: model:ir.model.fields,field_description:ps_stock.field_product_product__x_product_code
+#: model_terms:ir.ui.view,arch_db:ps_stock.product_normal_form_view_x_product_code
+msgid "Product Code"
+msgstr "Mã sản phẩm"
+
+#. module: ps_stock
+#: model:ir.model.fields,field_description:ps_stock.field_product_category__x_code_sequence_id
+msgid "Product Code Sequence"
+msgstr "Trình tự mã sản phẩm"
+
+#. module: ps_stock
+#: model:ir.model,name:ps_stock.model_product_product
+msgid "Product Variant"
+msgstr ""
+
+#. module: ps_stock
+#: model:ir.model.fields,help:ps_stock.field_product_category__x_sequence_preview
+msgid "Preview of the next sequence number for the product code."
+msgstr "Xem trước số trình tự tiếp theo cho mã sản phẩm."
+
+#. module: ps_stock
+#: model_terms:ir.ui.view,arch_db:ps_stock.ps_inv_product_category_form_view_inherit
+msgid "Product"
+msgstr "Sản phẩm"
+
+#. module: ps_stock
+#: model:ir.model.fields,field_description:ps_stock.field_product_category__x_sequence_preview
+msgid "Sequence Preview"
+msgstr "Xem trước trình tự"
+
+#. module: ps_stock
+#: model:ir.model.fields,help:ps_stock.field_product_product__x_product_code
+msgid ""
+"Unique code for the product, generated based on category prefix and "
+"sequence."
+msgstr ""
+"Mã duy nhất của sản phẩm, được tạo dựa trên tiền tố danh mục và trình tự."

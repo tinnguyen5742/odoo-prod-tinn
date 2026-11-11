@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Property Detail Page Template - Housing.com Inspired Design -->
+    <template id="website_property_detail" name="Property Detail Page">
+        <t t-call="website.layout">
+            <t t-set="additional_title" t-value="property.name"/>
+            
+            <div class="property-detail-wrapper">
+                <!-- Breadcrumb Bar -->
+                <div class="breadcrumb-bar">
+                    <div class="container">
+                        <nav class="breadcrumb-nav">
+                            <a href="/properties">Home</a>
+                            <span class="sep">/</span>
+                            <a href="/properties/all">Properties</a>
+                            <span class="sep">/</span>
+                            <span class="current" t-esc="property.name"/>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- Main Header Section -->
+                <div class="property-header-section">
+                    <div class="container">
+                        <div class="header-content">
+                            <div class="header-left">
+                                <!-- Title -->
+                                <h1 class="property-name" t-esc="property.name"/>
+                                
+                                <!-- Address -->
+                                <div class="address-line">
+                                    <i class="fa fa-map-marker"></i>
+                                    <t t-if="property.street" t-esc="property.street"/>
+                                    <t t-if="property.street2">, <t t-esc="property.street2"/></t>
+                                    <t t-if="property.city_id">, <t t-esc="property.city_id.name"/></t>
+                                    <t t-if="property.state_id">, <t t-esc="property.state_id.name"/></t>
+                                    <t t-if="property.zip"> - <t t-esc="property.zip"/></t>
+                                </div>
+                                <div class="price-section">
+                                    <t t-if="property.property_purpose == 'sell' and property.price_amount">
+                                        <div class="price-row">
+                                            <span class="price-amount">
+                                                <t t-if="property.price_amount >= 10000000">
+                                                    ₹<t t-esc="'{:.2f}'.format(property.price_amount / 10000000)"/> Cr
+                                                </t>
+                                                <t t-elif="property.price_amount >= 100000">
+                                                    ₹<t t-esc="'{:.2f}'.format(property.price_amount / 100000)"/> L
+                                                </t>
+                                                <t t-else="">
+                                                    ₹<t t-esc="'{:,.0f}'.format(property.price_amount)"/>
+                                                </t>
+                                            </span>
+                                            <t t-if="property.total_square_foot">
+                                                <span class="price-divider">|</span>
+                                                <span class="price-sqft">₹<t t-esc="'{:,.0f}'.format(property.price_amount / property.total_square_foot)"/>/sq.ft</span>
+                                            </t>
+                                        </div>
+                                    </t>
+                                    <t t-elif="property.property_purpose == 'rent' and property.rent_amount">
+                                        <div class="price-row">
+                                            <span class="price-amount">₹<t t-esc="'{:,.0f}'.format(property.rent_amount)"/>/mo</span>
+                                        </div>
+                                        <t t-if="property.deposit_amount">
+                                            <div class="deposit-line">Deposit: ₹<t t-esc="'{:,.0f}'.format(property.deposit_amount)"/></div>
+                                        </t>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="price-row">
+                                            <span class="price-amount">Price on Request</span>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                            
+                            <div class="header-right">
+                                <a href="#contactSection" class="contact-btn">
+                                    <i class="fa fa-phone"></i> Contact Seller
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gallery Section -->
+                <div class="gallery-section">
+                    <div class="container">
+                        <div class="gallery-grid">
+                            <div class="gallery-main">
+                                <t t-if="property.photo">
+                                    <img t-attf-src="/properties/image/#{property.id}" t-att-alt="property.name" id="mainImage"/>
+                                </t>
+                                <t t-else="">
+                                    <img src="/dev_property_management/static/src/img/no-image.svg" alt="No Image" id="mainImage"/>
+                                </t>
+                                <div class="gallery-counter">
+                                    <i class="fa fa-image"></i>
+                                    <span id="imageCount">1/<t t-esc="1 + len(property.property_image_ids)"/></span>
+                                </div>
+                                <t t-if="len(property.property_image_ids) > 0">
+                                    <button class="gallery-arrow prev" onclick="changeImage(-1)"><i class="fa fa-chevron-left"></i></button>
+                                    <button class="gallery-arrow next" onclick="changeImage(1)"><i class="fa fa-chevron-right"></i></button>
+                                </t>
+                            </div>
+                            <t t-if="property.property_image_ids">
+                                <div class="gallery-thumbs">
+                                    <t t-foreach="property.property_image_ids[:3]" t-as="img">
+                                        <div class="thumb-item" t-attf-onclick="setImage('/properties/gallery/#{img.id}', #{img_index + 2})">
+                                            <img t-attf-src="/properties/gallery/#{img.id}" t-att-alt="property.name"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="len(property.property_image_ids) > 3">
+                                        <div class="thumb-item more-photos" onclick="openGalleryModal()">
+                                            <span>+<t t-esc="len(property.property_image_ids) - 3"/> Photos</span>
+                                        </div>
+                                    </t>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sticky Navigation -->
+                <div class="sticky-nav" id="stickyNav">
+                    <div class="container">
+                        <div class="nav-tabs pt-5">
+                            <a href="#overview" class="nav-tab active">Overview</a>
+                            <t t-if="property.amenity_ids">
+                                <a href="#amenities" class="nav-tab">Amenities</a>
+                            </t>
+                            <t t-if="property.floor_plan_image_ids">
+                                <a href="#floorPlan" class="nav-tab">Floor Plan</a>
+                            </t>
+                            <a href="#specifications" class="nav-tab">Specifications</a>
+                            <t t-if="property.nearby_connectivity_ids">
+                                <a href="#location" class="nav-tab">Location</a>
+                            </t>
+                            <a href="#priceDetails" class="nav-tab">Price</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="detail-content">
+                    <div class="container">
+                        <div class="content-layout">
+                            <!-- Left Column -->
+                            <div class="main-column">
+                                
+                                <!-- Quick Info Bar -->
+                                <div class="quick-info-bar">
+                                    <t t-if="property.bedroom">
+                                        <div class="info-item">
+                                            <i class="fa fa-bed"></i>
+                                            <span><t t-esc="int(property.bedroom)"/> Beds</span>
+                                        </div>
+                                    </t>
+                                    <t t-if="property.bathroom">
+                                        <div class="info-item">
+                                            <i class="fa fa-bath"></i>
+                                            <span><t t-esc="int(property.bathroom)"/> Baths</span>
+                                        </div>
+                                    </t>
+                                    <t t-if="property.total_square_foot">
+                                        <div class="info-item">
+                                            <i class="fa fa-expand"></i>
+                                            <span><t t-esc="'{:,.0f}'.format(property.total_square_foot)"/> sq.ft</span>
+                                        </div>
+                                    </t>
+                                    <t t-if="property.on_floor">
+                                        <div class="info-item">
+                                            <i class="fa fa-building-o"></i>
+                                            <span>Floor <t t-esc="property.on_floor"/></span>
+                                        </div>
+                                    </t>
+                                    <t t-if="property.furnishing">
+                                        <div class="info-item">
+                                            <i class="fa fa-television"></i>
+                                            <span>
+                                                <t t-if="property.furnishing == 'fully_furnished'">Furnished</t>
+                                                <t t-elif="property.furnishing == 'semi_furnished'">Semi-Furnished</t>
+                                                <t t-else="">Unfurnished</t>
+                                            </span>
+                                        </div>
+                                    </t>
+                                    <t t-if="property.facing_id">
+                                        <div class="info-item">
+                                            <i class="fa fa-compass"></i>
+                                            <span><t t-esc="property.facing_id.name"/> Facing</span>
+                                        </div>
+                                    </t>
+                                </div>
+
+                                <!-- Overview Section -->
+                                <div class="content-card" id="overview">
+                                    <h2 class="card-title mt-3">Overview</h2>
+                                    
+                                    <t t-if="property.description">
+                                        <div class="description-text">
+                                            <t t-raw="property.description"/>
+                                        </div>
+                                    </t>
+                                    
+                                    <div class="overview-highlights">
+                                        <div class="highlight-grid">
+                                            <t t-if="property.property_type">
+                                                <div class="highlight-box">
+                                                    <div class="highlight-icon"><i class="fa fa-home"></i></div>
+                                                    <div class="highlight-text">
+                                                        <span class="h-label">Property Type</span>
+                                                        <span class="h-value" t-esc="property.property_type.capitalize()"/>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                            <t t-if="property.property_purpose">
+                                                <div class="highlight-box">
+                                                    <div class="highlight-icon"><i class="fa fa-tag"></i></div>
+                                                    <div class="highlight-text">
+                                                        <span class="h-label">Purpose</span>
+                                                        <span class="h-value">
+                                                            <t t-if="property.property_purpose == 'sell'">For Sale</t>
+                                                            <t t-else="">For Rent</t>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                            <t t-if="property.property_status">
+                                                <div class="highlight-box">
+                                                    <div class="highlight-icon"><i class="fa fa-info-circle"></i></div>
+                                                    <div class="highlight-text">
+                                                        <span class="h-label">Status</span>
+                                                        <span class="h-value">
+                                                            <t t-if="property.property_status == 'new'">New</t>
+                                                            <t t-elif="property.property_status == 're_sale'">Resale</t>
+                                                            <t t-else="">Under Construction</t>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                            <t t-if="property.construct_year">
+                                                <div class="highlight-box">
+                                                    <div class="highlight-icon"><i class="fa fa-calendar"></i></div>
+                                                    <div class="highlight-text">
+                                                        <span class="h-label">Built Year</span>
+                                                        <span class="h-value" t-esc="property.construct_year"/>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                            <t t-if="property.property_age">
+                                                <div class="highlight-box">
+                                                    <div class="highlight-icon"><i class="fa fa-clock-o"></i></div>
+                                                    <div class="highlight-text">
+                                                        <span class="h-label">Property Age</span>
+                                                        <span class="h-value" t-esc="property.property_age"/>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                            <t t-if="property.total_floor">
+                                                <div class="highlight-box">
+                                                    <div class="highlight-icon"><i class="fa fa-building"></i></div>
+                                                    <div class="highlight-text">
+                                                        <span class="h-label">Total Floors</span>
+                                                        <span class="h-value"><t t-esc="property.total_floor"/></span>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Amenities Section -->
+                                <t t-if="property.amenity_ids">
+                                    <div class="content-card" id="amenities">
+                                        <h2 class="card-title mt-3">Amenities</h2>
+                                        <div class="amenities-list">
+                                            <t t-foreach="property.amenity_ids" t-as="amenity">
+                                                <div class="amenity-item">
+                                                    <i class="fa fa-check-circle"></i>
+                                                    <span t-esc="amenity.name"/>
+                                                </div>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </t>
+
+                                <!-- Floor Plan Section -->
+                                <t t-if="property.floor_plan_image_ids">
+                                    <div class="content-card" id="floorPlan">
+                                        <h2 class="card-title mt-3">Floor Plan</h2>
+                                        <div class="floor-plans">
+                                            <t t-foreach="property.floor_plan_image_ids" t-as="plan">
+                                                <div class="plan-card" onclick="openPlanModal(this.querySelector('img').src)">
+                                                    <img t-attf-src="/properties/floorplan/#{plan.id}" t-att-alt="plan.name or 'Floor Plan'"/>
+                                                    <div class="plan-overlay">
+                                                        <i class="fa fa-expand"></i>
+                                                        <span>Click to expand</span>
+                                                    </div>
+                                                    <t t-if="plan.name">
+                                                        <div class="plan-name" t-esc="plan.name"/>
+                                                    </t>
+                                                </div>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </t>
+
+                                <!-- Specifications Section -->
+                                <div class="content-card" id="specifications">
+                                    <h2 class="card-title mt-3">Specifications</h2>
+                                    <div class="specs-grid">
+                                        <!-- Property Details -->
+                                        <div class="specs-group">
+                                            <h3 class="specs-subtitle">Property Details</h3>
+                                            <div class="specs-list">
+                                                <t t-if="property.residential_type_id">
+                                                    <div class="spec-row">
+                                                        <span class="spec-label">Residential Type</span>
+                                                        <span class="spec-value" t-esc="property.residential_type_id.name"/>
+                                                    </div>
+                                                </t>
+                                                <t t-if="property.commercial_type_id">
+                                                    <div class="spec-row">
+                                                        <span class="spec-label">Commercial Type</span>
+                                                        <span class="spec-value" t-esc="property.commercial_type_id.name"/>
+                                                    </div>
+                                                </t>
+                                                <t t-if="property.industrial_type_id">
+                                                    <div class="spec-row">
+                                                        <span class="spec-label">Industrial Type</span>
+                                                        <span class="spec-value" t-esc="property.industrial_type_id.name"/>
+                                                    </div>
+                                                </t>
+                                                <t t-if="property.flat_type_id">
+                                                    <div class="spec-row">
+                                                        <span class="spec-label">Configuration</span>
+                                                        <span class="spec-value" t-esc="property.flat_type_id.name"/>
+                                                    </div>
+                                                </t>
+                                                <t t-if="property.bedroom">
+                                                    <div class="spec-row">
+                                                        <span class="spec-label">Bedrooms</span>
+                                                        <span class="spec-value"><t t-esc="int(property.bedroom)"/></span>
+                                                    </div>
+                                                </t>
+                                                <t t-if="property.bathroom">
+                                                    <div class="spec-row">
+                                                        <span class="spec-label">Bathrooms</span>
+                                                        <span class="spec-value"><t t-esc="int(property.bathroom)"/></span>
+                                                    </div>
+                                                </t>
+                                                <t t-if="property.land_title_id">
+                                                    <div class="spec-row">
+                                                        <span class="spec-label">Ownership</span>
+                                                        <span class="spec-value" t-esc="property.land_title_id.name"/>
+                                                    </div>
+                                                </t>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Area Details -->
+                                        <div class="specs-group">
+                                            <h3 class="specs-subtitle mt-3">Area</h3>
+                                            <div class="specs-list">
+                                                <t t-if="property.total_square_foot">
+                                                    <div class="spec-row">
+                                                        <span class="spec-label">Super Built-up Area</span>
+                                                        <span class="spec-value"><t t-esc="'{:,.0f}'.format(property.total_square_foot)"/> sq.ft</span>
+                                                    </div>
+                                                </t>
+                                                <t t-if="property.total_carpet_area">
+                                                    <div class="spec-row">
+                                                        <span class="spec-label">Carpet Area</span>
+                                                        <span class="spec-value"><t t-esc="'{:,.0f}'.format(property.total_carpet_area)"/> sq.ft</span>
+                                                    </div>
+                                                </t>
+                                                <t t-if="property.on_floor">
+                                                    <div class="spec-row">
+                                                        <span class="spec-label">Floor Number</span>
+                                                        <span class="spec-value"><t t-esc="property.on_floor"/> of <t t-esc="property.total_floor or '-'"/></span>
+                                                    </div>
+                                                </t>
+                                                <t t-if="property.facing_id">
+                                                    <div class="spec-row">
+                                                        <span class="spec-label">Facing</span>
+                                                        <span class="spec-value" t-esc="property.facing_id.name"/>
+                                                    </div>
+                                                </t>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Additional Features -->
+                                        <div class="specs-group">
+                                            <h3 class="specs-subtitle mt-3">Features</h3>
+                                            <div class="specs-list">
+                                                <t t-if="property.furnishing">
+                                                    <div class="spec-row">
+                                                        <span class="spec-label">Furnishing</span>
+                                                        <span class="spec-value" t-esc="property.furnishing.replace('_', ' ').title()"/>
+                                                    </div>
+                                                </t>
+                                                <t t-if="property.four_wheeler_parking">
+                                                    <div class="spec-row">
+                                                        <span class="spec-label">Car Parking</span>
+                                                        <span class="spec-value"><t t-esc="property.four_wheeler_parking_allot or 0"/></span>
+                                                    </div>
+                                                </t>
+                                                <t t-if="property.two_wheeler_parking">
+                                                    <div class="spec-row">
+                                                        <span class="spec-label">Two Wheeler Parking</span>
+                                                        <span class="spec-value"><t t-esc="property.two_wheeler_parking_allot or 0"/></span>
+                                                    </div>
+                                                </t>
+                                                <t t-if="property.alarms and property.alarms != 'no_alarm'">
+                                                    <div class="spec-row">
+                                                        <span class="spec-label">Safety</span>
+                                                        <span class="spec-value">
+                                                            <t t-if="property.alarms == 'fire'">Fire Alarm</t>
+                                                            <t t-elif="property.alarms == 'smoke'">Smoke Alarm</t>
+                                                            <t t-else="">Fire &amp; Smoke Alarm</t>
+                                                        </span>
+                                                    </div>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Area Measurements -->
+                                <t t-if="property.area_measurement_ids">
+                                    <div class="content-card">
+                                        <h2 class="card-title mt-3">Room-wise Area</h2>
+                                        <div class="area-table-wrap">
+                                            <table class="area-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Room</th>
+                                                        <th>Size (L × W)</th>
+                                                        <th>Area</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-foreach="property.area_measurement_ids" t-as="area">
+                                                        <tr>
+                                                            <td t-esc="area.name"/>
+                                                            <td><t t-esc="area.length or '-'"/> × <t t-esc="area.width or '-'"/> ft</td>
+                                                            <td><strong><t t-esc="'{:.0f}'.format(area.carpet_area) if area.carpet_area else '-'"/> sq.ft</strong></td>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </t>
+
+                                <!-- Location Section -->
+                                <t t-if="property.nearby_connectivity_ids">
+                                    <div class="content-card" id="location">
+                                        <h2 class="card-title mt-3">Location &amp; Nearby</h2>
+                                        <div class="location-content">
+                                            <div class="address-box">
+                                                <i class="fa fa-map-marker"></i>
+                                                <div class="address-text">
+                                                    <t t-if="property.street"><t t-esc="property.street"/>, </t>
+                                                    <t t-if="property.street2"><t t-esc="property.street2"/>, </t>
+                                                    <t t-if="property.city_id"><t t-esc="property.city_id.name"/>, </t>
+                                                    <t t-if="property.state_id"><t t-esc="property.state_id.name"/></t>
+                                                    <t t-if="property.zip"> - <t t-esc="property.zip"/></t>
+                                                </div>
+                                            </div>
+                                            <div class="nearby-list">
+                                                <h4>What's Nearby</h4>
+                                                <div class="nearby-grid">
+                                                    <t t-foreach="property.nearby_connectivity_ids" t-as="nearby">
+                                                        <div class="nearby-item">
+                                                            <i class="fa fa-map-pin"></i>
+                                                            <span t-esc="nearby.name"/>
+                                                        </div>
+                                                    </t>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+
+                                <!-- Price Details -->
+                                <div class="content-card" id="priceDetails">
+                                    <h2 class="card-title mt-3">Price Breakup</h2>
+                                    <div class="price-table">
+                                        <t t-if="property.property_purpose == 'sell' and property.price_amount">
+                                            <div class="price-row-item main">
+                                                <span class="price-item-label">Total Price</span>
+                                                <span class="price-item-value">₹<t t-esc="'{:,.0f}'.format(property.price_amount)"/></span>
+                                            </div>
+                                            <t t-if="property.total_square_foot">
+                                                <div class="price-row-item">
+                                                    <span class="price-item-label">Price per sq.ft</span>
+                                                    <span class="price-item-value">₹<t t-esc="'{:,.0f}'.format(property.price_amount / property.total_square_foot)"/></span>
+                                                </div>
+                                            </t>
+                                        </t>
+                                        <t t-elif="property.property_purpose == 'rent'">
+                                            <t t-if="property.rent_amount">
+                                                <div class="price-row-item main">
+                                                    <span class="price-item-label">Monthly Rent</span>
+                                                    <span class="price-item-value">₹<t t-esc="'{:,.0f}'.format(property.rent_amount)"/></span>
+                                                </div>
+                                            </t>
+                                            <t t-if="property.deposit_amount">
+                                                <div class="price-row-item">
+                                                    <span class="price-item-label">Security Deposit</span>
+                                                    <span class="price-item-value">₹<t t-esc="'{:,.0f}'.format(property.deposit_amount)"/></span>
+                                                </div>
+                                            </t>
+                                        </t>
+                                    </div>
+                                </div>
+
+                                <!-- Documents -->
+                                <!-- <t t-if="property.proprty_document_ids">
+                                    <div class="content-card">
+                                        <h2 class="card-title ">Downloads</h2>
+                                        <div class="downloads-list">
+                                            <t t-foreach="property.proprty_document_ids" t-as="doc">
+                                                <div class="download-item-container">
+                                                    <a t-attf-href="/properties/document/#{doc.id}" 
+                                                       class="download-item" target="_blank" title="View Document">
+                                                        <i class="fa fa-file-o"></i>
+                                                        <span t-esc="doc.name or 'Document'"/>
+                                                        <i class="fa fa-external-link"></i>
+                                                    </a>
+                                                    <a t-attf-href="/properties/document/#{doc.id}?download=1" 
+                                                       class="download-btn-small" title="Download">
+                                                        <i class="fa fa-download"></i>
+                                                    </a>
+                                                </div>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </t> -->
+
+                                <t t-if="property.proprty_document_ids and len(property.proprty_document_ids) &gt; 0">
+                                    <div class="content-card">
+                                        <h2 class="card-title">Downloads</h2>
+                                        <div class="downloads-list">
+                                            <t t-foreach="property.proprty_document_ids" t-as="doc">
+                                                <div class="download-item-container">
+
+                                                    <!-- View -->
+                                                    <a t-att-href="'/web/content/%s?download=false' % doc.id"
+                                                    class="download-item"
+                                                    target="_blank"
+                                                    title="View Document">
+                                                        <i class="fa fa-file-o"></i>
+                                                        <span t-esc="doc.name or 'Document'"/>
+                                                        <i class="fa fa-external-link"></i>
+                                                    </a>
+
+                                                    <!-- Download -->
+                                                    <a t-att-href="'/web/content/%s?download=true' % doc.id"
+                                                    class="download-btn-small"
+                                                    title="Download">
+                                                        <i class="fa fa-download"></i>
+                                                    </a>
+                                                </div>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+
+                            <!-- Sidebar -->
+                            <div class="sidebar-column" id="contactSection">
+                                <!-- Contact Form Card -->
+                                <div class="sidebar-card contact-card">
+                                    <div class="card-header">
+                                        <h3>Contact Seller</h3>
+                                        <p>Get a callback from the property owner</p>
+                                    </div>
+                                    <form action="/properties/inquiry" method="post" class="contact-form">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input type="hidden" name="property_id" t-att-value="property.id"/>
+                                        
+                                        <div class="form-field">
+                                            <input type="text" name="name" placeholder="Your Name *" required="required"
+                                                   t-att-value="request.env.user.partner_id.name if request.env.user and not request.env.user._is_public() else ''"/>
+                                        </div>
+                                        <div class="form-field">
+                                            <input type="email" name="email" placeholder="Email Address *" required="required"
+                                                   t-att-value="request.env.user.partner_id.email if request.env.user and not request.env.user._is_public() else ''"/>
+                                        </div>
+                                        <div class="form-field">
+                                            <input type="tel" name="phone" placeholder="Phone Number *" required="required"
+                                                   t-att-value="request.env.user.partner_id.phone or request.env.user.partner_id.phone if request.env.user and not request.env.user._is_public() else ''"/>
+                                        </div>
+                                        <div class="form-field">
+                                            <textarea name="message" rows="3" placeholder="I'm interested in this property..."></textarea>
+                                        </div>
+                                        <button type="submit" class="submit-btn">
+                                            Get Contact Details
+                                        </button>
+                                    </form>
+                                    <p class="consent-text">
+                                        <i class="fa fa-lock"></i> Your information is safe with us
+                                    </p>
+                                </div>
+
+                                <!-- Share Card -->
+                                <div class="sidebar-card share-card">
+                                    <h4>Share Property</h4>
+                                    <div class="share-btns">
+                                        <a t-attf-href="https://wa.me/?text=#{property.name}: #{request.httprequest.url}" target="_blank" class="share-btn whatsapp">
+                                            <i class="fa fa-whatsapp"></i>
+                                        </a>
+                                        <a t-attf-href="https://www.facebook.com/sharer/sharer.php?u=#{request.httprequest.url}" target="_blank" class="share-btn facebook">
+                                            <i class="fa fa-facebook"></i>
+                                        </a>
+                                        <a t-attf-href="https://twitter.com/intent/tweet?url=#{request.httprequest.url}" target="_blank" class="share-btn twitter">
+                                            <i class="fa fa-twitter"></i>
+                                        </a>
+                                        <a t-attf-href="mailto:?subject=#{property.name}&amp;body=#{request.httprequest.url}" class="share-btn email">
+                                            <i class="fa fa-envelope"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Similar Properties -->
+                <t t-if="similar_properties">
+                    <div class="similar-section">
+                        <div class="container">
+                            <h2 class="section-heading">Similar Properties</h2>
+                            <div class="property-grid">
+                                <t t-foreach="similar_properties" t-as="prop">
+                                    <t t-set="property" t-value="prop"/>
+                                    <t t-call="dev_property_management.website_property_card"/>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+
+            <!-- Floor Plan Modal -->
+            <div id="planModal" class="plan-modal" onclick="if(event.target===this)closePlanModal()">
+                <div class="modal-content">
+                    <span class="close-modal" onclick="closePlanModal()">&amp;times;</span>
+                    <img id="modalPlanImg" src="" alt="Floor Plan"/>
+                </div>
+            </div>
+            
+            <!-- Page Scripts -->
+            <script type="text/javascript">
+            //<![CDATA[
+                var currentImg = 0;
+                var totalImages = document.querySelectorAll('.thumb-item:not(.more-photos)').length + 1;
+                var allImages = [document.getElementById('mainImage').src];
+                document.querySelectorAll('.thumb-item:not(.more-photos) img').forEach(function(img) {
+                    allImages.push(img.src);
+                });
+                
+                function setImage(src, index) {
+                    document.getElementById('mainImage').src = src;
+                    currentImg = index - 1;
+                    document.getElementById('imageCount').textContent = index + '/' + totalImages;
+                }
+                
+                function changeImage(dir) {
+                    currentImg += dir;
+                    if (currentImg < 0) currentImg = allImages.length - 1;
+                    if (currentImg >= allImages.length) currentImg = 0;
+                    document.getElementById('mainImage').src = allImages[currentImg];
+                    document.getElementById('imageCount').textContent = (currentImg + 1) + '/' + totalImages;
+                }
+                
+                function openPlanModal(src) {
+                    document.getElementById('modalPlanImg').src = src;
+                    document.getElementById('planModal').style.display = 'flex';
+                }
+                
+                function closePlanModal() {
+                    document.getElementById('planModal').style.display = 'none';
+                }
+                
+                // Sticky nav
+                var stickyNav = document.getElementById('stickyNav');
+                var navOffset = stickyNav ? stickyNav.offsetTop : 0;
+                
+                window.onscroll = function() {
+                    if (stickyNav) {
+                        if (window.pageYOffset > navOffset) {
+                            stickyNav.classList.add('fixed');
+                        } else {
+                            stickyNav.classList.remove('fixed');
+                        }
+                    }
+                };
+                
+                // Smooth scroll for nav tabs
+                document.querySelectorAll('.nav-tab').forEach(function(tab) {
+                    tab.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        var target = document.querySelector(this.getAttribute('href'));
+                        if (target) {
+                            window.scrollTo({
+                                top: target.offsetTop - 70,
+                                behavior: 'smooth'
+                            });
+                        }
+                    });
+                });
+                
+                // Keyboard navigation
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'ArrowLeft') changeImage(-1);
+                    if (e.key === 'ArrowRight') changeImage(1);
+                    if (e.key === 'Escape') closePlanModal();
+                });
+            //]]>
+            </script>
+        </t>
+    </template>
+</odoo>

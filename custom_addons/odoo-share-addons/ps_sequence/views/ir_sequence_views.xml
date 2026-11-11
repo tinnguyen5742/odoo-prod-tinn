@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ps_sequence_view_inherit" model="ir.ui.view">
+        <field name="name">ps.sequence.view.inherit</field>
+        <field name="model">ir.sequence</field>
+        <field name="inherit_id" ref="base.sequence_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='sequence']/group/group/field[@name='prefix']" position="attributes">
+                <attribute name="readonly">x_use_segment_format</attribute>
+            </xpath>
+            <xpath expr="//sheet/group" position="after">
+                <group string="Segment Format">
+                    <field name="x_use_segment_format"/>
+                    <field name="x_sequence_preview" invisible="not x_use_segment_format"/>
+                </group>
+            </xpath>
+            <xpath expr="//page[@name='sequence']" position="after">
+                <page string="Segment Format Builder" name="segment_format" invisible="not x_use_segment_format">
+                    <field name="x_format_line_ids">
+                        <list editable="bottom">
+                            <field name="segment_number" widget="handle" string="Segment Number"/>
+                            <field name="type"/>
+                            <field name="value" readonly="type != 'constant'" required="type == 'constant'"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

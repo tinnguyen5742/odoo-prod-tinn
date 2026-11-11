@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ps_mfg_production_sequencing_view_list" model="ir.ui.view">
+        <field name="name">ps.mfg.production.sequencing.view.list</field>
+        <field name="model">ps.mfg.production.sequencing</field>
+        <field name="arch" type="xml">
+            <list string="Production Sequencing">
+                <field name="code"/>
+                <field name="description"/>
+                <field name="sequencing_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="ps_mfg_production_sequencing_view_form" model="ir.ui.view">
+        <field name="name">ps.mfg.production.sequencing.view.form</field>
+        <field name="model">ps.mfg.production.sequencing</field>
+        <field name="arch" type="xml">
+            <form string="Production Sequencing">
+                <sheet>
+                    <field name="company_id" invisible="1"/>
+                    <field name="existing_production_ids" invisible="1"/>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                        </group>
+                        <group>
+                            <field name="sequencing_date"/>
+                        </group>
+                    </group>
+                    <separator string="Description"/>
+                    <field name="description" placeholder="Enter sequencing description..." nolabel="1"/>
+                    <notebook>
+                        <page string="Details">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="line_number" readonly="1"/>
+                                    <field name="production_id" domain="['|', ('company_id', '=', False), ('company_id', '=', parent.company_id), ('id', 'not in', parent.existing_production_ids)]"/>
+                                    <field name="product_code"/>
+                                    <field name="product_id"/>
+                                    <field name="quantity"/>
+                                    <field name="product_uom_id"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ps_mfg_production_sequencing_view_search" model="ir.ui.view">
+        <field name="name">ps.mfg.production.sequencing.view.search</field>
+        <field name="model">ps.mfg.production.sequencing</field>
+        <field name="arch" type="xml">
+            <search string="Search Production Sequencing">
+                <field name="code"/>
+                <field name="description"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="ps_mfg_production_sequencing_action" model="ir.actions.act_window">
+        <field name="name">Production Sequencing</field>
+        <field name="res_model">ps.mfg.production.sequencing</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="ps_mfg_production_sequencing_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a new Production Sequencing</p>
+        </field>
+    </record>
+</odoo>

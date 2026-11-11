@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Khổ A4 Ngang -->
+    <record id="paperformat_landscape_report_1" model="report.paperformat">
+        <field name="name">Khổ A4 Ngang - Báo cáo Năm</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">5</field>
+    </record>
+
+    <!-- Action báo cáo -->
+    <record id="action_report_purchase_by_year" model="ir.actions.report">
+        <field name="name">Tổng hợp giá trị mua hàng theo năm</field>
+        <field name="model">purchase.order</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">custom_purchase.report_purchase_by_year_template</field>
+        <field name="report_file">custom_purchase.report_purchase_by_year_template</field>
+        <field name="print_report_name">'Tong_hop_mua_hang_theo_nam'</field>
+        <field name="paperformat_id" ref="base.paperformat_euro"/>
+    </record>
+
+    <!-- Giao diện báo cáo động theo lựa chọn người dùng -->
+    <template id="report_purchase_by_year_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-call="custom_purchase.report_purchase_shared_styles"/>
+                <div class="page">
+                    <!-- Tên Công ty -->
+                    <div class="company-title">
+                        <t t-esc="company.name"/>
+                    </div>
+
+                    <!-- Tiêu đề Báo cáo -->
+                    <div class="report-title">
+                        TỔNG HỢP GIÁ TRỊ MUA HÀNG NĂM <t t-esc="year"/>
+                    </div>
+
+                    <!-- Bảng dữ liệu 12 tháng -->
+                    <table class="tbl-report">
+                        <thead>
+                            <tr>
+                                <th style="width: 3%;">STT</th>
+                                <th style="width: 25%;">Diễn giải</th>
+                                <th style="width: 5.5%;">T1</th>
+                                <th style="width: 5.5%;">T2</th>
+                                <th style="width: 5.5%;">T3</th>
+                                <th style="width: 5.5%;">T4</th>
+                                <th style="width: 5.5%;">T5</th>
+                                <th style="width: 5.5%;">T6</th>
+                                <th style="width: 5.5%;">T7</th>
+                                <th style="width: 5.5%;">T8</th>
+                                <th style="width: 5.5%;">T9</th>
+                                <th style="width: 5.5%;">T10</th>
+                                <th style="width: 5.5%;">T11</th>
+                                <th style="width: 5.5%;">T12</th>
+                                <th style="width: 6.0%;">Tổng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="stt" t-value="1"/>
+                            <t t-foreach="matrix.keys()" t-as="vendor">
+                                <tr>
+                                    <td class="text-center"><t t-esc="stt"/></td>
+                                    <td><t t-esc="vendor.name"/></td>
+                                    
+                                    <!-- Lặp từ Tháng 1 đến Tháng 12 -->
+                                    <t t-foreach="range(1, 13)" t-as="m">
+                                        <td class="text-end">
+                                            <span t-if="matrix[vendor][m] != 0">
+                                                <t t-esc="matrix[vendor][m]" t-options='{"widget": "float", "precision": 0}'/>
+                                            </span>
+                                        </td>
+                                    </t>
+
+                                    <!-- Tổng cộng dòng -->
+                                    <td class="text-end" style="font-weight: bold;">
+                                        <t t-esc="matrix[vendor]['total']" t-options='{"widget": "float", "precision": 0}'/>
+                                    </td>
+                                </tr>
+                                <t t-set="stt" t-value="stt + 1"/>
+                            </t>
+
+                            <!-- Dòng Tổng cộng chân bảng -->
+                            <tr class="tr-total">
+                                <td colspan="2" class="text-center">Tổng cộng</td>
+                                <t t-foreach="range(1, 13)" t-as="m">
+                                    <td class="text-end">
+                                        <t t-esc="monthly_totals[m]" t-options='{"widget": "float", "precision": 0}'/>
+                                    </td>
+                                </t>
+                                <td class="text-end">
+                                    <t t-esc="grand_total" t-options='{"widget": "float", "precision": 0}'/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Chữ ký người lập -->
+                    <div class="row mt-4" style="page-break-inside: avoid;">
+                        <div class="col-8"></div>
+                        <div class="col-4 text-center" style="font-family: 'Times New Roman', serif;">
+                            <i>Ngày <t t-esc="print_date"/></i><br/>
+                            <strong>Người Lập</strong>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

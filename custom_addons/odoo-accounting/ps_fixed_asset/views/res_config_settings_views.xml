@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_inherit_ps_asset" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.ps.asset</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='account']/block[1]" position="before">
+                <block title="Fixed Assets" name="ps_fixed_asset_setting_container">
+                    <setting id="ps_asset_prefix_setting" string="Asset Code Prefix" help="Set default prefix for Fixed Asset Codes. The system will automatically append a 4-digit sequence (e.g., enter 'TS' to generate TS0001).">
+                        <div class="content-group">
+                            <div class="mt16">
+                                <field name="asset_code_prefix" placeholder="e.g. TS, FA-, MAC_"/>
+                            </div>
+                        </div>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

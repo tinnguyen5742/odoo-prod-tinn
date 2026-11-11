@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo noupdate="1">
+    <record id="shop_commercial_type" model="commercial.type">
+        <field name="name">Shop/Office</field>
+    </record>
+    <record id="hotel_commercial_type" model="commercial.type">
+        <field name="name">Hotel</field>
+    </record>
+    <record id="hospital_commercial_type" model="commercial.type">
+        <field name="name">Hospital</field>
+    </record>
+</odoo>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crm_lead_view_form_project" model="ir.ui.view">
+        <field name="name">crm.lead.view.form.project</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Thêm button quay lại dự án ở CRM -->
+            <xpath expr="//field[@name='stage_id']" position="before">
+                <button name="action_open_source_project"
+                        type="object"
+                        string="← Back Project"
+                        class="btn btn-secondary"
+                        invisible="not x_source_project_id"/>
+            </xpath>
+
+            <!-- Thêm CRM members sau phone -->
+            <xpath expr="//group[@name='opportunity_partner' or @name='lead_info']//div[hasclass('o_row')][field[@name='phone']]" position="after">
+                <field name="x_crm_member_ids" widget="many2many_tags" options="{'no_create': True}"/>
+            </xpath>
+
+            <!-- Thêm Customer Groups sau tag_ids -->
+            <xpath expr="//group[@invisible=&quot;type == 'lead'&quot; or @name='lead_priority']//field[@name='tag_ids']" position="after">
+                <field name="x_customer_group_ids" widget="many2many_tags" options="{'color_field': 'color'}" readonly="1"/>
+                <field name="x_customer_type" readonly="1"/>
+            </xpath>
+
+            <!-- Thêm button chat vào header -->
+            <xpath expr="//header" position="inside">
+                <button name="action_create_crm_channel"
+                        string="Create CRM Chat"
+                        type="object"
+                        class="btn-primary"
+                        invisible="x_discuss_channel_id"/>
+                <button name="action_open_crm_channel"
+                        string="Open Chat"
+                        type="object"
+                        class="btn-secondary"
+                        invisible="not x_discuss_channel_id"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="ps_crm_member_form" model="ir.ui.view">
+        <field name="name">ps_crm.member.form</field>
+        <field name="model">crm.team.member</field>
+        <field name="inherit_id" ref="crm.crm_team_member_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <field name="currency_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//label[@for='assignment_max']" position="before">
+                <label for="x_personal_goal" string="Personal Goal / Month" class="o_form_label text-900"/>
+                <div>
+                    <field name="x_personal_goal" widget="monetary" options="{'currency_field': 'currency_id'}" class="oe_inline"/>
+                    <span> / tháng</span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="ps_crm_member_kanban" model="ir.ui.view">
+        <field name="name">ps_crm.member.kanban</field>
+        <field name="model">crm.team.member</field>
+        <field name="inherit_id" ref="sales_team.crm_team_member_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='active']" position="after">
+                <field name="currency_id"/>
+                <field name="x_personal_goal"/>
+            </xpath>
+            <xpath expr="//main" position="inside">
+                <div class="d-flex align-items-baseline text-break">
+                    <i class="fa fa-bullseye me-1" role="img" aria-label="Goal" title="Goal"/>
+                    <field name="x_personal_goal" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <span> / tháng</span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

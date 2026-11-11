@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo>
+    <record id="popup_booking_window_dev_property_management" model="ir.ui.view">
+        <field name="name">popup_booking_window_dev_property_management_name</field>
+        <field name="model">booking.window</field>
+        <field name="arch" type="xml">
+            <form string="Booking">
+             <separator string="Property Details"/>
+                <group>
+                    <group>
+                        <field name="property_type"/>
+                        <field name="residential_type_id" invisible="property_type != 'residential'" />
+                        <!-- attrs="{'invisible': [('property_type', '!=', 'residential')]}" -->
+                        <field name="commercial_type_id" invisible="property_type != 'commercial'" />
+                        <!-- attrs="{'invisible': [('property_type', '!=', 'commercial')]}" -->
+                        <field name="industrial_type_id" invisible="property_type != 'industrial'" />
+                        <!-- attrs="{'invisible': [('property_type', '!=', 'industrial')]}" -->
+                        <field name="furnishing" invisible="property_type not in ('residential','commercial')" />
+                        <!-- attrs="{'invisible': [('property_type', 'not in', ['residential', 'commercial'])]}" -->
+                        <field name="industrial_location" invisible="property_type != 'industrial'" />
+                      
+                        
+                        
+                    </group>
+                    <group>
+                        <field name="minimum_budget"/>
+                        <field name="maximum_budget"/>
+                        <field name="total_square_foot"/>
+                        <field name="property_status"/>
+                    </group>
+                </group>
+                <separator string="Agent Commission"/>
+                        <group>
+                            <group>
+                                <field name="agent_id"/>
+                            </group>
+                            <group>
+                                <field name="agent_commission_type"/>
+                                <field name="agent_commission_percentage" />
+                                <!-- <field name="agent_commission_amount"/> -->
+                            </group>
+                        </group>
+                <group>
+                    <group string="Selected Property">
+                        <field name="property_id" readonly="1" force_save="1"/>
+                        <field name="price_amount" invisible="property_id == False" />
+                        <!-- attrs="{'invisible': [('property_id', '=',False)]}" -->
+                    </group>
+                    <group string="&#160;">
+                        <field name="partner_id"/>
+                        <field name="ask_price_amount" invisible="property_id == False" />
+                        <!-- attrs="{'invisible': [('property_id', '=', False)]}" -->
+                    </group>
+                </group>
+                <button name="load_properties"
+                        type="object"
+                        string="&#160;Load Properties"
+                        class="oe_highlight  oe_right"
+                        icon="fa-arrow-down"/>
+                
+
+                <separator string="Available Properties"/>
+                <field name="property_line_ids" readonly="1">
+                    <list create="false" editable="bottom">
+                        <field name="property_id"/>
+                        <field name="total_square_foot"/>
+                        <field name="price_amount"/>
+                        <field name="deposit_amount"/>
+                        <field name="owner_partner_id"/>
+                        <field name="contact_phone"/>
+                        <field name="contact_mobile"/>
+                        <button name="select_property"
+                                type="object"
+                                string="&#160;Select Property"
+                                icon="fa-check"/>
+                    </list>
+                    <form>
+                        <group>
+                            <group>
+                                 <field name="property_id"/>
+                            </group>
+                        </group>
+                    </form>
+                </field>
+                <footer>
+                    <button string="Make Booking Request" name="make_booking_request" type="object" class="oe_highlight"/>&#160;&#160;or&#160;&#160;
+                    <button string="Close Window" class="oe_link" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+	<record id="action_booking_window_dev_property_management" model="ir.actions.act_window">
+        <field name="name">Book Property</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">booking.window</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="popup_booking_window_dev_property_management"/>
+        <field name="target">new</field>
+    </record>
+    <record id="server_action_booking_window_dev_property_management" model="ir.actions.server">
+        <field name="name">Book Property</field>
+        <field name="model_id" ref="dev_property_management.model_booking_window"/>
+        <field name="type">ir.actions.server</field>
+        <field name="state">code</field>
+        <field name="code">action = model.action_open_booking_window()</field>
+    </record>
+
+    <!--Menus-->
+    <menuitem name="Book Property"
+              id="menu_book_property"
+              parent="root_menu_property_booking"
+              action="server_action_booking_window_dev_property_management"
+              sequence="1"/>
+
+</odoo>

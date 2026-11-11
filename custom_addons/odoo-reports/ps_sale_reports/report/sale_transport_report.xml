@@ -1,0 +1,68 @@
+<odoo>
+    <record id="action_sale_transport_pdf" model="ir.actions.report">
+        <field name="name">Bảng kê chi tiết vận chuyển</field><field name="model">ps.sale.history.wizard</field>
+        <field name="report_type">qweb-pdf</field><field name="report_name">ps_sale_reports.sale_transport_pdf</field>
+        <field name="report_file">ps_sale_reports.sale_transport_pdf</field>
+        <field name="paperformat_id" ref="ps_sale_reports.paperformat_sale_history"/>
+        <field name="print_report_name">'Chi_tiet_van_chuyen_%s_%s' % (object.date_from, object.date_to)</field>
+    </record>
+    <template id="sale_transport_pdf">
+        <t t-call="web.html_container">
+            <div class="footer" style="text-align:center;font-size:8pt">Trang <span class="page"/> / <span class="topage"/></div>
+            <t t-foreach="reports" t-as="report">
+                <t t-set="wizard" t-value="report['wizard']"/>
+                <div class="article" t-att-data-oe-model="wizard._name" t-att-data-oe-id="wizard.id">
+                    <t t-call="ps_sale_reports.sale_preview_styles"/>
+                    <style>
+                        .ps-transport {font-family:'Times New Roman','Nimbus Roman','DejaVu Serif',serif;font-size:8pt;page-break-after:always;}
+                        .ps-transport:last-child {page-break-after:auto;}
+                        .ps-transport h1 {text-align:center;font-size:18px;font-weight:bold;margin:8px 0;}
+                        .ps-transport .period {text-align:center;margin-bottom:8px;}
+                        .ps-transport .currency {text-align:right;font-size:8pt;margin-bottom:5px;}
+                        .ps-transport table {width:100%;border-collapse:collapse;table-layout:fixed;font-size:7pt;}
+                        .ps-transport th,.ps-transport td {border:1px solid #444;padding:4px 2px;line-height:1.25;word-wrap:break-word;vertical-align:middle;}
+                        .ps-transport th {text-align:center;background:#edf1f6;font-weight:bold;}
+                        .ps-transport tr {page-break-inside:avoid;}
+                        .ps-transport .num {text-align:right;}
+                        .ps-transport .carrier {font-weight:bold;color:#0645AD;}
+                        .ps-transport .total {font-weight:bold;color:#B91C1C;background:#edf1f6;}
+                    </style>
+                    <t t-foreach="report['pages']" t-as="page">
+                        <div class="page ps-report ps-contract ps-transport">
+                            <div class="company"><strong t-out="wizard.company_id.name"/></div>
+                            <h1>BẢNG KÊ CHI TIẾT VẬN CHUYỂN</h1>
+                            <div class="period">Từ ngày <t t-out="format_date(wizard.date_from)"/> đến ngày <t t-out="format_date(wizard.date_to)"/></div>
+                            <div class="currency">ĐVT tiền: <t t-out="report['currency'].name"/></div>
+                            <table>
+                                <colgroup><col style="width:3%"/><col style="width:7%"/><col style="width:9%"/><col style="width:10%"/><col style="width:13%"/><col style="width:12%"/>
+                                    <col style="width:6%"/><col style="width:6%"/><col style="width:5%"/><col style="width:4%"/><col style="width:7%"/><col style="width:5%"/><col style="width:5%"/><col style="width:8%"/></colgroup>
+                                <thead><tr><th colspan="6">&#160;</th><th colspan="3">Số lượng / Trọng lượng / Thể tích</th><th colspan="4">Chi phí vận chuyển dịch vụ thuê</th><th>&#160;</th></tr>
+                                    <tr><th t-foreach="report['headers']" t-as="heading" t-out="heading"/></tr>
+                                </thead>
+                                <tbody><tr t-foreach="page" t-as="row" t-att-class="row['kind']">
+                                    <t t-if="row['kind'] == 'item'">
+                                        <td t-foreach="row['values']" t-as="value" t-att-class="'num' if value_index in (6, 7, 8, 10, 11, 12, 13) else ''">
+                                            <t t-if="value_index == 1" t-out="format_date(value)"/>
+                                            <t t-elif="value_index in (6, 7, 8)" t-out="format_number(value, 3 if value_index == 7 else 2)"/>
+                                            <t t-elif="value_index in (10, 11, 12, 13)" t-out="format_number(value, report['currency'].decimal_places)"/>
+                                            <span t-else="" style="white-space:pre-line" t-out="value"/>
+                                            <div t-if="value_index == 6" t-out="row['order_uom']"/>
+                                        </td>
+                                    </t>
+                                    <t t-else="">
+                                        <td colspan="7"><t t-out="row['label']"/><t t-if="row.get('continued')"> (tiếp)</t></td>
+                                        <td class="num"><t t-if="not row.get('continued')" t-out="format_number(row['totals'][0], 3)"/></td>
+                                        <td class="num"><t t-if="not row.get('continued')" t-out="format_number(row['totals'][1])"/></td>
+                                        <td colspan="4">&#160;</td>
+                                        <td class="num"><t t-if="not row.get('continued')" t-out="format_number(row['totals'][2], report['currency'].decimal_places)"/></td>
+                                    </t>
+                                </tr></tbody>
+                            </table>
+                            <t t-if="page_last" t-call="ps_sale_reports.sale_report_signature"/>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

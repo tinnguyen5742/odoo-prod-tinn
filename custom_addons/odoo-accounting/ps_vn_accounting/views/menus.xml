@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Action mở danh sách hóa đơn VAT -->
+        <record id="ps_action_vat_list" model="ir.actions.act_window">
+            <field name="name">VAT Invoice List</field>
+            <field name="res_model">account.move</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('move_type', 'in', ('out_invoice', 'in_invoice'))]</field>
+            <field name="context">{'default_move_type': 'out_invoice'}</field>
+            <field name="view_ids"
+                   eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'list', 'view_id': ref('ps_view_vat_list')}),
+                          (0, 0, {'view_mode': 'form', 'view_id': ref('account.view_move_form')})]"/>
+            <field name="search_view_id" ref="ps_view_vat_search"/>
+        </record>
+
+        <!-- Menu E-Invoice trong Accounting Configuration -->
+        <menuitem id="ps_menu_einvoice"
+                  name="E-Invoice"
+                  parent="account.menu_finance_configuration"
+                  sequence="100"
+                  groups="account.group_account_invoice,account.group_account_readonly"/>
+
+        <!-- Menu con Danh sách hóa đơn VAT -->
+        <menuitem id="ps_menu_vat_list"
+                  name="VAT Invoice List"
+                  parent="ps_menu_einvoice"
+                  action="ps_action_vat_list"
+                  sequence="10"/>
+
+        <!-- Menu con Cost center -->
+        <menuitem id="ps_menu_cost_center"
+                  name="Cost Center"
+                  parent="account.account_account_menu"
+                  action="ps_action_cost_center"
+                  sequence="15"/>
+
+        <!-- Menu Bảng công thức báo cáo tài chính trong nhóm Accounting -->
+        <menuitem id="ps_menu_financial_report_formula"
+                  name="Financial Report Formulas"
+                  parent="account.account_account_menu"
+                  action="ps_action_financial_report_template"
+                  sequence="5"/>
+
+        <!-- Menu in báo cáo tài chính TT99 -->
+        <menuitem id="ps_menu_financial_report_wizard"
+                  name="In Báo cáo tài chính TT99"
+                  parent="account.account_account_menu"
+                  action="ps_action_financial_report_wizard"
+                  sequence="6"/>
+
+        <!-- Sổ Transaction All: toàn bộ bút toán posted -->
+        <menuitem id="ps_menu_gl_transaction_all"
+                  name="Transaction All"
+                  parent="account.account_transactions_menu"
+                  action="ps_action_gl_transaction_all"
+                  groups="account.group_account_readonly"
+                  sequence="2"/>
+
+    </data>
+</odoo>

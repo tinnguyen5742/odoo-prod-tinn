@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Khổ A4 Ngang chuẩn cho Báo cáo chi tiết nhiều cột -->
+    <record id="paperformat_landscape_report_7" model="report.paperformat">
+        <field name="name">Khổ A4 Ngang - Chi tiết mua hàng theo NCC</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">8</field>
+        <field name="margin_right">8</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">5</field>
+    </record>
+
+    <!-- Action báo cáo -->
+    <record id="action_report_purchase_detail_vendor" model="ir.actions.report">
+        <field name="name">Bảng Kê Chi Tiết Mua Hàng Theo Nhà Cung Cấp</field>
+        <field name="model">purchase.report.wizard</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">custom_purchase.report_purchase_detail_vendor_template</field>
+        <field name="report_file">custom_purchase.report_purchase_detail_vendor_template</field>
+        <field name="paperformat_id" ref="custom_purchase.paperformat_landscape_report_7"/>
+    </record>
+
+    <!-- QWeb Template -->
+    <template id="report_purchase_detail_vendor_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-call="custom_purchase.report_purchase_shared_styles"/>
+                <div class="page">
+                    <!-- Tên Công ty -->
+                    <div class="company-title">
+                        <t t-esc="company.name"/>
+                    </div>
+
+                    <!-- Tiêu đề Báo cáo -->
+                    <div class="report-title">
+                        BẢNG KÊ CHI TIẾT MUA HÀNG THEO NCC
+                    </div>
+                    <div class="report-date">
+                        <i>Từ ngày <t t-esc="date_from or ''"/> đến ngày <t t-esc="date_to or ''"/></i>
+                    </div>
+
+                    <!-- Bảng dữ liệu chuẩn 12 cột -->
+                    <table class="tbl-det">
+                        <thead>
+                            <tr>
+                                <th style="width: 4%;">STT</th>
+                                <th style="width: 8%;">Mã VT</th>
+                                <th style="width: 26%;">Tên VT</th>
+                                <th style="width: 6%;">ĐVT</th>
+                                <th style="width: 8%;">Số Lượng</th>
+                                <th style="width: 8%;">Đơn Giá</th>
+                                <th style="width: 9%;">Thành tiền</th>
+                                <th style="width: 6%;">Tiền VAT</th>
+                                <th style="width: 6%;">Thuế NK</th>
+                                <th style="width: 6%;">Chi phí MH</th>
+                                <th style="width: 6%;">CP khác</th>
+                                <th style="width: 11%;">Tổng Giá Trị</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="global_stt" t-value="1"/>
+                            <t t-set="grand_qty" t-value="0"/>
+                            <t t-set="grand_amount" t-value="0"/>
+                            <t t-set="grand_total" t-value="0"/>
+
+                            <!-- Gom nhóm theo Nhà cung cấp -->
+                            <t t-foreach="orders.mapped('partner_id')" t-as="vendor">
+                                <t t-set="vendor_orders" t-value="orders.filtered(lambda o: o.partner_id == vendor)"/>
+                                <t t-set="vendor_total_val" t-value="sum(vendor_orders.mapped('amount_total'))"/>
+                                <t t-set="vendor_total_qty" t-value="sum(vendor_orders.mapped('order_line.product_qty'))"/>
+
+                                <!-- Dòng 1: Tên Nhà Cung Cấp & Tổng giá trị NCC -->
+                                <tr class="vendor-row">
+                                    <td colspan="4" style="padding-left: 6px;">
+                                        <t t-esc="vendor.name"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <t t-esc="vendor_total_qty" t-options='{"widget": "float", "precision": 2}'/>
+                                    </td>
+                                    <td colspan="6"></td>
+                                    <td class="text-end" style="color: #000080;">
+                                        <t t-esc="vendor_total_val" t-options='{"widget": "float", "precision": 0}'/>
+                                    </td>
+                                </tr>
+
+                                <!-- Gom nhóm theo từng Đơn hàng (PO) / Phiếu Nhập -->
+                                <t t-foreach="vendor_orders" t-as="po">
+                                    <tr class="po-row">
+                                        <td colspan="12" style="padding-left: 12px;">
+                                            <span style="color: #c00000;"><t t-esc="po.name"/></span> — Ngày : <t t-esc="po.date_order.strftime('%d/%m/%Y') if po.date_order else ''"/>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Chi tiết sản phẩm trong PO -->
+                                    <t t-foreach="po.order_line" t-as="line">
+                                        <tr>
+                                            <td class="text-center"><t t-esc="global_stt"/></td>
+                                            <td class="text-center"><t t-esc="line.product_id.default_code or ''"/></td>
+                                            <td><t t-esc="line.name"/></td>
+                                            <td class="text-center"><t t-esc="line.product_uom_id.name or ''"/></td>
+                                            <td class="text-end"><t t-esc="line.product_qty" t-options='{"widget": "float", "precision": 2}'/></td>
+                                            <td class="text-end"><t t-esc="line.price_unit" t-options='{"widget": "float", "precision": 2}'/></td>
+                                            <td class="text-end"><t t-esc="line.price_subtotal" t-options='{"widget": "float", "precision": 0}'/></td>
+                                            <td class="text-end">0</td>
+                                            <td class="text-end">0</td>
+                                            <td class="text-end">0</td>
+                                            <td class="text-end">0</td>
+                                            <td class="text-end" style="font-weight: bold;">
+                                                <t t-esc="line.price_total" t-options='{"widget": "float", "precision": 0}'/>
+                                            </td>
+                                        </tr>
+                                        <t t-set="global_stt" t-value="global_stt + 1"/>
+                                    </t>
+                                </t>
+                                <t t-set="grand_qty" t-value="grand_qty + vendor_total_qty"/>
+                                <t t-set="grand_amount" t-value="grand_amount + sum(vendor_orders.mapped('amount_untaxed'))"/>
+                                <t t-set="grand_total" t-value="grand_total + vendor_total_val"/>
+                            </t>
+
+                            <!-- Dòng Tổng Cộng Cuối Bảng -->
+                            <tr class="tr-total">
+                                <td colspan="4" class="text-center">Tổng Cộng:</td>
+                                <td class="text-end">
+                                    <t t-esc="grand_qty" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                                <td></td>
+                                <td class="text-end">
+                                    <t t-esc="grand_amount" t-options='{"widget": "float", "precision": 0}'/>
+                                </td>
+                                <td class="text-end">0</td>
+                                <td class="text-end">0</td>
+                                <td class="text-end">0</td>
+                                <td class="text-end">0</td>
+                                <td class="text-end">
+                                    <t t-esc="grand_total" t-options='{"widget": "float", "precision": 0}'/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Chữ ký -->
+                    <div class="row mt-4" style="page-break-inside: avoid; font-family: 'Times New Roman', serif;">
+                        <div class="col-6 text-center">
+                            <strong>NGƯỜI LẬP</strong>
+                        </div>
+                        <div class="col-6 text-center">
+                            <strong>TRƯỞNG BỘ PHẬN</strong>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

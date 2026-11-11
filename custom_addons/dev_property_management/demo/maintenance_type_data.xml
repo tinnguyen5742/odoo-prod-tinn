@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo noupdate="1">
+    <record id="property_maintenance_type_1" model="property.maintenance.type">
+        <field name="name">Monthly Fixed</field>
+    </record>
+    <record id="property_maintenance_type_2" model="property.maintenance.type">
+        <field name="name">Re-Colour</field>
+    </record>
+    <record id="property_maintenance_type_3" model="property.maintenance.type">
+        <field name="name">Lift Service</field>
+    </record>
+</odoo>

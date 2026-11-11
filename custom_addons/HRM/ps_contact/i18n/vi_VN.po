@@ -1,0 +1,81 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#   * ps_contact
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0-20260324\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-30 07:53+0000\n"
+"PO-Revision-Date: 2026-06-30 07:53+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: ps_contact
+#. odoo-python
+#: code:addons/ps_contact/models/res_partner.py:0
+msgid "Address Conversion Failed"
+msgstr "Không chuyển đổi được địa chỉ"
+
+#. module: ps_contact
+#. odoo-python
+#: code:addons/ps_contact/models/res_partner.py:0
+msgid "Address Not Recognized"
+msgstr "Không nhận diện được địa chỉ"
+
+#. module: ps_contact
+#: model:ir.model.fields,help:ps_contact.field_res_partner__x_address_old
+#: model:ir.model.fields,help:ps_contact.field_res_users__x_address_old
+msgid ""
+"Address before administrative merger (provinces/districts/wards), used to "
+"convert to the new address."
+msgstr ""
+"Địa chỉ trước khi sáp nhập đơn vị hành chính (tỉnh/huyện/xã), dùng để "
+"chuyển đổi sang địa chỉ mới."
+
+#. module: ps_contact
+#: model:ir.model,name:ps_contact.model_res_partner
+msgid "Contact"
+msgstr "Liên hệ"
+
+#. module: ps_contact
+#. odoo-python
+#: code:addons/ps_contact/models/res_partner.py:0
+msgid "Could not extract province/city from the entered address."
+msgstr "Không thể tách tỉnh/thành từ địa chỉ đã nhập."
+
+#. module: ps_contact
+#: model:ir.model,website_form_label:ps_contact.model_res_partner
+msgid "Create a Customer"
+msgstr "Tạo một khách hàng"
+
+#. module: ps_contact
+#: model:ir.model.fields,field_description:ps_contact.field_res_partner__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: ps_contact
+#: model:ir.model.fields,field_description:ps_contact.field_res_partner__id
+msgid "ID"
+msgstr ""
+
+#. module: ps_contact
+#: model_terms:ir.ui.view,arch_db:ps_contact.ps_partner_form_inherit
+msgid "Enter the address before the administrative merger"
+msgstr "Nhập địa chỉ trước sáp nhập"
+
+#. module: ps_contact
+#. odoo-python
+#: code:addons/ps_contact/models/res_partner.py:0
+msgid "No corresponding new address was found."
+msgstr "Không tìm thấy địa chỉ mới tương ứng."
+
+#. module: ps_contact
+#: model:ir.model.fields,field_description:ps_contact.field_res_partner__x_address_old
+#: model:ir.model.fields,field_description:ps_contact.field_res_users__x_address_old
+msgid "Pre-Merger Address"
+msgstr "Địa chỉ trước sáp nhập"

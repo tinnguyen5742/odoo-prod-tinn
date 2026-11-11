@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle 
+ -->
+<odoo>
+    <record id="view_dev_agent_commission_form" model="ir.ui.view">
+        <field name="name">view.dev.agent.commission.form</field>
+        <field name="model">agent.commission</field>
+        <field name="arch" type="xml">
+            <form string="Agent Commission form">
+              <header>
+                    <button name="action_done" string="Done" type="object" class="oe_highlight" invisible="state == 'done'"/>
+                    <button name="create_agent_commission_bill"
+                            string="Create Agent Commission Bill"
+                            invisible="state in ['draft']"
+                            class="btn-primary" type="object" groups="account.group_account_invoice"/>
+                    <button name="action_draft" string="Set to draft" type="object" invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" invisible="bill_count == 0" name="action_view_bill" class="oe_stat_button" icon="fa-external-link">
+                            <field name="bill_count" widget="statinfo" string="Bill"/>
+                        </button>
+                    </div>
+                    <h1>
+                        <field name="name" readonly="1"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="agent_partner_id" readonly="state == 'done'"/>
+                            <field name="property_type" readonly="1" />
+                            <field name="rent_id" invisible="property_type != 'rent'" domain="[('rent_agent_id','=',agent_partner_id),('state','in',['confirm','runing'])]" readonly="state == 'done'"/>
+                            <field name="sell_id" invisible="property_type != 'sell'" domain="[('sell_agent_id','=',agent_partner_id)]" readonly="state == 'done'"/>
+                            <field name="amount" readonly="state == 'done'" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="commission_type" readonly="state == 'done'"/>
+                            <field name="commission_fixed_amount" widget="monetary"
+                                   invisible="commission_type == 'percentage'"  readonly="state == 'done'"
+                                   options="{'currency_field': 'currency_id'}"/>
+                            <field name="commission_percentage" invisible="commission_type == 'fixed'" readonly="state == 'done'" />
+                            <field name="percentage_amount" invisible="commission_type == 'fixed'" />
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                       <!-- <page string="Loan">
+                          <group>
+                              <group>
+                                  <field name="loan_type_id" readonly="state == 'done'"/>
+                                  <field name="loan_term" readonly="state == 'done'"/>
+                                  <field name="loan_amount" readonly="state == 'done'" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                  <field name="total_interest" readonly="state == 'done'" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                  <field name="start_date" readonly="state == 'done'"/>
+                                  <field name="company_id" invisible="1"/>
+                                  <field name="currency_id" invisible="1"/>
+                              </group>
+                              <group>
+                              </group>
+                          </group>
+                       </page> -->
+                       <page string="Description">
+                          <field name="description" readonly="state == 'done'" placeholder="Description.."/>
+                       </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+     
+    <record model="ir.ui.view" id="view_dev_agent_commission_kanban">
+        <field name="name">view.dev.agent.commission.kanban</field>
+        <field name="model">agent.commission</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" sample="1">
+                <field name="color"/>
+                <field name="name"/>
+                <field name="rent_id"/>
+                <field name="sell_id"/>
+                <field name="agent_partner_id"/>
+                <templates>
+                    <!-- Ensure the 'card' template is properly defined -->
+                    <t t-name="card">
+                        <div t-attf-class="#{!selection_mode ? 'oe_kanban_global_click oe_kanban_card d-flex flex-column' : ''}">
+                            <!-- Removed kanban_color function -->
+                            <div class="o_kanban_record_top mb16">
+                                <div class="o_kanban_record_headings mt4">
+                                    <strong class="o_kanban_record_title">
+                                        <h4><t t-esc="record.name.value"/></h4>
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_bottom_left" t-if="record.rent_id.value" t-att-title="record.rent_id.value">
+                                    <b>Property:</b>
+                                    <span><t t-esc="record.rent_id.value"/></span>
+                                </div>
+                                <div class="oe_kanban_bottom_left" t-if="record.sell_id.value" t-att-title="record.sell_id.value">
+                                    <b>Property:</b>
+                                    <span><t t-esc="record.sell_id.value"/></span>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_bottom" t-if="record.agent_partner_id.value" t-att-title="record.agent_partner_id.value">
+                                <div class="oe_kanban_bottom_left">
+                                    <b>Agent:</b>
+                                    <span><t t-esc="record.agent_partner_id.value"/></span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_dev_agent_commission_tree" model="ir.ui.view">
+        <field name="name">view.dev.agent.commission.list</field>
+        <field name="model">agent.commission</field>
+        <field name="arch" type="xml">
+            <list string="Agent Commission Tree" >
+                <field name="rent_id"/>
+                <field name="sell_id"/>
+                <field name="agent_partner_id"/>
+                <field name="commission_type"/>
+                <field name="company_id" column_invisible="1"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dev_agent_commission_filter" model="ir.ui.view">
+        <field name="name">view.dev.agent.commission.filter</field>
+        <field name="model">agent.commission</field>
+        <field name="arch" type="xml">
+            <search string="Agent Commission Search">
+            	<field name="agent_partner_id" operator="child_of"/>
+                    <filter string="Agent" name="agent_partner_id" context="{'group_by':'agent_partner_id'}"/>
+
+                    <filter string="Rent Property" name="rent_id" context="{'group_by':'rent_id'}"/>
+                    <filter string="Sell Property" name="sell_id" context="{'group_by':'sell_id'}"/>
+                    <filter string="Status" name="state" context="{'group_by':'state'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_dev_agent_commission" model="ir.actions.act_window">
+        <field name="name">Agent Commission Rent</field>
+        <field name="res_model">agent.commission</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('property_type', '=', 'rent')]</field>
+    	<field name="context">{'default_property_type': 'rent'}</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Click to create a Agent Commission Rental.
+          </p>
+        </field>
+    </record>
+    
+     <record id="action_dev_agent_commission_sell" model="ir.actions.act_window">
+        <field name="name">Agent Commission</field>
+        <field name="res_model">agent.commission</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('property_type', '=', 'sell')]</field>
+    	<field name="context">{'default_property_type': 'sell'}</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Click to create a Agent Commission Sell.
+          </p>
+        </field>
+    </record>
+    
+	<!--  Menu Items-->
+	 <menuitem name="Agent Commission" id="menu_dev_agent_commission" parent="dev_property_management.root_menu_property" sequence="6"/>
+	
+    <menuitem name="Agent Commission Rent" id="menu_dev_agent_commission_rent" parent="dev_property_management.menu_dev_agent_commission" action="action_dev_agent_commission" sequence="6"/>
+     <menuitem name="Agent Commission Sell" id="menu_dev_agent_commission_sell" parent="dev_property_management.menu_dev_agent_commission" action="action_dev_agent_commission_sell" sequence="7"/>
+</odoo>

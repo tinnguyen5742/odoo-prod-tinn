@@ -1,0 +1,972 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-13 09:00+0000\n"
+"PO-Revision-Date: 2026-10-13 09:00+0000\n"
+"Language-Team: Vietnamese <vi@odoo.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: vi_VN\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+# ================= MENU & ACTIONS =================
+#. module: ps_fixed_asset
+#: model:ir.ui.menu,name:ps_fixed_asset.menu_ps_fixed_assets_accounting
+msgid "Fixed Assets"
+msgstr "Tài sản cố định"
+
+#. module: ps_fixed_asset
+#: model:ir.ui.menu,name:ps_fixed_asset.menu_ps_asset_segment_action_menu
+msgid "Asset Segment Categories"
+msgstr "Danh mục segment tài sản"
+
+#. module: ps_fixed_asset
+#: model:ir.ui.menu,name:ps_fixed_asset.menu_ps_asset_group_action_menu
+msgid "Asset Group"
+msgstr "Nhóm tài sản"
+
+#. module: ps_fixed_asset
+#: model:ir.ui.menu,name:ps_fixed_asset.menu_ps_asset_standard
+msgid "Assets"
+msgstr "Quản lý tài sản"
+
+# ================= ASSET SEGMENT =================
+#. module: ps_fixed_asset
+#: model:ir.model,name:ps_fixed_asset.model_ps_asset_segment
+msgid "Asset Segment"
+msgstr "Danh mục segment tài sản"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_segment__segment_type
+msgid "Segment Type"
+msgstr "Loại Segment"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields.selection,name:ps_fixed_asset.selection__ps_asset_segment__segment_type__seg01
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_category__segment_01_id
+msgid "Segment 01"
+msgstr "Segment 01"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields.selection,name:ps_fixed_asset.selection__ps_asset_segment__segment_type__seg02
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_category__segment_02_id
+msgid "Segment 02"
+msgstr "Segment 02"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields.selection,name:ps_fixed_asset.selection__ps_asset_segment__segment_type__seg03
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_category__segment_03_id
+msgid "Segment 03"
+msgstr "Segment 03"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_segment__code
+msgid "Value Code"
+msgstr "Mã giá trị"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_segment__name
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_accessory__description
+msgid "Description"
+msgstr "Diễn giải"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_segment__width
+msgid "Width"
+msgstr "Độ rộng"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_segment__active
+msgid "Active"
+msgstr "Active"
+
+# ================= ASSET GROUP (INHERIT ACCOUNT.ASSET.CATEGORY) =================
+#. module: ps_fixed_asset
+#: model:ir.actions.act_window,name:ps_fixed_asset.action_ps_asset_group
+#: model:ir.ui.menu,name:ps_fixed_asset.menu_ps_asset_group_action
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset__group_id
+msgid "Asset Group"
+msgstr "Nhóm tài sản"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_category__code
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_category_tree_inherit_patsoft
+msgid "Group Code"
+msgstr "Mã nhóm TS"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_category__account_other_income_id
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_category_tree_inherit_patsoft
+msgid "Other Income Account"
+msgstr "TK DT khác"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_category__account_other_expense_id
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_category_tree_inherit_patsoft
+msgid "Other Expense Account"
+msgstr "TK CP khác"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_category__analytic_plan_id
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_category_tree_inherit_patsoft
+msgid "Expense Item"
+msgstr "Khoản mục"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_category_form_inherit_patsoft
+msgid "Segments"
+msgstr "Phân đoạn (Segments)"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_category_tree_inherit_patsoft
+msgid "Asset Account"
+msgstr "TK Nguyên giá"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_category_tree_inherit_patsoft
+msgid "Depreciation Account"
+msgstr "TK Khấu hao"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_category_tree_inherit_patsoft
+msgid "Expense Account"
+msgstr "TK Chi phí"
+
+# ================= ASSET =================
+#. module: ps_fixed_asset
+#: model:ir.model,name:ps_fixed_asset.model_ps_asset
+msgid "Fixed Asset"
+msgstr "Tài sản cố định"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset__code
+msgid "Asset Code"
+msgstr "Mã TS"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset__name
+msgid "Asset Name"
+msgstr "Tên tài sản"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset__technical_spec
+msgid "Technical Specs"
+msgstr "Thông số KT"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset__manufacturer
+msgid "Manufacturer"
+msgstr "Nhà SX"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset__manufacture_year
+msgid "Manufacture Year"
+msgstr "Năm SX"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset__made_in
+msgid "Made In"
+msgstr "Nước SX"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset__purchase_date
+msgid "Purchase Date"
+msgstr "Ngày nhập"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset__partner_id
+msgid "Vendor"
+msgstr "Nhà CC"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__receipt_number
+msgid "Receipt Number"
+msgstr "Số chứng từ"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__invoice_number
+msgid "Invoice Number"
+msgstr "Số hóa đơn"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset__original_value
+msgid "Original Value"
+msgstr "Nguyên giá"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset__depreciation_months
+msgid "Depreciation Months"
+msgstr "Số lần KH"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset__accumulated_depreciation
+msgid "Accumulated Depreciation"
+msgstr "Hao mòn LK"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset__salvage_value
+msgid "Salvage Value"
+msgstr "Giá trị thu hồi"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset__department_id
+msgid "Department"
+msgstr "Bộ phận sử dụng"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset__user_id
+msgid "User"
+msgstr "Người sử dụng"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset__state
+msgid "Status"
+msgstr "Trạng thái"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields.selection,name:ps_fixed_asset.selection__ps_asset__state__draft
+msgid "Incomplete"
+msgstr "Nháp (Incomplete)"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields.selection,name:ps_fixed_asset.selection__ps_asset__state__active
+msgid "Depreciating"
+msgstr "Đang khấu hao"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields.selection,name:ps_fixed_asset.selection__ps_asset__state__paused
+msgid "Paused"
+msgstr "Ngừng khấu hao"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields.selection,name:ps_fixed_asset.selection__ps_asset__state__sold
+msgid "Disposed/Sold"
+msgstr "Thanh lý/Hủy"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset__approval_status
+msgid "Approval Status"
+msgstr "Tình trạng"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields.selection,name:ps_fixed_asset.selection__ps_asset__approval_status__unapproved
+msgid "Unapproved"
+msgstr "Chưa duyệt"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields.selection,name:ps_fixed_asset.selection__ps_asset__approval_status__approved
+msgid "Approved"
+msgstr "Đã duyệt"
+
+# ================= FUNDING & ACCESSORIES =================
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset__funding_line_ids
+msgid "Funding - Depreciation"
+msgstr "Nguồn vốn - Hao mòn"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset__accessory_line_ids
+msgid "Accessories"
+msgstr "Phụ tùng kèm theo"
+
+#. module: ps_fixed_asset
+#: model:ir.model,name:ps_fixed_asset.model_ps_asset_funding
+msgid "Asset Funding Line"
+msgstr "Chi tiết nguồn vốn"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_funding__funding_code
+msgid "Funding Code"
+msgstr "Mã nguồn vốn"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_funding__funding_name
+msgid "Funding Name"
+msgstr "Tên nguồn vốn"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_funding__value
+msgid "Value"
+msgstr "Giá trị"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_funding__depreciation_value
+msgid "Depreciation Value"
+msgstr "Giá trị hao mòn"
+
+#. module: ps_fixed_asset
+#: model:ir.model,name:ps_fixed_asset.model_ps_asset_accessory
+msgid "Asset Accessory Line"
+msgstr "Chi tiết phụ tùng"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_accessory__sequence
+msgid "Sequence"
+msgstr "STT"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_accessory__quantity
+msgid "Quantity"
+msgstr "Số lượng"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_accessory__uom_id
+msgid "UoM"
+msgstr "ĐVT"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_accessory__notes
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_upgrade_wizard__notes
+msgid "Notes"
+msgstr "Ghi chú"
+
+# ================= BUTTONS & WIZARDS =================
+#. module: ps_fixed_asset
+#: model:ir.model,name:ps_fixed_asset.model_ps_asset_upgrade_wizard
+msgid "Asset Upgrade/Evaluate Wizard"
+msgstr "Wizard Nâng cấp Đánh giá Tài sản"
+
+#. module: ps_fixed_asset
+#: model:ir.actions.act_window,name:ps_fixed_asset.action_ps_asset_upgrade_wizard
+msgid "Upgrade / Evaluate Asset"
+msgstr "Nâng cấp / Đánh giá lại"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_upgrade_wizard__change_type
+msgid "Change Type"
+msgstr "Loại thay đổi"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields.selection,name:ps_fixed_asset.selection__ps_asset_upgrade_wizard__change_type__upgrade
+msgid "Upgrade"
+msgstr "Nâng cấp"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields.selection,name:ps_fixed_asset.selection__ps_asset_upgrade_wizard__change_type__evaluate
+msgid "Evaluate"
+msgstr "Đánh giá"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_upgrade_wizard__upgrade_date
+msgid "Transaction Date"
+msgstr "Ngày giao dịch"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_upgrade_wizard__old_value
+msgid "Old Original Value"
+msgstr "Nguyên giá cũ"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_upgrade_wizard__new_value
+msgid "New Original Value"
+msgstr "Nguyên giá mới"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_upgrade_wizard__old_depreciation_months
+msgid "Old Depreciation Months"
+msgstr "Số lần KH cũ"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_upgrade_wizard__new_depreciation_months
+msgid "New Depreciation Months"
+msgstr "Số lần KH mới"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_ps_asset_form
+msgid "Transfer Department"
+msgstr "Chuyển bộ phận"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_ps_asset_form
+msgid "Dispose / Cancel"
+msgstr "Thanh lý / Hủy"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_ps_asset_form
+msgid "Pause / Resume"
+msgstr "Ngừng KH / KH tiếp"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_ps_asset_upgrade_wizard_form
+msgid "Update"
+msgstr "Cập nhật"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_ps_asset_upgrade_wizard_form
+msgid "Cancel"
+msgstr "Thoát"
+
+# ================= SETTINGS (RES.CONFIG.SETTINGS) =================
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.res_config_settings_view_form_inherit_ps_asset
+msgid "Fixed Assets"
+msgstr "Tài sản cố định"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_res_config_settings__asset_code_prefix
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.res_config_settings_view_form_inherit_ps_asset
+msgid "Asset Code Prefix"
+msgstr "Tiền tố Mã tài sản"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.res_config_settings_view_form_inherit_ps_asset
+msgid "Set default prefix for Fixed Asset Codes. The system will automatically append a 4-digit sequence (e.g., enter 'TS' to generate TS0001)."
+msgstr "Thiết lập tiền tố mặc định cho Mã tài sản. Hệ thống sẽ tự động nối thêm chuỗi 4 chữ số (VD: nhập 'TS' để tạo mã TS0001)."
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.res_config_settings_view_form_inherit_ps_asset
+msgid "e.g. TS, FA-, MAC_"
+msgstr "VD: TS, FA-, MAC_"
+
+# ================= ASSET CUSTOM FIELDS =================
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__ps_code
+msgid "Asset Code"
+msgstr "Mã TS"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__technical_spec
+msgid "Technical Specs"
+msgstr "Thông số KT"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__manufacturer
+msgid "Manufacturer"
+msgstr "Nhà SX"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__manufacture_year
+msgid "Manufacture Year"
+msgstr "Năm SX"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__made_in
+msgid "Made In"
+msgstr "Nước SX"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__approval_status
+msgid "Approval Status"
+msgstr "Tình trạng duyệt"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields.selection,name:ps_fixed_asset.selection__account_asset_asset__approval_status__unapproved
+msgid "Unapproved"
+msgstr "Chưa duyệt"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields.selection,name:ps_fixed_asset.selection__account_asset_asset__approval_status__approved
+msgid "Approved"
+msgstr "Đã duyệt"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_asset_form_inherit_ps
+msgid "Technical Information"
+msgstr "Thông tin Kỹ thuật & Phụ trách"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_asset_form_inherit_ps
+msgid "Funding - Depreciation"
+msgstr "Nguồn vốn - Hao mòn"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_asset_form_inherit_ps
+msgid "Accessories"
+msgstr "Phụ tùng kèm theo"
+
+#. module: ps_fixed_asset
+#: model:ir.sequence,name:ps_fixed_asset.sequence_asset_code
+msgid "Asset Code Sequence"
+msgstr "Bộ đếm Mã Tài Sản"
+
+# ================= ACCOUNTING MAPPING =================
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__ps_account_asset_id
+msgid "Asset Account"
+msgstr "TK Nguyên giá"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__ps_account_depreciation_id
+msgid "Depreciation Account"
+msgstr "TK Hao mòn"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__ps_account_depreciation_expense_id
+msgid "Expense Account"
+msgstr "TK Chi phí KH"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__ps_account_other_income_id
+msgid "Other Income Account"
+msgstr "TK Doanh thu"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__ps_account_other_expense_id
+msgid "Other Expense Account"
+msgstr "TK Chi phí khác"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__ps_analytic_plan_id
+msgid "Expense Item"
+msgstr "Khoản mục phí"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__purchase_date
+msgid "Purchase Date"
+msgstr "Ngày nhập"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__delivery_unit
+msgid "Delivery Unit"
+msgstr "Đơn vị giao"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__notes
+msgid "Notes"
+msgstr "Ghi chú"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__ps_account_counterpart_id
+msgid "Counterpart Account"
+msgstr "TK đối ứng"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__ps_account_evaluation_id
+msgid "Evaluation Account"
+msgstr "TK đánh giá"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__ps_project
+msgid "Project"
+msgstr "C.Trình"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__ps_machine_equipment
+msgid "Machine/Equipment"
+msgstr "Máy móc/TB"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_asset_form_inherit_ps
+msgid "Related Documents"
+msgstr "Chứng từ liên quan"
+
+# ================= THÔNG TIN CẬP NHẬT MỚI =================
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__employee_id
+msgid "Employee"
+msgstr "Người SD"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__ps_department_code
+msgid "Department Code"
+msgstr "Mã bộ phận"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__ps_depreciation_years
+msgid "Depreciation Years"
+msgstr "Năm KH"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__ps_accumulated_depreciation
+msgid "Accumulated Depreciation"
+msgstr "Hao mòn LK"
+
+# ================= DỊCH CÁC TRƯỜNG GỐC CỦA ODOO THEO VIEW =================
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_asset_form_inherit_ps
+msgid "Date"
+msgstr "Ngày nhập"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_asset_form_inherit_ps
+msgid "Vendor"
+msgstr "Đơn vị giao"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_asset_form_inherit_ps
+msgid "Invoice"
+msgstr "Số hóa đơn"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_asset_form_inherit_ps
+msgid "Gross Value"
+msgstr "Nguyên giá"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_asset_form_inherit_ps
+msgid "Salvage Value"
+msgstr "Giá trị thu hồi"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_asset_form_inherit_ps
+msgid "Residual Value"
+msgstr "Giá trị còn lại"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_asset_form_inherit_ps
+msgid "First Depreciation Date"
+msgstr "Ngày KH"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_asset_form_inherit_ps
+msgid "Number of Depreciations"
+msgstr "Số lần KH"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_asset_form_inherit_ps
+msgid "Currency"
+msgstr "Tiền tệ"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_asset_form_inherit_ps
+msgid "Company"
+msgstr "Công ty"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__is_opening
+msgid "Opening Balance"
+msgstr "Nhập đầu kỳ"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_ps_asset_upgrade_wizard_form
+msgid "Asset Upgrade and Evaluation"
+msgstr "Nâng cấp, đánh giá lại tài sản"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_upgrade_wizard__upgrade_date
+msgid "Upgrade Date"
+msgstr "Ngày nâng cấp"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields.selection,name:ps_fixed_asset.selection__ps_asset_upgrade_wizard__change_type__evaluation
+msgid "Evaluation"
+msgstr "Đánh giá"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_upgrade_wizard__counterpart_account_id
+msgid "Counterpart Account"
+msgstr "TK đối ứng"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_ps_asset_upgrade_wizard_form
+msgid "Gross Value Information"
+msgstr "Nguyên giá"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_upgrade_wizard__new_gross_value
+msgid "New Gross Value"
+msgstr "Nguyên giá mới"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_upgrade_wizard__new_depreciation_count
+msgid "New Depreciation Count"
+msgstr "Số lần KH mới"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_upgrade_wizard__monthly_depreciation_amount
+msgid "Monthly Depreciation Amount"
+msgstr "Số tiền KH trong tháng"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_asset_form_inherit_ps
+msgid "Upgrade / Evaluate"
+msgstr "Nâng Cấp / Đánh Giá"
+
+# ================= WIZARD CHUYỂN BỘ PHẬN =================
+#. module: ps_fixed_asset
+#: model:ir.model,name:ps_fixed_asset.model_ps_asset_transfer_wizard
+msgid "Asset Transfer Wizard"
+msgstr "Wizard Chuyển tài sản"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_ps_asset_transfer_wizard_form
+msgid "Asset Transfer"
+msgstr "Chuyển tài sản qua bộ phận khác"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_asset_form_inherit_ps
+msgid "Transfer Asset"
+msgstr "Chuyển bộ phận"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_transfer_wizard__transfer_date
+msgid "Transfer Date"
+msgstr "Ngày chuyển"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_transfer_wizard__old_department_code
+msgid "Old Department Code"
+msgstr "Mã bộ phận cũ"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_transfer_wizard__old_department_id
+msgid "Old Department"
+msgstr "Bộ phận cũ"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_transfer_wizard__old_employee_id
+msgid "Old User"
+msgstr "Người sử dụng cũ"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_transfer_wizard__old_machine_code
+msgid "Old Machine Code"
+msgstr "Mã máy cũ"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_transfer_wizard__old_expense_account_id
+msgid "Old Expense Account"
+msgstr "TK Chi phí KH cũ"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_transfer_wizard__old_analytic_id
+msgid "Old Analytic Account"
+msgstr "Khoản mục phí cũ"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_transfer_wizard__new_department_code
+msgid "New Department Code"
+msgstr "Mã bộ phận mới"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_transfer_wizard__new_department_id
+msgid "New Department"
+msgstr "Bộ phận mới"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_transfer_wizard__new_employee_id
+msgid "New User"
+msgstr "Người sử dụng mới"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_transfer_wizard__new_machine_code
+msgid "New Machine Code"
+msgstr "Mã máy mới"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_transfer_wizard__new_expense_account_id
+msgid "New Expense Account"
+msgstr "TK Chi phí KH mới"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_transfer_wizard__new_analytic_id
+msgid "New Analytic Account"
+msgstr "Khoản mục phí mới"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_ps_asset_transfer_wizard_form
+msgid "Save"
+msgstr "Lưu"
+# ================= WIZARD NGƯNG KHẤU HAO =================
+#. module: ps_fixed_asset
+#: model:ir.model,name:ps_fixed_asset.model_ps_asset_pause_wizard
+msgid "Asset Pause and Resume Wizard"
+msgstr "Wizard Ngưng/Tiếp tục khấu hao"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_ps_asset_pause_wizard_form
+msgid "Pause / Resume Depreciation"
+msgstr "Ngưng khấu hao, khấu hao tiếp"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_account_asset_asset_form_inherit_ps
+msgid "Pause / Resume"
+msgstr "Ngưng khấu hao"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_pause_wizard__transaction_date
+msgid "Transaction Date"
+msgstr "Ngày giao dịch"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_pause_wizard__reference_document
+msgid "Reference Document"
+msgstr "Giấy đề nghị"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_pause_wizard__change_type
+msgid "Change Type"
+msgstr "Loại thay đổi"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields.selection,name:ps_fixed_asset.selection__ps_asset_pause_wizard__change_type__pause
+msgid "Pause Depreciation"
+msgstr "Ngưng khấu hao"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields.selection,name:ps_fixed_asset.selection__ps_asset_pause_wizard__change_type__resume
+msgid "Resume Depreciation"
+msgstr "Khấu hao tiếp"
+
+#. module: ps_fixed_asset
+msgid "The Group Code '%s' already exists! Please enter a different code."
+msgstr "Mã nhóm TS '%s' đã tồn tại! Vui lòng nhập một mã khác."
+
+#. module: ps_fixed_asset
+msgid "Please change the Status to 'Approved' to process the calculation."
+msgstr "Vui lòng chuyển Tình trạng sang 'Đã duyệt' để thực hiện tính toán và cập nhật."
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_category__ps_account_counterpart_id
+msgid "TK trung gian"
+msgstr "TK trung gian"
+
+#. module: ps_fixed_asset
+msgid "Please configure both 'Asset Account' and 'TK trung gian' to create the asset capitalization journal entry!"
+msgstr "Vui lòng cấu hình đầy đủ 'TK Nguyên giá' và 'TK trung gian' để tạo bút toán ghi tăng tài sản!"
+
+#. module: ps_fixed_asset (thay bằng tên module thực tế của bạn nếu cần)
+msgid "Data protection: Cannot set an Asset Capitalization journal entry to Draft!\nIf you selected the wrong account, please use the 'Reverse Entry' feature."
+msgstr "Bảo vệ dữ liệu: Không được phép đưa Bút toán ghi tăng Tài sản về Nháp!\nNếu chọn sai tài khoản, vui lòng dùng tính năng 'Bút toán đảo' (Reverse Entry)."
+
+#. module: ps_fixed_asset
+msgid "Data protection: Cannot set a Depreciation journal entry to Draft from this view!\nPlease manage this directly from the Asset record."
+msgstr "Bảo vệ dữ liệu: Không được phép đưa Bút toán khấu hao về Nháp từ màn hình này!\nVui lòng vào trực tiếp màn hình Tài sản để thao tác (Xóa bút toán)."
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_category__ps_account_evaluation_id
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_account_asset_asset__ps_account_evaluation_id
+msgid "Evaluation Account"
+msgstr "TK đánh giá"
+
+
+# ================= ASSET UPGRADE WIZARD NEW FIELDS & MESSAGES =================
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_upgrade_wizard__counterpart_account_id
+msgid "Upgrade / Evaluation Account"
+msgstr "TK Nâng cấp/ đánh giá lại"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_upgrade_wizard__old_monthly_depreciation_amount
+msgid "Old Monthly Depreciation"
+msgstr "Số tiền KH trong tháng cũ"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_upgrade_wizard__new_monthly_depreciation_amount
+msgid "New Monthly Depreciation"
+msgstr "Số tiền KH mới"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_ps_asset_upgrade_wizard_form
+msgid "New Information"
+msgstr "Thông tin mới"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_ps_asset_upgrade_wizard_form
+msgid "Old Information"
+msgstr "Thông tin cũ"
+
+#. module: ps_fixed_asset
+msgid "Please enter both 'New Gross Value' and 'New Depreciation Count' before confirming."
+msgstr "Vui lòng nhập đầy đủ 'Nguyên giá mới' và 'Số lần KH mới' trước khi Xác nhận."
+
+#. module: ps_fixed_asset
+msgid "The asset is not configured with an 'Asset Account'."
+msgstr "Tài sản chưa được cấu hình 'TK nguyên giá'."
+
+#. module: ps_fixed_asset
+msgid "Please select an 'Upgrade / Evaluation Account'."
+msgstr "Vui lòng chọn 'TK Nâng cấp/ đánh giá lại'."
+
+#. module: ps_fixed_asset
+msgid "Asset Gross Value Increase"
+msgstr "Ghi tăng nguyên giá TSCĐ"
+
+#. module: ps_fixed_asset
+msgid "Incurred Upgrade Cost"
+msgstr "Chi phí nâng cấp phát sinh"
+
+#. module: ps_fixed_asset
+msgid "The Upgrade Cost (New Gross Value) must be greater than the current Gross Value."
+msgstr "Chi phí nâng cấp (Nguyên giá mới) phải lớn hơn Nguyên giá hiện tại."
+
+#. module: ps_fixed_asset
+msgid "The asset is not configured with a 'Depreciation Account' to calculate the difference."
+msgstr "Tài sản chưa được cấu hình 'TK hao mòn' để tính chênh lệch."
+
+#. module: ps_fixed_asset
+msgid "Gross Value Increase (Evaluation)"
+msgstr "Đánh giá tăng nguyên giá"
+
+#. module: ps_fixed_asset
+msgid "Accumulated Depreciation Increase (Evaluation)"
+msgstr "Đánh giá tăng hao mòn"
+
+#. module: ps_fixed_asset
+msgid "Evaluation Surplus"
+msgstr "Chênh lệch đánh giá tăng"
+
+#. module: ps_fixed_asset
+msgid "Accumulated Depreciation Decrease (Evaluation)"
+msgstr "Đánh giá giảm hao mòn"
+
+#. module: ps_fixed_asset
+msgid "Evaluation Deficit"
+msgstr "Chênh lệch đánh giá giảm"
+
+#. module: ps_fixed_asset
+msgid "Gross Value Decrease (Evaluation)"
+msgstr "Đánh giá giảm nguyên giá"
+
+# ================= ASSET DISPOSE/CANCEL/SELL WIZARD =================
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields,field_description:ps_fixed_asset.field_ps_asset_dispose_wizard__counterpart_account_id
+msgid "Cancel / Dispose / Sell Account"
+msgstr "TK Hủy/Thanh lý/Nhượng bán"
+
+#. module: ps_fixed_asset
+#: model_terms:ir.ui.view,arch_db:ps_fixed_asset.view_ps_asset_dispose_wizard_form
+msgid "Cancel / Dispose / Sell"
+msgstr "Hủy / Thanh lý / Nhượng bán"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields.selection,name:ps_fixed_asset.selection__ps_asset_dispose_wizard__change_type__dispose
+msgid "Dispose"
+msgstr "Thanh lý"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields.selection,name:ps_fixed_asset.selection__ps_asset_dispose_wizard__change_type__cancel
+msgid "Cancel"
+msgstr "Hủy"
+
+#. module: ps_fixed_asset
+#: model:ir.model.fields.selection,name:ps_fixed_asset.selection__ps_asset_dispose_wizard__change_type__sell
+msgid "Sell"
+msgstr "Nhượng bán"
+
+#. module: ps_fixed_asset
+msgid "Please change the Status to 'Approved' to process the disposal."
+msgstr "Vui lòng chuyển Tình trạng sang 'Đã duyệt' để thực hiện ghi nhận."
+
+#. module: ps_fixed_asset
+msgid "Please select a 'Cancel / Dispose / Sell Account'."
+msgstr "Vui lòng chọn 'TK Hủy/Thanh lý/Nhượng bán'."
+
+#. module: ps_fixed_asset
+msgid "Accumulated Depreciation (Disposal)"
+msgstr "Hao mòn lũy kế (Thanh lý)"
+
+#. module: ps_fixed_asset
+msgid "Residual Value (Disposal)"
+msgstr "Giá trị còn lại (Thanh lý)"
+
+#. module: ps_fixed_asset
+msgid "Asset Gross Value (Disposal)"
+msgstr "Ghi giảm nguyên giá TSCĐ"
+
+#. module: ps_fixed_asset
+msgid "Please change the Status to 'Approved' to process."
+msgstr "Vui lòng chuyển Tình trạng sang 'Đã duyệt' để thực hiện."
+
+#. module: ps_fixed_asset
+msgid "This asset is already paused!"
+msgstr "Tài sản này hiện tại ĐÃ ở trạng thái Ngưng khấu hao!"
+
+#. module: ps_fixed_asset
+msgid "This asset is not currently paused!"
+msgstr "Tài sản này đang hoạt động, không thể thực hiện Khấu hao tiếp!"

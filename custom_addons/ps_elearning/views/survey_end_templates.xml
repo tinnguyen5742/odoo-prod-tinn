@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--
+        Override trang KẾT THÚC bài test (survey_fill_form_done)
+        - Fullscreen gradient theo màu giấy chứng nhận
+        - Card kính mờ căn giữa: điểm số, trạng thái đậu/rớt
+        - Nút "Xem giấy chứng nhận" bật/tắt iframe PDF
+        - Nút tải chứng nhận / làm lại / xem lại
+    -->
+    <template id="survey_fill_form_done_inherit"
+              name="Patsoft - Survey finished (certification)"
+              inherit_id="survey.survey_fill_form_done">
+
+        <!-- Lấy thông tin công ty + màu brand -->
+        <xpath expr="//div[hasclass('o_survey_finished')]" position="before">
+            <t t-set="ps_company" t-value="request.env.company"/>
+            <t t-set="ps_primary" t-value="ps_company.cert_primary_hex or '#006b2e'"/>
+            <t t-set="ps_secondary" t-value="ps_company.cert_secondary_color or '#d4af37'"/>
+            <t t-set="ps_logo_src"
+               t-value="('data:image/png;base64,' + ps_company.logo.decode('utf-8')) if ps_company.logo else ''"/>
+            <t t-set="ps_company_name" t-value="ps_company.cert_company_name or ps_company.name or ''"/>
+            <t t-set="ps_passed" t-value="bool(answer.scoring_success)"/>
+        </xpath>
+
+        <!-- Thay toàn bộ nội dung khối .o_survey_finished -->
+        <xpath expr="//div[hasclass('o_survey_finished')]" position="replace">
+            <div class="wrap o_survey_finished o_ps_survey_end"
+                 t-attf-style="background: linear-gradient(135deg, {{ ps_primary }} 0%, {{ ps_primary }} 55%, {{ ps_secondary }} 100%);">
+
+                <div class="o_ps_card">
+                    <div class="o_ps_card_inner">
+
+                        <!-- Logo + tên công ty -->
+                        <div class="o_ps_brand text-center mb-3" t-if="ps_logo_src or ps_company_name">
+                            <img t-if="ps_logo_src" t-att-src="ps_logo_src"
+                                 class="o_ps_brand_logo mb-1" alt=""/>
+                            <div class="o_ps_brand_name" t-if="ps_company_name">
+                                <t t-esc="ps_company_name"/>
+                            </div>
+                        </div>
+
+                        <!-- Trạng thái đậu / rớt -->
+                        <div class="o_ps_end_status text-center mb-2"
+                             t-if="survey.scoring_type != 'no_scoring' and survey.scoring_success_min">
+                            <div class="o_ps_end_icon">
+                                <i t-if="ps_passed" class="fa fa-trophy"/>
+                                <i t-else="" class="fa fa-times-circle"/>
+                            </div>
+                            <div class="o_ps_end_label">
+                                <t t-if="ps_passed">Chúc mừng, bạn đã đậu!</t>
+                                <t t-else="">Rất tiếc, bạn chưa đạt.</t>
+                            </div>
+                        </div>
+
+                        <!-- Tiêu đề bài test -->
+                        <h1 t-out="survey.title"
+                            class="o_survey_main_title o_ps_survey_title text-center mb-2"/>
+
+                        <!-- Điểm số -->
+                        <div class="o_ps_end_score text-center mb-3"
+                             t-if="survey.scoring_type != 'no_scoring'">
+                            <span class="o_ps_score_value" t-out="answer.scoring_percentage"/>%
+                        </div>
+
+                        <!-- Mô tả kết thúc -->
+                        <div t-field="survey.description_done"
+                             class="o_ps_end_description oe_no_empty text-center mx-auto mb-3"
+                             t-if="not is_html_empty(survey.description_done)"/>
+
+                        <!-- Badge -->
+                        <div class="o_ps_end_badge text-center mb-3"
+                             t-if="survey.certification_give_badge and ps_passed">
+                            <img t-att-src="'/web/image/gamification.badge/%s/image_128' % survey.certification_badge_id.id"/>
+                            <div class="mt-1">
+                                Bạn nhận được huy hiệu
+                                <span class="fw-bold" t-esc="survey.certification_badge_id.name"/>!
+                            </div>
+                        </div>
+
+                        <!-- Nút "Xem giấy chứng nhận" bật/tắt iframe -->
+                        <div class="o_ps_cert_toggle_wrap text-center mb-3"
+                             t-if="survey.certification and ps_passed">
+                            <button type="button"
+                                    class="o_ps_btn o_ps_btn_primary btn btn-lg"
+                                    t-attf-style="background: linear-gradient(135deg, {{ ps_primary }}, {{ ps_secondary }});"
+                                    onclick="document.getElementById('o_ps_cert_frame').classList.toggle('d-none')">
+                                <i class="fa fa-file-pdf-o me-2"/>
+                                Xem giấy chứng nhận
+                            </button>
+                        </div>
+
+                        <!-- Iframe chứng nhận (ẩn mặc định, hiện khi bấm nút) -->
+                        <div id="o_ps_cert_frame" class="o_ps_cert_inline d-none mb-3"
+                             t-if="survey.certification and ps_passed">
+                            <iframe t-attf-src="/survey/#{survey.access_token}/#{answer.access_token}/certificate_inline"
+                                    title="Chứng nhận PDF"/>
+                        </div>
+
+                        <!-- Các nút hành động -->
+                        <div class="o_ps_end_actions d-flex flex-wrap justify-content-center gap-2"
+                             t-if="survey.scoring_type != 'no_scoring' and survey.scoring_success_min">
+
+                            <a role="button"
+                               class="o_ps_btn o_ps_btn_primary btn btn-primary btn-lg"
+                               t-attf-style="background: linear-gradient(135deg, {{ ps_primary }}, {{ ps_secondary }});"
+                               t-att-href="'/survey/%s/get_certification' % survey.id"
+                               t-if="survey.certification and ps_passed">
+                                <i class="fa fa-download me-2"/>
+                                Tải chứng nhận PDF
+                            </a>
+
+                            <t t-call="survey.survey_button_retake"/>
+
+                            <a role="button"
+                               class="o_ps_btn o_ps_btn_secondary btn btn-lg"
+                               t-att-href="'/survey/print/%s?answer_token=%s&amp;review=True' % (survey.access_token, answer.access_token)"
+                               t-if="survey.scoring_type != 'scoring_without_answers'">
+                                <i class="fa fa-eye me-2"/>
+                                Xem lại câu trả lời
+                            </a>
+                        </div>
+
+                        <!-- Nếu không có scoring -->
+                        <div class="o_ps_end_actions d-flex flex-wrap justify-content-center gap-2"
+                             t-if="survey.scoring_type == 'no_scoring'">
+                            <t t-call="survey.survey_button_retake"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

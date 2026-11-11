@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo>
+    <!--form-->
+    <record id="form_property_agreement" model="ir.ui.view">
+        <field name="name">form_property_agreement_name</field>
+        <field name="model">property.agreement</field>
+        <field name="arch" type="xml">
+            <form string="Property Agreement Form">
+                <header>
+                    <button name="confirm_agreement"
+                            type="object"
+                            string="Confirm"
+                            class="oe_highlight"
+                            invisible="state != 'draft'"
+                            />
+                            <!-- attrs="{'invisible': [('state', '!=', 'draft')]}" -->
+                    <button name="send_by_mail"
+                            type="object"
+                            string="&#160;Send By Mail"
+                            class="oe_highlight"
+                            icon="fa-paper-plane"/>
+                    <button string="Expiry" name="expire_agreement" type="object" class="oe_highlight" invisible="state != 'running'"
+                    
+                    />
+                    <button name="%(dev_property_management.action_add_agreement_documents)d"
+                            type="action"
+                            string="&#160;Add Documents"
+                            icon="fa-file-o"
+                            invisible="state not in ('running','draft')"
+                            />
+                            <!-- attrs="{'invisible': [('state', 'not in', ['running', 'draft'])]}" -->
+                    <button name="%(dev_property_management.action_renew_agreement_window_dev_property_management)d"
+                            type="action"
+                            string="&#160;Renew"
+                            class="oe_highlight"
+                            icon="fa-refresh"
+                            invisible="state != 'expired' or type != 'rent'"
+                            />
+                            <!-- attrs="{'invisible': ['|', ('state', '!=', 'expired'), ('type', '!=', 'rent')]}" -->
+                    <button name="cancel_agreement"
+                            type="object"
+                            string="Cancel"
+                            invisible="state not in ('draft','running')"
+                            />
+                            <!-- attrs="{'invisible': [('state', '!=', 'running')]}" -->
+                    <button name="set_to_draft"
+                            type="object"
+                            string="Set to Draft"
+                            invisible="state not in ('expired','cancelled')"
+                            />
+                            <!-- attrs="{'invisible': [('state', 'not in', ['expired', 'cancelled'])]}" -->
+                    <field name="state" widget="statusbar" statusbar_visible="draft,running"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                         <button type="object"
+                                name="view_documents"
+                                class="oe_stat_button"
+                                icon="fa-file-o"
+                                invisible="document_count == 0"
+                                >
+                                <!-- attrs="{'invisible':[('document_count', '=', 0)]}" -->
+                            <field string="Documents" name="document_count" widget="statinfo"/>
+                        </button>
+                        <button type="object"
+                                name="view_renewed_agreement"
+                                class="oe_stat_button"
+                                icon="fa-refresh"
+                                invisible="renew_agreement_id == False"
+                                >
+                                <!-- attrs="{'invisible':[('renew_agreement_id', '=', False)]}" -->
+                            <span>Renewed Agreement</span>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h3>
+                            <field name="name" readonly="1" force_save="1"/>
+                        </h3>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id" invisible="type == 'rent'"  readonly="state != 'draft'" string="Contact"/>
+                            <!-- attrs="{'invisible':[('type', '=', 'rent')], 'readonly': [('state', '!=', 'draft')]}" -->
+                            <field name="partner_id" invisible="type == 'sell'" readonly="state != 'draft'" string="Tenant"/>
+                            <!-- attrs="{'invisible':[('type', '=', 'sell')], 'readonly': [('state', '!=', 'draft')]}" -->
+                            <field name="property_id" 
+                                   domain="[('tenant_partner_id', '=', partner_id), ('tenant_partner_id', '!=', False)]"/>
+                                   <!-- attrs="{'readonly': [('state', '!=', 'draft')]}" -->
+                            <field name="owner_partner_id" invisible="type == 'sell'" readonly="state != 'draft'"  />
+                            <!-- attrs="{'invisible':[('type', '=', 'sell')], 'readonly': [('state', '!=', 'draft')]}" -->
+                            <field name="booking_id" invisible="1"/>
+                            <field name="rent_amount" invisible="type == 'sell'" readonly="state != 'draft'" />
+                            <!-- attrs="{'invisible':[('type', '=', 'sell')], 'readonly': [('state', '!=', 'draft')]}" -->
+                            <field name="renew_agreement_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="agreement_date" readonly="state != 'draft'" />
+                            <!-- attrs="{'readonly': [('state', '!=', 'draft')]}" -->
+                            <field name="type" readonly="1" force_save="1"/>
+                            <label for="duration" invisible="type == 'sell'"/>
+                            <!-- attrs="{'invisible':[('type', '=', 'sell')]}" -->
+                            <div invisible="type == 'sell'">
+                                <!-- attrs="{'invisible':[('type', '=', 'sell')]}" -->
+                                <field name="duration" class="oe_inline" readonly="state != 'draft'" />
+                                <!-- attrs="{'readonly': [('state', '!=', 'draft')]}" -->
+                                <label for="duration" string="&#160;" style="margin-right: 2px;"/>
+                                <field name="interval_type" class="oe_inline" readonly="state != 'draft'" />
+                                <!-- attrs="{'readonly': [('state', '!=', 'draft')]}" -->
+                            </div>
+                            <field name="expiry_date" invisible="type == 'sell'" />
+                            <field name="expiry_day" invisible="1" />
+                            <!-- attrs="{'invisible':[('type', '=', 'sell')]}" -->
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Agreement Details">
+                            <group>
+                                <group>
+                                    <field name="agreement_template_id"  readonly="state != 'draft'" />
+                                    <!-- attrs="{'readonly': [('state', '!=', 'draft')]}" -->
+                                </group>
+                                <group></group>
+                            </group>
+                            <field name="description"  readonly="state != 'draft'"/>
+                            <!-- attrs="{'readonly': [('state', '!=', 'draft')]}" -->
+                        </page>
+                        <page string="Signature">
+                            <group>
+                                <field name="agreement_signed_by" />
+                                <field name="agreement_signed_on" />
+                                <field name="agreement_signature" widget="image"  style="height:200px;width:300px;"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!--tree-->
+    <record id="tree_property_agreement" model="ir.ui.view">
+        <field name="name">tree_property_agreement_name</field>
+        <field name="model">property.agreement</field>
+        <field name="arch" type="xml">
+            <list string="Property Agreement Tree" decoration-danger="state == 'expired'" decoration-success="state == 'running'">
+                <field name="name"/>
+                <field name="partner_id" string="Tenant/Contact"/>
+                <field name="property_id"/>
+                <field name="type"/>
+                <field name="agreement_date"/>
+                <field name="expiry_date"/>
+                <field name="expiry_day"/>
+                <field name="state" />
+            </list>
+        </field>
+    </record>
+
+    <!--search-->
+    <record id="search_property_agreement" model="ir.ui.view">
+        <field name="name">Property Agreement - Search</field>
+        <field name="model">property.agreement</field>
+        <field name="arch" type="xml">
+            <search string="Property Agreement Search">
+                <field name="name"/>
+                <filter name='state_draft' string="Draft" domain="[('state','=','draft')]"/>
+                <filter name='state_running' string="Running" domain="[('state','=','running')]"/>
+                <filter name='state_cancelled' string="Cancelled" domain="[('state','=','cancelled')]"/>
+                <filter name='state_expired' string="Expired" domain="[('state','=','expired')]"/>
+                    <filter name="property_id" string="Property" context="{'group_by':'property_id'}"/>
+                    <filter name="partner_id" string="Tenant/Contact" context="{'group_by':'partner_id'}"/>
+                    <separator/>
+                    <filter name="type" string="Agreement Type" context="{'group_by':'type'}"/>
+                    <filter name="state" string="Status" context="{'group_by':'state'}"/>
+                <searchpanel>
+                    <field name="state" icon="fa-users"/>
+                    <field name="type" icon="fa-building-o"/>
+
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    <!--Action-->
+    <!--common-->
+    <record id="action_property_agreement" model="ir.actions.act_window">
+        <field name="name">Agreement</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">property.agreement</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <!--rent-->
+    <record id="action_property_agreement_rent" model="ir.actions.act_window">
+        <field name="name">Rent Agreement</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">property.agreement</field>
+        <field name="domain">[('type', '=', 'rent')]</field>
+        <field name="context">{'default_type' : 'rent'}</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <!--sell-->
+    <record id="action_property_agreement_sell" model="ir.actions.act_window">
+        <field name="name">Sell Agreement</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">property.agreement</field>
+        <field name="domain">[('type', '=', 'sell')]</field>
+        <field name="context">{'default_type' : 'sell'}</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!--Menus-->
+    <menuitem name="Rent Agreement"
+              id="menu_property_agreement_rent"
+              parent="root_menu_property_agreement"
+              action="action_property_agreement_rent"
+              sequence="1"/>
+    <menuitem name="Sell Agreement"
+              id="menu_property_agreement_sell"
+              parent="root_menu_property_agreement"
+              action="action_property_agreement_sell"
+              sequence="2"/>
+</odoo>

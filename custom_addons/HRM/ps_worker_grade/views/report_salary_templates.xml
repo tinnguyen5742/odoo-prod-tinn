@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_ps_worker_salary" model="ir.actions.report">
+        <field name="name">Salary Matrix Report</field>
+        <field name="model">ps.worker.salary</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ps_worker_grade.report_ps_worker_salary</field>
+        <field name="report_file">ps_worker_grade.report_ps_worker_salary</field>
+        <field name="print_report_name">'Salary Matrix - %s' % (object.x_name)</field>
+        <field name="binding_model_id" ref="model_ps_worker_salary" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_ps_worker_salary">
+        <t t-call="web.html_container">
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <h2 class="text-center">WORKER GRADE - SOCIAL INSURANCE SALARY MATRIX</h2>
+                    <h4 class="text-center"><t t-esc="doc.x_name"/> - Year <t t-esc="doc.x_year"/></h4>
+                    <p class="text-center">Profession: <t t-esc="doc.x_profession_id.x_name"/></p>
+
+                    <t t-set="lines" t-value="doc.x_line_ids.sorted(lambda l: l.x_sequence)"/>
+                    <t t-set="shift_types" t-value="env['ps.worker.shift.type'].search([])"/>
+                    <table class="table table-bordered table-sm" style="font-size: 9px;">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" style="vertical-align: middle;">Description</th>
+                                <t t-foreach="lines" t-as="line">
+                                    <th colspan="3" class="text-center"><t t-esc="line.x_grade_id.x_name"/></th>
+                                </t>
+                            </tr>
+                            <tr>
+                                <t t-foreach="lines" t-as="line">
+                                    <th class="text-center">Basic</th>
+                                    <th class="text-center">KPI</th>
+                                    <th class="text-center">Income</th>
+                                </t>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Basic Salary</td>
+                                <t t-foreach="lines" t-as="line">
+                                    <td class="text-right"><t t-esc="'{:,.0f}'.format(line.x_basic_salary)"/></td>
+                                    <td class="text-right">-</td>
+                                    <td class="text-right">-</td>
+                                </t>
+                            </tr>
+                            <tr>
+                                <td>KPI Amount</td>
+                                <t t-foreach="lines" t-as="line">
+                                    <td class="text-right">-</td>
+                                    <td class="text-right"><t t-esc="'{:,.0f}'.format(line.x_kpi_amount)"/></td>
+                                    <td class="text-right">-</td>
+                                </t>
+                            </tr>
+                            <tr>
+                                <td>Hourly Income</td>
+                                <t t-foreach="lines" t-as="line">
+                                    <td class="text-right"><t t-esc="'{:,.0f}'.format(line.x_hourly_basic)"/></td>
+                                    <td class="text-right"><t t-esc="'{:,.0f}'.format(line.x_hourly_kpi)"/></td>
+                                    <td class="text-right"><t t-esc="'{:,.0f}'.format(line.x_hourly_total)"/></td>
+                                </t>
+                            </tr>
+                            <t t-foreach="shift_types" t-as="shift_type">
+                                <tr>
+                                    <td><t t-esc="shift_type.x_name"/></td>
+                                    <t t-foreach="lines" t-as="line">
+                                        <t t-set="shift" t-value="line.x_shift_line_ids.filtered(lambda s: s.x_shift_type_id == shift_type)"/>
+                                        <td class="text-right"><t t-esc="'{:,.0f}'.format(shift.x_basic_amount) if shift else '0'"/></td>
+                                        <td class="text-right"><t t-esc="'{:,.0f}'.format(shift.x_kpi_amount) if shift else '0'"/></td>
+                                        <td class="text-right"><t t-esc="'{:,.0f}'.format(shift.x_total) if shift else '0'"/></td>
+                                    </t>
+                                </tr>
+                            </t>
+                            <tr>
+                                <td>26 Days</td>
+                                <t t-foreach="lines" t-as="line">
+                                    <td class="text-right"><t t-esc="'{:,.0f}'.format(line.x_total_26_basic)"/></td>
+                                    <td class="text-right"><t t-esc="'{:,.0f}'.format(line.x_total_26_kpi)"/></td>
+                                    <td class="text-right"><t t-esc="'{:,.0f}'.format(line.x_total_26_total)"/></td>
+                                </t>
+                            </tr>
+                            <tr>
+                                <td>28 Days</td>
+                                <t t-foreach="lines" t-as="line">
+                                    <td class="text-right"><t t-esc="'{:,.0f}'.format(line.x_total_28_basic)"/></td>
+                                    <td class="text-right"><t t-esc="'{:,.0f}'.format(line.x_total_28_kpi)"/></td>
+                                    <td class="text-right"><t t-esc="'{:,.0f}'.format(line.x_total_28_total)"/></td>
+                                </t>
+                            </tr>
+                            <tr>
+                                <td>Total Allowance</td>
+                                <t t-foreach="lines" t-as="line">
+                                    <td class="text-right" colspan="3"><t t-esc="'{:,.0f}'.format(line.x_total_allowance)"/></td>
+                                </t>
+                            </tr>
+                            <tr>
+                                <td>Total 26 Days Income</td>
+                                <t t-foreach="lines" t-as="line">
+                                    <td class="text-right" colspan="3"><t t-esc="'{:,.0f}'.format(line.x_total_26_income)"/></td>
+                                </t>
+                            </tr>
+                            <tr>
+                                <td>Total 28 Days Income</td>
+                                <t t-foreach="lines" t-as="line">
+                                    <td class="text-right" colspan="3"><t t-esc="'{:,.0f}'.format(line.x_total_28_income)"/></td>
+                                </t>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>

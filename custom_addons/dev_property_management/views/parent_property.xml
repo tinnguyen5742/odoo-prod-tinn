@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo>
+    <!--form-->
+    <record id="form_property_dev_property_managementt" model="ir.ui.view">
+        <field name="name">form_property_dev_property_management_namee</field>
+        <field name="model">property.property</field>
+        <field name="arch" type="xml">
+            <form string="Property Form">
+                <header>
+                    <button name="set_to_available" type="object" string="Set to Available" class="oe_highlight" invisible="state == 'draft'" />
+                    <button name="generate_sub_properties" type="object" string="&#160;Generate Sub Properties" class="oe_highlight" icon="fa-building-o" invisible="property_purpose != 'parent'" />
+                    <button name="generate_tower_line" type="object" string="&#160;Generate Tower" class="oe_highlight" icon="fa-building-o" invisible="property_purpose != 'parent' or generate_dynamicaly_tower == False" />
+                    <field name="state" widget="statusbar"/>
+                    <button name="update_property_type" type="object" string="Update Property Type" class="oe_highlight"/>
+                    <button name="create_booking" type="object" string="Create Booking" class="oe_highlight" invisible="property_purpose != 'sell'"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" name="view_child_properties" class="oe_stat_button" icon="fa-building-o" invisible="child_property_count == 0 ">
+                            <field string="Property" name="child_property_count" widget="statinfo"/>
+                        </button>
+                        <button type="object"
+                                name="view_booking_request"
+                                class="oe_stat_button"
+                                icon="fa-check-square"
+                                invisible="booking_request_count == 0 "
+                                >
+                            <field string="Booking Request" name="booking_request_count" widget="statinfo"/>
+                        </button>
+                        <button type="object" name="view_confirmed_booking" class="oe_stat_button" icon="fa-check" invisible="booking_id == False">
+                            <span>Last Confirmed Booking</span>
+                        </button>
+                        <button type="object" name="view_tenancies" class="oe_stat_button" icon="fa-key" invisible="tenancy_count == 0">
+                            <field string="Tenancy" name="tenancy_count" widget="statinfo"/>
+                        </button>
+                        <button type="object" name="view_agreements" class="oe_stat_button" icon="fa-file-text-o" invisible="agreement_count == 0">
+                            <field string="Agreement" name="agreement_count" widget="statinfo"/>
+                        </button>
+                        <button type="object" name="view_maintenance_invoices" class="oe_stat_button" icon="fa-pencil-square-o" invisible="invoice_count == 0">
+                            <field string="Maintenance Invoice" name="invoice_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <field name="photo" widget="image" class="oe_avatar" required="1"/>
+                    <div class="oe_title">
+                        <field name="number" readonly="1" force_save="1"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                        <h3>
+                            <field name="property_purpose" style="width: 200px;" />
+                        </h3>
+                        <div>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" placeholder="Tags"/>
+                        </div>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="property_type"/>
+                            <field name="construct_year" options="{'format': 0}"/>
+                            <field name="property_age" invisible="construct_year == 0" />
+                        </group>
+                        <group>
+                            <field name="parent_id" domain="[('property_purpose', '=', 'parent')]"/>
+                            <field name="booking_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="owner_partner_id" domain="[('is_owner', '=', True)]"/>
+                            <field name="price_amount" invisible="property_purpose != 'sell'" />
+                            <field name="rent_amount" invisible="property_purpose != 'rent'" />
+                            <field name="deposit_amount" invisible="property_purpose != 'rent'"/>
+                            <field name="tenant_partner_id" invisible="property_purpose != 'rent'" domain="[('is_tenant', '=', True)]"/>
+                            <field name="property_status" invisible="property_purpose != 'sell'" />
+                        </group>
+                        <group>
+                            <span class="o_form_label o_td_label" name="address_name">
+                                <b>Address</b>
+                            </span>
+                            <div class="o_address_format">
+                                <field name="street" placeholder="Street..." class="o_address_street"/>
+                                <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                <field name="city_id" placeholder="City" class="o_address_city"/>
+                                <field name="state_id" class="o_address_state" placeholder="State"/>
+                                <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                <field name="country_id" placeholder="Country" class="o_address_country"/>
+                            </div>
+                        </group>
+                    </group>
+                    <div invisible="property_type != 'residential'">
+                        <separator string="Other Details"/>
+                        <group>
+                            <group>
+                                <field name="residential_type_id"/>
+                                <field name="single_unit"/>
+                                <field name="is_tower" invisible="parent_id == True"/>
+                                <field name="generate_dynamicaly_tower" invisible="is_tower == False" />
+                                <field name="total_towers" options="{'format': 0}" invisible="is_tower == False or generate_dynamicaly_tower == True " />
+                                <field name="add_towers" widget="many2many_tags" invisible="generate_dynamicaly_tower == False " />
+                                
+                                <field name="flat_type_id" invisible="flat_name != 'Flat'" />
+                                <field name="flat_name" invisible='1'/>
+                                <field name="bedroom" invisible="property_purpose == 'parent'"/>
+                                <field name="bathroom" invisible="property_purpose == 'parent'"/>
+                                <field name="alarms" />
+
+                            </group>
+                            <group>
+                                <field name="property_number"/>
+                                <field name="on_floor" options="{'format': 0}" invisible="is_tower == False or property_purpose == 'parent'" />
+                                <field name="furnishing" invisible="property_purpose == 'parent' or property_type not in ('residential','commercial')" />
+                                <field name="total_floor" options="{'format': 0}" invisible="is_tower == False and parent_id == True or generate_dynamicaly_tower == True" />
+                                <field name="property_per_floor" invisible="is_tower == False and parent_id == True or generate_dynamicaly_tower == True"/>
+                                <field name="facing_id"  invisible="parent_id == True" />
+                                <field name="total_square_foot"/>
+                                <label for="two_wheeler_parking" invisible="property_purpose == 'parent'" />
+                                <div class="oe_inline" invisible="property_purpose == 'parent'">
+                                    <field name="two_wheeler_parking"/>
+                                    <field name="two_wheeler_parking_allot" invisible="two_wheeler_parking == False" options="{'format': 0}"/>
+                                </div>
+                                <label for="four_wheeler_parking" invisible="property_purpose == 'parent'"/>
+                                <div class="oe_inline" invisible="property_purpose == 'parent'">
+                                    <field name="four_wheeler_parking"/>
+                                    <field name="four_wheeler_parking_allot" invisible="four_wheeler_parking == False" options="{'format': 0}"/>
+                                </div>
+                            </group>
+                        </group>
+                    </div>
+                    <div invisible="property_type != 'commercial'">
+                        <separator string="Other Details"/>
+                        <group>
+                            <group>
+                                <field name="commercial_type_id"/>
+                                <field name="single_unit"/>
+                                <field name="is_tower"/>
+                                <field name="total_towers" options="{'format': 0}" invisible="is_tower == False"/>
+                                
+                            </group>
+                            <group>
+                                <field name="property_number"/>
+                                <field name="on_floor" options="{'format': 0}" invisible="is_tower == False or property_purpose == 'parent'" />
+                                <field name="furnishing" invisible="property_purpose == 'parent'" />
+                                <field name="total_floor" options="{'format': 0}" invisible="is_tower == False" />
+                                <field name="property_per_floor" invisible="is_tower == False"/>
+                                <field name="facing_id"/>
+                                <field name="total_square_foot"/>
+                                <label for="two_wheeler_parking" invisible="property_purpose == 'parent'"/>
+                                <div class="oe_inline" invisible="property_purpose == 'parent'">
+                                    <field name="two_wheeler_parking"/>
+                                    <field name="two_wheeler_parking_allot" invisible="two_wheeler_parking == False" options="{'format': 0}"/>
+                                </div>
+                                <label for="four_wheeler_parking" invisible="property_purpose == 'parent'" />
+                                <div class="oe_inline" invisible="property_purpose == 'parent'">
+                                    <field name="four_wheeler_parking"/>
+                                    <field name="four_wheeler_parking_allot" invisible="four_wheeler_parking == False" options="{'format': 0}"/>
+                                </div>
+                            </group>
+                        </group>
+                    </div>
+                    <div invisible="property_type != 'industrial'">
+                        <separator string="Other Details"/>
+                        <group>
+                            <group>
+                                <field name="industrial_type_id"/>
+                                <field name="single_unit"/>
+                                <field name="is_tower"/>
+                                <field name="total_towers" options="{'format': 0}" invisible="is_tower == False"/>
+                                <field name="total_floor" options="{'format': 0}" invisible="is_tower == False"/>
+                                <field name="property_per_floor" invisible="is_tower == False" />
+                                <field name="facing_id"/>
+                                <field name="total_square_foot"/>
+                            </group>
+                            <group>
+                                <field name="property_number"/>
+                                <field name="on_floor" options="{'format': 0}" invisible="is_tower == False or property_purpose == 'parent'" />
+                                <field name="industrial_location" invisible="property_purpose == 'parent'" />
+                                <label for="two_wheeler_parking" invisible="property_purpose == 'parent'" />
+                                <div class="oe_inline" invisible="property_purpose == 'parent'">
+                                    <field name="two_wheeler_parking"/>
+                                    <field name="two_wheeler_parking_allot" invisible="two_wheeler_parking == False" options="{'format': 0}"/>
+                                </div>
+                                <label for="four_wheeler_parking" invisible="property_purpose == 'parent'" />
+                                <div class="oe_inline" invisible="property_purpose == 'parent'">
+                                    <field name="four_wheeler_parking"/>
+                                    <field name="four_wheeler_parking_allot" invisible="four_wheeler_parking == False" options="{'format': 0}"/>
+                                </div>
+                            </group>
+                        </group>
+                    </div>
+                    <div invisible="property_type != 'land'">
+                        <separator string="Other Details"/>
+                        <group>
+                            <group>
+                                <field name="total_square_foot"/>
+                            </group>
+                            <group>
+                                <field name="property_number"/>
+                            </group>
+                        </group>
+                    </div>
+                    <notebook>
+                    	 <page string="Tower Details" name="property_tower"  invisible="generate_dynamicaly_tower == False">
+                    	 
+                    	 
+                           	<field name="tower_line_ids" >
+                           		<list editable='bottom'>
+                           			<field name="tower_id" readonly="1" />
+                           			<field name="floor_no" readonly="1" />
+                           			<field name="floot_unit" />
+                           		</list>
+                           	</field>
+                        </page>
+                        <page string="Property Details" name="property_desc">
+                            <field name="description" type="html"/>
+                        </page>
+                        <page string="Brochure" name="brochure" invisible="property_type == 'land'">
+                            <group>
+                                <field name="brochure_name" invisible="1"/>
+                                <field name="brochure" filename="brochure_name" widget="image" />
+                            </group>
+                        </page>
+                        <page string="Document">
+                            <field name="proprty_document_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="document" filename="document_name"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Images" name="property_images">
+                            <field name="property_image_ids" context="{'default_res_id':True, 'default_res_model': 'property.property'}">
+                                <kanban default_order="id asc">
+                                    <field name="name"/>
+                                    <field name="res_id"/>
+                                    <field name="res_model"/>
+                                    <field name="datas"/>
+                                    <field name="id"/>
+                                    <templates>
+                                        <t t-name="card">
+                                            <div class="oe_kanban_global_click" style="width: 310px; height: 180px; padding: 0; margin: 10px; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #eee; position: relative;">
+                                                <div style="width: 100%; height: 100%; background: #f8f9fa;">
+                                                    <field name="datas" widget="image" options="{'preview_image': 'datas'}" style="width: 100%; height: 100%; object-fit: cover;"/>
+                                                </div>
+                                                <div class="oe_kanban_details" style="position: absolute; bottom: 0; left: 0; right: 0; padding: 12px; background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%); color: white;">
+                                                    <strong class="o_kanban_record_title" style="font-size: 1em; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                                        <field name="name"/>
+                                                    </strong>
+                                                </div>
+                                                <a t-if="! read_only_mode" type="delete" class="text-danger" style="position: absolute; top: 10px; right: 10px; width: 28px; height: 28px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.2); z-index: 10;">
+                                                    <i class="fa fa-times" title="Delete"/>
+                                                </a>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                        </page>
+                        <page string="Floor Plan" name="floor_plan">
+                            <field name="floor_plan_image_ids" context="{'default_res_id':True, 'default_res_model': 'property.property'}">
+                                <kanban default_order="id asc">
+                                    <field name="name"/>
+                                    <field name="res_id"/>
+                                    <field name="res_model"/>
+                                    <field name="datas"/>
+                                    <field name="id"/>
+                                    <templates>
+                                        <t t-name="card">
+                                            <div class="oe_kanban_global_click" style="width: 310px; height: 180px; padding: 0; margin: 10px; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #eee; position: relative;">
+                                                <div style="width: 100%; height: 100%; background: #f8f9fa;">
+                                                    <field name="datas" widget="image" options="{'preview_image': 'datas'}" style="width: 100%; height: 100%; object-fit: cover;"/>
+                                                </div>
+                                                <div class="oe_kanban_details" style="position: absolute; bottom: 0; left: 0; right: 0; padding: 12px; background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%); color: white;">
+                                                    <strong class="o_text_overflow" style="font-size: 1em; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                                        <field name="name"/>
+                                                    </strong>
+                                                </div>
+                                                <a t-if="! read_only_mode" type="delete" class="text-danger" style="position: absolute; top: 10px; right: 10px; width: 28px; height: 28px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.2); z-index: 10;">
+                                                    <i class="fa fa-times" title="Delete"/>
+                                                </a>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                        </page>
+                        <page string="Area Measurement">
+                            <field name="area_measurement_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="length"/>
+                                    <field name="width"/>
+                                    <field name="height"/>
+                                    <field name="carpet_area"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="name"/>
+                                            <field name="carpet_area"/>
+                                        </group>
+                                        <group>
+                                            <field name="length"/>
+                                            <field name="width"/>
+                                            <field name="height"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                            <group class="oe_right" colspan="2">
+                                <field name="total_carpet_area"/>
+                            </group>
+                        </page>
+                        <page string="Amenities" name="amenities" invisible="property_type == 'land'">
+                            <field name="amenity_ids" widget="many2many" options="{'not_delete': True}">
+                                <kanban class="o_kanban_mobile" sample="1">
+                                    <field name="name"/>
+                                    <field name="image"/>
+                                    <field name="id"/>
+                                    <templates>
+                                        <t t-name="card">
+                                            <div class="oe_kanban_global_click d-flex align-items-center p-2 mb-2" style="min-width: 200px; flex: 1 1 200px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #eee;">
+                                                <div class="o_kanban_image" style="width: 60px; height: 60px; margin-right: 15px; flex-shrink: 0;">
+                                                    <field name="image" widget="image" options="{'preview_image': 'image'}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;"/>
+                                                </div>
+                                                <div class="oe_kanban_details overflow-hidden">
+                                                    <strong class="o_text_overflow" style="font-size: 1.1em;">
+                                                        <field name="name"/>
+                                                    </strong>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                        </page>
+                        <page string="Nearby Connectivity" name="nearby_places">
+                            <field name="nearby_connectivity_ids" widget="many2many" options="{'not_delete': True}">
+                                <kanban class="o_kanban_mobile" sample="1">
+                                    <field name="name"/>
+                                    <field name="image"/>
+                                    <field name="id"/>
+                                    <templates>
+                                        <t t-name="card">
+                                            <div class="oe_kanban_global_click d-flex align-items-center p-2 mb-2" style="min-width: 200px; flex: 1 1 200px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #eee;">
+                                                <div class="o_kanban_image" style="width: 60px; height: 60px; margin-right: 15px; flex-shrink: 0;">
+                                                    <field name="image" widget="image" options="{'preview_image': 'image'}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;"/>
+                                                </div>
+                                                <div class="oe_kanban_details overflow-hidden">
+                                                    <strong class="o_text_overflow" style="font-size: 1.1em;">
+                                                        <field name="name"/>
+                                                    </strong>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!--kanban-->
+    <record id="kanban_property_dev_property_managementt" model="ir.ui.view">
+        <field name="name">kanban_property_dev_property_management_namee</field>
+        <field name="model">property.property</field>
+        <field name="arch" type="xml">
+            <kanban sample="1" records_draggable="0">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="photo"/>
+                <field name="property_type"/>
+                <field name="property_purpose"/>
+                <field name="owner_partner_id"/>
+                <field name="rent_amount"/>
+                <field name="price_amount"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click mb-3" style="width: 100%; min-width: 100%; padding: 0; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #eee;">
+                            <div style="height: 200px; width: 100%; background: #f8f9fa; overflow: hidden;">
+                                <field name="photo" widget="image" options="{'preview_image': 'photo'}" style="width: 100%; height: 100%; object-fit: cover;"/>
+                            </div>
+                            <div class="oe_kanban_details o_kanban_content" style="padding: 12px;">
+                                <h4 class="mb-2" style="color: #2c3e50; font-weight: bold;">
+                                    <field name="name"/>
+                                </h4>
+                                <div class="mb-1">
+                                    <span class="text-muted">Type:</span> <field name="property_type"/>
+                                </div>
+                                <div class="mb-1">
+                                    <span class="text-muted">Purpose:</span> <field name="property_purpose"/>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="text-muted">Owner:</span> <field name="owner_partner_id"/>
+                                </div>
+                                <t t-if="record.property_purpose.raw_value == 'rent'">
+                                    <div class="text-primary font-weight-bold">
+                                        <b>Monthly Rent :</b>
+                                        <field name="rent_amount"/>
+                                    </div>
+                                </t>
+                                <t t-if="record.property_purpose.raw_value == 'sell'">
+                                    <div class="text-success font-weight-bold">
+                                        <b>Selling Price :</b>
+                                        <field name="price_amount"/>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!--tree-->
+    <record id="tree_property_dev_property_managementt" model="ir.ui.view">
+        <field name="name">tree_property_dev_property_management_namee</field>
+        <field name="model">property.property</field>
+        <field name="arch" type="xml">
+            <list string="Property Tree">
+                <field name="number"/>
+                <field name="complete_name" string="Property"/>
+                <field name="owner_partner_id"/>
+                <field name="tenant_partner_id"/>
+                <field name="total_square_foot"/>
+                <field name="state" widget="badge" decoration-success="state == 'on_rent'" decoration-info="state == 'draft'"
+                       />
+            </list>
+        </field>
+    </record>
+
+    <!--search-->
+    <record id="search_parent_property_dev_property_management" model="ir.ui.view">
+        <field name="name">Property - Search</field>
+        <field name="model">property.property</field>
+        <field name="arch" type="xml">
+            <search string="Property Search">
+                <field name="name"/>
+                <field name="complete_name" string="Full Name"/>
+                <field name="parent_id"/>
+                <filter name='state_draft' string="Available" domain="[('state','=','draft')]"/>
+                <filter name='state_on_rent' string="On Rent" domain="[('state','=','on_rent')]"/>
+                    <filter name="parent_id" string="Parent Property" context="{'group_by':'parent_id'}"/>
+                    <separator/>
+                    <filter name="owner_partner_id" string="Owner" context="{'group_by':'owner_partner_id'}"/>
+                    <filter name="tenant_partner_id" string="Tenant" context="{'group_by':'tenant_partner_id'}"/>
+                    <separator/>
+                    <filter name="property_type" string="Property Type" context="{'group_by':'property_type'}"/>
+                    <filter name="property_purpose" string="Property Purpose" context="{'group_by':'property_purpose'}"/>
+                    <filter name="facing" string="Facing" context="{'group_by':'facing_id'}"/>
+                    <filter name="furnishing" string="Furnishing" context="{'group_by':'furnishing'}"/>
+                    <filter name="state" string="Status" context="{'group_by':'state'}"/>
+                <searchpanel>
+
+                    <field name="owner_partner_id" icon="fa-users" />
+                    <field name="tenant_partner_id" icon="fa-users"/>
+                    <field name="parent_id" icon="fa-users"/>
+                    <field name="property_type" icon="fa-building"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    <!--Action-->
+    <record id="action_property_dev_property_management" model="ir.actions.act_window">
+        <field name="name">Property</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">property.property</field>
+        <field name="context">{'search_default_state': 1}</field>
+        <field name="domain">[('parent_id','=', False)]</field>
+        <field name="search_view_id" ref="search_parent_property_dev_property_management"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+(0, 0, {'view_mode': 'kanban', 'view_id': ref('dev_property_management.kanban_property_dev_property_managementt')}),
+(0, 0, {'view_mode': 'list', 'view_id': ref('dev_property_management.tree_property_dev_property_managementt')}),
+(0, 0, {'view_mode': 'form', 'view_id': ref('dev_property_management.form_property_dev_property_managementt')})
+]"
+/>
+        <field name="view_mode">kanban,list,form,search</field>
+    </record>
+
+    <!--Menus-->
+    <menuitem name="Property" id="menu_parent_property_dev_property_management" parent="root_menu_property" sequence="1"/>
+    <menuitem name="Property" id="parent_menu_property_dev_property_management" parent="menu_parent_property_dev_property_management" action="action_property_dev_property_management" sequence="1"/>
+</odoo>

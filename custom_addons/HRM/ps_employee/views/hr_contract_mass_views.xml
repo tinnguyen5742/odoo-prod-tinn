@@ -1,0 +1,52 @@
+<odoo>
+    <record id="view_ps_hr_contract_mass_form" model="ir.ui.view">
+        <field name="name">ps.hr.contract.mass.form</field>
+        <field name="model">ps.hr.contract.mass</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="x_rep_id"/>
+                </group>
+                <group>
+                    <field name="employee_ids" widget="many2many_tags"/>
+                </group>
+                <group>
+                    <field name="contract_template_id"
+                           options="{'no_create': True, 'no_open': True}"/>
+                </group>
+                <group string="Contract Info">
+                    <group>
+                        <field name="x_contract_type"/>
+                        <field name="date_sign"/>
+                        <field name="x_date_create"/>
+                        <field name="x_date_start"/>
+                        <field name="x_date_end"/>
+                    </group>
+                    <group>
+                        <field name="percent_salary"/>
+                        <field name="wage"/>
+                        <field name="allowance"/>
+                        <field name="x_ins_salary"/>
+                    </group>
+                </group>
+                <group string="Job Info">
+                    <group>
+                        <field name="x_grade"/>
+                        <field name="x_job_title"/>
+                        <field name="x_position"/>
+                        <field name="x_salary_grade"/>
+                    </group>
+                    <group>
+                        <field name="work_address"/>
+                        <field name="note"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_create" string="Create Contracts" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

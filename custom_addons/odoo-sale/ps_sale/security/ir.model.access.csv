@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ps_sale_order_type_user,ps.sale.order.type.user,model_ps_sale_order_type,base.group_user,1,0,0,0
+access_ps_sale_order_type_salesman,ps.sale.order.type.salesman,model_ps_sale_order_type,sales_team.group_sale_salesman,1,0,0,0
+access_ps_sale_order_type_manager,ps.sale.order.type.manager,model_ps_sale_order_type,sales_team.group_sale_manager,1,1,1,1
+access_ps_sale_inventory_user,ps.sale.inventory.user,model_ps_sale_inventory,base.group_user,1,0,0,0
+access_ps_sale_inventory_salesman,ps.sale.inventory.salesman,model_ps_sale_inventory,sales_team.group_sale_salesman,1,0,0,0
+access_ps_sale_inventory_manager,ps.sale.inventory.manager,model_ps_sale_inventory,sales_team.group_sale_manager,1,1,1,1
+access_ps_sale_item_unit_user,ps.sale.item.unit.user,model_ps_sale_item_unit,base.group_user,1,0,0,0
+access_ps_sale_item_unit_salesman,ps.sale.item.unit.salesman,model_ps_sale_item_unit,sales_team.group_sale_salesman,1,0,0,0
+access_ps_sale_item_unit_manager,ps.sale.item.unit.manager,model_ps_sale_item_unit,sales_team.group_sale_manager,1,1,1,1
+access_ps_sale_tax_user,ps.sale.tax.user,model_ps_sale_tax,base.group_user,1,0,0,0
+access_ps_sale_tax_salesman,ps.sale.tax.salesman,model_ps_sale_tax,sales_team.group_sale_salesman,1,0,0,0
+access_ps_sale_tax_manager,ps.sale.tax.manager,model_ps_sale_tax,sales_team.group_sale_manager,1,1,1,1

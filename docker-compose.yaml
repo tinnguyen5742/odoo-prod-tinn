@@ -1,0 +1,55 @@
+# Local stack for ghcr.io/patsoft-dev/odoo-prod.
+# ODOO_IMAGE_TAG overrides the image tag. Default is latest. See .env.example.
+# Host 8070 publishes container 8069. Host 8072 publishes the gevent port.
+# Isolated network so this stack does not need an external traefik network.
+services:
+  db-19:
+    image: docker.io/library/postgres:18
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odooodoo
+    volumes:
+      - odoo-19-db-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U odoo"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal
+
+  odoo-19:
+    image: "ghcr.io/patsoft-dev/odoo-prod:${ODOO_IMAGE_TAG:-latest}"
+    restart: unless-stopped
+    ports:
+      - "8070:8069"
+      - "8072:8072"
+    environment:
+      - HOST=db-19
+      - PORT=5432
+      - USER=odoo
+      - PASSWORD=odooodoo
+      - PYTZ_TZDATADIR=/usr/share/zoneinfo
+    # Database name for this stack. Master password stays out of the image;
+    # set admin_passwd in a runtime config. See docs/pull-image.md.
+#    command: ["--db-filter=^odoo$"]
+    volumes:
+      - odoo-19-web-data:/var/lib/odoo
+      - odoo-19-config-data:/etc/odoo
+    depends_on:
+      db-19:
+        condition: service_healthy
+    networks:
+      - internal
+
+networks:
+  internal:
+    name: odoo-internal
+
+volumes:
+  odoo-19-db-data:
+  odoo-19-web-data:
+  odoo-19-config-data:
+

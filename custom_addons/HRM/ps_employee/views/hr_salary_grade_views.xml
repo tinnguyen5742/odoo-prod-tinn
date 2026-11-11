@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ps_hr_salary_grade_tree_view" model="ir.ui.view">
+        <field name="name">ps.hr.salary.grade.tree</field>
+        <field name="model">ps.hr.salary.grade</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="ps_hr_salary_grade_form_view" model="ir.ui.view">
+        <field name="name">ps.hr.salary.grade.form</field>
+        <field name="model">ps.hr.salary.grade</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ps_hr_salary_grade_search_view" model="ir.ui.view">
+        <field name="name">ps.hr.salary.grade.search</field>
+        <field name="model">ps.hr.salary.grade</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="code"/>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="ps_hr_salary_grade_action" model="ir.actions.act_window">
+        <field name="name">Salary Grades</field>
+        <field name="res_model">ps.hr.salary.grade</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="form_property_agreement_documents" model="ir.ui.view">
+        <field name="name">form_property_agreement_documents_name</field>
+        <field name="model">ir.attachment</field>
+        <field name="arch" type="xml">
+            <form string="Document" create="false" edit="false">
+                <sheet>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="type"/>
+                            <field name="datas" filename="name" invisible="type == 'url'" />
+                            <!-- attrs="{'invisible':[('type','=','url')]}" -->
+                            <field name="url" widget="url" invisible="type == 'binary'" />
+                            <!-- attrs="{'invisible':[('type','=','binary')]}" -->
+                            <field name="mimetype" groups="base.group_no_one"/>
+                        </group>
+                        <group string="Attached To" groups="base.group_no_one">
+                            <field name="res_model"/>
+                            <field name="res_field"/>
+                            <field name="res_id"/>
+                            <field name="res_name"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                            <field name="public"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="kanban_property_agreement_documents" model="ir.ui.view">
+        <field name="name">kanban_property_agreement_documents_name</field>
+        <field name="model">ir.attachment</field>
+        <field name="arch" type="xml">
+            <kanban edit="false" import="false"  create="false">
+                <field name="id"/>
+                <field name="mimetype"/>
+                <field name="type"/>
+                <field name="create_uid"/>
+                <field name="url"/>
+                <field name="create_date"/>
+                <field name="name"/>
+                <field name="res_name"/>
+                <templates>
+                    <t t-name="kanban-menu">
+                        <t t-if="widget.editable">
+                            <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                        </t>
+                        <t t-if="widget.deletable">
+                            <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                        </t>
+                    </t>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_area oe_kanban_global_click o_kanban_attachment">
+                            <!-- <div class="row">
+                                <div class="offset-10">
+                                    <div class="o_dropdown_kanban dropdown" groups="base.group_user">
+                                        <a role="button" class="dropdown-toggle o-no-caret btn" data-toggle="dropdown"
+                                           href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                            <span class="fa fa-ellipsis-v"/>
+                                        </a>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a t-if="widget.deletable" role="menuitem" type="delete"
+                                               class="dropdown-item">Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="o_kanban_details">
+                                <div class="o_kanban_details_wrapper">
+                                    <div t-att-title="record.name.raw_value" class="o_kanban_record_title">
+                                        <h4><field name="name" class="o_text_overflow"/></h4>
+                                    </div>
+                                    <div t-att-title="record.res_name.raw_value" class="o_kanban_record_title">
+                                        <field name="res_name" class="o_text_overflow"/>
+                                    </div>
+                                    <div class="o_kanban_record_bottom">
+                                        <time class="oe_kanban_bottom_left">
+                                            <field name="create_date" widget="date"/>
+                                        </time>
+                                        <div class="oe_kanban_bottom">
+                                            <field name="create_uid" widget="many2one_avatar_user"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="tree_property_agreement_documents" model="ir.ui.view">
+        <field name="name">tree_property_agreement_documents_name</field>
+        <field name="model">ir.attachment</field>
+        <field name="arch" type="xml">
+            <list string="Documents" create="false" edit="false">
+                <field name="res_name"/>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+
+    <record id="action_property_agreement_documents" model="ir.actions.act_window">
+        <field name="name">Agreement Documents</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ir.attachment</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context"></field>
+        <field name="view_ids" eval="[(5, 0, 0),
+        (0, 0, {'view_mode': 'kanban', 'view_id': ref('dev_property_management.kanban_property_agreement_documents')}),
+        (0, 0, {'view_mode': 'list', 'view_id': ref('dev_property_management.tree_property_agreement_documents')}),
+        (0, 0, {'view_mode': 'form', 'view_id': ref('dev_property_management.form_property_agreement_documents')})]"/>
+        <field name="domain">[('res_model', '=', 'property.agreement')]</field>
+        <field name="help" type="html">
+            <p>
+                Create Document
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_property_agreement_documents"
+              name="Agreement Documents"
+              parent="root_menu_property_agreement_document"
+              action="action_property_agreement_documents"
+              sequence="3"/>
+</odoo>

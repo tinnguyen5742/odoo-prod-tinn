@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo noupdate="1" >
+
+    <record id="property_land_with_notebook" model="property.property">
+        
+        <field name="name">Maitry Land</field>
+        <field name="property_type">land</field>
+        <field  name="photo" type="base64" file="dev_property_management/static/src/img/beautiful-landscape-with-tall-trees.jpg"/>
+        <field name="property_purpose">sell</field>
+        <field name="owner_partner_id" ref="dev_property_management.property_owner_1"/>
+        <field name="construct_year">2020</field>
+        <field name="price_amount">6000000</field>
+        <field name="property_status">re_sale</field>
+        <field name="property_number">402</field>
+        <field name="street">Navrang pura</field>
+        <field name="street2">Navrang pura</field>
+        <field name="city_id" ref="dev_property_management.city_1"/>
+        <field name="zip">360035</field>
+        <field name="total_square_foot">2000</field>
+        <field name="description"><![CDATA[This is a detailed description of the property.]]></field>
+        <field name="nearby_connectivity_ids" eval="[(6, 0, [ref('bus_nearby_connectivity'),ref('fuel_nearby_connectivity'),ref('hospital_nearby_connectivity'),ref('school_nearby_connectivity'),ref('park_nearby_connectivity')])]"  />
+        <field name="proprty_document_ids" eval="[
+            (0, 0, {'name':'Agreement'}),
+            
+        ]"/>
+        <field name="area_measurement_ids" eval="[
+            (0, 0, {'name':'Land' ,'length': 400 ,'width':400 ,'height':400}),
+            
+
+        ]"/>
+
+    </record>
+
+
+
+    <record id="property_land_demos" model="ir.attachment">
+        <field name="name">Property Floor Plan</field>
+        <field name="datas" type="base64" file="dev_property_management/static/src/img/beautiful-landscape-with-clear-sky.jpg"/>
+        <field name="res_model">property.property</field>
+        <field name="fp_property_id" ref="dev_property_management.property_land_with_notebook"/>
+        <field name="res_id" >1</field>
+        <field name="type">binary</field>
+    </record>
+
+    <record id="property_land_demo" model="ir.attachment">
+        <field name="name">Property image 1</field>
+        <field name="datas" type="base64" file="dev_property_management/static/src/img/beautiful-landscape-with-tall-trees.jpg"/>
+        <field name="res_model">property.property</field>
+        <field name="property_id" ref="dev_property_management.property_land_with_notebook"/>
+        <field name="res_id" >1</field>
+        <field name="type">binary</field>
+    </record>
+    
+    
+
+</odoo>

@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo>
+    <template id="main_property_pdf_template">
+        <t t-call="web.external_layout">
+            <div class="page" style="font-size: 12px;">
+                <span style="font-size: 30px;font-weight:bold;">
+                    <center>
+                        <span t-field="o.name"/>
+                    </center>
+                </span>
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col-6" style="height: 300px;">
+                        <t t-if="o.photo">
+                            <img t-att-src="image_data_uri(o.photo)" style="width:100%;height:100%;"/>
+                        </t>
+                        <t t-if="not o.photo">
+                            <img t-att-src="'/dev_property_management/static/src/img/property.png'"
+                                 style="width:100%;height:100%;"/>
+                        </t>
+                    </div>
+                    <div class="col-6" style="font-size: 25px;">
+                        <b>Address :</b>
+                        <br/>
+                        <span t-if="o.street">
+                            <span t-field="o.street"/>
+                            <br/>
+                        </span>
+                        <span t-if="o.street2">
+                            <span t-field="o.street2"/>
+                            <br/>
+                        </span>
+                        <span t-if="o.city_id">
+                            <span t-field="o.city_id"/>
+                            <span t-if="o.zip">-
+                                <span t-esc="o.zip"/>
+                            </span>
+                            <br/>
+                        </span>
+                        <span t-if="o.state_id">
+                            <span t-field="o.state_id.name"/>
+                            <br/>
+                        </span>
+                        <span t-if="o.country_id">
+                            <span t-field="o.country_id.name"/>
+                            <br/>
+                        </span>
+                    </div>
+                </div>
+                <table width="100%" style="margin-top: 50px;font-size: 20px;">
+                    <tr style="line-height: 35px;">
+                        <th width="20%">Property Type</th>
+                        <td width="5%">:</td>
+                        <td width="25%">
+                            <span t-field="o.property_type"/>
+                        </td>
+                        <th width="20%">Owner</th>
+                        <td width="5%">:</td>
+                        <td width="25%">
+                            <span t-field="o.owner_partner_id"/>
+                        </td>
+                    </tr>
+                    <tr style="line-height: 20px;">
+                        <th>Type</th>
+                        <td>:</td>
+                        <td>
+                            <span t-if="o.property_type=='residential'">
+                                <span t-field="o.residential_type_id"/>
+                            </span>
+                            <span t-if="o.property_type=='commercial'">
+                                <span t-field="o.commercial_type_id"/>
+                            </span>
+                            <span t-if="o.property_type=='industrial'">
+                                <span t-field="o.industrial_type_id"/>
+                            </span>
+                        </td>
+                        <th>Property Number</th>
+                        <td>:</td>
+                        <td>
+                            <span t-field="o.property_number"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Total Tower</th>
+                        <td>:</td>
+                        <td>
+                            <span t-field="o.total_towers"/>
+                        </td>
+                        <th>On Floor</th>
+                        <td>:</td>
+                        <td>
+                            <span t-field="o.on_floor"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>No. of Floor</th>
+                        <td>:</td>
+                        <td>
+                            <span t-field="o.total_floor"/>
+                        </td>
+                        <th>Furnishing</th>
+                        <td>:</td>
+                        <td>
+                            <span t-field="o.furnishing"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Prop. Per. Floor</th>
+                        <td>:</td>
+                        <td>
+                            <span t-field="o.property_per_floor"/>
+                        </td>
+                        <th>2 Wheel Parking</th>
+                        <td>:</td>
+                        <td>
+                            <span t-field="o.two_wheeler_parking_allot"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Facing</th>
+                        <td>:</td>
+                        <td>
+                            <span t-field="o.facing_id"/>
+                        </td>
+                        <th>4 Wheel Parking</th>
+                        <td>:</td>
+                        <td>
+                            <span t-field="o.four_wheeler_parking_allot"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Total Size(sq.ft.)</th>
+                        <td>:</td>
+                        <td>
+                            <span t-field="o.total_square_foot"/>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+                <t t-if="not is_html_empty(o.description)">
+                    <div style="height:30px;background: #A5D5FD;font-size: 20px;margin-bottom: 20px;margin-top: 20px;">
+                        <p style="text-align: center;vertical-align: middle;">Property Details</p>
+                    </div>
+                    <t t-raw="o.description"/>
+                </t>
+                <t t-set="property_images" t-value="get_property_images(o)"/>
+                <t t-if="property_images">
+                    <div style="page-break-before:always;height:30px;background: #A5D5FD;font-size: 20px;">
+                        <p style="text-align: center;vertical-align: middle;">Property Images</p>
+                    </div>
+                    <t t-foreach="property_images" t-as="chunk">
+                        <div class="row" style="margin-top:50px;page-break-inside: avoid;">
+                            <span t-set="counter" t-value="1"/>
+                            <t t-foreach="chunk" t-as="image">
+                                <div class="col-5" style="height: 350px;">
+                                    <img t-att-src="image_data_uri(image)" style="width:100%;height:100%;"/>
+                                </div>
+                                <t t-if="counter==1">
+                                    <div class="col-1" style="height: 350px;">&#160;</div>
+                                </t>
+                                <span t-set="counter" t-value="counter+1"/>
+                            </t>
+                        </div>
+                    </t>
+                </t>
+                <t t-set="floor_plan_images" t-value="get_floor_plan_images(o)"/>
+                <t t-if="floor_plan_images">
+                    <div style="page-break-before:always;height:30px;background: #A5D5FD;font-size: 20px;">
+                        <p style="text-align: center;vertical-align: middle;">Floor Plan</p>
+                    </div>
+                    <t t-foreach="floor_plan_images" t-as="chunk">
+                        <div class="row" style="margin-top:50px;page-break-inside: avoid;">
+                            <span t-set="counter" t-value="1"/>
+                            <div class="col-1" style="height: 350px;">&#160;</div>
+                            <t t-foreach="chunk" t-as="image">
+                                <div class="col-5" style="height: 350px;">
+                                    <img t-att-src="image_data_uri(image)" style="width:100%;height:100%;"/>
+                                </div>
+                                <t t-if="counter==1">
+                                    <div class="col-1" style="height: 350px;">&#160;</div>
+                                </t>
+                                <span t-set="counter" t-value="counter+1"/>
+                            </t>
+                        </div>
+                    </t>
+                </t>
+                <p style="page-break-before:always;"></p>
+                <t t-if="o.area_measurement_ids">
+                    <div style="height:30px;background: #A5D5FD;font-size: 20px;">
+                        <p style="text-align: center;vertical-align: middle;">Area Measurement</p>
+                    </div>
+                    <table width="100%" style="table-layout: fixed;font-size: 20px;margin-top: 50px"
+                           class="table table-condensed">
+                        <tr style="word-wrap: break-word;line-height: 22px;">
+                            <th style="border-bottom: 2px solid black;border-top: 1px solid white;">Section</th>
+                            <th style="border-bottom: 2px solid black;border-top: 1px solid white;">Length(sq.ft.)</th>
+                            <th style="border-bottom: 2px solid black;border-top: 1px solid white;">Width(sq.ft.)</th>
+                            <th style="border-bottom: 2px solid black;border-top: 1px solid white;">Height(sq.ft.)</th>
+                            <th style="border-bottom: 2px solid black;border-top: 1px solid white;">Carpet
+                                Area(sq.ft.)
+                            </th>
+                        </tr>
+                        <span t-set="total_carpet_area" t-value="0"/>
+                        <tr t-foreach="o.area_measurement_ids" t-as="line"
+                            style="word-wrap: break-word;line-height: 22px;">
+                            <td>
+                                <span t-field="line.name"/>
+                            </td>
+                            <td>
+                                <span t-esc="'{:,.2f}'.format(line.length)"/>
+                            </td>
+                            <td>
+                                <span t-esc="'{:,.2f}'.format(line.width)"/>
+                            </td>
+                            <td>
+                                <span t-esc="'{:,.2f}'.format(line.height)"/>
+                            </td>
+                            <td>
+                                <span t-esc="'{:,.2f}'.format(line.carpet_area)"/>
+                                <span t-set="total_carpet_area" t-value="line.carpet_area"/>
+                            </td>
+                        </tr>
+                        <tr style="word-wrap: break-word;line-height: 8px;">
+                            <th colspan="4">
+                                <center>Total Carpet Area</center>
+                            </th>
+                            <th>
+                                <span t-esc="'{:,.2f}'.format(total_carpet_area)"/>
+                            </th>
+                        </tr>
+                    </table>
+                </t>
+                <p style="page-break-before:always;"></p>
+                <t t-if="o.amenity_ids">
+                    <div style="height:30px;background: #A5D5FD;font-size: 20px;margin-top: 20px;">
+                        <p style="text-align: center;vertical-align: middle;">Amenities</p>
+                    </div>
+                    <ul style="margin-top: 20px;font-size: 18px;">
+                        <t t-foreach="o.amenity_ids" t-as="amenity">
+                            <li>
+                                <span t-esc="amenity.name"/>
+                            </li>
+                        </t>
+                    </ul>
+                </t>
+                <t t-if="o.nearby_connectivity_ids">
+                    <div style="height:30px;background: #A5D5FD;font-size: 20px;margin-top: 20px;">
+                        <p style="text-align: center;vertical-align: middle;">Nearby Connectivity</p>
+                    </div>
+                    <ul style="margin-top: 20px;font-size: 18px;">
+                        <t t-foreach="o.nearby_connectivity_ids" t-as="connect">
+                            <li>
+                                <span t-esc="connect.name"/>
+                            </li>
+                        </t>
+                    </ul>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <template id="property_pdf_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="dev_property_management.main_property_pdf_template"/>
+            </t>
+        </t>
+    </template>
+</odoo>

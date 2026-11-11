@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ps_asset_upgrade_wizard_form" model="ir.ui.view">
+        <field name="name">ps.asset.upgrade.wizard.form</field>
+        <field name="model">ps.asset.upgrade.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Asset Upgrade and Evaluation">
+                <sheet>
+                <field name="asset_id" invisible="1"/>
+                    <group>
+                        <group>
+                            <field name="ps_code"/>
+                            <field name="upgrade_date" required="1"/>
+                            <field name="change_type" required="1"/>
+                            <field name="notes"/>
+                            <field name="status" required="1"/>
+                        </group>
+                        <group>
+                            <field name="name"/>
+                            <field name="receipt_number"/>
+                            <field name="invoice_number"/>
+                            <field name="department_id"/>
+                            <field name="counterpart_account_id" required="1"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Gross Value Information">
+                        <group string="New Information">
+                            <field name="new_gross_value" required="1"/>
+                            <field name="new_depreciation_count" required="1"/>
+                            <field name="new_monthly_depreciation_amount"/>
+                        </group>
+                        <group string="Old Information">
+                            <field name="old_gross_value"/>
+                            <field name="old_depreciation_count"/>
+                            <field name="old_monthly_depreciation_amount"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_confirm" string="Confirm" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ps_asset_upgrade_wizard" model="ir.actions.act_window">
+        <field name="name">Asset Upgrade and Evaluation</field>
+        <field name="res_model">ps.asset.upgrade.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_asset_id': active_id}</field>
+    </record>
+</odoo>

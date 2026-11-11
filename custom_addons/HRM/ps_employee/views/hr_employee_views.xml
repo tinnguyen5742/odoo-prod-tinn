@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--    kế thừa và thêm truong ở module employee-->
+    <record id="ps_hr_employee_view_form" model="ir.ui.view">
+        <field name="name">ps.hr.employee.view.form</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='identification_id']" position="after">
+                <field name="identification_date"/>
+                <field name="identification_address"/>
+            </xpath>
+            <xpath expr="//field[@name='ssnid']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <!-- Thêm field mã nhân viên-->
+            <xpath expr="//field[@name='company_id']" position="before">
+                <!--                <field name="x_employee_code" readonly="1"/>-->
+                <field name="x_employee_code_readonly" invisible="1"/>
+                <field name="x_employee_code" readonly="x_employee_code_readonly"/>
+            </xpath>
+            <!-- Phân quyen nhân viên kinh doanh theo tỉnh thành-->
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="x_sale_province"
+                       groups="base.group_system,ps_employee.group_sale_province"
+                       domain="[('country_id.code', '=', 'VN')]"/>
+            </xpath>
+            <xpath expr="//field[@name='sex']" position="after">
+                <field name="x_ethnicity"/>
+                <field name="x_religion"/>
+            </xpath>
+            <!-- Toggle địa chỉ hiện tại -->
+            <xpath expr="//group[@name='hr_location_group']//div[hasclass('o_address_format')]/field[@name='private_street']" position="attributes">
+                <attribute name="invisible">x_current_address_edit_mode</attribute>
+            </xpath>
+            <xpath expr="//group[@name='hr_location_group']//div[hasclass('o_address_format')]" position="after">
+                <field name="x_current_address_edit_mode" invisible="1"/>
+                <div class="col-lg-12 d-flex align-items-center gap-2" colspan="2">
+                    <label for="x_address_old" string="Địa chỉ cá nhân"
+                           invisible="not x_current_address_edit_mode" class="fw-bold"/>
+                    <field name="x_address_old" invisible="not x_current_address_edit_mode"
+                            placeholder="Nhập địa chỉ cũ, hệ thống tự chuyển đổi"/>
+                    <button name="action_edit_current_address" type="object" string="Chỉnh sửa địa chỉ"
+                            invisible="x_current_address_edit_mode" class="btn btn-secondary"/>
+                </div>
+                <newline/>
+                <div  class="col-lg-12 d-flex align-items-center gap-2" colspan="2">
+                    <label for="x_permanent_address" string="Địa chỉ thường trú" class="fw-bold"/>
+                    <field name="x_permanent_address" placeholder="Nhập địa chỉ thường trú"/>
+                </div>
+            </xpath>
+
+            <!-- Thêm field dân tộc, tôn giáo-->
+            <xpath expr="//field[@name='bank_account_ids']" position="after">
+                <field name="tax_code"/>
+            </xpath>
+            <!--Trình độ chính trị-->
+            <xpath expr="//page[@name='personal_information']" position="after">
+                <page string="Trình độ">
+                    <group col="2">
+                        <!-- Trình độ -->
+                        <group string="Trình độ">
+                            <field name="education_level_id"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                            <field name="professional_level_id"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                            <field name="language_level_id"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                            <field name="it_level_id"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                            <field name="other_level_id"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                        </group>
+
+                        <!-- Chính trị -->
+                        <group string="Other">
+                            <field name="party_member"/>
+                            <field name="party_join_date" invisible="not party_member"/>
+
+                            <field name="union_member"/>
+                            <field name="union_join_date" invisible="not union_member"/>
+
+                            <field name="trade_union"/>
+                            <field name="trade_union_join_date" invisible="not trade_union"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+            <!--Gia đình-->
+            <xpath expr="//page[@name='payroll_information']" position="before">
+                <page string="Family" name="ps_family">
+                    <field name="family_ids">
+                        <list editable="bottom">
+                            <field name="name" optional="show"/>
+                            <field name="relationship" optional="show"/>
+                            <field name="date_of_birth" optional="show"/>
+                            <field name="id_number" optional="show"/>
+                            <field name="book_number" optional="show"/>
+                            <field name="birth_certificate" optional="show"/>
+                            <field name="tax_code" optional="show"/>
+                            <field name="is_dependent" optional="show"/>
+                            <field name="education_level" optional="show"/>
+                            <field name="job" optional="show"/>
+                            <field name="address" optional="show"/>
+                            <field name="mobile" optional="show"/>
+                            <field name="date_from" optional="hide"/>
+                            <field name="date_to" optional="hide"/>
+                            <field name="biography" optional="hide"/>
+                            <field name="note" optional="hide"/>
+                        </list>
+                        <form string="Thành phần gia đình">
+                            <group>
+                                <group>
+                                    <field name="name"/>
+                                    <field name="relationship"/>
+                                    <field name="date_of_birth"/>
+                                    <field name="id_number"/>
+                                    <field name="book_number"/>
+                                    <field name="birth_certificate"/>
+                                    <field name="tax_code"/>
+                                    <field name="is_dependent"/>
+                                    <field name="education_level"/>
+                                </group>
+                                <group>
+                                    <field name="job"/>
+                                    <field name="address"/>
+                                    <field name="mobile"/>
+                                    <field name="date_from"/>
+                                    <field name="date_to"/>
+                                    <field name="biography"/>
+                                    <field name="note"/>
+                                </group>
+                            </group>
+                        </form>
+                    </field>
+                </page>
+            </xpath>
+
+            <!--Kinh nghiệm - chứng chỉ-->
+            <xpath expr="//page[@name='resume']" position="attributes">
+                <attribute name="string">Kinh nghiệm &amp; chứng chỉ</attribute>
+            </xpath>
+
+            <!--Diễn biến lương-->
+            <xpath expr="//page[@name='ps_family']" position="after">
+                <page string="Diễn biến lương" name="ps_salary_history">
+                    <field name="salary_history_ids">
+                        <list editable="bottom">
+                            <field name="contract_number"/>
+                            <field name="decision_number"/>
+                            <field name="decision_type"/>
+                            <field name="date_from"/>
+                            <field name="basic_salary"/>
+                            <field name="total_income"/>
+                            <field name="allowance"/>
+                            <field name="note" optional="hide"/>
+                        </list>
+                        <form>
+                            <group>
+                                <group>
+                                    <field name="contract_number"/>
+                                    <field name="decision_number"/>
+                                    <field name="decision_type"/>
+                                    <field name="date_from"/>
+                                </group>
+                                <group>
+                                    <field name="basic_salary"/>
+                                    <field name="total_income"/>
+                                    <field name="allowance"/>
+                                    <field name="note"/>
+                                </group>
+                            </group>
+                        </form>
+                    </field>
+                </page>
+            </xpath>
+
+            <!--Bảo hiểm-->
+            <xpath expr="//page[@name='ps_salary_history']" position="after">
+                <page string="Bảo Hiểm" name="ps_insurance">
+                    <notebook>
+                        <!--                        Bảo hiểm xã hội-->
+                        <page string="BHXH" name="ps_bhxh">
+                            <field name="bhxh_ids" nolabel="1">
+                                <list editable="bottom">
+                                    <field name="insurance_number"/>
+                                    <field name="insurance_category"/>
+                                    <field name="date_joined"/>
+                                    <field name="insurance_level"/>
+                                    <field name="place_joined"/>
+                                    <field name="is_active"/>
+                                </list>
+                                <form>
+                                    <group string="BHXH">
+                                        <group>
+                                            <field name="insurance_number"/>
+                                            <field name="insurance_level"/>
+                                            <field name="date_joined"/>
+                                            <field name="is_active"/>
+                                        </group>
+                                        <group>
+                                            <field name="insurance_category"/>
+                                            <field name="place_joined"/>
+                                            <field name="join_method"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+
+                        <!--                        Bảo hiểm Y tế-->
+                        <page string="BHYT" name="ps_bhyt">
+                            <field name="bhyt_ids" nolabel="1">
+                                <list editable="bottom">
+                                    <field name="kcb_code" optional="show"/>
+                                    <field name="insurance_level" optional="show"/>
+                                    <field name="date_start" optional="show"/>
+                                    <field name="hospital_id" optional="show"/>
+                                    <field name="province_id" optional="show"/>
+                                    <field name="place_joined" optional="hide"/>
+                                    <field name="join_method" optional="show"/>
+                                    <field name="is_active" optional="hide"/>
+                                </list>
+                                <form>
+                                    <group string="BHYT">
+                                        <group>
+                                            <field name="kcb_code"/>
+                                            <field name="insurance_level"/>
+                                            <field name="date_start"/>
+                                            <field name="hospital_id"/>
+                                            <field name="province_id"/>
+                                        </group>
+                                        <group>
+                                            <field name="kcb_ticket"/>
+                                            <field name="place_joined"/>
+                                            <field name="join_method"/>
+                                            <field name="is_active"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+
+                        <!-- Bảo hiểm thất nghiệp-->
+                        <page string="BHTN" name="ps_bhtn">
+                            <field name="bhtn_ids" nolabel="1">
+                                <list editable="bottom">
+                                    <field name="insurance_level"/>
+                                    <field name="date_joined"/>
+                                    <field name="place_joined"/>
+                                    <field name="is_active"/>
+                                </list>
+                                <form>
+                                    <group string="BHTN">
+                                        <field name="insurance_level"/>
+                                        <field name="date_joined"/>
+                                        <field name="place_joined"/>
+                                        <field name="is_active"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+
+                        <!--                        Bảo hiểm tai nạn-->
+                        <page string="Bảo hiểm tai nạn" name="ps_accident">
+                            <field name="accident_insurance_ids" nolabel="1">
+                                <list editable="bottom">
+                                    <field name="insurance_number" optional="show"/>
+                                    <field name="insurance_level" optional="show"/>
+                                    <field name="insurance_category" optional="show"/>
+                                    <field name="date_start" optional="hide"/>
+                                    <field name="date_end" optional="hide"/>
+                                    <field name="place_joined" optional="show"/>
+                                    <field name="join_method" optional="show"/>
+                                    <field name="total_compensation" optional="show"/>
+                                    <field name="compensation_per_case" optional="show"/>
+                                </list>
+                                <form>
+                                    <group string="Bảo hiểm tai nạn">
+                                        <group>
+                                            <field name="insurance_number"/>
+                                            <field name="insurance_level"/>
+                                            <field name="insurance_category"/>
+                                            <field name="is_active"/>
+                                            <field name="total_compensation"/>
+                                            <field name="compensation_per_case"/>
+                                        </group>
+                                        <group>
+                                            <field name="date_start"/>
+                                            <field name="date_end"/>
+                                            <field name="place_joined"/>
+                                            <field name="join_method"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+
+                        <!--                        Bảo hiểm ngoài-->
+                        <page string="Bảo hiểm ngoài" name="ps_external">
+                            <field name="external_insurance_ids" nolabel="1">
+                                <list editable="bottom">
+                                    <field name="insurance_number"/>
+                                    <field name="insurance_level"/>
+                                    <field name="date_start"/>
+                                    <field name="date_end"/>
+                                    <field name="provider_name"/>
+                                </list>
+                                <form>
+                                    <group string="Bảo hiểm ngoài">
+                                        <group>
+                                            <field name="insurance_number"/>
+                                            <field name="insurance_level"/>
+                                        </group>
+                                        <group>
+                                            <field name="date_start"/>
+                                            <field name="date_end"/>
+                                            <field name="provider_name"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </page>
+            </xpath>
+
+            <!-- Quản lý hợp đồng-->
+            <xpath expr="//page[@name='payroll_information']" position="attributes">
+                <attribute name="string">Quản lý hợp đồng</attribute>
+            </xpath>
+
+            <!-- Ẩn field passport_id -->
+            <xpath expr="//field[@name='passport_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- tab Khác (Visa & Work Permit) -->
+            <xpath expr="//page[@name='payroll_information']" position="after">
+                <page string="Other" name="ps_visa">
+                    <field name="x_other_document_ids" nolabel="1">
+                        <list editable="bottom">
+                            <field name="x_document_type"/>
+                            <field name="x_document_no"/>
+                            <field name="x_issue_date"/>
+                            <field name="x_issue_place"/>
+                            <field name="x_expiry_date"/>
+                            <field name="x_document_file" widget="binary" filename="x_document_filename"/>
+                            <field name="x_notes" optional="hide"/>
+                            <button name="action_open_record" type="object"
+                                    string="Xem chi tiết" class="btn btn-secondary"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+
+            <xpath expr="//page[@name='payroll_information']//group[@name='contract']" position="before">
+                    <field name="x_contract_ids" nolabel="1">
+                        <list>
+                            <field name="name"/>
+                            <field name="x_contract_type"/>
+                            <field name="x_date_start"/>
+                            <field name="x_date_end"/>
+                            <field name="x_position"/>
+                            <field name="wage"/>
+                            <field name="total_income"/>
+                        </list>
+                    </field>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- Form view độc lập cho ps.hr.employee.other (dùng khi mở từ act_window) -->
+    <record id="ps_hr_employee_other_view_form" model="ir.ui.view">
+        <field name="name">ps.hr.employee.other.form</field>
+        <field name="model">ps.hr.employee.other</field>
+        <field name="arch" type="xml">
+            <form string="Other">
+                <group>
+                    <group>
+                        <field name="employee_id" invisible="1"/>
+                        <field name="x_document_type"/>
+                        <field name="x_document_no"/>
+                        <field name="x_issue_date"/>
+                        <field name="x_issue_place"/>
+                    </group>
+                    <group>
+                        <field name="x_expiry_date"/>
+                        <field name="x_notes"/>
+                        <field name="x_document_file" widget="binary" filename="x_document_filename"/>
+                        <div class="d-flex gap-2 mt-2"
+                             invisible="not x_document_file">
+                        </div>
+                        <button name="action_preview_document" type="object"
+                                string="Preview" class="btn btn-primary"
+                                invisible="not x_document_file"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+</odoo>

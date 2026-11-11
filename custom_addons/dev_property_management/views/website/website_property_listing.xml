@@ -1,0 +1,618 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Property Listing Page Template - Modern Filter Design -->
+    <template id="website_property_listing" name="Property Listing Page">
+        <t t-call="website.layout">
+            <t t-set="additional_title" t-value="page_title"/>
+            
+            <div class="property-website">
+                <!-- Compact Header -->
+                <section class="listing-header">
+                    <div class="container">
+                        <div class="listing-header-content">
+                            <div class="listing-header-left">
+                                <h1 class="listing-title"><t t-esc="page_title"/></h1>
+                                <p class="listing-subtitle">
+                                    Showing <strong><t t-esc="total"/></strong> properties
+                                </p>
+                            </div>
+                            
+                            <!-- Search Box -->
+                            <div class="listing-search">
+                                <form action="" method="get" class="search-form-inline">
+                                    <div class="search-input-wrapper">
+                                        <i class="fa fa-search"></i>
+                                        <input type="text" name="search" 
+                                               t-att-value="current_search or ''"
+                                               placeholder="Search properties..."/>
+                                    </div>
+                                    <button type="submit" class="search-submit-btn">Search</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Filter Bar -->
+                <section class="filter-bar-section">
+                    <div class="container">
+                        <div class="filter-bar">
+                            <!-- Property Type Dropdown -->
+                            <div class="filter-dropdown" id="property-type-filter">
+                                <button type="button" class="filter-dropdown-btn" onclick="toggleFilterDropdown(this)">
+                                    <span class="filter-label">Property Type</span>
+                                    <span class="filter-value">
+                                        <t t-if="current_property_type">
+                                            <t t-esc="current_property_type.capitalize()"/>
+                                        </t>
+                                        <t t-else="">Property Type</t>
+                                    </span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                                <div class="filter-dropdown-menu">
+                                    <a t-attf-href="?property_type_filter=&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;search=#{current_search or ''}" 
+                                       t-att-class="'filter-dropdown-item' + (' active' if not current_property_type else '')"
+                                       data-property-type="">
+                                        <i class="fa fa-check"></i> All Types
+                                    </a>
+                                    <a t-attf-href="?property_type_filter=residential&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;search=#{current_search or ''}" 
+                                       t-att-class="'filter-dropdown-item' + (' active' if current_property_type == 'residential' else '')"
+                                       data-property-type="residential">
+                                        <i class="fa fa-check"></i> Residential <span class="count">(<t t-esc="property_counts.get('residential', 0)"/>)</span>
+                                    </a>
+                                    <!-- Commercial, Industrial, Land - clear bedrooms/bathrooms -->
+                                    <a t-attf-href="?property_type_filter=commercial&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;search=#{current_search or ''}" 
+                                       t-att-class="'filter-dropdown-item' + (' active' if current_property_type == 'commercial' else '')"
+                                       data-property-type="commercial">
+                                        <i class="fa fa-check"></i> Commercial <span class="count">(<t t-esc="property_counts.get('commercial', 0)"/>)</span>
+                                    </a>
+                                    <a t-attf-href="?property_type_filter=industrial&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;search=#{current_search or ''}" 
+                                       t-att-class="'filter-dropdown-item' + (' active' if current_property_type == 'industrial' else '')"
+                                       data-property-type="industrial">
+                                        <i class="fa fa-check"></i> Industrial <span class="count">(<t t-esc="property_counts.get('industrial', 0)"/>)</span>
+                                    </a>
+                                    <a t-attf-href="?property_type_filter=land&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;search=#{current_search or ''}" 
+                                       t-att-class="'filter-dropdown-item' + (' active' if current_property_type == 'land' else '')"
+                                       data-property-type="land">
+                                        <i class="fa fa-check"></i> Land/Plot <span class="count">(<t t-esc="property_counts.get('land', 0)"/>)</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Buy/Rent Dropdown -->
+                            <div class="filter-dropdown">
+                                <button type="button" class="filter-dropdown-btn" onclick="toggleFilterDropdown(this)">
+                                    <span class="filter-label">Property For</span>
+                                    <span class="filter-value">
+                                        <t t-if="current_purpose == 'sell'">Buy</t>
+                                        <t t-elif="current_purpose == 'rent'">Rent</t>
+                                        <t t-else="">Purpose</t>
+                                    </span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                                <div class="filter-dropdown-menu">
+                                    <a t-attf-href="?purpose=&amp;property_type_filter=#{current_property_type or ''}&amp;city_id=#{current_city_id or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;search=#{current_search or ''}" 
+                                       t-att-class="'filter-dropdown-item' + (' active' if not current_purpose else '')">
+                                        <i class="fa fa-check"></i> All
+                                    </a>
+                                    <a t-attf-href="?purpose=sell&amp;property_type_filter=#{current_property_type or ''}&amp;city_id=#{current_city_id or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;search=#{current_search or ''}" 
+                                       t-att-class="'filter-dropdown-item' + (' active' if current_purpose == 'sell' else '')">
+                                        <i class="fa fa-check"></i> Buy 
+                                    </a>
+                                    <a t-attf-href="?purpose=rent&amp;property_type_filter=#{current_property_type or ''}&amp;city_id=#{current_city_id or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;search=#{current_search or ''}" 
+                                       t-att-class="'filter-dropdown-item' + (' active' if current_purpose == 'rent' else '')">
+                                        <i class="fa fa-check"></i> Rent
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- City Dropdown -->
+                            <div class="filter-dropdown">
+                                <button type="button" class="filter-dropdown-btn" onclick="toggleFilterDropdown(this)">
+                                    <span class="filter-label">City</span>
+                                    <span class="filter-value">
+                                        <t t-if="current_city_id">
+                                            <t t-set="selected_city" t-value="[c for c in cities if c.id == current_city_id]"/>
+                                            <t t-if="selected_city" t-esc="selected_city[0].name"/>
+                                        </t>
+                                        <t t-else="">City</t>
+                                    </span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                                <div class="filter-dropdown-menu">
+                                    <a t-attf-href="?city_id=&amp;property_type_filter=#{current_property_type or ''}&amp;purpose=#{current_purpose or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;search=#{current_search or ''}" 
+                                       t-att-class="'filter-dropdown-item' + (' active' if not current_city_id else '')">
+                                        <i class="fa fa-check"></i> All Cities
+                                    </a>
+                                    <t t-foreach="cities" t-as="city">
+                                        <a t-attf-href="?city_id=#{city.id}&amp;property_type_filter=#{current_property_type or ''}&amp;purpose=#{current_purpose or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;search=#{current_search or ''}" 
+                                           t-att-class="'filter-dropdown-item' + (' active' if current_city_id == city.id else '')">
+                                            <i class="fa fa-check"></i> <t t-esc="city.name"/>
+                                        </a>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <!-- Bedrooms Dropdown - Only for Residential Properties -->
+                            <div t-att-class="'filter-dropdown residential-only-filter' + (' d-none' if current_property_type and current_property_type != 'residential' else '')" data-filter-for="residential">
+                                <button type="button" class="filter-dropdown-btn" onclick="toggleFilterDropdown(this)">
+                                    <span class="filter-label">Bedrooms</span>
+                                    <span class="filter-value">
+                                        <t t-if="current_bedrooms"><t t-esc="current_bedrooms"/>+</t>
+                                        <t t-else="">Bedrooms</t>
+                                    </span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                                <div class="filter-dropdown-menu">
+                                    <a t-attf-href="?bedrooms=&amp;property_type_filter=#{current_property_type or ''}&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;furnishing=#{current_furnishing or ''}&amp;residential_type_id=#{current_residential_type_id or ''}&amp;search=#{current_search or ''}" 
+                                       t-att-class="'filter-dropdown-item' + (' active' if not current_bedrooms else '')">
+                                        <i class="fa fa-check"></i> Any
+                                    </a>
+                                    <t t-foreach="[1, 2, 3, 4, 5]" t-as="bed">
+                                        <a t-attf-href="?bedrooms=#{bed}&amp;property_type_filter=#{current_property_type or ''}&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;furnishing=#{current_furnishing or ''}&amp;residential_type_id=#{current_residential_type_id or ''}&amp;search=#{current_search or ''}" 
+                                           t-att-class="'filter-dropdown-item' + (' active' if str(current_bedrooms) == str(bed) else '')">
+                                            <i class="fa fa-check"></i> <t t-esc="bed"/>+ Bedrooms
+                                        </a>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <!-- Bathrooms Dropdown - Only for Residential Properties -->
+                            <div t-att-class="'filter-dropdown residential-only-filter' + (' d-none' if current_property_type and current_property_type != 'residential' else '')" data-filter-for="residential">
+                                <button type="button" class="filter-dropdown-btn" onclick="toggleFilterDropdown(this)">
+                                    <span class="filter-label">Bathrooms</span>
+                                    <span class="filter-value">
+                                        <t t-if="current_bathrooms"><t t-esc="current_bathrooms"/>+</t>
+                                        <t t-else="">Bathrooms</t>
+                                    </span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                                <div class="filter-dropdown-menu">
+                                    <a t-attf-href="?bathrooms=&amp;property_type_filter=#{current_property_type or ''}&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;search=#{current_search or ''}&amp;furnishing=#{current_furnishing or ''}&amp;residential_type_id=#{current_residential_type_id or ''}" 
+                                       t-att-class="'filter-dropdown-item' + (' active' if not current_bathrooms else '')">
+                                        <i class="fa fa-check"></i> Any
+                                    </a>
+                                    <t t-foreach="[1, 2, 3, 4]" t-as="bath">
+                                        <a t-attf-href="?bathrooms=#{bath}&amp;property_type_filter=#{current_property_type or ''}&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;search=#{current_search or ''}&amp;furnishing=#{current_furnishing or ''}&amp;residential_type_id=#{current_residential_type_id or ''}" 
+                                           t-att-class="'filter-dropdown-item' + (' active' if str(current_bathrooms) == str(bath) else '')">
+                                            <i class="fa fa-check"></i> <t t-esc="bath"/>+ Bathrooms
+                                        </a>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <!-- ========== TYPE-SPECIFIC FILTERS ========== -->
+
+                            <!-- Residential Sub-type Dropdown - Only for Residential -->
+                            <div t-att-class="'filter-dropdown' + (' d-none' if current_property_type and current_property_type != 'residential' else '')" data-filter-for="residential">
+                                <button type="button" class="filter-dropdown-btn" onclick="toggleFilterDropdown(this)">
+                                    <span class="filter-label">Sub Type</span>
+                                    <span class="filter-value">
+                                        <t t-if="current_residential_type_id">
+                                            <t t-set="selected_res_type" t-value="[rt for rt in residential_types if rt.id == current_residential_type_id]"/>
+                                            <t t-if="selected_res_type" t-esc="selected_res_type[0].name"/>
+                                        </t>
+                                        <t t-else="">Sub Type</t>
+                                    </span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                                <div class="filter-dropdown-menu">
+                                    <a t-attf-href="?residential_type_id=&amp;property_type_filter=#{current_property_type or ''}&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;furnishing=#{current_furnishing or ''}&amp;search=#{current_search or ''}" 
+                                       t-att-class="'filter-dropdown-item' + (' active' if not current_residential_type_id else '')">
+                                        <i class="fa fa-check"></i> All Sub Types
+                                    </a>
+                                    <t t-foreach="residential_types" t-as="res_type">
+                                        <a t-attf-href="?residential_type_id=#{res_type.id}&amp;property_type_filter=#{current_property_type or ''}&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;furnishing=#{current_furnishing or ''}&amp;search=#{current_search or ''}" 
+                                           t-att-class="'filter-dropdown-item' + (' active' if current_residential_type_id == res_type.id else '')">
+                                            <i class="fa fa-check"></i> <t t-esc="res_type.name"/>
+                                        </a>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <!-- Furnishing Dropdown - For Residential and Commercial -->
+                            <div t-att-class="'filter-dropdown' + (' d-none' if current_property_type and current_property_type not in ['residential', 'commercial'] else '')" data-filter-for="residential,commercial">
+                                <button type="button" class="filter-dropdown-btn" onclick="toggleFilterDropdown(this)">
+                                    <span class="filter-label">Furnishing</span>
+                                    <span class="filter-value">
+                                        <t t-if="current_furnishing">
+                                            <t t-if="current_furnishing == 'non_furnished'">Non Furnished</t>
+                                            <t t-elif="current_furnishing == 'semi_furnished'">Semi Furnished</t>
+                                            <t t-elif="current_furnishing == 'fully_furnished'">Fully Furnished</t>
+                                        </t>
+                                        <t t-else="">Furnishing</t>
+                                    </span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                                <div class="filter-dropdown-menu">
+                                    <a t-attf-href="?furnishing=&amp;property_type_filter=#{current_property_type or ''}&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;residential_type_id=#{current_residential_type_id or ''}&amp;commercial_type_id=#{current_commercial_type_id or ''}&amp;search=#{current_search or ''}" 
+                                       t-att-class="'filter-dropdown-item' + (' active' if not current_furnishing else '')">
+                                        <i class="fa fa-check"></i> Any
+                                    </a>
+                                    <t t-foreach="furnishing_options" t-as="furn">
+                                        <a t-attf-href="?furnishing=#{furn[0]}&amp;property_type_filter=#{current_property_type or ''}&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;residential_type_id=#{current_residential_type_id or ''}&amp;commercial_type_id=#{current_commercial_type_id or ''}&amp;search=#{current_search or ''}" 
+                                           t-att-class="'filter-dropdown-item' + (' active' if current_furnishing == furn[0] else '')">
+                                            <i class="fa fa-check"></i> <t t-esc="furn[1]"/>
+                                        </a>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <!-- Commercial Sub-type Dropdown - Only for Commercial -->
+                            <div t-att-class="'filter-dropdown' + (' d-none' if current_property_type != 'commercial' else '')" data-filter-for="commercial">
+                                <button type="button" class="filter-dropdown-btn" onclick="toggleFilterDropdown(this)">
+                                    <span class="filter-label">Commercial Type</span>
+                                    <span class="filter-value">
+                                        <t t-if="current_commercial_type_id">
+                                            <t t-set="selected_comm_type" t-value="[ct for ct in commercial_types if ct.id == current_commercial_type_id]"/>
+                                            <t t-if="selected_comm_type" t-esc="selected_comm_type[0].name"/>
+                                        </t>
+                                        <t t-else="">Commercial Type</t>
+                                    </span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                                <div class="filter-dropdown-menu">
+                                    <a t-attf-href="?commercial_type_id=&amp;property_type_filter=commercial&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;furnishing=#{current_furnishing or ''}&amp;search=#{current_search or ''}" 
+                                       t-att-class="'filter-dropdown-item' + (' active' if not current_commercial_type_id else '')">
+                                        <i class="fa fa-check"></i> All Commercial Types
+                                    </a>
+                                    <t t-foreach="commercial_types" t-as="comm_type">
+                                        <a t-attf-href="?commercial_type_id=#{comm_type.id}&amp;property_type_filter=commercial&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;furnishing=#{current_furnishing or ''}&amp;search=#{current_search or ''}" 
+                                           t-att-class="'filter-dropdown-item' + (' active' if current_commercial_type_id == comm_type.id else '')">
+                                            <i class="fa fa-check"></i> <t t-esc="comm_type.name"/>
+                                        </a>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <!-- Industrial Sub-type Dropdown - Only for Industrial -->
+                            <div t-att-class="'filter-dropdown' + (' d-none' if current_property_type != 'industrial' else '')" data-filter-for="industrial">
+                                <button type="button" class="filter-dropdown-btn" onclick="toggleFilterDropdown(this)">
+                                    <span class="filter-label">Industrial Type</span>
+                                    <span class="filter-value">
+                                        <t t-if="current_industrial_type_id">
+                                            <t t-set="selected_ind_type" t-value="[it for it in industrial_types if it.id == current_industrial_type_id]"/>
+                                            <t t-if="selected_ind_type" t-esc="selected_ind_type[0].name"/>
+                                        </t>
+                                        <t t-else="">Industrial Type</t>
+                                    </span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                                <div class="filter-dropdown-menu">
+                                    <a t-attf-href="?industrial_type_id=&amp;property_type_filter=industrial&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;industrial_location=#{current_industrial_location or ''}&amp;search=#{current_search or ''}" 
+                                       t-att-class="'filter-dropdown-item' + (' active' if not current_industrial_type_id else '')">
+                                        <i class="fa fa-check"></i> All Industrial Types
+                                    </a>
+                                    <t t-foreach="industrial_types" t-as="ind_type">
+                                        <a t-attf-href="?industrial_type_id=#{ind_type.id}&amp;property_type_filter=industrial&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;industrial_location=#{current_industrial_location or ''}&amp;search=#{current_search or ''}" 
+                                           t-att-class="'filter-dropdown-item' + (' active' if current_industrial_type_id == ind_type.id else '')">
+                                            <i class="fa fa-check"></i> <t t-esc="ind_type.name"/>
+                                        </a>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <!-- Industrial Location Dropdown - Only for Industrial -->
+                            <div t-att-class="'filter-dropdown' + (' d-none' if current_property_type != 'industrial' else '')" data-filter-for="industrial">
+                                <button type="button" class="filter-dropdown-btn" onclick="toggleFilterDropdown(this)">
+                                    <span class="filter-label">Location</span>
+                                    <span class="filter-value">
+                                        <t t-if="current_industrial_location">
+                                            <t t-if="current_industrial_location == 'inside_city'">In City</t>
+                                            <t t-elif="current_industrial_location == 'outside_city'">Outside City</t>
+                                        </t>
+                                        <t t-else="">Location</t>
+                                    </span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                                <div class="filter-dropdown-menu">
+                                    <a t-attf-href="?industrial_location=&amp;property_type_filter=industrial&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;industrial_type_id=#{current_industrial_type_id or ''}&amp;search=#{current_search or ''}" 
+                                       t-att-class="'filter-dropdown-item' + (' active' if not current_industrial_location else '')">
+                                        <i class="fa fa-check"></i> Any Location
+                                    </a>
+                                    <t t-foreach="industrial_location_options" t-as="loc">
+                                        <a t-attf-href="?industrial_location=#{loc[0]}&amp;property_type_filter=industrial&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;industrial_type_id=#{current_industrial_type_id or ''}&amp;search=#{current_search or ''}" 
+                                           t-att-class="'filter-dropdown-item' + (' active' if current_industrial_location == loc[0] else '')">
+                                            <i class="fa fa-check"></i> <t t-esc="loc[1]"/>
+                                        </a>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <!-- Land Title Dropdown - Only for Land -->
+                            <div t-att-class="'filter-dropdown' + (' d-none' if current_property_type != 'land' else '')" data-filter-for="land">
+                                <button type="button" class="filter-dropdown-btn" onclick="toggleFilterDropdown(this)">
+                                    <span class="filter-label">Land Title</span>
+                                    <span class="filter-value">
+                                        <t t-if="current_land_title_id">
+                                            <t t-set="selected_land_title" t-value="[lt for lt in land_titles if lt.id == current_land_title_id]"/>
+                                            <t t-if="selected_land_title" t-esc="selected_land_title[0].name"/>
+                                        </t>
+                                        <t t-else="">Land Title</t>
+                                    </span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </button>
+                                <div class="filter-dropdown-menu">
+                                    <a t-attf-href="?land_title_id=&amp;property_type_filter=land&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;search=#{current_search or ''}" 
+                                       t-att-class="'filter-dropdown-item' + (' active' if not current_land_title_id else '')">
+                                        <i class="fa fa-check"></i> All Land Titles
+                                    </a>
+                                    <t t-foreach="land_titles" t-as="land_title">
+                                        <a t-attf-href="?land_title_id=#{land_title.id}&amp;property_type_filter=land&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;search=#{current_search or ''}" 
+                                           t-att-class="'filter-dropdown-item' + (' active' if current_land_title_id == land_title.id else '')">
+                                            <i class="fa fa-check"></i> <t t-esc="land_title.name"/>
+                                        </a>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <!-- Reset Filters -->
+                            <t t-set="has_filters" t-value="current_property_type or current_purpose or current_city_id or current_bedrooms or current_bathrooms or current_furnishing or current_residential_type_id or current_commercial_type_id or current_industrial_type_id or current_industrial_location or current_land_title_id"/>
+                            <t t-if="has_filters">
+                                <a href="?" class="reset-filters-btn">
+                                    <i class="fa fa-times"></i> Reset Filters
+                                </a>
+                              </t>
+                        </div>
+
+                        <!-- Active Filter Tags -->
+                        <t t-if="has_filters">
+                            <div class="active-filter-chips">
+                                <t t-if="current_property_type">
+                                    <span class="filter-chip">
+                                        <t t-esc="current_property_type.capitalize()"/>
+                                        <a t-attf-href="?property_type_filter=&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;search=#{current_search or ''}" class="chip-remove">×</a>
+                                    </span>
+                                </t>
+                                <t t-if="current_purpose">
+                                    <span class="filter-chip">
+                                        <t t-if="current_purpose == 'sell'">Buy</t>
+                                        <t t-else="">Rent</t>
+                                        <a t-attf-href="?purpose=&amp;property_type_filter=#{current_property_type or ''}&amp;city_id=#{current_city_id or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;furnishing=#{current_furnishing or ''}&amp;residential_type_id=#{current_residential_type_id or ''}&amp;commercial_type_id=#{current_commercial_type_id or ''}&amp;industrial_type_id=#{current_industrial_type_id or ''}&amp;industrial_location=#{current_industrial_location or ''}&amp;land_title_id=#{current_land_title_id or ''}&amp;search=#{current_search or ''}" class="chip-remove">×</a>
+                                    </span>
+                                </t>
+                                <t t-if="current_city_id">
+                                    <t t-set="selected_city" t-value="[c for c in cities if c.id == current_city_id]"/>
+                                    <span class="filter-chip">
+                                        <t t-if="selected_city" t-esc="selected_city[0].name"/>
+                                        <a t-attf-href="?city_id=&amp;property_type_filter=#{current_property_type or ''}&amp;purpose=#{current_purpose or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;furnishing=#{current_furnishing or ''}&amp;residential_type_id=#{current_residential_type_id or ''}&amp;commercial_type_id=#{current_commercial_type_id or ''}&amp;industrial_type_id=#{current_industrial_type_id or ''}&amp;industrial_location=#{current_industrial_location or ''}&amp;land_title_id=#{current_land_title_id or ''}&amp;search=#{current_search or ''}" class="chip-remove">×</a>
+                                    </span>
+                                </t>
+                                <!-- Residential-specific chips -->
+                                <t t-if="current_bedrooms and (not current_property_type or current_property_type == 'residential')">
+                                    <span class="filter-chip residential-only-chip">
+                                        <t t-esc="current_bedrooms"/>+ Beds
+                                        <a t-attf-href="?bedrooms=&amp;property_type_filter=#{current_property_type or ''}&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;furnishing=#{current_furnishing or ''}&amp;residential_type_id=#{current_residential_type_id or ''}&amp;search=#{current_search or ''}" class="chip-remove">×</a>
+                                    </span>
+                                </t>
+                                <t t-if="current_bathrooms and (not current_property_type or current_property_type == 'residential')">
+                                    <span class="filter-chip residential-only-chip">
+                                        <t t-esc="current_bathrooms"/>+ Baths
+                                        <a t-attf-href="?bathrooms=&amp;property_type_filter=#{current_property_type or ''}&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;furnishing=#{current_furnishing or ''}&amp;residential_type_id=#{current_residential_type_id or ''}&amp;search=#{current_search or ''}" class="chip-remove">×</a>
+                                    </span>
+                                </t>
+                                <t t-if="current_residential_type_id and current_property_type == 'residential'">
+                                    <t t-set="selected_res_type" t-value="[rt for rt in residential_types if rt.id == current_residential_type_id]"/>
+                                    <span class="filter-chip">
+                                        <t t-if="selected_res_type" t-esc="selected_res_type[0].name"/>
+                                        <a t-attf-href="?residential_type_id=&amp;property_type_filter=residential&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;furnishing=#{current_furnishing or ''}&amp;search=#{current_search or ''}" class="chip-remove">×</a>
+                                    </span>
+                                </t>
+                                <!-- Furnishing chip (for residential and commercial) -->
+                                <t t-if="current_furnishing and (not current_property_type or current_property_type in ['residential', 'commercial'])">
+                                    <span class="filter-chip">
+                                        <t t-if="current_furnishing == 'non_furnished'">Non Furnished</t>
+                                        <t t-elif="current_furnishing == 'semi_furnished'">Semi Furnished</t>
+                                        <t t-elif="current_furnishing == 'fully_furnished'">Fully Furnished</t>
+                                        <a t-attf-href="?furnishing=&amp;property_type_filter=#{current_property_type or ''}&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;residential_type_id=#{current_residential_type_id or ''}&amp;commercial_type_id=#{current_commercial_type_id or ''}&amp;search=#{current_search or ''}" class="chip-remove">×</a>
+                                    </span>
+                                </t>
+                                <!-- Commercial-specific chips -->
+                                <t t-if="current_commercial_type_id and current_property_type == 'commercial'">
+                                    <t t-set="selected_comm_type" t-value="[ct for ct in commercial_types if ct.id == current_commercial_type_id]"/>
+                                    <span class="filter-chip">
+                                        <t t-if="selected_comm_type" t-esc="selected_comm_type[0].name"/>
+                                        <a t-attf-href="?commercial_type_id=&amp;property_type_filter=commercial&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;furnishing=#{current_furnishing or ''}&amp;search=#{current_search or ''}" class="chip-remove">×</a>
+                                    </span>
+                                </t>
+                                <!-- Industrial-specific chips -->
+                                <t t-if="current_industrial_type_id and current_property_type == 'industrial'">
+                                    <t t-set="selected_ind_type" t-value="[it for it in industrial_types if it.id == current_industrial_type_id]"/>
+                                    <span class="filter-chip">
+                                        <t t-if="selected_ind_type" t-esc="selected_ind_type[0].name"/>
+                                        <a t-attf-href="?industrial_type_id=&amp;property_type_filter=industrial&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;industrial_location=#{current_industrial_location or ''}&amp;search=#{current_search or ''}" class="chip-remove">×</a>
+                                    </span>
+                                </t>
+                                <t t-if="current_industrial_location and current_property_type == 'industrial'">
+                                    <span class="filter-chip">
+                                        <t t-if="current_industrial_location == 'inside_city'">In City</t>
+                                        <t t-elif="current_industrial_location == 'outside_city'">Outside City</t>
+                                        <a t-attf-href="?industrial_location=&amp;property_type_filter=industrial&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;industrial_type_id=#{current_industrial_type_id or ''}&amp;search=#{current_search or ''}" class="chip-remove">×</a>
+                                    </span>
+                                </t>
+                                <!-- Land-specific chips -->
+                                <t t-if="current_land_title_id and current_property_type == 'land'">
+                                    <t t-set="selected_land_title" t-value="[lt for lt in land_titles if lt.id == current_land_title_id]"/>
+                                    <span class="filter-chip">
+                                        <t t-if="selected_land_title" t-esc="selected_land_title[0].name"/>
+                                        <a t-attf-href="?land_title_id=&amp;property_type_filter=land&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;search=#{current_search or ''}" class="chip-remove">×</a>
+                                    </span>
+                                </t>
+                            </div>
+                        </t>
+                    </div>
+                </section>
+
+                <!-- Listing Content -->
+                <section class="listing-content-section">
+                    <div class="container">
+                        <!-- Sort Bar -->
+                        <div class="sort-bar">
+                            <span class="results-count">
+                                <strong><t t-esc="total"/></strong> properties found
+                            </span>
+                            <div class="sort-options">
+                                <label>Sort by:</label>
+                                <select class="sort-select" onchange="updateSort(this.value)">
+                                    <option value="newest" t-att-selected="current_sort == 'newest'">Newest First</option>
+                                    <option value="oldest" t-att-selected="current_sort == 'oldest'">Oldest First</option>
+                                    <option value="price_low" t-att-selected="current_sort == 'price_low'">Price: Low to High</option>
+                                    <option value="price_high" t-att-selected="current_sort == 'price_high'">Price: High to Low</option>
+                                    
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Properties Grid -->
+                        <t t-if="properties">
+                            <div class="property-grid-full">
+                                <t t-foreach="properties" t-as="property">
+                                    <t t-call="dev_property_management.website_property_card"/>
+                                </t>
+                            </div>
+
+                            <!-- Pagination -->
+                            <t t-if="total_pages > 1">
+                                <div class="pagination-container">
+                                    <t t-if="has_prev">
+                                        <a t-attf-href="?page=#{page - 1}&amp;property_type_filter=#{current_property_type or ''}&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;search=#{current_search or ''}&amp;sort_by=#{current_sort}" 
+                                           class="page-link">
+                                            <i class="fa fa-chevron-left"></i>
+                                        </a>
+                                    </t>
+                                    
+                                    <t t-set="start_page" t-value="max(1, page - 2)"/>
+                                    <t t-set="end_page" t-value="min(total_pages, page + 2)"/>
+                                    
+                                    <t t-if="start_page > 1">
+                                        <a t-attf-href="?page=1&amp;property_type_filter=#{current_property_type or ''}&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;search=#{current_search or ''}&amp;sort_by=#{current_sort}" 
+                                           class="page-link">1</a>
+                                        <t t-if="start_page > 2">
+                                            <span class="page-link disabled">...</span>
+                                        </t>
+                                    </t>
+                                    
+                                    <t t-foreach="range(start_page, end_page + 1)" t-as="p">
+                                        <a t-attf-href="?page=#{p}&amp;property_type_filter=#{current_property_type or ''}&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;search=#{current_search or ''}&amp;sort_by=#{current_sort}" 
+                                           t-att-class="'page-link' + (' active' if p == page else '')">
+                                            <t t-esc="p"/>
+                                        </a>
+                                    </t>
+                                    
+                                    <t t-if="end_page &lt; total_pages">
+                                        <t t-if="end_page &lt; total_pages - 1">
+                                            <span class="page-link disabled">...</span>
+                                        </t>
+                                        <a t-attf-href="?page=#{total_pages}&amp;property_type_filter=#{current_property_type or ''}&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;search=#{current_search or ''}&amp;sort_by=#{current_sort}" 
+                                           class="page-link"><t t-esc="total_pages"/></a>
+                                    </t>
+                                    
+                                    <t t-if="has_next">
+                                        <a t-attf-href="?page=#{page + 1}&amp;property_type_filter=#{current_property_type or ''}&amp;purpose=#{current_purpose or ''}&amp;city_id=#{current_city_id or ''}&amp;bedrooms=#{current_bedrooms or ''}&amp;bathrooms=#{current_bathrooms or ''}&amp;search=#{current_search or ''}&amp;sort_by=#{current_sort}" 
+                                           class="page-link">
+                                            <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </t>
+                                </div>
+                            </t>
+                        </t>
+                        
+                        <!-- No Results -->
+                        <t t-else="">
+                            <div class="no-results">
+                                <div class="no-results-icon">
+                                    <i class="fa fa-search"></i>
+                                </div>
+                                <h3 class="no-results-title">No Properties Found</h3>
+                                <p class="no-results-message">
+                                    Try adjusting your filters or search criteria
+                                </p>
+                                <a href="/properties/all" class="btn-property btn-property-primary">
+                                    View All Properties
+                                </a>
+                            </div>
+                        </t>
+                    </div>
+                </section>
+            </div>
+            
+            <!-- Filter Dropdown Script -->
+            <script type="text/javascript">
+            //<![CDATA[
+                function toggleFilterDropdown(btn) {
+                    var dropdown = btn.parentElement;
+                    var wasOpen = dropdown.classList.contains('open');
+                    
+                    // Close all other dropdowns first
+                    document.querySelectorAll('.filter-dropdown').forEach(function(d) {
+                        d.classList.remove('open');
+                    });
+                    
+                    // Toggle current dropdown if it wasn't open
+                    if (!wasOpen) {
+                        dropdown.classList.add('open');
+                        
+                        // On mobile, position dropdown below the filter bar
+                        if (window.innerWidth <= 768) {
+                            var filterBar = document.querySelector('.filter-bar-section');
+                            var menu = dropdown.querySelector('.filter-dropdown-menu');
+                            if (filterBar && menu) {
+                                var rect = filterBar.getBoundingClientRect();
+                                menu.style.top = (rect.bottom + 10) + 'px';
+                            }
+                        }
+                    }
+                }
+                
+                // Close dropdown when clicking outside or on overlay
+                document.addEventListener('click', function(e) {
+                    // Don't close if clicking inside dropdown menu (let link work)
+                    if (e.target.closest('.filter-dropdown-menu')) {
+                        return;
+                    }
+                    
+                    // Close if clicking outside dropdown entirely
+                    if (!e.target.closest('.filter-dropdown-btn')) {
+                        document.querySelectorAll('.filter-dropdown').forEach(function(dropdown) {
+                            dropdown.classList.remove('open');
+                        });
+                    }
+                });
+                
+                // Close on escape key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        document.querySelectorAll('.filter-dropdown').forEach(function(dropdown) {
+                            dropdown.classList.remove('open');
+                        });
+                    }
+                });
+                
+                // Handle touch events for better mobile UX
+                document.addEventListener('touchstart', function(e) {
+                    // If touching outside dropdown, close it
+                    if (!e.target.closest('.filter-dropdown')) {
+                        document.querySelectorAll('.filter-dropdown').forEach(function(dropdown) {
+                            dropdown.classList.remove('open');
+                        });
+                    }
+                }, {passive: true});
+                
+                // Update sort while preserving other params
+                function updateSort(sortValue) {
+                    var url = new URL(window.location.href);
+                    url.searchParams.set('sort_by', sortValue);
+                    window.location.href = url.toString();
+                }
+                
+                // Recalculate dropdown position on resize
+                window.addEventListener('resize', function() {
+                    document.querySelectorAll('.filter-dropdown.open').forEach(function(dropdown) {
+                        dropdown.classList.remove('open');
+                    });
+                });
+            //]]>
+            </script>
+        </t>
+    </template>
+</odoo>

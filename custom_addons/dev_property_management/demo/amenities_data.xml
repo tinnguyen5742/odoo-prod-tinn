@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo noupdate="1">
+    <record id="security_property_amenities" model="property.amenities">
+        <field name="name">24 X 7 Security</field>
+        <field name="image" type="base64" file="dev_property_management/static/src/img/security_guard.png"/>
+    </record>
+    <record id="cctv_property_amenities" model="property.amenities">
+        <field name="name">CCTV Surveillance</field>
+        <field name="image" type="base64" file="dev_property_management/static/src/img/cctv.png"/>
+    </record>
+    <record id="fire_safety_property_amenities" model="property.amenities">
+        <field name="name">Fire Safety</field>
+        <field name="image" type="base64" file="dev_property_management/static/src/img/fire.jpg"/>
+    </record>
+    <record id="parking_safety_property_amenities" model="property.amenities">
+        <field name="name">Parking</field>
+        <field name="image" type="base64" file="dev_property_management/static/src/img/parking.png"/>
+    </record>
+    <record id="water_property_amenities" model="property.amenities">
+        <field name="name">24 X 7 Water</field>
+        <field name="image" type="base64" file="dev_property_management/static/src/img/water.png"/>
+    </record>
+    <record id="power_property_amenities" model="property.amenities">
+        <field name="name">24 X 7 Power</field>
+        <field name="image" type="base64" file="dev_property_management/static/src/img/power.png"/>
+    </record>
+    <record id="gym_property_amenities" model="property.amenities">
+        <field name="name">Gym</field>
+        <field name="image" type="base64" file="dev_property_management/static/src/img/gym.jpg"/>
+    </record>
+    <record id="pool_property_amenities" model="property.amenities">
+        <field name="name">Swimming Pool</field>
+        <field name="image" type="base64" file="dev_property_management/static/src/img/pool.png"/>
+    </record>
+    <record id="park_property_amenities" model="property.amenities">
+        <field name="name">Children Park</field>
+        <field name="image" type="base64" file="dev_property_management/static/src/img/park.jpg"/>
+    </record>
+    <record id="movie_property_amenities" model="property.amenities">
+        <field name="name">Movie Theater</field>
+        <field name="image" type="base64" file="dev_property_management/static/src/img/movie.png"/>
+    </record>
+</odoo>

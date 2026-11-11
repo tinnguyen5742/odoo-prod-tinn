@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo>
+    <!--form-->
+    <record id="track_owner_payment_form_view" model="ir.ui.view">
+        <field name="name">track.owner.payment.form.view</field>
+        <field name="model">track.owner.payment</field>
+        <field name="arch" type="xml">
+            <form string="Owner Payment Tracking">
+                <header>
+                    <button name="owner_paid" type="object" string="Paid" class="oe_highlight" invisible="payment_state != 'draft'" />
+
+                    <field name="payment_state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h3>
+                            <field name="rent_number" readonly="1" force_save="1" />
+                        </h3>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id" readonly="1" />
+                            <field name="property_id" readonly="1" />
+                            <field name="owner_partner_id" readonly="1" />
+                        </group>
+                        <group>
+                           <field name="installment_payment_date" />
+                            <field name="owner_paid_date" readonly="1" />
+                            <field name="rent_amount" readonly="1" />
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!--tree-->
+    <record id="track_owner_payment_tree" model="ir.ui.view">
+        <field name="name">track.owner.payment</field>
+        <field name="model">track.owner.payment</field>
+        <field name="arch" type="xml">
+            <list string="Track Owner Payment">
+                <field name="rent_number"/>
+                <field name="partner_id"/>
+                <field name="property_id"/>
+                <field name="owner_partner_id"/>
+                <field name="installment_payment_date"/>
+                <field name="owner_paid_date"/>
+                <field name="rent_amount"/>
+                <field name="payment_state"/>
+            </list>
+        </field>
+    </record>
+
+    <!--search-->
+    <record id="search_track_owner_payment" model="ir.ui.view">
+        <field name="name">Owner Payment - Search</field>
+        <field name="model">track.owner.payment</field>
+        <field name="arch" type="xml">
+            <search string="Track Owner">
+                <field name="property_id"/>
+                <field name="owner_partner_id"/>
+                    <filter name="property_id" string="Property" context="{'group_by':'property_id'}"/>
+                    <filter name="owner_partner_id"  string="Owner" context="{'group_by':'owner_partner_id'}"/>
+                    <filter name="partner_id" string="Contact" context="{'group_by':'partner_id'}"/>
+                    <filter name="payment_state" string="Status" context="{'group_by':'payment_state'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!--Action-->
+    <record id="action_track_owner_payment" model="ir.actions.act_window">
+        <field name="name">Track Owner Payment</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">track.owner.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_owner_partner_id': 1}</field>
+    </record>
+
+    <!--Menus-->
+    <menuitem name="Track Owner Payment" id="menu_track_owner_payment" parent="root_menu_property_tenancy" action="action_track_owner_payment" sequence="3"/>
+</odoo>

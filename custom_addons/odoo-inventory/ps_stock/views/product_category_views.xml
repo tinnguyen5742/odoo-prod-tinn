@@ -1,0 +1,28 @@
+<odoo>
+    <data>
+        <record id="ps_inv_product_category_form_view_inherit" model="ir.ui.view">
+            <field name="name">ps.inv.product.category.form.view.inherit</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="stock.product_category_form_view_inherit"/>
+            <field name="arch" type="xml">
+                <!-- Insert as a separate block before the outer group that contains logistics -->
+                <xpath expr="//group[@name='logistics']/.." position="before">
+                    <group>
+                        <group name="product" string="Product">
+                            <label for="x_code_sequence_id"/>
+                            <div class="o_row">
+                                <field name="x_code_sequence_id"/>
+                                <button name="action_create_product_code_sequence"
+                                        type="object"
+                                        string="Create Sequence"
+                                        class="btn-link"
+                                        invisible="x_code_sequence_id"/>
+                            </div>
+                            <field name="x_sequence_preview" readonly="1" invisible="not x_code_sequence_id"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

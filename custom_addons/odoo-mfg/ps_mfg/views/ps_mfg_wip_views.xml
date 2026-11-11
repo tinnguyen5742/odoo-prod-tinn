@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ps_mfg_wip_view_list" model="ir.ui.view">
+        <field name="name">ps.mfg.wip.view.list</field>
+        <field name="model">ps.mfg.wip</field>
+        <field name="arch" type="xml">
+            <list string="WIP Closings" sample="1" multi_edit="1">
+                <field name="code"/>
+                <field name="account_id"/>
+                <field name="period_date"/>
+                <field name="date" optional="show"/>
+                <field name="wip_value" optional="show"/>
+                <field name="allocated_value" optional="hide"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="ps_mfg_wip_view_form" model="ir.ui.view">
+        <field name="name">ps.mfg.wip.view.form</field>
+        <field name="model">ps.mfg.wip</field>
+        <field name="arch" type="xml">
+            <form string="WIP Closing">
+                <header>
+                    <button name="action_fetch_finished_mos" string="Fetch Finished MOs" type="object"
+                            invisible="state != 'draft'"/>
+                    <button name="action_allocate_in_progress" string="Allocate" type="object"
+                            invisible="state != 'draft'"/>
+                    <button name="action_complete" string="Complete" type="object"
+                            class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_draft" string="Reset to Draft" type="object"
+                            invisible="state != 'complete'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,complete"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="account_id" options="{'no_quick_create': True}"/>
+                            <field name="period_date"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <group string="Amounts">
+                        <group>
+                            <field name="beginning_value"/>
+                            <field name="total_debit"/>
+                            <field name="total_credit"/>
+                        </group>
+                        <group>
+                            <field name="allocated_value"/>
+                            <field name="wip_value"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Lines" name="lines">
+                            <field name="line_ids" context="{'default_wip_id': id}"
+                                   readonly="state != 'draft'">
+                                <list string="WIP Lines" editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="production_id" options="{'no_quick_create': True}"/>
+                                    <field name="product_default_code" readonly="1" optional="show"/>
+                                    <field name="receipt_qty"/>
+                                    <field name="discrete_qty"/>
+                                    <field name="product_id" readonly="1" optional="show"
+                                            options="{'no_open': True, 'no_create': True}"/>
+                                    <field name="receipt_tran_cost"/>
+                                    <field name="estimated_cost" optional="show"/>
+                                    <field name="in_progress_cost"/>
+                                    <field name="description" optional="hide"/>
+                                    <field name="unit_cost_actual" readonly="1"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="ps_mfg_wip_view_search" model="ir.ui.view">
+        <field name="name">ps.mfg.wip.view.search</field>
+        <field name="model">ps.mfg.wip</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="code"/>
+                <field name="account_id"/>
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="complete" string="Complete" domain="[('state', '=', 'complete')]"/>
+                <group>
+                    <filter name="group_account" string="Account" domain="[]" context="{'group_by': 'account_id'}"/>
+                    <filter name="group_period" string="Period" domain="[]" context="{'group_by': 'period_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="ps_mfg_wip_action" model="ir.actions.act_window">
+        <field name="name">WIP Closings</field>
+        <field name="res_model">ps.mfg.wip</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first WIP closing
+            </p>
+        </field>
+    </record>
+</odoo>

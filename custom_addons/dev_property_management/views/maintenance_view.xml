@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo>
+
+    <record id="view_maintenance_request_dev_inherit_form" model="ir.ui.view">
+         <field name="name">view.maintenance.request.dev.inherit.form</field>
+         <field name="model">maintenance.request</field>
+         <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
+         <field name="arch" type="xml">
+            <xpath expr="//field[@name='equipment_id']" position="replace">
+                 <field name="property_id" />
+                 <span class="o_form_label o_td_label" name="address_name">
+                                <b>Address</b>
+                            </span>
+                <div class="o_address_format">
+                                <field name="street" placeholder="Street..." class="o_address_street"/>
+                                <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                <field name="city_id" placeholder="City" class="o_address_city"/>
+                                <field name="state_id" class="o_address_state" placeholder="State"/>
+                                <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                <field name="country_id" placeholder="Country" class="o_address_country"/>
+                            </div>
+                <field name="tenancy_id" domain="[('property_id', '=', property_id),('state', 'in', ['confirm','running'])]"/>
+                <field name="partner_id" />
+                
+            </xpath>
+             <xpath expr="//header" position="inside">
+             		 <button name="create_maintenance_invoice" type="object" string="Generate Invoice" class="oe_highlight"  />
+             </xpath>
+             <xpath expr="//sheet" position="inside">
+             		<div class="oe_button_box" name="button_box">
+                        <button type="object"
+                                name="view_maintenance_invoices"
+                                class="oe_stat_button"
+                                icon="fa-file-text-o"
+                                string="Invoice"
+                                
+                                >
+<!--                                invisible="agreement_count == 0"-->
+<!--                            <field string="Agreement" name="agreement_count" widget="statinfo"/>-->
+                        </button>
+                    </div>
+             
+             </xpath>
+             
+            <xpath expr="//field[@name='priority']" position="after">
+                <field name="cost" />
+            </xpath>
+<!--            <xpath expr="//div[@name='button_box']" position="inside">-->
+<!--                <button name="action_view_commission_agent" type="object" class="oe_stat_button" icon="fa-book" -->
+<!--                invisible="not is_agent" >-->
+<!--                    <field string="View Commission" name="count_commission_agent" widget="statinfo"/>-->
+<!--                </button>-->
+<!--            </xpath>-->
+         </field>
+      </record>
+
+    <menuitem name="Maintenance"
+              id="menu_Maintenance_request"
+              parent="dev_property_management.root_menu_property"
+              sequence="7"/>
+
+    <menuitem name="Maintenance Requests"
+              id="menu_Maintenance_request_sub"
+              parent="menu_Maintenance_request"
+              action="maintenance.hr_equipment_request_action"
+              sequence="1"/>
+              
+              
+	<menuitem name="Maintenance Calender"
+              id="menu_Maintenance_calender"
+              parent="menu_Maintenance_request"
+              action="maintenance.hr_equipment_request_action_cal"
+              sequence="2"/>
+              
+  	<menuitem name="Maintenance Dashboard"
+              id="menu_Maintenance_dashboard"
+              parent="menu_Maintenance_request"
+              action="maintenance.maintenance_dashboard_action"
+              sequence="3"/>
+              
+              
+      <menuitem name="Maintenance Analysis"
+              id="menu_Maintenance_analysis_report"
+              parent="dev_property_management.root_menu_property_reporting"
+              action="maintenance.maintenance_request_action_reports"
+              sequence="1"/>
+              
+       
+          
+          
+          
+          
+</odoo>

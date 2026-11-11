@@ -1,0 +1,76 @@
+/* =================================================== */
+/* OVERWRITE ODOO LOADING INDICATOR TO FULLSCREEN OVERLAY */
+/* =================================================== */
+
+.o_loading_indicator,
+.o_loading,
+.o_blockUI {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background-color: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(4px) !important;
+  z-index: 100000 !important; /* Luôn nằm trên tất cả UI */
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  /* Sửa chữ Loading */
+  color: #333333 !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  /* Tạo Icon Spinner xoay tròn chính giữa */
+  &::before {
+    content: "" !important;
+    display: block !important;
+    width: 48px !important;
+    height: 48px !important;
+    margin-bottom: 12px !important;
+    border: 4px solid rgba(0, 0, 0, 0.1) !important;
+    border-top-color: var(--primary, #007bff) !important;
+    border-radius: 50% !important;
+    animation: psSpinnerRotate 0.8s linear infinite !important;
+  }
+}
+
+/* Keyframe xoay vòng cho Spinner */
+@keyframes psSpinnerRotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.o_loading_indicator,
+.o_loading,
+.o_blockUI {
+  /* Thêm hiệu ứng fade-in nhẹ có độ trễ 0.2s để lọc bỏ các request siêu nhanh */
+  animation: psFadeInDelayed 0.3s ease forwards !important;
+  /* Các thuộc tính cũ giữ nguyên bên dưới... */
+}
+
+@keyframes psFadeInDelayed {
+  0%,
+  80% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+/* Không hiển thị loading mờ màn hình khi đang thao tác trong dropdown hoặc input */
+body:has(.dropdown-menu.show) .o_blockUI,
+body:has(select:focus) .o_blockUI {
+  display: none !important;
+}

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo>
+    <template id="main_agreement_pdf_template">
+        <t t-call="web.external_layout">
+            <div class="page" style="font-size: 12px;">
+                <span style="font-size: 18px;font-weight: bold;">
+                    <center><span t-field="o.name"/></center>
+                </span>
+                <t t-if="o.type=='rent'">
+                    <table width="100%" style="margin-top: 30px;">
+                        <tr style="line-height: 20px;">
+                            <td width="12%"><b>Tenant</b></td>
+                            <td width="5%">:</td>
+                            <td width="33%">
+                                <span t-field="o.partner_id"/>
+                            </td>
+                            <td width="12%"><b>Agreement Date</b></td>
+                            <td width="5%">:</td>
+                            <td width="33%">
+                                <span t-field="o.agreement_date"/>
+                            </td>
+                        </tr>
+                        <tr style="line-height: 20px;">
+                            <td width="12%"><b>Property</b></td>
+                            <td width="5%">:</td>
+                            <td width="33%">
+                                <span t-field="o.property_id"/>
+                            </td>
+                            <td width="12%"><b>Agreement Type</b></td>
+                            <td width="5%">:</td>
+                            <td width="33%">
+                                <span t-field="o.type"/>
+                            </td>
+                        </tr>
+                        <tr style="line-height: 20px;">
+                            <td width="12%"><b>Property Owner</b></td>
+                            <td width="5%">:</td>
+                            <td width="33%">
+                                <span t-field="o.owner_partner_id"/>
+                            </td>
+                            <td width="12%"><b>Duration</b></td>
+                            <td width="5%">:</td>
+                            <td width="33%">
+                                <span t-esc="get_duration(o)"/>
+                            </td>
+                        </tr>
+                        <tr style="line-height: 20px;">
+                            <td width="12%"><b>Monthly Rent</b></td>
+                            <td width="5%">:</td>
+                            <td width="33%">
+                                <span t-esc="'{:,.2f}'.format(o.rent_amount)"/>
+                            </td>
+                            <td width="12%"><b>Expiry Date</b></td>
+                            <td width="5%"></td>
+                            <td width="33%">
+                                <span t-field="o.expiry_date"/>
+                            </td>
+                        </tr>
+                    </table>
+                </t>
+                <t t-if="o.type=='sell'">
+                    <table width="100%" style="margin-top: 30px;">
+                        <tr style="line-height: 20px;">
+                            <td width="12%"><b>Contact</b></td>
+                            <td width="5%">:</td>
+                            <td width="33%">
+                                <span t-field="o.partner_id"/>
+                            </td>
+                            <td width="12%"><b>Agreement Date</b></td>
+                            <td width="5%">:</td>
+                            <td width="33%">
+                                <span t-field="o.agreement_date"/>
+                            </td>
+                        </tr>
+                        <tr style="line-height: 20px;">
+                            <td width="12%"><b>Property</b></td>
+                            <td width="5%">:</td>
+                            <td width="33%">
+                                <span t-field="o.property_id"/>
+                            </td>
+                            <td width="12%"><b>Agreement Type</b></td>
+                            <td width="5%">:</td>
+                            <td width="33%">
+                                <span t-field="o.type"/>
+                            </td>
+                        </tr>
+                    </table>
+                </t>
+                <t t-if="o.description">
+                    <p style="font-weight: bold;font-size: 14px;margin-top: 20px;">
+                        Agreement Details
+                    </p>
+                    <p>
+                        <span t-raw="o.description"/>
+                    </p>
+                </t>
+
+                <div style="margin-top:35px;" class="row">
+                    <div class="col-6" style="font-size: 14px;font-weight:bold;">
+                        Authority Signature
+                        <br/>
+                        <br/>
+                        <br/>
+                        ...........................
+                    </div>
+                    <div class="col-6 pull-right" style="font-size: 14px;font-weight:bold;text-align:right;">
+                        <span t-if="o.type=='rent'">
+                            Tenant Signature
+                        </span>
+                        <span t-if="o.type=='sell'">
+                            Contact Signature
+                        </span>
+                        <br/>
+                        <br/>
+                        <t t-if="o.agreement_signature">
+                            <img  t-att-src="image_data_uri(o.agreement_signature)" style="max-height: 4cm; max-width: 8cm;"/>
+                        </t>
+                        <t t-else="">
+                            
+                        </t>
+                        
+                        <br/>
+                        ...........................
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="agreement_pdf_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="dev_property_management.main_agreement_pdf_template"/>
+            </t>
+        </t>
+    </template>
+</odoo>

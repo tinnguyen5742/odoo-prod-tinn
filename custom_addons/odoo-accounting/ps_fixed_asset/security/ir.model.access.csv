@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ps_asset_accessory,ps.asset.accessory,model_ps_asset_accessory,base.group_user,1,1,1,1
+access_ps_asset_upgrade_wizard,ps.asset.upgrade.wizard,model_ps_asset_upgrade_wizard,base.group_user,1,1,1,1
+access_ps_asset_segment,access_ps_asset_segment,model_ps_asset_segment,base.group_user,1,1,1,1
+access_ps_asset_segment_admin,access_ps_asset_segment_admin,model_ps_asset_segment,base.group_system,1,1,1,1
+access_ps_asset_segment_line,access_ps_asset_segment_line,model_ps_asset_segment_line,base.group_user,1,1,1,1
+access_ps_asset_segment_line_admin,access_ps_asset_segment_line_admin,model_ps_asset_segment_line,base.group_system,1,1,1,1
+access_ps_asset_dispose_wizard,ps.asset.dispose.wizard,model_ps_asset_dispose_wizard,base.group_user,1,1,1,1
+access_ps_asset_transfer_wizard,ps.asset.transfer.wizard,model_ps_asset_transfer_wizard,base.group_user,1,1,1,1
+access_ps_asset_pause_wizard,ps.asset.pause.wizard,model_ps_asset_pause_wizard,base.group_user,1,1,1,1

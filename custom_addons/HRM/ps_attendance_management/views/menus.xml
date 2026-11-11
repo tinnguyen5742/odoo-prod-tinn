@@ -1,0 +1,44 @@
+<odoo>
+    <data>
+        <menuitem id="ps_shift_menu_config"
+            name="Attendance Management"
+            parent="hr_attendance.menu_hr_attendance_view_attendances_management"
+            action="hr_attendance.hr_attendance_management_action"
+            sequence="1" />
+        <menuitem id="ps_shift_menu_item"
+            name="Work Shift"
+            parent="hr_attendance.menu_hr_attendance_view_attendances_management"
+            action="ps_shift_action"
+            sequence="2" />
+        <menuitem id="ps_holiday_menu_item"
+            name="Public Holiday"
+            parent="hr_attendance.menu_hr_attendance_view_attendances_management"
+            action="ps_holiday_action"
+            sequence="3" />
+        <menuitem id="ps_rotation_menu_item"
+            name="Shift Rotation"
+            parent="hr_attendance.menu_hr_attendance_view_attendances_management"
+            action="ps_shift_rotation_action"
+            sequence="4" />
+        <menuitem id="ps_work_schedule_registration_menu_item"
+            name="Work Schedule Registration"
+            parent="hr_attendance.menu_hr_attendance_view_attendances_management"
+            action="ps_work_schedule_registration_action"
+            sequence="5" />
+        <menuitem id="ps_overtime_registration_menu_item"
+            name="Overtime Registration"
+            parent="hr_attendance.menu_hr_attendance_view_attendances_management"
+            action="ps_overtime_registration_action"
+            sequence="6" />
+        <menuitem id="ps_shift_change_menu_item"
+            name="Shift Change"
+            parent="hr_attendance.menu_hr_attendance_view_attendances_management"
+            action="ps_shift_change_action"
+            sequence="7" />
+        <menuitem id="ps_work_shift_schedule_menu_item"
+            name="Shift Schedule"
+            parent="hr_attendance.menu_hr_attendance_view_attendances_management"
+            action="ps_work_shift_schedule_action"
+            sequence="8" />
+        </data>
+</odoo>

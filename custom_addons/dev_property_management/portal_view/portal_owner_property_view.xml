@@ -1,0 +1,533 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo>
+    <!-- <template id="portal_owner_property" inherit_id="portal.portal_my_home"
+        name="Portal Owner Property Details" customize_show="True" priority="20">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon"
+                    t-value="'/portal/static/src/img/portal-addresses.svg'"
+                    style="height:64px;width:64px;" />
+                <t t-set="title">Owner Property</t>
+                <t t-set="text">Follow, view or print your Property</t>
+                <t t-set="url" t-value="'/my/Owner_property_details'" />
+                <t t-set="placeholder_count" t-value="'property_count'" />
+            </t>
+        </xpath>
+    </template> -->
+
+    <template id="portal_owner_property" name="Show Members" customize_show="True" inherit_id="portal.portal_my_home" priority="20">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <t t-set="portal_client_category_enable" t-value="True"/>
+        </xpath>
+        <div id="portal_client_category" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="placeholder_count" t-value="'owner_property_count'"/>
+                <t t-set="icon" t-value="'/portal/static/src/img/portal-addresses.svg'" />
+                <t t-set="title">Owner Property</t>
+                <t t-set="url" t-value="'/my/Owner_property_details'"/>
+                <t t-set="text">Follow, view or print your Property</t>
+            </t>
+        </div>
+    </template>
+   <!-- <template id="portal_Owner_property_details" name="Portal Layout : Property Details Menu"
+        inherit_id="portal.portal_breadcrumbs" priority="20">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'owner_property_details_tree'"
+                t-attf-class="breadcrumb-item #{'active' if not property_details else ''}">
+                Property Details
+            </li>
+            <li t-if="page_name == 'owner_property_detail_page'" class="breadcrumb-item active">
+                <a  t-attf-href="/my/Owner_property_details?{{ keep_query() }}">Property Details </a>
+                /<t t-esc="owner_property_sudo.name" />
+            </li>
+        </xpath>
+        
+    </template> -->
+    <template id="portal_breadcrumb_owner_property" name="Owner Property Breadcrumb" inherit_id="portal.portal_breadcrumbs" priority="20">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+        <li t-if="page_name == 'property_details_tree' or owner_property_sudo" t-attf-class="breadcrumb-item #{'active ' if not owner_property_sudo else ''}">
+        <a t-if="owner_property_sudo" t-attf-href="/my/Owner_property_details?{{ keep_query() }}"> Owner Property </a>
+        <t t-else="">Owner Property</t>
+        </li>
+        <li t-if="owner_property_sudo" class="breadcrumb-item active">
+        <t t-esc="owner_property_sudo.number"/>
+        </li>
+        </xpath>
+    </template>
+
+    <template id="portal_owner_properties_details" name="Owner Property Details">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True" />
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Property Details</t>
+            </t>
+            <t t-if="not property_details">
+                <p>There are currently no Property for your account.</p>
+            </t>
+            <t t-if="property_details" t-call="portal.portal_table">
+              <t t-foreach="grouped_property" t-as="property_group">
+                <thead>
+                    <tr t-attf-class="{{'thead-light' if not groupby == 'none' else ''}}" >
+                        <th t-if="groupby == 'none'">Reference #</th>
+                        <th t-else="">
+                                <t t-if="groupby == 'state'">
+                                    <em class="font-weight-normal text-muted">Status :</em>
+                                    <span t-field="property_group[0].sudo().state"/>
+                                </t>
+                                <t t-if="groupby == 'property_purpose'">
+                                    <em class="font-weight-normal text-muted">Property Purpose :</em>
+                                    <span t-field="property_group[0].sudo().property_purpose"/>
+                                </t>
+                                <t t-if="groupby == 'property_type'">
+                                    <em class="font-weight-normal text-muted">Property Type :</em>
+                                    <span t-field="property_group[0].sudo().property_type"/>
+                                </t>
+                        </th>
+                        <th>Property Purpose</th>
+                        <th>Parent Property</th>
+                        <th>Property Type</th>
+                        <th>Owner</th>
+                        <th>Construction year</th>
+                        <th class="text-center">State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <t t-foreach="property_group" t-as="l">
+                    <tr>
+                        <td>
+                            <a t-att-href="l.get_portal_url()">
+                                <t t-esc="l.number" />
+                            </a>
+                        </td>
+                        <td>
+                            <span t-field="l.property_purpose" />
+                        </td>
+                        <td>
+                            <span t-field="l.parent_id" />
+                        </td>
+                        <td>
+                            <span t-field="l.property_type" />
+                        </td>
+                        <td>
+                            <span t-field="l.owner_partner_id.name" />
+                        </td>
+                        <td>
+                            <span t-field="l.construct_year" />
+                        </td>
+                        <td style="text-align:center;">
+                            <t t-if="l.state == 'draft'" name="status_draft">
+                                <span class="badge rounded-pill text-bg-info" t-field="l.state"/>
+                            </t>
+                            <t t-else=" " name="status_on_rent">
+                                <span class="badge rounded-pill text-bg-success" t-field="l.state"/>
+                            </t>
+                        </td>
+                    </tr>
+       	  </t>
+                </tbody>
+               </t>
+            </t>
+            <br/>
+        </t>
+    </template>
+
+
+    <template id="portal_owner_property_detail_form" name="Owner Detail Portal Template"
+        inherit_id="portal.portal_sidebar" primary="True">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+            <div class="row mt16">
+<!--              Sidebar -->
+                <t t-call="portal.portal_record_sidebar">
+                    <t t-set="classes" t-value="'col-lg-auto d-print-none'" />
+                    <t t-set="title">
+                        <h2 class="mb-0">
+                            <span t-field="owner_property_sudo.number" />
+                        </h2>
+                    </t>
+                    <t t-set="entries">
+                        <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
+                            <li class="list-group-item flex-grow-1">
+                                <div class="o_download_pdf btn-toolbar flex-sm-nowrap">
+                                    <div class="btn-group flex-grow-1 mr-1 mb-1">
+                                        <a class="btn btn-secondary btn-block o_download_btn" t-att-href="owner_property_sudo.get_portal_url(report_type='pdf', download=True)" title="Download"><i class="fa fa-download"/> Download</a>
+                                    </div>
+                                    <div class="btn-group flex-grow-1 mb-1" style="margin-left:15px;">
+                                        <a class="btn btn-secondary btn-block o_print_btn o_portal_invoice_print" t-att-href="owner_property_sudo.get_portal_url(report_type='pdf')" id="print_Owner_property_report" title="Print" target="_blank"><i class="fa fa-print"/> Print</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="navspy list-group-item pl-0 flex-grow-1" t-ignore="true"
+                                role="complementary">
+                                <ul class="nav flex-column bs-sidenav"></ul>
+                            </li>
+                            <li t-if="owner_property_sudo.owner_partner_id" class="list-group-item flex-grow-1">
+                                <div class="small mb-1">
+                                    <strong class="text-muted">Your Contact</strong>
+                                </div>
+                                <div class="row flex-nowrap">
+                                    <div class="o_portal_contact_details d-flex flex-column gap-2">
+                                        <div class="d-flex justify-content-start align-items-center gap-2">
+                                            <img class="o_avatar o_portal_contact_img rounded" t-att-src="image_data_uri(owner_property_sudo.owner_partner_id.avatar_1024)" alt="Contact"/>
+                                            <div>
+                                                <span t-field="owner_property_sudo.owner_partner_id"
+                                                 t-options='{"widget": "contact", "fields": ["name", "mobile"], "no_marker": True}'/>
+                                                <a href="#discussion" class="d-flex align-items-center gap-2 small fw-bold"><i class="fa fa-comment"></i>
+                                                Send message
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </t>
+                </t>
+                <div id="booking_detail_content" class="col-12 col-lg justify-content-end">
+                    <div t-attf-class="card #{'pb-5' if report_type == 'html' else ''}">
+                        <t t-call="dev_property_management.owner_property_detail_portal_content" />
+                    </div>
+                    <div id="booking_detail_communication" class="mt-3">
+                        <h3>Communication history</h3>
+                        <t t-call="portal.message_thread">
+                            <t t-set="object" t-value="owner_property_sudo" />
+                        </t>
+                    </div>
+                </div>
+                <hr />
+            </div>
+        </xpath>
+    </template>
+
+    <template id="owner_property_detail_portal_content" name="Portal: Owner Property Detail">
+        <div id="optional_placeholder"></div>
+        <div class="card-header">
+            <div class="row">
+                <div class="col-lg-9">
+                    <h4> Owner Property #<span t-esc="owner_property_sudo.number" />
+                    </h4>
+                </div>
+                <div class="col-lg-3" style="background:#875A7B;border-radius:5px">
+                    <h2 class="my-0 text-center" style="padding:3px;font-weight:bold">
+                        <em style="text-transform: capitalize;color:#FFF" t-esc="owner_property_sudo.state" />
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-5">Name</div>
+                        <div class="col-lg-1 text-align-right">:</div>
+                        <div class="col-lg-5 ">
+                            <span t-field="owner_property_sudo.name" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-5">Property purpose </div>
+                        <div class="col-lg-1 text-align-right">:</div>
+                        <div class="col-lg-5">
+                            <span t-field="owner_property_sudo.property_purpose" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-5">Property Type</div>
+                        <div class="col-lg-1 text-align-right">:</div>
+                        <div class="col-lg-5 ">
+                            <span t-field="owner_property_sudo.property_type" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-5">Construct Year</div>
+                        <div class="col-lg-1 text-align-right">:</div>
+                        <div class="col-lg-5">
+                            <span t-field="owner_property_sudo.construct_year" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-5">Parent Property</div>
+                        <div class="col-lg-1 text-align-right">:</div>
+                        <div class="col-lg-5 ">
+                            <span t-field="owner_property_sudo.parent_id" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-5">Age of Property</div>
+                        <div class="col-lg-1 text-align-right">:</div>
+                        <div class="col-lg-5">
+                            <span t-field="owner_property_sudo.property_age" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-5">Owner</div>
+                        <div class="col-lg-1 text-align-right">:</div>
+                        <div class="col-lg-5 ">
+                            <span t-field="owner_property_sudo.owner_partner_id" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-5">Selling Price</div>
+                        <div class="col-lg-1 text-align-right">:</div>
+                        <div class="col-lg-5">
+                            <span t-field="owner_property_sudo.price_amount" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-5">Condition</div>
+                        <div class="col-lg-1 text-align-right">:</div>
+                        <div class="col-lg-5 ">
+                            <span t-field="owner_property_sudo.property_status" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-5">Selling Price</div>
+                        <div class="col-lg-1 text-align-right">:</div>
+                        <div class="col-lg-5">
+                            <span t-field="owner_property_sudo.land_title_id" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-5">Address</div>
+                        <div class="col-lg-1 text-align-right">:</div>
+                        <div class="col-lg-5 ">
+                            <span t-field="owner_property_sudo.street" />
+                            <div><span t-field="owner_property_sudo.street2" /></div>
+                            <div><span t-field="owner_property_sudo.city_id" /><span t-field="owner_property_sudo.state_id" /><span t-field="owner_property_sudo.zip" /></div>
+                            <div><span t-field="owner_property_sudo.country_id" /></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div><h5>OTHER DETAILS</h5></div>
+            <hr></hr>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-5">Type of Residential</div>
+                        <div class="col-lg-1 text-align-right">:</div>
+                        <div class="col-lg-5 ">
+                            <span t-field="owner_property_sudo.residential_type_id" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-5">Property Number</div>
+                        <div class="col-lg-1 text-align-right">:</div>
+                        <div class="col-lg-5">
+                            <span t-field="owner_property_sudo.property_number" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-5">Bedrooms</div>
+                        <div class="col-lg-1 text-align-right">:</div>
+                        <div class="col-lg-5 ">
+                            <span t-field="owner_property_sudo.bedroom" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-5">On Floor</div>
+                        <div class="col-lg-1 text-align-right">:</div>
+                        <div class="col-lg-5">
+                            <span t-field="owner_property_sudo.on_floor" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-5">Bathrooms</div>
+                        <div class="col-lg-1 text-align-right">:</div>
+                        <div class="col-lg-5 ">
+                            <span t-field="owner_property_sudo.bathroom" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-5">Furnishing</div>
+                        <div class="col-lg-1 text-align-right">:</div>
+                        <div class="col-lg-5">
+                            <span t-field="owner_property_sudo.furnishing" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-5">Alarm</div>
+                        <div class="col-lg-1 text-align-right">:</div>
+                        <div class="col-lg-5 ">
+                            <span t-field="owner_property_sudo.alarms" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-5">2 Wheeler Parking</div>
+                        <div class="col-lg-1 text-align-right">:</div>
+                        <div class="col-lg-5">
+                            <span t-field="owner_property_sudo.two_wheeler_parking_allot" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-5">4 Wheeler Parking</div>
+                        <div class="col-lg-1 text-align-right">:</div>
+                        <div class="col-lg-5">
+                            <span t-field="owner_property_sudo.four_wheeler_parking_allot" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <!-- <t t-if="booking_detail.pg_id">
+                    <p style="font-weight: bold;font-size: 17px;margin-bottom: 5px;margin-top: 20px;">
+                       Details
+                    </p>
+                    <table width="100%" style="table-layout: fixed;" class="table table-condensed" >
+                        <tr style="word-wrap: break-word;line-height: 12px;">
+                            <td width="25%" style="border-bottom: 2px solid black;border-top: 1px solid white;">
+                                <b>PG</b>
+                            </td>
+                            <td width="15%" style="border-bottom: 2px solid black;border-top: 1px solid white;">
+                                <b>Floor</b>
+                            </td>
+                            <td width="15%" style="border-bottom: 2px solid black;border-top: 1px solid white;">
+                                <b>Room</b>
+                            </td>
+                            <td width="15%" style="border-bottom: 2px solid black;border-top: 1px solid white;">
+                                <b>Room Type</b>
+                            </td>
+                            <td width="15%" style="border-bottom: 2px solid black;border-top: 1px solid white;">
+                                <b>Bed</b>
+                            </td>
+                           
+                        </tr>
+                        <tr  style="word-wrap: break-word;line-height: 12px;">
+                            <td>
+                                <span t-field="booking_detail.pg_id"/>
+                            </td>
+                             <td>
+                               <span t-field="booking_detail.room_floor_id"/>
+                            </td>
+                            <td>
+                                <span t-field="booking_detail.room_id" />
+                            </td>
+                            <td>
+                               <span t-field="booking_detail.room_type_id"/>
+                            </td>
+                            <td>
+                                <span t-field="booking_detail.room_bed_id"/>
+                            </td>
+                        </tr>
+                    </table>
+                </t>
+                <t t-if="booking_detail.extra_facility_ids">
+                    <p style="font-weight: bold;font-size: 17px;margin-bottom: 5px;margin-top: 20px;">
+                     Extra Facility
+                    </p>
+                    <table width="100%" style="table-layout: fixed;" class="table table-condensed" >
+                        <tr style="word-wrap: break-word;line-height: 12px;">
+                            <td width="25%" style="border-bottom: 2px solid black;border-top: 1px solid white;">
+                                <b>Facility</b>
+                            </td>
+                            <td width="15%" style="border-bottom: 2px solid black;border-top: 1px solid white;">
+                                <b>Charge type</b>
+                            </td>
+                            <td width="15%" style="border-bottom: 2px solid black;border-top: 1px solid white;">
+                                <b>Charges</b>
+                            </td>
+                           
+                        </tr>
+                        <tr t-foreach="booking_detail.extra_facility_ids" t-as="line"
+                            style="word-wrap: break-word;line-height: 12px;">
+                            <td>
+                                <span t-field="line.room_facility_id"/>
+                            </td>
+                             <td>
+                                <span t-field="line.charge_type"/>
+                            </td>
+                            <td>
+                                <span t-field="line.charges" t-options='{"widget": "monetary", "display_currency": line.currency_id}'/>
+                            </td>
+                        </tr>
+                    </table>
+                     <table width="100%" style="table-layout: fixed;margin-top: 20px;">
+			    <tr style="word-wrap: break-word;line-height: 24px;">
+				<td width="80%" style="text-align: right;">
+				    Room Charge :
+				</td>
+				<td width="8%" style="text-align: right;">
+				    <span t-field="booking_detail.room_charge" t-options='{"widget": "monetary", "display_currency": booking_detail.currency_id}'/>
+				</td>
+			    </tr>
+			    <tr style="word-wrap: break-word;line-height: 24px;">
+				<td width="80%" style="text-align: right;">
+				    Extra Facilities Charge :
+				</td>
+				<td width="8%" style="text-align: right;">
+				    <span t-field="booking_detail.extra_facilities_charge" t-options='{"widget": "monetary", "display_currency": booking_detail.currency_id}'/>
+				</td>
+			    </tr>
+			    <tr style="word-wrap: break-word;line-height: 24px;">
+				<td width="80%" style="text-align: right;">
+				   Total Charges :
+				</td>
+				<td width="8%" style="text-align: right;">
+				    <span t-field="booking_detail.total_charges" t-options='{"widget": "monetary", "display_currency": booking_detail.currency_id}'/>
+				</td>
+			    </tr>
+	              </table>
+                </t> -->
+        </div>
+        <div class="oe_structure mb32" />
+    </template>
+</odoo>

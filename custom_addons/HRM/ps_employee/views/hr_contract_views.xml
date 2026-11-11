@@ -1,0 +1,144 @@
+<odoo>
+
+    <record id="view_ps_hr_contract_tree" model="ir.ui.view">
+        <field name="name">ps.hr.contract.list</field>
+        <field name="model">ps.hr.contract</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="x_contract_type"/>
+                <field name="x_date_start"/>
+                <field name="x_date_end"/>
+                <field name="x_position"/>
+                <field name="wage"/>
+                <field name="total_income"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-success="state == 'running'"
+                       decoration-warning="state == 'expiring'"
+                       decoration-danger="state == 'expired'"
+                       decoration-muted="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ps_hr_contract_form" model="ir.ui.view">
+        <field name="name">ps.hr.contract.form</field>
+        <field name="model">ps.hr.contract</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_cancel" type="object"
+                            string="Cancel Contract" class="btn-danger"
+                            icon="fa-times"
+                            confirm="Are you sure you want to cancel this contract?"
+                            invisible="state not in ('running','expiring')"/>
+                    <button name="action_draft" type="object"
+                            string="Reopen" class="btn-success"
+                            icon="fa-undo"
+                            confirm="Are you sure you want to reopen this contract?"
+                            invisible="state != 'cancelled'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,running,expiring,expired,cancelled"
+                           statusbar_colors='{"draft":"#6c757d","running":"#28a745","expiring":"#ffc107","expired":"#dc3545","cancelled":"#343a40"}'/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Representative (Part A)">
+                            <field name="x_rep_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="x_rep_job"/>
+                            <field name="x_rep_company"/>
+                            <field name="x_rep_address"/>
+                            <field name="x_rep_mobile"/>
+                            <field name="x_rep_fax"/>
+                            <field name="x_rep_email"/>
+                        </group>
+                        <group string="Employee (Part B)">
+                            <field name="employee_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="x_emp_name"/>
+                            <field name="x_emp_birthday"/>
+                            <field name="x_emp_id_num"/>
+                            <field name="x_emp_id_date"/>
+                            <field name="x_emp_id_place"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Contract Info">
+                            <field name="name" readonly="1"/>
+                            <field name="x_contract_type"/>
+                            <field name="date_sign"/>
+                            <field name="x_date_create"/>
+                            <field name="x_date_start"/>
+                            <field name="x_date_end"/>
+                        </group>
+                        <group string="Salary Info">
+                            <field name="percent_salary"/>
+                            <field name="wage"/>
+                            <field name="allowance"/>
+                            <field name="total_income" readonly="1"/>
+                            <field name="x_ins_salary"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Job Info">
+                            <field name="x_grade"/>
+                            <field name="x_job_title"/>
+                            <field name="x_position"/>
+                            <field name="x_salary_grade"/>
+                            <field name="work_address"/>
+                        </group>
+                        <group string="Note">
+                            <field name="note"/>
+                        </group>
+                    </group>
+
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ps_hr_contract_search" model="ir.ui.view">
+        <field name="name">ps.hr.contract.search</field>
+        <field name="model">ps.hr.contract</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="x_contract_type"/>
+                <field name="x_date_start"/>
+                <field name="x_date_end"/>
+                <separator/>
+                <filter name="group_contract_type" string="Contract Type" context="{'group_by': 'x_contract_type'}"/>
+                <filter name="group_employee" string="Employee" context="{'group_by': 'employee_id'}"/>
+                <separator/>
+                <filter name="f_draft" string="Draft" domain="[('state','=','draft')]"/>
+                <filter name="f_running" string="Running" domain="[('state','=','running')]"/>
+                <filter name="f_expiring" string="Expiring Soon" domain="[('state','=','expiring')]"/>
+                <filter name="f_expired" string="Expired" domain="[('state','=','expired')]"/>
+                <filter name="f_cancelled" string="Cancelled" domain="[('state','=','cancelled')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_ps_hr_contract" model="ir.actions.act_window">
+        <field name="name">Contracts</field>
+        <field name="res_model">ps.hr.contract</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_ps_hr_contract_search"/>
+        <field name="help" type="html">
+            <p>Manage employee labor contracts.</p>
+        </field>
+    </record>
+
+    <record id="action_ps_hr_contract_mass" model="ir.actions.act_window">
+        <field name="name">Mass Create Contracts</field>
+        <field name="res_model">ps.hr.contract.mass</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

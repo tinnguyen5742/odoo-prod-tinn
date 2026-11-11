@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo>
+    <record id="form_res_partner_dev_property_management_inherit" model="ir.ui.view">
+        <field name="name">form_res_partner_dev_property_management_inherit_name</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='oe_button_box']" position="inside">
+                <button type="object"
+                        name="view_properties"
+                        class="oe_stat_button"
+                        icon="fa-building-o"
+                        invisible="property_count == 0"
+                        >
+                        <!-- attrs="{'invisible':[('property_count', '=', 0)]}" -->
+                    <field string="Property" name="property_count" widget="statinfo"/>
+                </button>
+                <button type="object"
+                        name="view_bookings"
+                        class="oe_stat_button"
+                        icon="fa-list"
+                        invisible="bookings_count == 0"
+                        >
+                        <!-- attrs="{'invisible':[('bookings_count', '=', 0)]}" -->
+                    <field string="Booking" name="bookings_count" widget="statinfo"/>
+                </button>
+                <button type="object"
+                        name="view_tenancies"
+                        class="oe_stat_button"
+                        icon="fa-key"
+                        invisible="tenancy_count == 0"
+                        >
+                        <!-- attrs="{'invisible':[('tenancy_count', '=', 0)]}" -->
+                    <field string="Tenancy" name="tenancy_count" widget="statinfo"/>
+                </button>
+                <button type="object"
+                        name="view_agreements"
+                        class="oe_stat_button"
+                        icon="fa-file-text-o"
+                        invisible="agreement_count == 0"
+                        >
+                        <!-- attrs="{'invisible':[('agreement_count', '=', 0)]}" -->
+                    <field string="Agreement" name="agreement_count" widget="statinfo"/>
+                </button>
+                <button type="object"
+                        name="view_maintenance_invoices"
+                        class="oe_stat_button"
+                        icon="fa-pencil-square-o"
+                        invisible="invoice_count == 0"
+                        >
+                        <!-- attrs="{'invisible':[('invoice_count', '=', 0)]}" -->
+                    <field string="Maintenance Invoice" name="invoice_count" widget="statinfo"/>
+                </button>
+                <button type="object"
+                        name="view_rent_schedule"
+                        class="oe_stat_button"
+                        icon="fa-calendar"
+                        invisible="rent_schedule_count == 0"
+                        >
+                        <!-- attrs="{'invisible':[('tenancy_count', '=', 0)]}" -->
+                    <field string="Rent Schedule" name="rent_schedule_count" widget="statinfo"/>
+                </button>
+            </xpath>
+            <xpath expr="//group" position="before">
+                <div>
+                    <field name="is_owner"/>
+                    <label for="is_owner"/>
+                </div>
+                <div>
+                    <field name="is_tenant"/>
+                    <label for="is_tenant"/>
+                </div>
+                <div>
+                    <field name="is_agent"/>
+                    <label for="is_agent"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

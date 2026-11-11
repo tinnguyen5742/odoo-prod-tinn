@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo noupdate="1" >
+
+
+    <record id="property_owner_1" model="res.partner">
+        <field name="name">Lumber Inc</field>
+        <field name="is_owner">True</field>
+    </record>
+
+    <record id="document_1" model="property.document">
+        <field name="document" type="base64" file="dev_property_management/static/src/img/Agreement Details.pdf"/>
+    </record>
+    
+
+    <record id="property_demo_with_notebook" model="property.property">
+        
+        <field name="name">Vintage Flats</field>
+        <field name="property_type">residential</field>
+        <field  name="photo" type="base64" file="dev_property_management/static/src/img/modern-business-building-with-glass-wall-from-empty-floor.jpg"/>
+        <field name="property_purpose">sell</field>
+        <field name="owner_partner_id" ref="dev_property_management.property_owner_1"/>
+        <field name="construct_year">2002</field>
+        <field name="price_amount">5000000</field>
+        <field name="property_status">new</field>
+        <field name="property_number">101</field>
+        <field name="residential_type_id" ref="dev_property_management.flat_residential_type" />
+        <field name="flat_type_id" ref="dev_property_management.1_bhk" />
+        <field name="bedroom">1</field>
+        <field name="bathroom">1</field>
+        <field name="facing_id" ref="dev_property_management.facing_1" />
+        <field name="street">Visat</field>
+        <field name="street2">Motera</field>
+        <field name="city_id" ref="dev_property_management.city_1"/>
+        <!-- <field name="state_id" ref="base.res_state_demo"/> -->
+        <field name="zip">360005</field>
+        <!-- <field name="country_id" ref="base.res_country_demo"/> -->
+        <field name="total_square_foot">2000</field>
+        <field name="furnishing">fully_furnished</field>
+        <field name="description"><![CDATA[This is a detailed description of the property.]]></field>
+        <field name="amenity_ids" eval="[(6, 0, [ref('security_property_amenities'),ref('cctv_property_amenities'),ref('parking_safety_property_amenities'),ref('power_property_amenities'),ref('water_property_amenities')])]"/>
+        <field name="nearby_connectivity_ids" eval="[(6, 0, [ref('bus_nearby_connectivity'),ref('fuel_nearby_connectivity'),ref('hospital_nearby_connectivity'),ref('school_nearby_connectivity'),ref('park_nearby_connectivity')])]"  />
+        <field  name="brochure" type="base64" file="dev_property_management/static/src/img/Brochure (10)-images-0.jpg"/>
+        <field name="proprty_document_ids" eval="[
+            (0, 0, {'name':'Agreement'}),
+            
+        ]"/>
+        <field name="area_measurement_ids" eval="[
+            (0, 0, {'name':'Kitchen' ,'length': 20 ,'width':20 ,'height':20}),
+            (0, 0, {'name':'Badroom' ,'length': 30 ,'width':30 ,'height':20})
+
+        ]"/>
+    
+
+    </record>
+
+
+
+    <record id="property_document_demo" model="ir.attachment">
+        <field name="name">Property Floor Plan</field>
+        <field name="datas" type="base64" file="dev_property_management/static/src/img/Catalog Design Layout.jpeg"/>
+        <field name="res_model">property.property</field>
+        <field name="fp_property_id" ref="dev_property_management.property_demo_with_notebook"/>
+        <field name="res_id" >1</field>
+        <field name="type">binary</field>
+    </record>
+
+    <record id="property_document_demos" model="ir.attachment">
+        <field name="name">Property image 1</field>
+        <field name="datas" type="base64" file="dev_property_management/static/src/img/modern-bedroom-interior-with-large-bed-bookshelf-large-window-wood-floors.jpg"/>
+        <field name="res_model">property.property</field>
+        <field name="property_id" ref="dev_property_management.property_demo_with_notebook"/>
+        <field name="res_id" >1</field>
+        <field name="type">binary</field>
+    </record>
+    
+    
+
+</odoo>

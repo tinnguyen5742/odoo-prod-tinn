@@ -1,0 +1,18 @@
+[options]
+; Build flattens every module onto /mnt/extra-addons, then rewrites addons_path:
+; /mnt/extra-addons, any remaining nested module parent, then entries outside
+; that tree. Mounting another file over /etc/odoo/odoo.conf replaces this line.
+addons_path = /mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons
+data_dir = /var/lib/odoo
+list_db = True
+proxy_mode = True
+
+; Enable these options to use the Odoo longpolling service. This is required for some features like live chat, notifications, etc.
+; Port 8072 must be exposed in the docker-compose.yml file for this to work.
+;workers = 2
+;max_cron_threads = 1
+;gevent_port = 8072
+;limit_memory_hard = 2684354560
+;limit_memory_soft = 2147483648
+;limit_time_cpu = 600
+;limit_time_real = 1200

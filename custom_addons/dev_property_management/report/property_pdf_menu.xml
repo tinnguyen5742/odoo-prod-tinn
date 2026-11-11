@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo>
+    <record id="menu_property_pdf_template" model="ir.actions.report">
+        <field name="name">Brochure</field>
+        <field name="model">property.property</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dev_property_management.property_pdf_template</field>
+        <field name="report_file">dev_property_management.property_pdf_template</field>
+        <field name="binding_model_id" ref="dev_property_management.model_property_property"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

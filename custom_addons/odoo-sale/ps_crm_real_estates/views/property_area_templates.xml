@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sub_property_view_form_inherit_area_dimensions" model="ir.ui.view">
+        <field name="name">property.property.sub.form.inherit.area.dimensions</field>
+        <field name="model">property.property</field>
+        <field name="inherit_id" ref="sub_property_view_form_inherit_commission"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='agent_commission']" position="after">
+                <group string="Area and Dimensions" name="area_dimensions" col="3">
+                    <group name="property_dimensions" col="2" colspan="3">
+                        <label for="property_length" string="Length x Width (m)"/>
+                        <div class="d-flex align-items-center gap-2">
+                            <field name="property_length" class="oe_inline" placeholder="Length"/>
+                            <span>×</span>
+                            <field name="property_width" class="oe_inline" placeholder="Width"/>
+                        </div>
+                    </group>
+                    <group name="dimensions_direction" col="2">
+                        <field name="facing_id" string="Direction"
+                               domain="[('id', 'in', [
+                                   %(property_facing_east)d,
+                                   %(property_facing_west)d,
+                                   %(property_facing_south)d,
+                                   %(property_facing_north)d,
+                                   %(property_facing_northeast)d,
+                                   %(property_facing_southeast)d,
+                                   %(property_facing_northwest)d,
+                                   %(property_facing_southwest)d
+                               ])]"
+                               options="{'no_create': True, 'no_open': True}"/>
+                        <field name="frontage"/>
+                        <field name="internal_frontage"/>
+                        <field name="rear_width"/>
+                    </group>
+                    <group name="land_construction_areas" col="2">
+                        <field name="plot_area"/>
+                        <field name="built_area"/>
+                        <field name="construction_land_area"/>
+                        <field name="actual_area"/>
+                        <field name="usable_area"/>
+                    </group>
+                    <group name="road_alley_dimensions" col="2">
+                        <field name="main_road_distance"/>
+                        <field name="main_alley_width"/>
+                        <field name="secondary_alley_width"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <template id="property_pdf_template_metric_labels"
+              inherit_id="dev_property_management.main_property_pdf_template">
+        <xpath expr="//th[normalize-space()='Total Size(sq.ft.)']" position="replace">
+            <th>Total Size(m²)</th>
+        </xpath>
+        <xpath expr="//th[normalize-space()='Length(sq.ft.)']" position="replace">
+            <th style="border-bottom: 2px solid black;border-top: 1px solid white;">Length(m)</th>
+        </xpath>
+        <xpath expr="//th[normalize-space()='Width(sq.ft.)']" position="replace">
+            <th style="border-bottom: 2px solid black;border-top: 1px solid white;">Width(m)</th>
+        </xpath>
+        <xpath expr="//th[normalize-space()='Height(sq.ft.)']" position="replace">
+            <th style="border-bottom: 2px solid black;border-top: 1px solid white;">Height(m)</th>
+        </xpath>
+        <xpath expr="//th[normalize-space()='Carpet Area(sq.ft.)']" position="replace">
+            <th style="border-bottom: 2px solid black;border-top: 1px solid white;">Carpet Area(m²)</th>
+        </xpath>
+    </template>
+
+    <template id="portal_property_details_metric_labels"
+              inherit_id="dev_property_management.website_all_property_details">
+        <xpath expr="//strong[t[@t-esc='property_id.total_square_foot']]" position="replace">
+            <strong>From <t t-esc="property_id.total_square_foot"/> m²</strong>
+        </xpath>
+        <xpath expr="//div[t[@t-esc='sgst_prpt_id.total_square_foot']]" position="replace">
+            <div class="property-detail">
+                <i class="fa fa-arrows-alt"/>
+                <strong>Built-Up Area:</strong> From <t t-esc="sgst_prpt_id.total_square_foot"/> m²
+            </div>
+        </xpath>
+        <xpath expr="//th[normalize-space()='Length(sq.ft.)']" position="replace">
+            <th style="border-bottom: 2px solid black;border-top: 1px solid white;">Length(m)</th>
+        </xpath>
+        <xpath expr="//th[normalize-space()='Width(sq.ft.)']" position="replace">
+            <th style="border-bottom: 2px solid black;border-top: 1px solid white;">Width(m)</th>
+        </xpath>
+        <xpath expr="//th[normalize-space()='Height(sq.ft.)']" position="replace">
+            <th style="border-bottom: 2px solid black;border-top: 1px solid white;">Height(m)</th>
+        </xpath>
+        <xpath expr="//th[normalize-space()='Carpet Area(sq.ft.)']" position="replace">
+            <th style="border-bottom: 2px solid black;border-top: 1px solid white;">Carpet Area(m²)</th>
+        </xpath>
+    </template>
+
+    <template id="website_property_detail_metric_labels"
+              inherit_id="dev_property_management.website_property_detail">
+        <xpath expr="//span[hasclass('price-sqft')]" position="replace">
+            <span class="price-sqft">₹<t t-esc="'{:,.0f}'.format(property.price_amount / property.total_square_foot)"/>/m²</span>
+        </xpath>
+        <xpath expr="//div[hasclass('info-item')]/span[t[contains(@t-esc, 'property.total_square_foot')]]" position="replace">
+            <span><t t-esc="'{:,.0f}'.format(property.total_square_foot)"/> m²</span>
+        </xpath>
+        <xpath expr="//span[hasclass('spec-value')][t[contains(@t-esc, 'property.total_square_foot')]]" position="replace">
+            <span class="spec-value"><t t-esc="'{:,.0f}'.format(property.total_square_foot)"/> m²</span>
+        </xpath>
+        <xpath expr="//span[hasclass('spec-value')][t[contains(@t-esc, 'property.total_carpet_area')]]" position="replace">
+            <span class="spec-value"><t t-esc="'{:,.0f}'.format(property.total_carpet_area)"/> m²</span>
+        </xpath>
+        <xpath expr="//td[t[@t-esc=&quot;area.length or '-'&quot;]]" position="replace">
+            <td><t t-esc="area.length or '-'"/> × <t t-esc="area.width or '-'"/> m</td>
+        </xpath>
+        <xpath expr="//strong[t[contains(@t-esc, 'area.carpet_area')]]" position="replace">
+            <strong><t t-esc="'{:.0f}'.format(area.carpet_area) if area.carpet_area else '-'"/> m²</strong>
+        </xpath>
+        <xpath expr="//span[hasclass('price-item-label')][normalize-space()='Price per sq.ft']" position="replace">
+            <span class="price-item-label">Price per m²</span>
+        </xpath>
+    </template>
+</odoo>

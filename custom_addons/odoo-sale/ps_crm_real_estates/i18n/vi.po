@@ -1,0 +1,790 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PatSoft CRM Real Estates 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-05 00:00+0700\n"
+"PO-Revision-Date: 2026-11-05 00:00+0700\n"
+"Last-Translator: PatSoft\n"
+"Language-Team: Vietnamese\n"
+"Language: vi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: ps_crm_real_estates
+#: model:ir.ui.menu,name:dev_property_management.root_menu_property
+msgid "Property Management"
+msgstr "Quản lý bất động sản"
+
+#. module: ps_crm_real_estates
+#. odoo-javascript
+#: code:addons/dev_property_management/static/src/xml/bookproperty_dashboard.xml:0 code:addons/dev_property_management/static/src/xml/dashboard_templates.xml:0 model:ir.actions.act_window,name:dev_property_management.action_property_dev_property_management model:ir.model,name:dev_property_management.model_property_property model:ir.model.fields,field_description:dev_property_management.field_account_bank_statement_line__property_id model:ir.model.fields,field_description:dev_property_management.field_account_move__property_id model:ir.model.fields,field_description:dev_property_management.field_agreement_window__property_id model:ir.model.fields,field_description:dev_property_management.field_booking_analysis__property_id model:ir.model.fields,field_description:dev_property_management.field_booking_window__property_id model:ir.model.fields,field_description:dev_property_management.field_crm_lead__property_id model:ir.model.fields,field_description:dev_property_management.field_ir_attachment__fp_property_id model:ir.model.fields,field_description:dev_property_management.field_ir_attachment__property_id model:ir.model.fields,field_description:dev_property_management.field_product_document__fp_property_id model:ir.model.fields,field_description:dev_property_management.field_product_document__property_id model:ir.model.fields,field_description:dev_property_management.field_property_agreement__property_id model:ir.model.fields,field_description:dev_property_management.field_property_area_measurement__property_id model:ir.model.fields,field_description:dev_property_management.field_property_booking__property_id model:ir.model.fields,field_description:dev_property_management.field_property_line__property_id model:ir.model.fields,field_description:dev_property_management.field_property_tenancy__property_id model:ir.model.fields,field_description:dev_property_management.field_rent_schedule__property_id model:ir.model.fields,field_description:dev_property_management.field_tenancy_analysis__property_id model:ir.model.fields,field_description:dev_property_management.field_tenancy_maintenance__property_id model:ir.module.category,name:dev_property_management.category_property model:ir.ui.menu,name:dev_property_management.confing_root_for_property model:ir.ui.menu,name:dev_property_management.menu_parent_property_dev_property_management model:ir.ui.menu,name:dev_property_management.parent_menu_property_dev_property_management model:website.menu,name:dev_property_management.new_property_menu model_terms:ir.ui.view,arch_db:dev_property_management.form_config_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_managementt model_terms:ir.ui.view,arch_db:dev_property_management.form_res_partner_dev_property_management_inherit model_terms:ir.ui.view,arch_db:dev_property_management.portal_agent_commission_properties_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_tenant_properties_details model_terms:ir.ui.view,arch_db:dev_property_management.search_booking_analysis model_terms:ir.ui.view,arch_db:dev_property_management.search_property_agreement model_terms:ir.ui.view,arch_db:dev_property_management.search_property_booking model_terms:ir.ui.view,arch_db:dev_property_management.search_property_tenancy model_terms:ir.ui.view,arch_db:dev_property_management.search_tenancy_analysis model_terms:ir.ui.view,arch_db:dev_property_management.tenant_property_detail_portal_content model_terms:ir.ui.view,arch_db:dev_property_management.tree_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.tree_property_dev_property_managementt model_terms:ir.ui.view,arch_db:dev_property_management.website_all_property_details model:ir.model.fields,field_description:dev_property_management.field_property_tower_line__property_id
+msgid "Property"
+msgstr "Bất động sản"
+
+#. module: ps_crm_real_estates
+#. odoo-javascript
+#: code:addons/dev_property_management/static/src/xml/bookproperty_dashboard.xml:0 model:ir.actions.act_window,name:dev_property_management.action_subproperty_dev_property_management model:ir.ui.menu,name:dev_property_management.sub_menu_property_dev_property_management
+msgid "Sub Property"
+msgstr "Bất động sản thành phần"
+
+#. module: ps_crm_real_estates
+#. odoo-javascript
+#: code:addons/dev_property_management/static/src/xml/bookproperty_dashboard.xml:0 model:ir.actions.act_window,name:dev_property_management.action_owner_contact_dev_property_management model:ir.model.fields,field_description:dev_property_management.field_property_booking__owner_partner_id model:ir.model.fields,field_description:dev_property_management.field_property_line__owner_partner_id model:ir.model.fields,field_description:dev_property_management.field_property_property__owner_partner_id model:ir.model.fields,field_description:dev_property_management.field_res_partner__is_owner model:ir.model.fields,field_description:dev_property_management.field_res_users__is_owner model:ir.ui.menu,name:dev_property_management.menu_owner_contact_dev_property_management model:res.groups,name:dev_property_management.group_property_owner model_terms:ir.ui.view,arch_db:dev_property_management.main_property_pdf_template model_terms:ir.ui.view,arch_db:dev_property_management.owner_property_detail_portal_content model_terms:ir.ui.view,arch_db:dev_property_management.portal_owner_properties_details model_terms:ir.ui.view,arch_db:dev_property_management.search_parent_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.search_property_tenancy model_terms:ir.ui.view,arch_db:dev_property_management.search_subproperty_dev_property_management
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_crm_lead__consultation_owner_id
+msgid "Owner"
+msgstr "Chủ sở hữu"
+
+#. module: ps_crm_real_estates
+#: model:ir.actions.act_window,name:dev_property_management.action_tenant_contact_dev_property_management model:ir.model.fields,field_description:dev_property_management.field_agreement_window__partner_id model:ir.model.fields,field_description:dev_property_management.field_property_agreement__partner_id model:ir.model.fields,field_description:dev_property_management.field_property_property__tenant_partner_id model:ir.model.fields,field_description:dev_property_management.field_property_tenancy__partner_id model:ir.model.fields,field_description:dev_property_management.field_rent_schedule__partner_id model:ir.model.fields,field_description:dev_property_management.field_res_partner__is_tenant model:ir.model.fields,field_description:dev_property_management.field_res_users__is_tenant model:ir.model.fields,field_description:dev_property_management.field_tenancy_analysis__partner_id model:ir.ui.menu,name:dev_property_management.menu_tenant_contact_dev_property_management model:res.groups,name:dev_property_management.group_property_tenant model_terms:ir.ui.view,arch_db:dev_property_management.form_property_agreement model_terms:ir.ui.view,arch_db:dev_property_management.popup_agreement_window_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.portal_tenant_properties_details model_terms:ir.ui.view,arch_db:dev_property_management.search_parent_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.search_property_tenancy model_terms:ir.ui.view,arch_db:dev_property_management.search_subproperty_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.search_tenancy_analysis model_terms:ir.ui.view,arch_db:dev_property_management.tenant_property_detail_portal_content
+msgid "Tenant"
+msgstr "Khách thuê"
+
+#. module: ps_crm_real_estates
+#. odoo-javascript
+#: code:addons/dev_property_management/static/src/xml/dashboard_templates.xml:0 model:ir.model.fields,field_description:dev_property_management.field_booking_analysis__property_type model:ir.model.fields,field_description:dev_property_management.field_booking_history_popup__property_type model:ir.model.fields,field_description:dev_property_management.field_booking_window__property_type model:ir.model.fields,field_description:dev_property_management.field_due_rent_popup__property_type model:ir.model.fields,field_description:dev_property_management.field_property_booking__property_type model:ir.model.fields,field_description:dev_property_management.field_property_property__property_type model:ir.model.fields,field_description:dev_property_management.field_property_tenancy__property_type model:ir.model.fields,field_description:dev_property_management.field_tenancy_analysis__property_type model_terms:ir.ui.view,arch_db:dev_property_management.main_property_pdf_template model_terms:ir.ui.view,arch_db:dev_property_management.owner_property_detail_portal_content model_terms:ir.ui.view,arch_db:dev_property_management.portal_owner_properties_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_tenant_properties_details model_terms:ir.ui.view,arch_db:dev_property_management.search_booking_analysis model_terms:ir.ui.view,arch_db:dev_property_management.search_parent_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.search_property_booking model_terms:ir.ui.view,arch_db:dev_property_management.search_subproperty_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.tenant_property_detail_portal_content model:ir.model.fields,field_description:dev_property_management.field_agent_commission__property_type
+msgid "Property Type"
+msgstr "Loại hình bất động sản"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields.selection,name:dev_property_management.selection__booking_analysis__property_type__commercial model:ir.model.fields.selection,name:dev_property_management.selection__booking_history_popup__property_type__commercial model:ir.model.fields.selection,name:dev_property_management.selection__booking_window__property_type__commercial model:ir.model.fields.selection,name:dev_property_management.selection__due_rent_popup__property_type__commercial model:ir.model.fields.selection,name:dev_property_management.selection__property_booking__property_type__commercial model:ir.model.fields.selection,name:dev_property_management.selection__property_property__property_type__commercial model:ir.model.fields.selection,name:dev_property_management.selection__property_tenancy__property_type__commercial model:ir.model.fields.selection,name:dev_property_management.selection__tenancy_analysis__property_type__commercial model_terms:ir.ui.view,arch_db:dev_property_management.portal_Commercial_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_industrial_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_land_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_my_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_rent_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_residential_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_sell_property_details
+msgid "Commercial"
+msgstr "Bất động sản thương mại"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields.selection,name:dev_property_management.selection__booking_analysis__property_type__industrial model:ir.model.fields.selection,name:dev_property_management.selection__booking_history_popup__property_type__industrial model:ir.model.fields.selection,name:dev_property_management.selection__booking_window__property_type__industrial model:ir.model.fields.selection,name:dev_property_management.selection__due_rent_popup__property_type__industrial model:ir.model.fields.selection,name:dev_property_management.selection__property_booking__property_type__industrial model:ir.model.fields.selection,name:dev_property_management.selection__property_property__property_type__industrial model:ir.model.fields.selection,name:dev_property_management.selection__property_tenancy__property_type__industrial model:ir.model.fields.selection,name:dev_property_management.selection__tenancy_analysis__property_type__industrial model_terms:ir.ui.view,arch_db:dev_property_management.portal_Commercial_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_industrial_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_land_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_my_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_rent_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_residential_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_sell_property_details
+msgid "Industrial"
+msgstr "Bất động sản công nghiệp"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields.selection,name:dev_property_management.selection__booking_analysis__property_type__land model:ir.model.fields.selection,name:dev_property_management.selection__booking_history_popup__property_type__land model:ir.model.fields.selection,name:dev_property_management.selection__booking_window__property_type__land model:ir.model.fields.selection,name:dev_property_management.selection__due_rent_popup__property_type__land model:ir.model.fields.selection,name:dev_property_management.selection__property_booking__property_type__land model:ir.model.fields.selection,name:dev_property_management.selection__property_property__property_type__land model:ir.model.fields.selection,name:dev_property_management.selection__property_tenancy__property_type__land model:ir.model.fields.selection,name:dev_property_management.selection__tenancy_analysis__property_type__land
+msgid "Land"
+msgstr "Đất"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields.selection,name:dev_property_management.selection__booking_analysis__property_type__residential model:ir.model.fields.selection,name:dev_property_management.selection__booking_history_popup__property_type__residential model:ir.model.fields.selection,name:dev_property_management.selection__booking_window__property_type__residential model:ir.model.fields.selection,name:dev_property_management.selection__due_rent_popup__property_type__residential model:ir.model.fields.selection,name:dev_property_management.selection__property_booking__property_type__residential model:ir.model.fields.selection,name:dev_property_management.selection__property_property__property_type__residential model:ir.model.fields.selection,name:dev_property_management.selection__property_tenancy__property_type__residential model:ir.model.fields.selection,name:dev_property_management.selection__tenancy_analysis__property_type__residential model_terms:ir.ui.view,arch_db:dev_property_management.portal_Commercial_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_industrial_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_land_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_my_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_rent_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_residential_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_sell_property_details
+msgid "Residential"
+msgstr "Bất động sản nhà ở"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_booking_analysis__state model:ir.model.fields,field_description:dev_property_management.field_booking_window__property_status model:ir.model.fields,field_description:dev_property_management.field_property_agreement__state model:ir.model.fields,field_description:dev_property_management.field_property_booking__state model:ir.model.fields,field_description:dev_property_management.field_property_property__state model:ir.model.fields,field_description:dev_property_management.field_property_tenancy__state model:ir.model.fields,field_description:dev_property_management.field_rent_schedule__state model:ir.model.fields,field_description:dev_property_management.field_tenancy_analysis__state model_terms:ir.ui.view,arch_db:dev_property_management.search_booking_analysis model_terms:ir.ui.view,arch_db:dev_property_management.search_parent_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.search_property_agreement model_terms:ir.ui.view,arch_db:dev_property_management.search_property_booking model_terms:ir.ui.view,arch_db:dev_property_management.search_property_tenancy model_terms:ir.ui.view,arch_db:dev_property_management.search_subproperty_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.search_tenancy_analysis model_terms:ir.ui.view,arch_db:dev_property_management.view_dev_agent_commission_filter
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_crm_lead__consultation_status
+msgid "Status"
+msgstr "Trạng thái bất động sản"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields.selection,name:dev_property_management.selection__property_property__state__draft model_terms:ir.ui.view,arch_db:dev_property_management.search_parent_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.search_subproperty_dev_property_management
+msgid "Available"
+msgstr "Đang khả dụng"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields.selection,name:dev_property_management.selection__property_property__state__on_rent model_terms:ir.ui.view,arch_db:dev_property_management.search_parent_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.search_subproperty_dev_property_management
+msgid "On Rent"
+msgstr "Đang cho thuê"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields.selection,name:dev_property_management.selection__property_property__state__sold
+#: model:crm.lead.consultation.result,name:ps_crm_real_estates.consultation_result_sold
+msgid "Sold"
+msgstr "Đã bán"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_agreement_window__type model_terms:ir.ui.view,arch_db:dev_property_management.main_property_pdf_template
+msgid "Type"
+msgstr "Loại hình"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_booking_analysis__booking_purpose model:ir.model.fields,field_description:dev_property_management.field_property_booking__booking_purpose model:ir.model.fields,field_description:dev_property_management.field_property_property__property_purpose
+msgid "Purpose"
+msgstr "Hình thức kinh doanh"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields.selection,name:dev_property_management.selection__property_property__property_purpose__rent model_terms:ir.ui.view,arch_db:dev_property_management.portal_my_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_rent_property_details
+msgid "For Rent"
+msgstr "Cho thuê"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields.selection,name:dev_property_management.selection__property_property__property_purpose__sell
+msgid "For Sell"
+msgstr "Để bán"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:dev_property_management.portal_my_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_sell_property_details
+msgid "For Sale"
+msgstr "Để bán"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_agreement_window__rent_amount model:ir.model.fields,field_description:dev_property_management.field_booking_window__rent_amount model:ir.model.fields,field_description:dev_property_management.field_property_agreement__rent_amount model:ir.model.fields,field_description:dev_property_management.field_property_booking__rent_amount model:ir.model.fields,field_description:dev_property_management.field_property_line__rent_amount model:ir.model.fields,field_description:dev_property_management.field_property_property__rent_amount model:ir.model.fields,field_description:dev_property_management.field_property_tenancy__rent_amount model:ir.model.fields,field_description:dev_property_management.field_tenancy_analysis__rent_amount model_terms:ir.ui.view,arch_db:dev_property_management.tenant_property_detail_portal_content
+msgid "Monthly Rent"
+msgstr "Giá thuê hàng tháng"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_booking_window__price_amount model:ir.model.fields,field_description:dev_property_management.field_property_booking__price_amount model:ir.model.fields,field_description:dev_property_management.field_property_line__price_amount model:ir.model.fields,field_description:dev_property_management.field_property_property__price_amount model_terms:ir.ui.view,arch_db:dev_property_management.owner_property_detail_portal_content
+msgid "Selling Price"
+msgstr "Giá bán"
+
+#. module: ps_crm_real_estates
+#. odoo-javascript
+#: model:ir.model.fields.selection,name:dev_property_management.selection__booking_analysis__state__draft model:ir.model.fields.selection,name:dev_property_management.selection__property_booking__state__draft model:ir.model.fields.selection,name:dev_property_management.selection__property_tenancy__state__draft model:ir.model.fields.selection,name:dev_property_management.selection__tenancy_analysis__state__draft model_terms:ir.ui.view,arch_db:dev_property_management.search_booking_analysis model_terms:ir.ui.view,arch_db:dev_property_management.search_property_booking code:addons/web/static/src/views/form/form_controller.js:0 code:addons/web/static/src/views/form/form_controller.xml:0 code:addons/web/static/src/views/kanban/kanban_controller.xml:0 code:addons/web/static/src/views/list/list_controller.xml:0 code:addons/web/static/src/views/view_dialogs/select_create_dialog.xml:0
+msgid "New"
+msgstr "Tạo mới"
+
+#. module: ps_crm_real_estates
+#. odoo-javascript
+#: model_terms:ir.ui.view,arch_db:dev_property_management.portal_Commercial_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_industrial_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_land_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_my_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_rent_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_residential_property_details model_terms:ir.ui.view,arch_db:dev_property_management.portal_sell_property_details code:addons/web/static/src/core/record_selectors/record_autocomplete.js:0 code:addons/web/static/src/search/search_bar/search_bar.js:0 code:addons/web/static/src/search/search_bar/search_bar.xml:0 code:addons/web/static/src/search/search_model.js:0 code:addons/web/static/src/views/fields/relational_utils.js:0 code:addons/web/static/src/views/view_dialogs/export_data_dialog.xml:0 code:addons/web/static/src/webclient/settings_form_view/settings/settings_app.xml:0
+msgid "Search"
+msgstr "Tìm kiếm"
+
+#. module: ps_crm_real_estates
+#. odoo-javascript
+#: code:addons/web/static/src/search/search_bar_menu/search_bar_menu.xml:0
+msgid "Filter"
+msgstr "Bộ lọc"
+
+#. module: ps_crm_real_estates
+#. odoo-javascript
+#: model_terms:ir.ui.view,arch_db:dev_property_management.search_booking_analysis model_terms:ir.ui.view,arch_db:dev_property_management.search_parent_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.search_property_agreement model_terms:ir.ui.view,arch_db:dev_property_management.search_property_booking model_terms:ir.ui.view,arch_db:dev_property_management.search_property_tenancy model_terms:ir.ui.view,arch_db:dev_property_management.search_rent_schedule model_terms:ir.ui.view,arch_db:dev_property_management.search_subproperty_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.search_tenancy_analysis model_terms:ir.ui.view,arch_db:dev_property_management.view_dev_agent_commission_filter code:addons/web/static/src/search/search_bar_menu/search_bar_menu.xml:0
+msgid "Group By"
+msgstr "Nhóm theo"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields.selection,name:base.selection__ir_ui_view__type__kanban
+msgid "Kanban View"
+msgstr "Dạng thẻ"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields.selection,name:base.selection__ir_ui_view__type__list
+msgid "List View"
+msgstr "Dạng danh sách"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__name
+msgid "Property Name"
+msgstr "Tên bất động sản"
+
+#. module: ps_crm_real_estates
+#. odoo-javascript
+#: code:addons/dev_property_management/static/src/xml/dashboard_templates.xml:0 model:ir.model.fields,field_description:dev_property_management.field_property_property__parent_id model_terms:ir.ui.view,arch_db:dev_property_management.owner_property_detail_portal_content model_terms:ir.ui.view,arch_db:dev_property_management.portal_owner_properties_details model_terms:ir.ui.view,arch_db:dev_property_management.search_parent_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.search_subproperty_dev_property_management
+msgid "Parent Property"
+msgstr "Bất động sản cha"
+
+#. module: ps_crm_real_estates
+#: model:ir.actions.act_window,name:dev_property_management.action_property_tags model:ir.model,name:dev_property_management.model_property_tags model:ir.model.fields,field_description:dev_property_management.field_property_property__tag_ids model:ir.ui.menu,name:dev_property_management.menu_property_tags model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_managementt
+msgid "Tags"
+msgstr "Nhãn phân loại"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__construct_year model_terms:ir.ui.view,arch_db:dev_property_management.owner_property_detail_portal_content
+msgid "Construct Year"
+msgstr "Năm xây dựng"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_line__deposit_amount model:ir.model.fields,field_description:dev_property_management.field_property_property__deposit_amount model:ir.model.fields,field_description:dev_property_management.field_property_tenancy__deposit_amount model:ir.model.fields,field_description:dev_property_management.field_tenancy_analysis__deposit_amount
+msgid "Security Deposit"
+msgstr "Tiền đặt cọc thuê"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:dev_property_management.owner_property_detail_portal_content
+msgid "Address"
+msgstr "Địa chỉ"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__street
+msgid "Street"
+msgstr "Đường, số nhà"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__street2
+msgid "Street 2"
+msgstr "Địa chỉ bổ sung"
+
+#. module: ps_crm_real_estates
+#: model:ir.actions.act_window,name:dev_property_management.model_city_manage_action model:ir.model.fields,field_description:dev_property_management.field_property_property__city_id model:ir.ui.menu,name:dev_property_management.property_city_manage_menu model_terms:ir.ui.view,arch_db:dev_property_management.city_tree model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_managementt
+msgid "City"
+msgstr "Thành phố / địa phương"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__state_id
+#: model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_management
+#: model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_managementt
+msgid "State"
+msgstr "Tỉnh / thành phố trực thuộc trung ương"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_managementt
+msgid "ZIP"
+msgstr "Mã bưu chính"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__country_id model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_managementt
+msgid "Country"
+msgstr "Quốc gia"
+
+#. module: ps_crm_real_estates
+#. odoo-javascript
+#: code:addons/web/static/src/model/relational_model/record.js:0
+msgid "Missing required fields"
+msgstr "Thiếu trường bắt buộc"
+
+#. module: ps_crm_real_estates
+#: model:ir.actions.act_window,name:dev_property_management.action_residential_type model:ir.model.fields,field_description:dev_property_management.field_booking_window__residential_type_id model:ir.model.fields,field_description:dev_property_management.field_property_property__residential_type_id model:ir.ui.menu,name:dev_property_management.menu_residential_type model_terms:ir.ui.view,arch_db:dev_property_management.owner_property_detail_portal_content
+msgid "Type of Residential"
+msgstr "Kiểu tổ chức nhà ở"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__single_unit
+msgid "Single"
+msgstr "Bất động sản độc lập"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__is_tower model:ir.model.fields,field_description:dev_property_management.field_property_tower_line__tower_id
+msgid "Tower"
+msgstr "Tòa nhà"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__generate_dynamicaly_tower
+msgid "Generate Dynamical Tower"
+msgstr "Tự động tạo cấu trúc tòa nhà"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__total_towers model_terms:ir.ui.view,arch_db:dev_property_management.main_property_pdf_template
+msgid "Total Tower"
+msgstr "Tổng số tòa"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__on_floor model_terms:ir.ui.view,arch_db:dev_property_management.main_property_pdf_template model_terms:ir.ui.view,arch_db:dev_property_management.owner_property_detail_portal_content
+msgid "On Floor"
+msgstr "Tầng tọa lạc"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__total_floor model_terms:ir.ui.view,arch_db:dev_property_management.main_property_pdf_template
+msgid "No. of Floor"
+msgstr "Số tầng"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__property_per_floor
+msgid "Property Per Floor"
+msgstr "Số căn mỗi tầng"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__property_number model_terms:ir.ui.view,arch_db:dev_property_management.main_property_pdf_template model_terms:ir.ui.view,arch_db:dev_property_management.owner_property_detail_portal_content
+msgid "Property Number"
+msgstr "Số hiệu bất động sản"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_managementt
+msgid "Other Details"
+msgstr "Thông tin chi tiết"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__bedroom model_terms:ir.ui.view,arch_db:dev_property_management.owner_property_detail_portal_content
+msgid "Bedrooms"
+msgstr "Số phòng ngủ"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__bathroom model_terms:ir.ui.view,arch_db:dev_property_management.owner_property_detail_portal_content
+msgid "Bathrooms"
+msgstr "Số phòng tắm / vệ sinh"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__alarms model_terms:ir.ui.view,arch_db:dev_property_management.owner_property_detail_portal_content
+msgid "Alarm"
+msgstr "Hệ thống báo động"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields.selection,name:dev_property_management.selection__property_property__alarms__no_alarm
+msgid "No Alarm"
+msgstr "Không có báo động"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_booking_window__furnishing model:ir.model.fields,field_description:dev_property_management.field_property_property__furnishing model_terms:ir.ui.view,arch_db:dev_property_management.main_property_pdf_template model_terms:ir.ui.view,arch_db:dev_property_management.owner_property_detail_portal_content model_terms:ir.ui.view,arch_db:dev_property_management.search_parent_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.search_subproperty_dev_property_management
+msgid "Furnishing"
+msgstr "Tình trạng nội thất"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields.selection,name:dev_property_management.selection__booking_window__furnishing__non_furnished model:ir.model.fields.selection,name:dev_property_management.selection__property_property__furnishing__non_furnished
+msgid "Non Furnished"
+msgstr "Không có nội thất"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields.selection,name:dev_property_management.selection__booking_window__furnishing__semi_furnished model:ir.model.fields.selection,name:dev_property_management.selection__property_property__furnishing__semi_furnished
+msgid "Semi Furnished"
+msgstr "Nội thất cơ bản"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields.selection,name:dev_property_management.selection__booking_window__furnishing__fully_furnished model:ir.model.fields.selection,name:dev_property_management.selection__property_property__furnishing__fully_furnished
+msgid "Fully Furnished"
+msgstr "Đầy đủ nội thất"
+
+#. module: ps_crm_real_estates
+#: model:ir.actions.act_window,name:dev_property_management.model_facing_action model:ir.model,name:dev_property_management.model_property_facing model:ir.model.fields,field_description:dev_property_management.field_property_property__facing_id model:ir.ui.menu,name:dev_property_management.property_facing_menu model_terms:ir.ui.view,arch_db:dev_property_management.main_property_pdf_template model_terms:ir.ui.view,arch_db:dev_property_management.search_parent_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.search_subproperty_dev_property_management
+msgid "Facing"
+msgstr "Hướng bất động sản"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__total_square_foot model:ir.model.fields,field_description:dev_property_management.field_booking_window__total_square_foot model:ir.model.fields,field_description:dev_property_management.field_property_line__total_square_foot
+msgid "Total Size (sq.m²)"
+msgstr "Tổng diện tích (m²)"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__two_wheeler_parking model_terms:ir.ui.view,arch_db:dev_property_management.owner_property_detail_portal_content
+msgid "2 Wheeler Parking"
+msgstr "Chỗ đỗ xe hai bánh"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__four_wheeler_parking model_terms:ir.ui.view,arch_db:dev_property_management.owner_property_detail_portal_content
+msgid "4 Wheeler Parking"
+msgstr "Chỗ đỗ ô tô"
+
+#. module: ps_crm_real_estates
+#: model:ir.actions.act_window,name:dev_property_management.action_dev_agent_commission model:ir.model.fields,field_description:dev_property_management.field_account_bank_statement_line__agent_commission_id model:ir.model.fields,field_description:dev_property_management.field_account_move__agent_commission_id model:ir.model.fields,field_description:dev_property_management.field_res_company__agent_commission_product_id model:ir.model.fields,field_description:dev_property_management.field_res_config_settings__agent_commission_product_id model:ir.ui.menu,name:dev_property_management.menu_dev_agent_commission model_terms:ir.ui.view,arch_db:dev_property_management.form_property_booking model_terms:ir.ui.view,arch_db:dev_property_management.form_property_tenancy model_terms:ir.ui.view,arch_db:dev_property_management.popup_booking_window_dev_property_management model_terms:ir.ui.view,arch_db:ps_crm_real_estates.property_view_form_inherit_commission model_terms:ir.ui.view,arch_db:ps_crm_real_estates.sub_property_view_form_inherit_commission
+msgid "Agent Commission"
+msgstr "Hoa hồng môi giới"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_agent_commission__commission_type model:ir.model.fields,field_description:dev_property_management.field_booking_analysis__commission_type model:ir.model.fields,field_description:dev_property_management.field_booking_window__agent_commission_type model:ir.model.fields,field_description:dev_property_management.field_property_booking__commission_type model:ir.model.fields,field_description:dev_property_management.field_property_tenancy__commission_type model:ir.model.fields,field_description:dev_property_management.field_tenancy_analysis__commission_type model_terms:ir.ui.view,arch_db:dev_property_management.portal_agent_commission_properties_details model:ir.model.fields,field_description:ps_crm_real_estates.field_property_property__commission_type
+msgid "Commission Type"
+msgstr "Cách tính hoa hồng"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields.selection,name:dev_property_management.selection__agent_commission__commission_type__fixed model:ir.model.fields.selection,name:ps_crm_real_estates.selection__property_property__commission_type__fixed
+msgid "Fixed"
+msgstr "Mức cố định"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_agent_commission__commission_fixed_amount model:ir.model.fields.selection,name:dev_property_management.selection__booking_analysis__commission_type__fix model:ir.model.fields.selection,name:dev_property_management.selection__booking_window__agent_commission_type__fix model:ir.model.fields.selection,name:dev_property_management.selection__property_booking__commission_type__fix model:ir.model.fields.selection,name:dev_property_management.selection__property_tenancy__commission_type__fix model:ir.model.fields.selection,name:dev_property_management.selection__tenancy_analysis__commission_type__fix model:ir.model.fields,field_description:ps_crm_real_estates.field_property_property__commission_fixed_amount
+msgid "Fixed Amount"
+msgstr "Số tiền hoa hồng cố định"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_managementt model_terms:ir.ui.view,arch_db:dev_property_management.main_property_pdf_template model_terms:ir.ui.view,arch_db:dev_property_management.popup_booking_window_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.portal_owner_properties_details
+msgid "Property Details"
+msgstr "Chi tiết bất động sản"
+
+#. module: ps_crm_real_estates
+#: model:ir.actions.report,name:dev_property_management.menu_property_pdf_template model:ir.model.fields,field_description:dev_property_management.field_property_property__brochure model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_managementt model_terms:ir.ui.view,arch_db:dev_property_management.website_all_property_details
+msgid "Brochure"
+msgstr "Tài liệu giới thiệu"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_document__document model:ir.model.fields,field_description:dev_property_management.field_property_document__property_id model:ir.model.fields,field_description:dev_property_management.field_property_property__proprty_document_ids model_terms:ir.ui.view,arch_db:dev_property_management.form_property_agreement_documents model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_managementt
+msgid "Document"
+msgstr "Hồ sơ, tài liệu"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_managementt
+msgid "Images"
+msgstr "Hình ảnh"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_managementt model_terms:ir.ui.view,arch_db:dev_property_management.main_property_pdf_template model_terms:ir.ui.view,arch_db:dev_property_management.website_all_property_details
+msgid "Floor Plan"
+msgstr "Bản vẽ mặt bằng"
+
+#. module: ps_crm_real_estates
+#: model:ir.model,name:dev_property_management.model_property_area_measurement model:ir.model.fields,field_description:dev_property_management.field_property_property__area_measurement_ids model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_managementt model_terms:ir.ui.view,arch_db:dev_property_management.main_property_pdf_template
+msgid "Area Measurement"
+msgstr "Thông tin đo đạc diện tích"
+
+#. module: ps_crm_real_estates
+#: model:ir.actions.act_window,name:dev_property_management.action_property_amenities model:ir.model.fields,field_description:dev_property_management.field_property_property__amenity_ids model:ir.ui.menu,name:dev_property_management.menu_property_amenities model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_managementt model_terms:ir.ui.view,arch_db:dev_property_management.main_property_pdf_template model_terms:ir.ui.view,arch_db:dev_property_management.website_all_property_details
+msgid "Amenities"
+msgstr "Tiện ích"
+
+#. module: ps_crm_real_estates
+#: model:ir.actions.act_window,name:dev_property_management.action_nearby_connectivity model:ir.model,name:dev_property_management.model_nearby_connectivity model:ir.model.fields,field_description:dev_property_management.field_property_property__nearby_connectivity_ids model:ir.ui.menu,name:dev_property_management.menu_nearby_connectivity model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_managementt model_terms:ir.ui.view,arch_db:dev_property_management.main_property_pdf_template model_terms:ir.ui.view,arch_db:dev_property_management.website_all_property_details
+msgid "Nearby Connectivity"
+msgstr "Kết nối và tiện ích xung quanh"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_managementt
+msgid "Update Property Type"
+msgstr "Cập nhật loại hình bất động sản"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_managementt
+msgid "Booking Request"
+msgstr "Yêu cầu đặt chỗ"
+
+#. module: ps_crm_real_estates
+#. odoo-javascript
+#: code:addons/mail/static/src/chatter/web/chatter.xml:0
+msgid "Send Message"
+msgstr "Gửi tin nhắn"
+
+#. module: ps_crm_real_estates
+#. odoo-javascript
+#: code:addons/mail/static/src/chatter/web/chatter.xml:0
+msgid "Log Note"
+msgstr "Ghi chú nội bộ"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__name
+msgid "Name"
+msgstr "Tên bất động sản"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__complete_name model_terms:ir.ui.view,arch_db:dev_property_management.search_subproperty_dev_property_management
+msgid "Full Name"
+msgstr "Tên bất động sản"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:dev_property_management.portal_owner_properties_details model_terms:ir.ui.view,arch_db:dev_property_management.search_parent_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.search_subproperty_dev_property_management
+msgid "Property Purpose"
+msgstr "Hình thức kinh doanh"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__street2
+msgid "Street2"
+msgstr "Địa chỉ bổ sung"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_managementt
+msgid "Street..."
+msgstr "Đường, số nhà"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_management model_terms:ir.ui.view,arch_db:dev_property_management.form_property_dev_property_managementt
+msgid "Street 2..."
+msgstr "Địa chỉ bổ sung"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__zip
+msgid "Zip"
+msgstr "Mã bưu chính"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__property_per_floor
+msgid "Property Per. Floor"
+msgstr "Số căn mỗi tầng"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__total_square_foot model:ir.model.fields,field_description:dev_property_management.field_booking_window__total_square_foot model:ir.model.fields,field_description:dev_property_management.field_property_line__total_square_foot
+msgid "Total Size(sq.m.)"
+msgstr "Tổng diện tích (m²)"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__total_square_foot model:ir.model.fields,field_description:dev_property_management.field_booking_window__total_square_foot model:ir.model.fields,field_description:dev_property_management.field_property_line__total_square_foot
+msgid "Total Size(sq.m2.)"
+msgstr "Tổng diện tích (m²)"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_booking_window__total_square_foot model:ir.model.fields,field_description:dev_property_management.field_property_line__total_square_foot model:ir.model.fields,field_description:dev_property_management.field_property_property__total_square_foot model_terms:ir.ui.view,arch_db:dev_property_management.main_property_pdf_template
+msgid "Total Size(sq.ft.)"
+msgstr "Tổng diện tích (m²)"
+
+#. module: ps_crm_real_estates
+#. odoo-javascript
+#: code:addons/web/static/src/search/search_bar_menu/search_bar_menu.xml:0 code:addons/web/static/src/webclient/actions/debug_items.js:0
+msgid "Filters"
+msgstr "Bộ lọc"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_act_window_view__view_mode__kanban model:ir.model.fields.selection,name:base.selection__ir_ui_view__type__kanban model_terms:ir.ui.view,arch_db:base.view_view_search
+msgid "Kanban"
+msgstr "Dạng thẻ"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields.selection,name:base.selection__ir_actions_act_window_view__view_mode__list model:ir.model.fields.selection,name:base.selection__ir_ui_view__type__list model_terms:ir.ui.view,arch_db:base.view_view_search
+msgid "List"
+msgstr "Dạng danh sách"
+
+#. module: ps_crm_real_estates
+#. odoo-javascript
+#: code:addons/mail/static/src/chatter/web/chatter.xml:0 code:addons/mail/static/src/discuss/web/avatar_card/avatar_card_popover.xml:0
+msgid "Send message"
+msgstr "Gửi tin nhắn"
+
+#. module: ps_crm_real_estates
+#. odoo-javascript
+#: code:addons/mail/static/src/chatter/web/chatter.xml:0 code:addons/mail/static/src/core/common/composer.js:0
+msgid "Log note"
+msgstr "Ghi chú nội bộ"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_agent_commission__commission_percentage model:ir.model.fields.selection,name:dev_property_management.selection__agent_commission__commission_type__percentage model:ir.model.fields.selection,name:ps_crm_real_estates.selection__property_property__commission_type__percentage model:ir.model.fields,field_description:ps_crm_real_estates.field_property_property__commission_percentage
+msgid "Percentage"
+msgstr "Phần trăm"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__total_carpet_area model:ir.model.fields,field_description:dev_property_management.field_property_area_measurement__carpet_area
+msgid "Carpet Area(sq.m.)"
+msgstr "Diện tích sử dụng (m²)"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:dev_property_management.field_property_property__total_carpet_area model:ir.model.fields,field_description:dev_property_management.field_property_area_measurement__carpet_area
+msgid "Carpet Area(sq.m2.)"
+msgstr "Diện tích sử dụng (m²)"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:ps_crm_real_estates.property_pdf_template_metric_labels model_terms:ir.ui.view,arch_db:ps_crm_real_estates.portal_property_details_metric_labels model:ir.model.fields,field_description:dev_property_management.field_property_area_measurement__length
+msgid "Length(m)"
+msgstr "Dài (mét)"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:ps_crm_real_estates.property_pdf_template_metric_labels model_terms:ir.ui.view,arch_db:ps_crm_real_estates.portal_property_details_metric_labels model:ir.model.fields,field_description:dev_property_management.field_property_area_measurement__width
+msgid "Width(m)"
+msgstr "Rộng (mét)"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:ps_crm_real_estates.property_pdf_template_metric_labels model_terms:ir.ui.view,arch_db:ps_crm_real_estates.portal_property_details_metric_labels model:ir.model.fields,field_description:dev_property_management.field_property_area_measurement__height
+msgid "Height(m)"
+msgstr "Cao (mét)"
+
+#. module: ps_crm_real_estates
+# The purpose selection has a different translation from the parent relationship.
+#: model:ir.model.fields.selection,name:dev_property_management.selection__property_property__property_purpose__parent
+msgctxt "property_purpose"
+msgid "Parent Property"
+msgstr "Tài sản cấp cha"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_property_property__property_length
+msgid "Length (m)"
+msgstr "Dài (mét)"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_property_property__property_width
+msgid "Width (m)"
+msgstr "Rộng (mét)"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_property_property__plot_area
+msgid "Plot Area (m²)"
+msgstr "Diện tích KV (m²)"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_property_property__built_area
+msgid "Built-up Area (m²)"
+msgstr "Diện tích xây dựng (m²)"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_property_property__construction_land_area
+msgid "Construction Land Area (m²)"
+msgstr "Diện tích đất xây dựng (m²)"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_property_property__actual_area
+msgid "Actual Area (m²)"
+msgstr "Diện tích thực tế (m²)"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_property_property__usable_area
+msgid "Usable Area (m²)"
+msgstr "Diện tích sử dụng (m²)"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_property_property__frontage
+msgid "Frontage (m)"
+msgstr "Mặt tiền (mét)"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_property_property__internal_frontage
+msgid "Internal Frontage (m)"
+msgstr "Mặt tiền nội bộ (mét)"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_property_property__rear_width
+msgid "Rear Width (m)"
+msgstr "Mặt hậu (mét)"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_property_property__main_road_distance
+msgid "Distance to Main Road (m)"
+msgstr "Cách đường chính (mét)"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_property_property__main_alley_width
+msgid "Main Alley Width (m)"
+msgstr "Hẻm chính (mét)"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_property_property__secondary_alley_width
+msgid "Secondary Alley Width (m)"
+msgstr "Hẻm phụ (mét)"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:ps_crm_real_estates.sub_property_view_form_inherit_area_dimensions
+msgid "Area and Dimensions"
+msgstr "Diện tích và kích thước"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:ps_crm_real_estates.sub_property_view_form_inherit_area_dimensions
+msgid "Length x Width (m)"
+msgstr "Dài x rộng (mét)"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:ps_crm_real_estates.sub_property_view_form_inherit_area_dimensions
+msgid "Length"
+msgstr "Dài"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:ps_crm_real_estates.sub_property_view_form_inherit_area_dimensions
+msgid "Width"
+msgstr "Rộng"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:ps_crm_real_estates.sub_property_view_form_inherit_area_dimensions
+msgid "Direction"
+msgstr "Hướng"
+
+#. module: ps_crm_real_estates
+#: model:property.facing,name:ps_crm_real_estates.property_facing_east
+msgid "East"
+msgstr "Đông"
+
+#. module: ps_crm_real_estates
+#: model:property.facing,name:ps_crm_real_estates.property_facing_west
+msgid "West"
+msgstr "Tây"
+
+#. module: ps_crm_real_estates
+#: model:property.facing,name:ps_crm_real_estates.property_facing_south
+msgid "South"
+msgstr "Nam"
+
+#. module: ps_crm_real_estates
+#: model:property.facing,name:ps_crm_real_estates.property_facing_north
+msgid "North"
+msgstr "Bắc"
+
+#. module: ps_crm_real_estates
+#: model:property.facing,name:ps_crm_real_estates.property_facing_northeast
+msgid "Northeast"
+msgstr "Đông Bắc"
+
+#. module: ps_crm_real_estates
+#: model:property.facing,name:ps_crm_real_estates.property_facing_southeast
+msgid "Southeast"
+msgstr "Đông Nam"
+
+#. module: ps_crm_real_estates
+#: model:property.facing,name:ps_crm_real_estates.property_facing_northwest
+msgid "Northwest"
+msgstr "Tây Bắc"
+
+#. module: ps_crm_real_estates
+#: model:property.facing,name:ps_crm_real_estates.property_facing_southwest
+msgid "Southwest"
+msgstr "Tây Nam"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_crm_lead__consultation_call_ids
+#: model_terms:ir.ui.view,arch_db:ps_crm_real_estates.crm_lead_view_form_inherit_consultation_calls
+msgid "Consultation Calls"
+msgstr "Gọi tư vấn"
+
+#. module: ps_crm_real_estates
+#: model:ir.model,name:ps_crm_real_estates.model_crm_lead_consultation_call
+msgid "Consultation Call"
+msgstr "Cuộc gọi tư vấn"
+
+#. module: ps_crm_real_estates
+#: model:ir.model,name:ps_crm_real_estates.model_crm_lead_consultation_result
+msgid "Consultation Call Result"
+msgstr "Kết quả gọi tư vấn"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_crm_lead_consultation_call__lead_id
+msgid "Lead"
+msgstr "Tiềm năng"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_crm_lead_consultation_call__start_date
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_crm_lead__latest_consultation_start_date
+#: model_terms:ir.ui.view,arch_db:ps_crm_real_estates.consultation_call_dashboard_view_search
+msgid "Start Date"
+msgstr "Ngày bắt đầu"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_crm_lead_consultation_call__result_id
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_crm_lead__latest_consultation_result_id
+msgid "Result"
+msgstr "Kết quả"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_crm_lead_consultation_call__notes
+msgid "Notes"
+msgstr "Ghi chú"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_crm_lead_consultation_result__name
+msgid "Result Name"
+msgstr "Tên kết quả"
+
+#. module: ps_crm_real_estates
+#: model:crm.lead.consultation.result,name:ps_crm_real_estates.consultation_result_wrong_phone_number
+msgid "Wrong Phone Number"
+msgstr "Sai số điện thoại"
+
+#. module: ps_crm_real_estates
+#: model:crm.lead.consultation.result,name:ps_crm_real_estates.consultation_result_information_unchanged
+msgid "Information Unchanged"
+msgstr "Giữ nguyên thông tin"
+
+#. module: ps_crm_real_estates
+#: model:crm.lead.consultation.result,name:ps_crm_real_estates.consultation_result_no_answer
+msgid "No Answer"
+msgstr "Không bắt máy"
+
+#. module: ps_crm_real_estates
+#: model:crm.lead.consultation.result,name:ps_crm_real_estates.consultation_result_price_reduced
+msgid "Price Reduced"
+msgstr "Giảm giá"
+
+#. module: ps_crm_real_estates
+#: model:crm.lead.consultation.result,name:ps_crm_real_estates.consultation_result_busy
+msgid "Busy"
+msgstr "Đang bận"
+
+#. module: ps_crm_real_estates
+#: model:crm.lead.consultation.result,name:ps_crm_real_estates.consultation_result_temporarily_suspended
+msgid "Temporarily Suspended"
+msgstr "Tạm ngưng"
+
+#. module: ps_crm_real_estates
+#: model:ir.actions.act_window,name:ps_crm_real_estates.action_consultation_call_dashboard
+#: model:ir.ui.menu,name:ps_crm_real_estates.menu_consultation_call_dashboard
+#: model_terms:ir.ui.view,arch_db:ps_crm_real_estates.consultation_call_dashboard_view_list
+#: model_terms:ir.ui.view,arch_db:ps_crm_real_estates.consultation_call_dashboard_view_search
+msgid "Consultation Calls Dashboard"
+msgstr "Bảng tổng hợp cuộc gọi tư vấn"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields,field_description:ps_crm_real_estates.field_crm_lead__latest_consultation_call_id
+msgid "Latest Consultation Call"
+msgstr "Cuộc gọi tư vấn mới nhất"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:ps_crm_real_estates.consultation_call_dashboard_view_list
+#: model_terms:ir.ui.view,arch_db:ps_crm_real_estates.consultation_call_dashboard_view_search
+msgid "Call Title"
+msgstr "Tiêu đề cuộc gọi"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:ps_crm_real_estates.consultation_call_dashboard_view_list
+#: model_terms:ir.ui.view,arch_db:ps_crm_real_estates.consultation_call_dashboard_view_search
+msgid "Performed By"
+msgstr "Nhân viên thực hiện"
+
+#. module: ps_crm_real_estates
+#: model:ir.model.fields.selection,name:ps_crm_real_estates.selection__crm_lead__consultation_status__done
+msgid "Completed"
+msgstr "Đã thực hiện xong"
+
+#. module: ps_crm_real_estates
+#: model_terms:ir.ui.view,arch_db:ps_crm_real_estates.consultation_call_dashboard_view_search
+msgid "My Calls"
+msgstr "Cuộc gọi của tôi"
+
+#. module: ps_crm_real_estates
+#: model:ir.actions.act_window,help:ps_crm_real_estates.action_consultation_call_dashboard
+msgid "No consultation calls yet"
+msgstr "Chưa có cuộc gọi tư vấn"
+
+#. module: ps_crm_real_estates
+#: model:ir.actions.act_window,help:ps_crm_real_estates.action_consultation_call_dashboard
+msgid "Add a consultation call with a start date and time to a CRM lead or opportunity."
+msgstr "Thêm cuộc gọi tư vấn có ngày giờ bắt đầu vào tiềm năng hoặc cơ hội trong CRM."

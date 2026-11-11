@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="ps_mfg_workorder_move_view_search" model="ir.ui.view">
+            <field name="name">ps.mfg.workorder.move.view.search</field>
+            <field name="model">ps.mfg.workorder.move</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="workcenter_id"/>
+                    <field name="production_id" context="{'ps_mfg_mo_show_product_name': 1}"/>
+                    <field name="from_workorder_id"/>
+                    <field name="to_workorder_id"/>
+                    <field name="processing_date"/>
+                    <field name="state"/>
+                    <filter name="filter_draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                    <filter name="filter_pending" string="Pending Approval" domain="[('state', '=', 'pending')]"/>
+                    <filter name="filter_approved" string="Approved" domain="[('state', '=', 'approved')]"/>
+                    <group>
+                        <filter name="group_workcenter" string="Work Center" context="{'group_by': 'workcenter_id'}"/>
+                        <filter name="group_production" string="Manufacturing Order" context="{'group_by': 'production_id'}"/>
+                        <filter name="group_date" string="Processing Date" context="{'group_by': 'processing_date'}"/>
+                        <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="ps_mfg_workorder_move_view_list" model="ir.ui.view">
+            <field name="name">ps.mfg.workorder.move.view.list</field>
+            <field name="model">ps.mfg.workorder.move</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="workcenter_id" optional="show"/>
+                    <field name="production_id" context="{'ps_mfg_mo_show_product_name': 1}"/>
+                    <field name="from_label" string="From Work Order"/>
+                    <field name="to_workorder_id"/>
+                    <field name="shift"/>
+                    <field name="processing_date"/>
+                    <field name="move_qty"/>
+                    <field name="amount_total"/>
+                    <field name="stage_cost" optional="show"/>
+                    <field name="unit_cost" optional="show"/>
+                    <field name="currency_id" column_invisible="1"/>
+                    <field name="description"/>
+                    <field name="state" widget="badge" optional="show"
+                           decoration-muted="state == 'draft'"
+                           decoration-warning="state == 'pending'"
+                           decoration-success="state == 'approved'"
+                           decoration-danger="state == 'rejected'"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="ps_mfg_workorder_move_view_form" model="ir.ui.view">
+            <field name="name">ps.mfg.workorder.move.view.form</field>
+            <field name="model">ps.mfg.workorder.move</field>
+            <field name="arch" type="xml">
+                <form string="Form Title">
+                    <header>
+                        <button name="action_submit_approval" string="Submit" type="object"
+                                invisible="state != 'draft'"/>
+                        <button name="action_approve" string="Approve" type="object" class="oe_highlight"
+                                invisible="state not in ('draft', 'pending')"/>
+                        <button name="action_reject" string="Reject" type="object"
+                                invisible="state not in ('draft', 'pending')"/>
+                        <button name="action_reset_draft" string="Reset to Draft" type="object"
+                                invisible="state not in ('pending', 'rejected')"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,pending,approved,rejected"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <field name="consumption_move_count" invisible="1"/>
+                            <button name="action_view_stock_moves" type="object" class="oe_stat_button"
+                                    icon="fa-exchange" invisible="not consumption_move_count">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">Stock Moves</span>
+                                </div>
+                            </button>
+                            <button name="action_view_picking" type="object" class="oe_stat_button"
+                                    icon="fa-truck" invisible="not picking_count">
+                                <field name="picking_count" widget="statinfo" string="Transfer"/>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="workcenter_id" options="{'no_create': True}" readonly="state == 'approved'"/>
+                                <field name="production_id" context="{'ps_mfg_mo_show_product_name': 1}"
+                                       options="{'no_create': True}"
+                                       readonly="state == 'approved' or not workcenter_id"/>
+                            </group>
+                            <group>
+                                <field name="processing_date" readonly="state == 'approved'"/>
+                                <field name="shift" readonly="state == 'approved'"/>
+                            </group>
+                        </group>
+                        <field name="routing_progress" widget="ps_mfg_workorder_stepper" nolabel="1"
+                               readonly="state == 'approved'" invisible="not production_id"
+                               class="o_ps_move_chevrons mb-2"/>
+                        <div class="o_ps_move_bar mb-3">
+                            <div class="o_ps_move_item o_ps_move_item_wide">
+                                <label for="from_workorder_id" class="o_ps_move_label"/>
+                                <field name="from_workorder_id" placeholder="Start"
+                                       readonly="state == 'approved' or not production_id"/>
+                            </div>
+                            <i class="o_ps_move_arrow fa fa-long-arrow-right" role="img"
+                               title="Move to" aria-label="Move to"/>
+                            <div class="o_ps_move_item o_ps_move_item_wide">
+                                <label for="to_workorder_id" class="o_ps_move_label"/>
+                                <field name="to_workorder_id"
+                                       readonly="state == 'approved' or not production_id"/>
+                            </div>
+                            <div class="o_ps_move_item">
+                                <label for="previous_qty" class="o_ps_move_label"/>
+                                <field name="previous_qty"/>
+                            </div>
+                            <div class="o_ps_move_item">
+                                <label for="available_qty" class="o_ps_move_label"/>
+                                <field name="available_qty"/>
+                            </div>
+                            <div class="o_ps_move_item o_ps_move_item_main">
+                                <label for="move_qty" class="o_ps_move_label"/>
+                                <field name="move_qty" readonly="state == 'approved'"/>
+                            </div>
+                        </div>
+                        <field name="amount_total" invisible="1"/>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="has_tracked_components" invisible="1"/>
+                        <notebook>
+                            <page string="Components">
+                                <field name="workorder_component_line_ids" readonly="state == 'approved'">
+                                    <list editable="bottom" create="0" delete="0">
+                                        <field name="component_id"/>
+                                        <field name="company_id" column_invisible="1"/>
+                                        <field name="tracking" column_invisible="1"/>
+                                        <field name="location_id" optional="show"/>
+                                        <field name="uom_id"/>
+                                        <field name="planned_qty" force_save="1"/>
+                                        <field name="actual_qty"/>
+                                        <field name="allowed_lot_ids" column_invisible="1"/>
+                                        <field name="lot_ids" widget="many2many_tags"
+                                               optional="show"
+                                               groups="stock.group_production_lot"
+                                               column_invisible="not parent.has_tracked_components"
+                                               invisible="tracking not in ('lot', 'serial')"
+                                               options="{'no_create': True, 'no_create_edit': True}"
+                                               context="{'default_product_id': component_id, 'default_company_id': company_id}"/>
+                                        <button name="action_show_lot_details" type="object"
+                                                string="Details" title="Details"
+                                                groups="stock.group_production_lot"
+                                                column_invisible="not parent.has_tracked_components"
+                                                invisible="tracking not in ('lot', 'serial')"/>
+                                        <field name="qty_variance_percent" widget="percentage" optional="show"/>
+                                        <field name="price_unit" readonly="1" optional="hide"/>
+                                        <field name="amount" optional="hide"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Extra Components">
+                                <field name="extra_component_line_ids" readonly="state == 'approved'">
+                                    <list editable="bottom">
+                                        <field name="component_id"/>
+                                        <field name="company_id" column_invisible="1"/>
+                                        <field name="tracking" column_invisible="1"/>
+                                        <field name="location_id" readonly="1" optional="show"/>
+                                        <field name="uom_id"/>
+                                        <field name="actual_qty"/>
+                                        <field name="allowed_lot_ids" column_invisible="1"/>
+                                        <field name="lot_ids" widget="many2many_tags"
+                                               optional="show"
+                                               groups="stock.group_production_lot"
+                                               column_invisible="not parent.has_tracked_components"
+                                               invisible="tracking not in ('lot', 'serial')"
+                                               options="{'no_create': True, 'no_create_edit': True}"
+                                               context="{'default_product_id': component_id, 'default_company_id': company_id}"/>
+                                        <button name="action_show_lot_details" type="object"
+                                                string="Details" title="Details"
+                                                groups="stock.group_production_lot"
+                                                column_invisible="not parent.has_tracked_components"
+                                                invisible="tracking not in ('lot', 'serial')"/>
+                                        <field name="price_unit" readonly="1" optional="hide"/>
+                                        <field name="amount" readonly="1" optional="hide"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Resources" name="resources">
+                                <field name="resource_line_ids" readonly="state == 'approved'">
+                                    <list editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="company_id" column_invisible="1"/>
+                                        <field name="currency_id" column_invisible="1"/>
+                                        <field name="resource_id" options="{'no_create': True}"/>
+                                        <field name="cost_item_id" optional="show"/>
+                                        <field name="account_id" optional="hide"/>
+                                        <field name="unit_cost" force_save="1" optional="show"/>
+                                        <field name="planned_cost" force_save="1" optional="show"/>
+                                        <field name="actual_cost" sum="Total"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Costing" name="costing">
+                                <group>
+                                    <group string="Operation Cost">
+                                        <field name="material_amount"/>
+                                        <field name="extra_amount"/>
+                                        <field name="resource_amount"/>
+                                        <field name="stage_cost"/>
+                                        <field name="stage_unit_cost"/>
+                                    </group>
+                                    <group string="Cumulative Cost">
+                                        <field name="transferred_in_unit_cost" readonly="1" force_save="1"/>
+                                        <field name="transferred_in_cost"/>
+                                        <field name="total_cost"/>
+                                        <field name="unit_cost"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="ps_mfg_workorder_move_line_lot_form" model="ir.ui.view">
+            <field name="name">ps.mfg.workorder.move.line.lot.form</field>
+            <field name="model">ps.mfg.workorder.move.line</field>
+            <field name="arch" type="xml">
+                <form string="Lot/Serial Numbers">
+                    <group>
+                        <group>
+                            <field name="component_id" readonly="1"/>
+                            <field name="actual_qty" readonly="1"/>
+                            <field name="uom_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="workorder_move_id" invisible="1"/>
+                            <field name="tracking" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="allowed_lot_ids" invisible="1"/>
+                        </group>
+                    </group>
+                    <field name="lot_line_ids" readonly="workorder_move_id.state == 'approved'">
+                        <list editable="bottom">
+                            <field name="company_id" column_invisible="1"/>
+                            <field name="tracking" column_invisible="1"/>
+                            <field name="allowed_lot_ids" column_invisible="1"/>
+                            <field name="lot_id" options="{'no_create': True, 'no_create_edit': True}"/>
+                            <field name="qty" readonly="tracking == 'serial'"/>
+                        </list>
+                    </field>
+                </form>
+            </field>
+        </record>
+
+        <record id="ps_mfg_workorder_move_extra_line_lot_form" model="ir.ui.view">
+            <field name="name">ps.mfg.workorder.move.extra.line.lot.form</field>
+            <field name="model">ps.mfg.workorder.move.extra.line</field>
+            <field name="arch" type="xml">
+                <form string="Lot/Serial Numbers">
+                    <group>
+                        <group>
+                            <field name="component_id" readonly="1"/>
+                            <field name="actual_qty" readonly="1"/>
+                            <field name="uom_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="workorder_move_id" invisible="1"/>
+                            <field name="tracking" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="allowed_lot_ids" invisible="1"/>
+                        </group>
+                    </group>
+                    <field name="lot_line_ids" readonly="workorder_move_id.state == 'approved'">
+                        <list editable="bottom">
+                            <field name="company_id" column_invisible="1"/>
+                            <field name="tracking" column_invisible="1"/>
+                            <field name="allowed_lot_ids" column_invisible="1"/>
+                            <field name="lot_id" options="{'no_create': True, 'no_create_edit': True}"/>
+                            <field name="qty" readonly="tracking == 'serial'"/>
+                        </list>
+                    </field>
+                </form>
+            </field>
+        </record>
+
+        <record id="ps_mfg_workorder_move_action" model="ir.actions.act_window">
+            <field name="name">Ps Mfg Work Order</field>
+            <field name="res_model">ps.mfg.workorder.move</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_group_production': 1, 'ps_mfg_mo_show_product_name': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first record
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

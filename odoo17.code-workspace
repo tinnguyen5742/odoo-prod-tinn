@@ -1,0 +1,76 @@
+{
+  "folders": [
+    {
+      "path": "custom_addons",
+    },
+    {
+      "path": "odoo",
+    },
+  ],
+  "settings": {
+    "python.defaultInterpreterPath": "${workspaceFolder:odoo}/../.venv/bin/python",
+    "python.analysis.extraPaths": [
+      "${workspaceFolder:odoo}",
+      "${workspaceFolder:odoo}/addons",
+      "${workspaceFolder:custom_addons}",
+      "${workspaceFolder:custom_addons}/HRM",
+      "${workspaceFolder:custom_addons}/odoo-accounting",
+      "${workspaceFolder:custom_addons}/odoo-inventory",
+      "${workspaceFolder:custom_addons}/odoo-mfg",
+      "${workspaceFolder:custom_addons}/odoo-reports",
+      "${workspaceFolder:custom_addons}/odoo-sale",
+      "${workspaceFolder:custom_addons}/odoo-share-addons",
+    ],
+    "python.languageServer": "Default",
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Odoo: Run development server",
+        "type": "process",
+        "command": "${workspaceFolder:odoo}/../.venv/bin/python",
+        "args": [
+          "${workspaceFolder:odoo}/odoo-bin",
+          "-c",
+          "${workspaceFolder:odoo}/../config/odoo.conf",
+          "--addons-path=${workspaceFolder:odoo}/addons,${workspaceFolder:custom_addons},${workspaceFolder:custom_addons}/HRM,${workspaceFolder:custom_addons}/odoo-accounting,${workspaceFolder:custom_addons}/odoo-inventory,${workspaceFolder:custom_addons}/odoo-mfg,${workspaceFolder:custom_addons}/odoo-reports,${workspaceFolder:custom_addons}/odoo-sale,${workspaceFolder:custom_addons}/odoo-share-addons",
+          "--db_host=127.0.0.1",
+          "--db_port=5445",
+          "--db_user=odoo",
+          "--db_password=odooodoo",
+          "--http-port=8069",
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:odoo}/..",
+        },
+        "problemMatcher": [],
+      },
+    ],
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Odoo: Debug server",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${workspaceFolder:odoo}/odoo-bin",
+        "python": "${workspaceFolder:odoo}/../.venv/bin/python",
+        "args": [
+          "-c",
+          "${workspaceFolder:odoo}/../config/odoo.conf",
+          "--addons-path=${workspaceFolder:odoo}/addons,${workspaceFolder:custom_addons},${workspaceFolder:custom_addons}/HRM,${workspaceFolder:custom_addons}/odoo-accounting,${workspaceFolder:custom_addons}/odoo-inventory,${workspaceFolder:custom_addons}/odoo-mfg,${workspaceFolder:custom_addons}/odoo-reports,${workspaceFolder:custom_addons}/odoo-sale,${workspaceFolder:custom_addons}/odoo-share-addons",
+          "--db_host=127.0.0.1",
+          "--db_port=5445",
+          "--db_user=odoo",
+          "--db_password=odooodoo",
+          "--http-port=8069",
+        ],
+        "cwd": "${workspaceFolder:odoo}/..",
+        "console": "integratedTerminal",
+        "justMyCode": false,
+      },
+    ],
+  },
+}
