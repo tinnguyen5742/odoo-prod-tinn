@@ -34,3 +34,7 @@
 	path = custom_addons/ps_elearning
 	url = git@github.com:patsoft-dev/ps_elearning.git
 	branch = internal/pat
+[submodule "custom_addons/odoo_project"]
+	path = custom_addons/odoo_project
+	url = git@github.com:patsoft-dev/odoo_project.git
+	branch = internal/pat
