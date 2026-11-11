@@ -1,7 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_ps_worker_profession_user,ps.worker.profession.user,model_ps_worker_profession,base.group_user,1,0,0,0
-access_ps_worker_profession_manager,ps.worker.profession.manager,model_ps_worker_profession,hr_attendance.group_hr_attendance_manager,1,1,1,1
-access_ps_worker_grade_user,ps.worker.grade.user,model_ps_worker_grade,base.group_user,1,0,0,0
-access_ps_worker_grade_manager,ps.worker.grade.manager,model_ps_worker_grade,hr_attendance.group_hr_attendance_manager,1,1,1,1
-access_ps_worker_allowance_user,ps.worker.allowance.user,model_ps_worker_allowance,base.group_user,1,0,0,0
-access_ps_worker_allowance_manager,ps.worker.allowance.manager,model_ps_worker_allowance,hr_attendance.group_hr_attendance_manager,1,1,1,1

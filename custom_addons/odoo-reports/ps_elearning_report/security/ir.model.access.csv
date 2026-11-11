@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_slide_channel_report_wizard,slide.channel.report.wizard,model_slide_channel_report_wizard,base.group_user,1,1,1,1
-access_slide_channel_overview_wizard,slide.channel.overview.wizard,model_slide_channel_overview_wizard,base.group_user,1,1,1,1

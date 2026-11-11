@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <!-- Group Kinh Doanh -->
-    <record id="group_sale_province" model="res.groups">
-        <field name="name">Kinh Doanh</field>
-    </record>
-
-</odoo>

@@ -1,5 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_ps_sale_history_wizard,ps.sale.history.wizard,model_ps_sale_history_wizard,sales_team.group_sale_salesman,1,1,1,1
-access_ps_salesperson_plan_sales,ps.salesperson.plan.sales,model_ps_sale_salesperson_plan,sales_team.group_sale_salesman,1,0,0,0
-access_ps_salesperson_plan_manager,ps.salesperson.plan.manager,model_ps_sale_salesperson_plan,sales_team.group_sale_manager,1,1,1,1
-access_ps_sale_delivery_plan,ps.sale.delivery.plan,model_ps_sale_delivery_plan,sales_team.group_sale_salesman,1,1,1,1

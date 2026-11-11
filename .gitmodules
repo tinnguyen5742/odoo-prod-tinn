@@ -25,7 +25,7 @@
 [submodule "custom_addons/odoo-sale"]
 	path = custom_addons/odoo-sale
 	url = git@github.com:patsoft-dev/odoo-sale.git
-	branch = demo/crm-real-estates
+	branch = internal/pat
 [submodule "custom_addons/HRM"]
 	path = custom_addons/HRM
 	url = git@github.com:patsoft-dev/HRM.git

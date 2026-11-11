@@ -1,1 +1,0 @@
-This is report for SO and PO, Patsoft

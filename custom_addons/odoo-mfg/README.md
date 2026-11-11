@@ -1,2 +1,0 @@
-# odoo-mfg
-module MFG
