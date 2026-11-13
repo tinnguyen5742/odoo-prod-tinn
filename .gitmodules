@@ -18,10 +18,6 @@
 	path = custom_addons/dev_property_management
 	url = git@github.com:patsoft-dev/dev_property_management.git
 	branch = main
-[submodule "custom_addons/odoo-reports"]
-	path = custom_addons/odoo-reports
-	url = git@github.com:patsoft-dev/odoo-reports.git
-	branch = main
 [submodule "custom_addons/odoo-sale"]
 	path = custom_addons/odoo-sale
 	url = git@github.com:patsoft-dev/odoo-sale.git
