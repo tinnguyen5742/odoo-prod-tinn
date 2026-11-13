@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_field_service_order_user,access.field.service.order.user,model_field_service_order,base.group_user,1,1,1,1
+access_field_service_line_user,access.field.service.line.user,model_field_service_line,base.group_user,1,1,1,1
+access_customer_asset_user,access.customer.asset.user,model_customer_asset,base.group_user,1,1,1,1
+access_field_service_expense_user,access.field.service.expense.user,model_field_service_expense,base.group_user,1,1,1,1
+access_field_service_area,field.service.area,model_field_service_area,base.group_user,1,1,1,1

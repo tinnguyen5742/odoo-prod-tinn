@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Paper format cho báo cáo tài chính -->
+        <record id="paperformat_financial_tt99" model="report.paperformat">
+            <field name="name">A4 Báo cáo tài chính TT99</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <!-- Abstract model cung cấp dữ liệu cho báo cáo -->
+        <record id="action_report_financial_tt99_bcdkt" model="ir.actions.report">
+            <field name="name">Báo cáo tình hình tài chính TT99</field>
+            <field name="model">ps.financial.report.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ps_vn_accounting.report_financial_tt99_bcdkt</field>
+            <field name="report_file">ps_vn_accounting.report_financial_tt99_bcdkt</field>
+            <field name="print_report_name">'BCDKT_TT99_%s' % (object.x_date_to)</field>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="ps_vn_accounting_report.paperformat_financial_tt99"/>
+        </record>
+
+        <template id="report_financial_tt99_bcdkt" inherit_id="ps_vn_accounting.report_financial_tt99_bcdkt">
+            <xpath expr="." position="replace">
+            <t t-call="web.html_container">
+                <t t-call="web.basic_layout">
+                    <div class="page" style="font-family: 'Times New Roman', DejaVu, serif;">
+<table class="ps_company_header" style="width: 100%; table-layout: fixed; margin-bottom: 12px; border: none !important; border-collapse: collapse; font-size: 12px; page-break-inside: avoid;">
+                                <colgroup><col style="width: 150px;"/><col/></colgroup>
+                                <tr>
+                                    <td style="width: 150px; vertical-align: middle; text-align: left; padding: 4px 20px 4px 0; border: none !important;">
+                                        <img t-if="doc.x_company_id.logo" t-att-src="image_data_uri(doc.x_company_id.logo)" style="display: block; max-height: 60px; max-width: 125px; width: auto; height: auto;" alt="Logo"/>
+                                    </td>
+                                    <td style="vertical-align: middle; text-align: left; padding: 4px 0; border: none !important; line-height: 1.5; overflow-wrap: break-word;">
+                                        <div style="font-weight: bold; font-size: 15px; line-height: 1.35; margin-bottom: 3px; text-transform: uppercase;" t-esc="doc.x_company_id.name"/>
+                                        <div><strong>Địa chỉ:</strong> <span t-esc="doc.x_company_id.street"/></div>
+                                        <div><strong>Mã số thuế:</strong> <span t-esc="doc.x_company_id.vat or ''"/></div>
+                                        <div><strong>Điện thoại:</strong> <span t-esc="doc.x_company_id.phone or ''"/></div>
+                                        <div><strong>Email:</strong> <span t-esc="doc.x_company_id.email or ''"/></div>
+                                    </td>
+                                </tr>
+                            </table>
+<hr style="border: 0.5px solid #000; margin-bottom: 15px;"/>
+
+                        <div style="text-align: center; padding-top: 10px;">
+                            <h4 style="text-align: center;">BÁO CÁO TÌNH HÌNH TÀI CHÍNH</h4>
+                            <p style="text-align: center;">
+                                Từ tháng: <span t-esc="doc.x_date_from" t-options="{'widget': 'date'}"/>
+                                - Đến tháng: <span t-esc="doc.x_date_to" t-options="{'widget': 'date'}"/>
+                            </p>
+                            <p style="text-align: right;">Đơn vị tính: VNĐ</p>
+                        </div>
+
+                        <table class="table table-bordered table-sm" style="border-collapse: collapse; border: 1px solid black; vertical-align: middle; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 45%; border: 1px solid black; vertical-align: middle;">TÀI SẢN</th>
+                                    <th class="text-center" style="width: 10%; border: 1px solid black; vertical-align: middle;">Mã số</th>
+                                    <th class="text-center" style="width: 10%; border: 1px solid black; vertical-align: middle;">Thuyết minh</th>
+                                    <th class="text-center" style="width: 17.5%; border: 1px solid black; vertical-align: middle;">Số cuối năm</th>
+                                    <th class="text-center" style="width: 17.5%; border: 1px solid black; vertical-align: middle;">Số đầu năm</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="lines" t-as="line">
+                                    <t t-if="line['level'] == 0">
+                                        <t t-set="row_style" t-value="'font-weight: bold; background-color: #e6e6e6; border-top: 2px solid black;'"/>
+                                    </t>
+                                    <t t-elif="line['level'] == 1">
+                                        <t t-set="row_style" t-value="'font-weight: bold; background-color: #f2f2f2;'"/>
+                                    </t>
+                                    <t t-else="">
+                                        <t t-set="row_style" t-value="''"/>
+                                    </t>
+                                    <tr t-att-style="row_style">
+                                        <td style="border: 1px solid black; vertical-align: middle;">
+                                            <span t-att-style="'padding-left: ' + str(line['level'] * 15) + 'px'"
+                                                  t-esc="line['label']"/>
+                                        </td>
+                                        <td class="text-center" style="border: 1px solid black; vertical-align: middle;" t-esc="line['code'].replace('@', '')"/>
+                                        <td style="border: 1px solid black; vertical-align: middle;"/>
+                                        <td class="text-right" style="border: 1px solid black; vertical-align: middle;">
+                                            <span t-esc="'%.2f' % line['value_ck'] if line['value_ck'] else ''"/>
+                                        </td>
+                                        <td class="text-right" style="border: 1px solid black; vertical-align: middle;">
+                                            <span t-esc="'%.2f' % line['value_dk'] if line['value_dk'] else ''"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <!-- Footer -->
+                        <div style="margin: 60px 0px; font-size: 12px;">
+                            <div style="text-align: right; font-style: italic; margin-bottom: 40px;">
+                                Lập ngày <span t-esc="time.strftime('%d')"/> tháng <span t-esc="time.strftime('%m')"/> năm <span t-esc="time.strftime('%Y')"/>
+                            </div>
+                            <table style="width: 100%; border: none;">
+                                <tr>
+                                    <td style="width: 33%; text-align: center; vertical-align: top;">
+                                        <div style="font-weight: bold; text-transform: uppercase;">Người lập</div>
+                                        <div style="font-style: italic;">Ký, họ tên</div>
+                                    </td>
+                                    <td style="width: 33%; text-align: center; vertical-align: top;">
+                                        <div style="font-weight: bold; text-transform: uppercase;">Kế toán trưởng</div>
+                                        <div style="font-style: italic;">Ký, họ tên</div>
+                                    </td>
+                                    <td style="width: 33%; text-align: center; vertical-align: top;">
+                                        <div style="font-weight: bold; text-transform: uppercase;">Tổng giám đốc</div>
+                                        <div style="font-style: italic;">Ký, họ tên, đóng dấu</div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>

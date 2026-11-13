@@ -1,0 +1,399 @@
+<odoo>
+    <record id="paperformat_eam_work_order" model="report.paperformat">
+        <field name="name">EAM - Phiếu bảo trì A4</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">12</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">12</field>
+        <field name="margin_right">12</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+    <record id="report_work_order" model="ir.actions.report">
+        <field name="name">Lệnh bảo trì / nghiệm thu</field>
+        <field name="model">maintenance.request</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ps_enterprise_asset.work_order_document</field>
+        <field name="binding_model_id" ref="maintenance.model_maintenance_request"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="paperformat_eam_work_order"/>
+        <field name="print_report_name">'Bao_tri_%s' % object.eam_number.replace('/', '-')</field>
+    </record>
+    <template id="work_order_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="company" t-value="o.company_id"/>
+                <div class="article" t-att-data-oe-model="o._name" t-att-data-oe-id="o.id">
+                    <div class="page eam-report">
+                        <style>
+                            @font-face {
+                                font-family: EamRoboto;
+                                src: url('/ps_enterprise_asset/static/src/fonts/Roboto-Regular.ttf') format('truetype');
+                                font-weight: 400;
+                                font-style: normal;
+                            }
+
+                            @font-face {
+                                font-family: EamRoboto;
+                                src: url('/ps_enterprise_asset/static/src/fonts/Roboto-Bold.ttf') format('truetype');
+                                font-weight: 700;
+                                font-style: normal;
+                            }
+
+                            .eam-report {
+                                font-family: EamRoboto,Roboto,Arial,sans-serif;
+                                font-size: 13px;
+                                line-height: 1.45;
+                                color: #243247;
+                            }
+
+                            .eam-report table {
+                                width: 100%;
+                                border-collapse: collapse;
+                                table-layout: fixed;
+                            }
+
+                            .eam-report td,
+                            .eam-report th {
+                                padding: 6px 9px;
+                                vertical-align: top;
+                                word-wrap: break-word;
+                            }
+
+                            .eam-report .brand td {
+                                padding: 0 0 12px;
+                                vertical-align: middle;
+                                border-bottom: 3px solid #e9a50a;
+                            }
+
+                            .eam-report .brand-name {
+                                font-size: 19px;
+                                font-weight: bold;
+                                color: #102a52;
+                            }
+
+                            .eam-report .muted {
+                                color: #637083;
+                                font-size: 11px;
+                            }
+
+                            .eam-report h1 {
+                                font-size: 24px;
+                                font-weight: bold;
+                                color: #102a52;
+                                margin: 16px 0 2px;
+                                text-align: center;
+                            }
+
+                            .eam-report .subtitle {
+                                text-align: center;
+                                color: #637083;
+                                margin: 0 0 14px;
+                                font-size: 11px;
+                            }
+
+                            .eam-report h2 {
+                                font-size: 13px;
+                                color: #102a52;
+                                background: #edf2f8;
+                                border-left: 4px solid #e9a50a;
+                                padding: 5px 9px;
+                                margin: 10px 0 6px;
+                                font-weight: bold;
+                            }
+
+                            .eam-report .grid td,
+                            .eam-report .grid th {
+                                border: 1px solid #d4dce6;
+                            }
+
+                            .eam-report .grid th {
+                                background: #f2f5f9;
+                                font-weight: bold;
+                                text-align: left;
+                            }
+
+                            .eam-report .label {
+                                display: block;
+                                color: #637083;
+                                font-size: 11px;
+                                margin-bottom: 2px;
+                            }
+
+                            .eam-report .value {
+                                font-weight: bold;
+                            }
+
+                            .eam-report .notice {
+                                padding: 7px 10px;
+                                border: 1px solid #e6ce91;
+                                background: #fff8e7;
+                                font-size: 11px;
+                                margin: 10px 0;
+                            }
+
+                            .eam-report .content {
+                                padding: 2px 9px;
+                                white-space: normal;
+                            }
+
+                            .eam-report .content p {
+                                margin: 3px 0;
+                            }
+
+                            .eam-report .text {
+                                white-space: pre-wrap;
+                                overflow-wrap: break-word;
+                                margin: 0;
+                            }
+
+                            .eam-report .money {
+                                text-align: right;
+                                white-space: nowrap;
+                            }
+
+                            .eam-report .total td {
+                                background: #edf2f8;
+                                font-weight: bold;
+                                color: #102a52;
+                            }
+
+                            .eam-report .keep {
+                                page-break-inside: avoid;
+                            }
+
+                            .eam-report tr {
+                                page-break-inside: avoid;
+                            }
+
+                            .eam-report thead {
+                                display: table-header-group;
+                            }
+
+                            .eam-report .sign td {
+                                text-align: center;
+                                padding-top: 12px;
+                                width: 50%;
+                            }
+
+                            .eam-report .sign-line {
+                                height: 48px;
+                            }
+
+                            .eam-report .note {
+                                border-top: 1px solid #d4dce6;
+                                margin-top: 15px;
+                                padding-top: 7px;
+                                font-size: 10px;
+                                color: #637083;
+                            }
+
+                            .eam-report .brand,
+                            .eam-report .brand tbody,
+                            .eam-report .brand tr,
+                            .eam-report .brand td,
+                            .eam-report .sign,
+                            .eam-report .sign tbody,
+                            .eam-report .sign tr,
+                            .eam-report .sign td {
+                                border: 0 !important;
+                            }
+
+                            .eam-report .brand td {
+                                border-bottom: 3px solid #e9a50a !important;
+                            }
+                        </style>
+                        <div
+                            class="brand"
+                            style="display:table;width:100%;table-layout:fixed;font-size:13px;padding-bottom:8px;border-bottom:3px solid #e9a50a !important;"
+                        >
+                            <div style="display:table-cell;vertical-align:middle;box-sizing:border-box;font-size:13px;width:35%;text-align:left;">
+                                <img
+                                    t-if="company.logo"
+                                    t-att-src="image_data_uri(company.logo)"
+                                    style="width:190px;max-height:76px;object-fit:contain;"
+                                    alt="Logo công ty"
+                                />
+                            </div>
+                            <div style="display:table-cell;vertical-align:middle;box-sizing:border-box;font-size:13px;width:65%;text-align:right;">
+                                <div class="brand-name" t-field="company.name"/>
+                                <div class="muted" t-if="company.street">
+                                    <span t-field="company.street"/>
+                                    <t t-if="company.city">, <span t-field="company.city"/></t>
+                                </div>
+                                <div class="muted" t-if="company.vat">Mã số thuế: <span t-field="company.vat"/></div>
+                                <div class="muted" t-if="company.phone">Điện thoại: <span t-field="company.phone"/></div>
+                            </div>
+                        </div>
+                        <h1>LỆNH BẢO TRÌ &amp; NGHIỆM THU</h1>
+                        <p class="subtitle">Mã phiếu: <strong t-field="o.eam_number"/> | Trạng thái: <strong t-out="{'draft':'Nháp','approved':'Đã duyệt','progress':'Đang thực hiện','done':'Đã nghiệm thu','cancelled':'Đã hủy'}.get(o.eam_state, o.eam_state)"/></p>
+                        <div t-if="o.eam_state != 'done'" class="notice">Phiếu chưa nghiệm thu. Nội dung và chi phí phản ánh dữ liệu đã ghi nhận tại thời điểm xuất.</div>
+                        <h2>1. THÔNG TIN CÔNG VIỆC</h2>
+                        <table class="grid">
+                            <tr>
+                                <td colspan="2">
+                                    <span class="label">Công việc</span>
+                                    <span class="value" t-field="o.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="label">Thiết bị / mã thiết bị</span>
+                                    <span class="value" t-field="o.equipment_id.name"/>
+                                    <div class="muted" t-field="o.equipment_id.eam_code"/>
+                                </td>
+                                <td>
+                                    <span class="label">Số sê-ri / vị trí</span>
+                                    <span t-out="o.equipment_id.serial_no or 'Chưa ghi nhận'"/>
+                                    <div class="muted" t-out="o.equipment_id.eam_location or 'Chưa ghi nhận vị trí'"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="label">Loại bảo trì</span>
+                                    <span t-out="'Khắc phục sự cố' if o.maintenance_type == 'corrective' else 'Bảo trì định kỳ'"/>
+                                </td>
+                                <td>
+                                    <span class="label">Kỹ thuật viên phụ trách</span>
+                                    <span t-out="o.user_id.name or 'Chưa phân công'"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="label">Lịch bắt đầu</span>
+                                    <span t-if="o.schedule_date" t-field="o.schedule_date"/>
+                                    <span t-else="">Chưa lên lịch</span>
+                                </td>
+                                <td>
+                                    <span class="label">Lịch kết thúc</span>
+                                    <span t-if="o.schedule_end" t-field="o.schedule_end"/>
+                                    <span t-else="">Chưa lên lịch</span>
+                                </td>
+                            </tr>
+                        </table>
+                        <h2>2. NỘI DUNG YÊU CẦU / HIỆN TƯỢNG</h2>
+                        <div class="content">
+                            <div t-if="o.description" t-field="o.description"/>
+                            <span t-else="" class="muted">Chưa ghi nhận nội dung yêu cầu.</span>
+                        </div>
+                        <h2>3. CHECKLIST THỰC HIỆN</h2>
+                        <table class="grid">
+                            <thead>
+                                <tr>
+                                    <th style="width:7%">STT</th>
+                                    <th style="width:43%">Hạng mục kiểm tra</th>
+                                    <th style="width:20%">Tình trạng</th>
+                                    <th style="width:30%">Kết quả / ghi chú</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.eam_check_ids" t-as="line">
+                                    <td t-out="line_index + 1"/>
+                                    <td>
+                                        <span t-field="line.name"/>
+                                    </td>
+                                    <td t-out="'Hoàn thành' if line.checked else 'Chưa hoàn thành'"/>
+                                    <td t-out="line.result or 'Chưa ghi nhận'"/>
+                                </tr>
+                                <tr t-if="not o.eam_check_ids">
+                                    <td colspan="4" class="muted">Chưa có checklist cho lệnh này.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="keep">
+                            <h2>4. NGUYÊN NHÂN &amp; BIỆN PHÁP XỬ LÝ</h2>
+                            <table class="grid">
+                                <tr>
+                                    <td style="width:50%">
+                                        <span class="label">Nguyên nhân gốc</span>
+                                        <p class="text" t-out="o.root_cause or 'Chưa ghi nhận'"/>
+                                    </td>
+                                    <td style="width:50%">
+                                        <span class="label">Biện pháp xử lý</span>
+                                        <p class="text" t-out="o.resolution or 'Chưa ghi nhận'"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="keep">
+                            <h2>5. CHI PHÍ ĐÃ GHI NHẬN</h2>
+                            <table class="grid">
+                                <tbody>
+                                    <tr>
+                                        <td style="width:70%">Ngân sách dự toán</td>
+                                        <td class="money">
+                                            <span t-field="o.eam_budget"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nhân công (<span t-out="'%.2f' % o.actual_hours"/> giờ x <span t-field="o.hourly_rate"/>)</td>
+                                        <td class="money">
+                                            <span
+                                                t-out="o.actual_hours * o.hourly_rate"
+                                                t-options="{'widget':'monetary','display_currency':o.currency_id}"
+                                            />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Vật tư thực xuất</td>
+                                        <td class="money">
+                                            <span t-field="o.eam_parts_cost"/>
+                                        </td>
+                                    </tr>
+                                    <tr t-foreach="o.cost_ids" t-as="cost">
+                                        <td>Dịch vụ: <span t-field="cost.name"/></td>
+                                        <td class="money">
+                                            <span t-field="cost.amount"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="total">
+                                        <td>TỔNG CHI PHÍ</td>
+                                        <td class="money">
+                                            <span t-field="o.eam_total_cost"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="keep">
+                            <h2>6. XÁC NHẬN THỰC HIỆN &amp; NGHIỆM THU</h2>
+                            <div class="sign" style="display:table;width:100%;table-layout:fixed;font-size:13px;">
+                                <div style="display:table-cell;vertical-align:middle;box-sizing:border-box;font-size:13px;width:50%;text-align:center;padding-top:12px;">
+                                    <strong>KỸ THUẬT VIÊN</strong>
+                                    <div class="muted">Người phụ trách công việc</div>
+                                    <div class="sign-line"/>
+                                    <span t-out="o.user_id.name or 'Chưa phân công'"/>
+                                </div>
+                                <div style="display:table-cell;vertical-align:middle;box-sizing:border-box;font-size:13px;width:50%;text-align:center;padding-top:12px;">
+                                    <strong>ĐẠI DIỆN NGHIỆM THU</strong>
+                                    <div class="muted">Bộ phận vận hành</div>
+                                    <div style="height:48px">
+                                        <img
+                                            t-if="o.acceptance_signature"
+                                            t-att-src="image_data_uri(o.acceptance_signature)"
+                                            style="max-height:46px;max-width:155px;"
+                                            alt="Chữ ký nghiệm thu"
+                                        />
+                                    </div>
+                                    <span t-out="o.acceptance_user_id.name or 'Chưa ký nghiệm thu'"/>
+                                    <div t-if="o.acceptance_date" class="muted">
+                                        <span t-field="o.acceptance_date"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="footer o_eam_report_footer"
+                    style="font-family:Roboto,DejaVu Sans,Arial,sans-serif;font-size:10px;line-height:1.35;color:#637083;border-top:1px solid #d4dce6;padding-top:6px;"
+                >
+                    <div t-out="'Phiếu được xuất từ phân hệ Quản lý Thiết bị &amp; Bảo trì của %s. Chi phí trên phiếu chưa phải hóa đơn thanh toán.' % company.name"/>
+                    <div style="text-align:right;margin-top:3px;">Trang <span class="page"/> / <span class="topage"/></div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

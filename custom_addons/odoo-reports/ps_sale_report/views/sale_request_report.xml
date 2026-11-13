@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_sale_request_pdf" model="ir.actions.report">
+        <field name="name">Theo dõi đề nghị xuất bán</field>
+        <field name="model">ps.sale.history.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ps_sale_report.sale_request_pdf</field>
+        <field name="report_file">ps_sale_report.sale_request_pdf</field>
+        <field name="paperformat_id" ref="ps_sale_report.paperformat_sale_history"/>
+        <field name="print_report_name">'Theo_doi_de_nghi_xuat_ban_%s_%s' % (object.date_from, object.date_to)</field>
+    </record>
+    <template id="sale_request_pdf">
+        <t t-call="web.html_container">
+            <div class="footer" style="text-align:center;font-size:8pt">Trang <span class="page"/> / <span class="topage"/></div>
+            <t t-foreach="reports" t-as="report">
+                <t t-set="wizard" t-value="report['wizard']"/>
+                <div class="article" t-att-data-oe-model="wizard._name" t-att-data-oe-id="wizard.id">
+                    <t t-call="ps_sale_report.sale_preview_styles"/>
+                    <style>
+                        .ps-request {font-family:'Times New Roman','Nimbus Roman','DejaVu Serif',serif;font-size:8pt;page-break-after:always;}
+                        .ps-request:last-child {page-break-after:auto;}
+                        .ps-request h1 {text-align:center;font-size:18px;font-weight:bold;margin:8px 0;}
+                        .ps-request .period {text-align:center;margin-bottom:12px;}
+                        .ps-request table {width:100%;border-collapse:collapse;table-layout:fixed;font-size:8pt;}
+                        .ps-request th,.ps-request td {border:1px solid #444;padding:4px 2px;line-height:1.25;word-wrap:break-word;vertical-align:middle;}
+                        .ps-request th {text-align:center;background:#edf1f6;}
+                        .ps-request tr {page-break-inside:avoid;}
+                        .ps-request .num {text-align:right;}
+                        .ps-request .signature {text-align:right;margin-top:14px;}
+
+                    </style>
+                    <t t-foreach="report['pages']" t-as="page">
+                        <div class="page ps-report ps-contract ps-request">
+                            <div class="company"><strong t-out="wizard.company_id.name"/></div>
+                            <h1>THEO DÕI ĐỀ NGHỊ XUẤT BÁN</h1>
+                            <div class="period">Từ ngày <t t-out="format_date(wizard.date_from)"/> đến ngày <t t-out="format_date(wizard.date_to)"/></div>
+                            <div t-if="report['order_filter']" style="margin-bottom:8px">SO: <t t-out="report['order_filter']"/></div>
+                            <div t-if="report['product_filter']" style="margin-bottom:8px">Sản phẩm: <t t-out="report['product_filter']"/></div>
+                            <table>
+                                <colgroup><col style="width:3%"/><col style="width:8%"/><col style="width:9%"/><col style="width:25%"/><col style="width:5%"/><col style="width:9%"/><col style="width:13%"/><col style="width:8%"/><col style="width:12%"/><col style="width:8%"/></colgroup>
+                                <thead><tr><th t-foreach="report['columns']" t-as="column" t-out="column[0]"/></tr></thead>
+                                <tbody>
+                                    <tr t-foreach="page" t-as="row">
+                                        <td t-foreach="row" t-as="value" t-att-class="'num' if report['columns'][value_index][1] == 'number' else ''">
+                                            <t t-if="value is None or value is False or value == ''">&#160;</t>
+                                            <t t-elif="value_index == 0" t-out="value"/>
+                                            <t t-elif="report['columns'][value_index][1] == 'date'" t-out="format_date(value)"/>
+                                            <t t-elif="report['columns'][value_index][1] == 'number'" t-out="format_number(value)"/>
+                                            <t t-else="" t-out="value"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <t t-if="page_last" t-call="ps_sale_report.sale_report_signature"/>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

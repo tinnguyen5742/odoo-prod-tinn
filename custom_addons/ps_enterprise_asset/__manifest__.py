@@ -1,0 +1,32 @@
+{
+    "name": "PS EAM - Thiết bị & Bảo trì",
+    "version": "19.0.1.4.0",
+    "category": "Maintenance",
+    "summary": "Hồ sơ thiết bị, bảo hành, bảo trì định kỳ, giám sát, lệnh và báo cáo",
+    "author": "Custom EAM",
+    "license": "LGPL-3",
+    "depends": ["maintenance", "purchase_stock", "mrp_account"],
+    "data": [
+        "security/eam_security.xml",
+        "security/eam_operations.xml",
+        "security/eam_integrations.xml",
+        "security/ir.model.access.csv",
+        "data/eam_data.xml",
+        "data/eam_integrations.xml",
+        "views/eam_views.xml",
+        "report/work_order.xml",
+        "report/extra_reports.xml",
+        "views/eam_extensions.xml",
+        "views/eam_scope.xml",
+        "views/eam_operations.xml",
+        "views/eam_integrations.xml",
+    ],
+    "assets": {
+        "web.assets_backend": [
+            "ps_enterprise_asset/static/src/xml/company_logo.xml",
+            "ps_enterprise_asset/static/src/scss/company_logo.scss",
+        ],
+    },
+    "application": True,
+    "installable": True,
+}

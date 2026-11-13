@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo><record id="view_correction_wizard" model="ir.ui.view">
+    <field name="name">ps.te.correction.wizard.form</field><field name="model">ps.te.correction.wizard</field>
+    <field name="arch" type="xml"><form string="Correction Case">
+        <div class="alert alert-warning" role="status">This investigation does not reverse payments or certify accounting completion.</div>
+        <group><field name="trip_id"/><field name="correction_id"/><field name="expected_revision"/><field name="operation"/>
+            <field name="category" invisible="operation != 'create'" required="operation == 'create'"/>
+            <field name="reference" invisible="operation not in ['external', 'propose', 'confirm']" required="operation in ['external', 'propose', 'confirm']"/>
+            <field name="reason"/></group>
+        <footer><button name="action_apply" type="object" string="Apply" class="btn-primary"/><button string="Cancel" special="cancel"/></footer>
+    </form></field>
+</record></odoo>

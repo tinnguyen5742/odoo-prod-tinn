@@ -1,0 +1,23 @@
+# Settlement and cash-integrity increment — 2026-10-20
+
+Authority: PO's current “duyet” approves implementing the previously proposed equal/over/under settlement, return/top-up and closure controls. Existing D6 task remains IN_PROGRESS. This is a local/synthetic implementation contract, not independent review, finance/legal assurance or deployment acceptance.
+
+## Known bases, not inferred zero
+
+One settlement per approved trip. The expense report must have all lines decided for its exact revision and a current accepted-basis flag. Freeze the accepted total/revision/policy when preparing settlement. Funding is known only from an attributed recorded advance disbursement, or a separately attributed cash officer confirmation that no advance was paid. A no-advance request, a cancelled draft, an approval, missing record or timeout does not itself prove a zero funding basis.
+
+Requested advance funding still pending execution blocks final approval. Resolve it to recorded disbursement or cancellation plus explicit no-payment confirmation before settlement. Cash officers must prepare an external cash operation before recording it: preparation marks the outcome uncertain and blocks owner cancellation/reset. It never initiates a bank transfer. An uncertain operation can be reconciled to the recorded exact amount/reference/date or explicitly confirmed not executed with a separate reference/reason. No automatic resend or blind zero fallback. Legacy attributed positive disbursement facts may be indexed into the new immutable cash registry without inventing a new bank transaction or replacing their original actor/date.
+
+## Comparison and approval
+
+Difference = accepted employee-paid expenses minus known recorded advance funding, in whole VND. Positive: company owes employee a top-up; negative: employee owes company a return; zero: no additional movement, not automatic closure. Finance must approve the exact prepared revision with reason. This atomically locks the accepted expense basis and trip funding slot so expense edits, new advances, no-advance changes or unexecuted advance reopening cannot invalidate the approved comparison. A finance return before any settlement cash operation unlocks sources, increments settlement revision and requires preparation/review again; no historical snapshots are erased.
+
+Cash operator is explicitly assigned, active, in the company, distinct from owner and finance. Top-up/return require preparation (uncertain state), then a reference/date and exact full difference. One movement only, no partial transfers in this release. The central immutable registry enforces company-unique actual-cash references across advance and settlement, plus one movement per source/kind. Identical replay is idempotent; conflicting replay is refused. Negative/no-payment confirmations are audit declarations, not fake cash events.
+
+Finance explicitly closes only an approved, still-valid frozen case with known funding, no uncertain cash operation and zero recorded outstanding obligation. Equal amounts alone do not close it. Closure means the selected application workflow and recorded money obligations are resolved; external accounting remains NOT_VERIFIED. No journal entry, tax clearance, bank verification or legal/financial assurance is inferred from closure. Closed cases and executed monetary facts are immutable; further financial correction/reversal needs a separate auditable workflow, not reset/delete.
+
+## Roles, policy and remaining limits
+
+Configure a settlement-policy reference and current finance/cash assignments. Owner may prepare/refresh/submit; finance approves/returns/closes; cash confirms absent funding and prepares/reconciles external movements. Cash actors see settlement monetary summaries, not expense proof access. Current company/employee mapping, roles, assignments and policy/currency/source revisions are checked. Changes fail closed and preserve historical facts; policy/authority changes after actual execution need bounded administrative revalidation, not silent recomputation.
+
+The choice of formula, one-payment scope, whole-VND precision, limits and workflow separation is an explicit delegated first-release design, not a statutory or real-company policy assertion. Test policies and payment references are explicitly synthetic. Operator declarations/references are not independent bank evidence. Complete real-policy/specialist verification, matched DB/filestore recovery, broader security/browser/UAT, cross-flow corrections, fresh whole-product independent review, PO acceptance and an exact deployment/data envelope remain release gates. Finance assurance stays NO_GO / REQUIRES_SPECIALIST_VERIFICATION.

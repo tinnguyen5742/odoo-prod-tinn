@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ps_te_expense_list" model="ir.ui.view">
+        <field name="name">ps.te.expense.report.list</field><field name="model">ps.te.expense.report</field>
+        <field name="arch" type="xml"><list create="0" edit="0" delete="0" duplicate="0">
+            <field name="reference"/><field name="trip_id"/><field name="owner_id"/><field name="state"/>
+            <field name="correction_hold"/>
+            <field name="claimed_total"/><field name="accepted_total"/><field name="accepted_basis_ready"/><field name="currency_id"/>
+        </list></field>
+    </record>
+    <record id="view_ps_te_expense_form" model="ir.ui.view">
+        <field name="name">ps.te.expense.report.form</field><field name="model">ps.te.expense.report</field>
+        <field name="arch" type="xml"><form create="0" edit="0" delete="0" duplicate="0">
+            <header><button name="action_open_native_expenses" type="object" string="Mở Expenses chuẩn"/>
+                <button name="action_open_operation" type="object" string="Expense Operation" class="btn-primary"/>
+                <field name="state" widget="statusbar" statusbar_visible="draft,submitted,returned,reviewed"/></header>
+            <sheet><field name="native_source_ready" invisible="1"/>
+            <div class="alert alert-warning" role="alert" invisible="native_source_ready">Cơ sở cũ chưa liên kết Expenses chuẩn. Không dùng làm cơ sở0 hoặc tự chuyển dữ liệu.</div>
+            <group string="Next Step" col="1"><field name="workflow_next_step" nolabel="1" readonly="1"/></group><group>
+                <group><field name="reference"/><field name="trip_id"/><field name="owner_id"/><field name="company_id"/><field name="revision"/></group>
+                <group><field name="finance_reviewer_id"/><field name="policy_reference"/><field name="currency_id"/>
+                    <field name="claimed_total"/><field name="accepted_total" string="Reviewed Accepted Subtotal"/>
+                    <field name="refused_total"/><field name="unresolved_total"/><field name="accepted_basis_ready"/>
+                    <field name="reviewed_revision"/><field name="basis_locked"/></group>
+            </group><group string="Explicit No-Expense Declaration">
+                <field name="zero_expense_declared"/><field name="zero_expense_reason"/>
+                <field name="zero_expense_declared_by_id"/><field name="zero_expense_declared_at"/>
+                <field name="zero_expense_cancellation_revision"/>
+                <field name="zero_expense_review_reason"/><field name="zero_expense_reviewed_by_id"/><field name="zero_expense_reviewed_at"/>
+            </group><notebook>
+                <page string="Employee Expenses"><field name="line_ids"><list create="0" edit="0" delete="0">
+                    <field name="native_expense_id"/><field name="description"/><field name="expense_date"/><field name="claimed_amount"/>
+                    <field name="decision"/><field name="accepted_amount"/><field name="decision_reason"/><field name="currency_id"/>
+                </list></field></page>
+                <page string="History"><field name="event_ids"><list create="0" edit="0" delete="0">
+                    <field name="occurred_at"/><field name="actor_id"/><field name="revision"/><field name="event_label"/><field name="event_type" optional="hide"/><field name="reason"/>
+                    <field name="snapshot" optional="hide"/>
+                    <field name="zero_expense_snapshot" optional="hide"/>
+                </list></field></page>
+            </notebook></sheet>
+        </form></field>
+    </record>
+    <record id="view_ps_te_expense_line_form" model="ir.ui.view">
+        <field name="name">ps.te.expense.line.form</field><field name="model">ps.te.expense.line</field>
+        <field name="arch" type="xml"><form create="0" edit="0" delete="0" duplicate="0"><sheet>
+            <group><field name="native_expense_id"/><field name="report_id"/><field name="description"/><field name="expense_date"/><field name="currency_id"/>
+                <field name="claimed_amount"/><field name="decision"/><field name="accepted_amount"/><field name="decision_reason"/></group>
+            <field name="evidence_ids"><list create="0" edit="0" delete="0">
+                <field name="filename"/><field name="sha256" optional="hide"/><field name="superseded"/><field name="superseded_reason"/>
+                <button name="action_download" type="object" string="Download"/>
+            </list></field>
+        </sheet></form></field>
+    </record>
+    <record id="action_ps_te_expenses" model="ir.actions.act_window">
+        <field name="name">Expense Reports</field><field name="res_model">ps.te.expense.report</field><field name="view_mode">list,form</field>
+    </record>
+    <record id="view_company_ps_te_expense" model="ir.ui.view">
+        <field name="name">res.company.ps.te.expense</field><field name="model">res.company</field>
+        <field name="inherit_id" ref="ps_expenses.view_company_ps_te_advance"/>
+        <field name="arch" type="xml"><xpath expr="//field[@name='ps_te_advance_policy_reference']" position="after">
+            <field name="ps_te_expense_policy_reference"/>
+        </xpath></field>
+    </record>
+</odoo>

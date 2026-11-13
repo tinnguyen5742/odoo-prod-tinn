@@ -1,0 +1,66 @@
+<odoo>
+    <record id="action_sale_collection_pdf" model="ir.actions.report">
+        <field name="name">Thu tiền khách hàng</field><field name="model">ps.sale.history.wizard</field>
+        <field name="report_type">qweb-pdf</field><field name="report_name">ps_sale_report.sale_collection_pdf</field>
+        <field name="report_file">ps_sale_report.sale_collection_pdf</field>
+        <field name="paperformat_id" ref="ps_sale_report.paperformat_sale_history"/>
+        <field name="print_report_name">'Thu_tien_KH_%s_%s' % (object.date_from, object.date_to)</field>
+    </record>
+    <template id="sale_collection_pdf">
+        <t t-call="web.html_container">
+            <div class="footer" style="text-align:center;font-size:8pt">Trang <span class="page"/> / <span class="topage"/></div>
+            <t t-foreach="reports" t-as="report">
+                <t t-set="wizard" t-value="report['wizard']"/>
+                <div class="article" t-att-data-oe-model="wizard._name" t-att-data-oe-id="wizard.id">
+                    <t t-call="ps_sale_report.sale_preview_styles"/>
+                    <style>
+                        .ps-collection {font-family:'Times New Roman','Nimbus Roman','DejaVu Serif',serif;font-size:8pt;page-break-after:always;}
+                        .ps-collection:last-child {page-break-after:auto;}
+                        .ps-collection h1 {text-align:center;font-size:18px;font-weight:bold;margin:8px 0;}
+                        .ps-collection .period {text-align:center;margin-bottom:12px;}
+                        .ps-collection table {width:100%;border-collapse:collapse;table-layout:fixed;font-size:8pt;}
+                        .ps-collection th,.ps-collection td {border:1px solid #444;padding:4px 3px;line-height:1.25;word-wrap:break-word;vertical-align:middle;}
+                        .ps-collection th {text-align:center;background:#edf1f6;font-weight:bold;}
+                        .ps-collection tr {page-break-inside:avoid;}
+                        .ps-collection .num {text-align:right;}
+                        .ps-collection .customer,.ps-collection .invoice {font-weight:bold;color:#0645AD;}
+                        .ps-collection .currency {font-style:italic;}
+                        .ps-collection .total,.ps-collection .advance_total {font-weight:bold;color:#B91C1C;background:#edf1f6;}
+                    </style>
+                    <t t-foreach="report['pages']" t-as="page">
+                        <div class="page ps-report ps-contract ps-collection">
+                            <div class="company"><strong t-out="wizard.company_id.name"/></div>
+                            <h1>BÁO CÁO SỐ DƯ TỪNG HÓA ĐƠN THEO KHÁCH HÀNG</h1>
+                            <div class="period">Từ ngày <t t-out="format_date(wizard.date_from)"/> đến ngày <t t-out="format_date(wizard.date_to)"/></div>
+                            <table>
+                                <colgroup><col style="width:3%"/><col style="width:15%"/><col style="width:8%"/><col style="width:36%"/><col style="width:10%"/><col style="width:10%"/><col style="width:10%"/><col style="width:8%"/></colgroup>
+                                <thead><tr><th t-foreach="report['headers']" t-as="heading" t-out="heading"/></tr></thead>
+                                <tbody><tr t-foreach="page" t-as="row" t-att-class="row['kind']">
+                                    <t t-if="row['kind'] in ('customer', 'currency')">
+                                        <td colspan="8"><t t-out="row['label']"/><t t-if="row.get('continued')"> (tiếp)</t></td>
+                                    </t>
+                                    <t t-elif="row['kind'] in ('total', 'advance_total')">
+                                        <td colspan="4" t-out="row['label']"/>
+                                        <td t-foreach="row['totals']" t-as="value" class="num"><t t-if="value is not None" t-out="format_number(value, row['currency'].decimal_places)"/></td>
+                                        <td>&#160;</td>
+                                    </t>
+                                    <t t-else="">
+                                        <td t-foreach="row['values']" t-as="value" t-att-class="'num' if value_index in (4, 5, 6) else ''">
+                                            <t t-if="row.get('continued') and value_index in (4, 5, 6)">&#160;</t>
+                                            <t t-elif="value is None or value == ''">&#160;</t>
+                                            <t t-elif="value_index in (2, 7)" t-out="format_date(value)"/>
+                                            <t t-elif="value_index in (4, 5, 6)" t-out="format_number(value, row['currency'].decimal_places)"/>
+                                            <span t-else="" style="white-space:pre-line" t-out="value"/>
+                                            <t t-if="row.get('continued') and value_index == 1"> (tiếp)</t>
+                                        </td>
+                                    </t>
+                                </tr></tbody>
+                            </table>
+                            <t t-if="page_last" t-call="ps_sale_report.sale_report_signature"/>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

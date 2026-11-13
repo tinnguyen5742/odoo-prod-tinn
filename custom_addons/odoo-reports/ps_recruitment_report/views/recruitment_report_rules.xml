@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_recruitment_list_a4" model="report.paperformat">
+        <field name="name">Tuyển dụng - Danh sách - A4 ngang</field>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">40</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_spacing">35</field>
+        <field name="dpi">90</field>
+        <field name="header_line" eval="False"/>
+        <field name="disable_shrinking" eval="False"/>
+    </record>
+
+    <template id="report_job_list_style">
+        <style>
+            .rec_job_list { line-height: 1.2; }
+            .rec_job_list h2 { margin: 0 0 6px !important; font-size: 24px; text-align: center; }
+            .rec_job_list .list_totals { margin: 0 0 6px !important; }
+            .rec_job_list table { width: 100% !important; border-collapse: collapse !important; table-layout: fixed; margin: 0 0 6px !important; }
+            .rec_job_list th, .rec_job_list td { border: 1px solid #c9cfd6; padding: 3px 6px !important; vertical-align: top; line-height: 1.2 !important; height: auto !important; overflow-wrap: break-word; word-wrap: break-word; }
+            .rec_job_list th, .rec_job_list td, .rec_job_list th *, .rec_job_list td * { font-weight: 400 !important; }
+            .rec_job_list thead { display: table-header-group; }
+            .rec_job_list thead th { background-color: #edf2f6; }
+            .rec_job_list thead .job_caption { text-align: left; background-color: #ffffff; page-break-after: avoid; }
+            .rec_job_list .job_caption .job_name { font-size: 18px; }
+            .rec_job_list .job_caption .job_meta { margin-top: 3px !important; }
+            .rec_job_list td div, .rec_job_list td p { margin: 0 !important; padding: 0 !important; }
+            .rec_job_list .number { text-align: center; }
+            .rec_job_list .empty_message { margin: 0; }
+        </style>
+    </template>
+</odoo>

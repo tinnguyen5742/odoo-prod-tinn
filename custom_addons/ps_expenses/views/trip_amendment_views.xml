@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_amendment_list" model="ir.ui.view">
+        <field name="name">ps.te.trip.amendment.list</field><field name="model">ps.te.trip.amendment</field>
+        <field name="arch" type="xml"><list create="0" edit="0" delete="0" duplicate="0">
+            <field name="reference"/><field name="trip_id"/><field name="owner_id"/><field name="manager_id"/>
+            <field name="state"/><field name="requested_at"/><field name="source_revision"/>
+        </list></field>
+    </record>
+    <record id="view_amendment_form" model="ir.ui.view">
+        <field name="name">ps.te.trip.amendment.form</field><field name="model">ps.te.trip.amendment</field>
+        <field name="arch" type="xml"><form create="0" edit="0" delete="0" duplicate="0">
+            <header><button name="action_open_review" type="object" string="Review Amendment" groups="ps_expenses.group_ps_te_trip_manager" invisible="state != 'manager' or manager_id != uid"/>
+                <button name="action_open_owner_operation" type="object" string="Owner Amendment Operation" invisible="owner_id != uid or state not in ['manager', 'finance']"/>
+                <field name="state" widget="statusbar"/></header>
+            <sheet><div class="alert alert-warning" role="status">Original decisions and cash remain retained. Manager approval does not renew financial authorization.</div>
+                <group><group><field name="reference"/><field name="trip_id"/><field name="owner_id"/><field name="company_id"/><field name="manager_id"/><field name="revision"/><field name="source_revision"/></group>
+                    <group><field name="purpose"/><field name="destination"/><field name="start_date"/><field name="end_date"/><field name="reason"/></group></group>
+                <group string="Original Trip Facts" col="1"><field name="original_facts" nolabel="1"/></group>
+                <group><field name="requested_at"/><field name="decision_reason"/><field name="decided_by_id"/><field name="decided_at"/><field name="applied_at"/>
+                    <field name="applied_trip_revision"/><field name="financial_applied_by_id"/>
+                    <field name="withdrawal_reason"/><field name="withdrawn_by_id"/><field name="withdrawn_at"/></group>
+            </sheet>
+        </form></field>
+    </record>
+    <record id="view_amendment_wizard" model="ir.ui.view">
+        <field name="name">ps.te.amendment.wizard.form</field><field name="model">ps.te.amendment.wizard</field>
+        <field name="arch" type="xml"><form><group><field name="trip_id"/><field name="amendment_id" invisible="not amendment_id"/><field name="expected_revision"/>
+            <field name="operation" invisible="not amendment_id"/>
+            <field name="purpose" invisible="amendment_id" required="not amendment_id"/>
+            <field name="destination" invisible="amendment_id" required="not amendment_id"/>
+            <field name="start_date" invisible="amendment_id" required="not amendment_id"/>
+            <field name="end_date" invisible="amendment_id" required="not amendment_id"/>
+            <field name="decision" invisible="not amendment_id or operation != 'review'" required="amendment_id and operation == 'review'"/><field name="reason"/>
+        </group><footer><button name="action_apply" type="object" string="Apply" class="btn-primary"/><button special="cancel" string="Cancel"/></footer></form></field>
+    </record>
+    <record id="view_trip_amendment" model="ir.ui.view">
+        <field name="name">ps.te.trip.request.amendment</field><field name="model">ps.te.trip.request</field><field name="inherit_id" ref="view_ps_te_trip_request_form"/>
+        <field name="arch" type="xml"><xpath expr="//header" position="inside">
+            <button name="action_open_amendment" type="object" string="Amend Approved Trip" invisible="state != 'approved' or owner_id != uid"/>
+        </xpath><xpath expr="//field[@name='correction_hold']" position="after"><field name="amendment_id"/><field name="amendment_hold"/></xpath></field>
+    </record>
+    <record id="action_trip_amendments" model="ir.actions.act_window">
+        <field name="name">Trip Amendments to Review</field><field name="res_model">ps.te.trip.amendment</field><field name="view_mode">list,form</field>
+        <field name="domain">[('manager_id', '=', uid), ('state', '=', 'manager')]</field>
+    </record>
+    <menuitem id="menu_trip_amendments" name="Trip Amendments to Review" parent="menu_ps_te_trip_request_root" action="action_trip_amendments" sequence="27" groups="ps_expenses.group_ps_te_trip_manager"/>
+</odoo>

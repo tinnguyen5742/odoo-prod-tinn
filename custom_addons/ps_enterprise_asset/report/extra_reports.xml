@@ -1,0 +1,792 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="eam_pdf_layout">
+        <div class="article" t-att-data-oe-model="o._name" t-att-data-oe-id="o.id">
+            <div class="page eam-extra-report">
+                <style>
+                    @font-face {
+                        font-family: EamRoboto;
+                        src: url('/ps_enterprise_asset/static/src/fonts/Roboto-Regular.ttf') format('truetype');
+                        font-weight: 400;
+                    }
+
+                    @font-face {
+                        font-family: EamRoboto;
+                        src: url('/ps_enterprise_asset/static/src/fonts/Roboto-Bold.ttf') format('truetype');
+                        font-weight: 700;
+                    }
+
+                    .eam-extra-report {
+                        font-family: EamRoboto,Arial,sans-serif;
+                        font-size: 12px;
+                        line-height: 1.45;
+                        color: #243247;
+                    }
+
+                    .eam-extra-report .brand {
+                        display: table;
+                        width: 100%;
+                        border-bottom: 3px solid #e9a50a;
+                        padding-bottom: 9px;
+                    }
+
+                    .eam-extra-report .brand-cell {
+                        display: table-cell;
+                        vertical-align: middle;
+                        width: 50%;
+                    }
+
+                    .eam-extra-report .company {
+                        text-align: right;
+                        font-size: 18px;
+                        font-weight: bold;
+                        color: #102a52;
+                    }
+
+                    .eam-extra-report h1 {
+                        font-size: 23px;
+                        text-align: center;
+                        color: #102a52;
+                        margin: 17px 0 5px;
+                    }
+
+                    .eam-extra-report h2 {
+                        font-size: 13px;
+                        background: #edf2f8;
+                        color: #102a52;
+                        border-left: 4px solid #e9a50a;
+                        padding: 6px 9px;
+                        margin: 15px 0 7px;
+                        page-break-after: avoid;
+                    }
+
+                    .eam-extra-report .subtitle {
+                        text-align: center;
+                        color: #637083;
+                        font-size: 11px;
+                        margin-bottom: 14px;
+                    }
+
+                    .eam-extra-report table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        table-layout: fixed;
+                    }
+
+                    .eam-extra-report td,
+                    .eam-extra-report th {
+                        padding: 6px 8px;
+                        border: 1px solid #d4dce6;
+                        vertical-align: top;
+                        word-wrap: break-word;
+                    }
+
+                    .eam-extra-report th {
+                        background: #f2f5f9;
+                        text-align: left;
+                        font-weight: bold;
+                    }
+
+                    .eam-extra-report tr {
+                        page-break-inside: avoid;
+                    }
+
+                    .eam-extra-report thead {
+                        display: table-header-group;
+                    }
+
+                    .eam-extra-report .text {
+                        white-space: pre-wrap;
+                    }
+
+                    .eam-extra-report .muted {
+                        color: #637083;
+                        font-size: 11px;
+                    }
+
+                    .eam-extra-report p {
+                        margin: 6px 0;
+                    }
+                </style>
+                <div class="brand">
+                    <div class="brand-cell">
+                        <img
+                            t-if="company.logo"
+                            t-att-src="image_data_uri(company.logo)"
+                            style="width:170px;max-height:68px;"
+                            alt="Logo công ty"
+                        />
+                    </div>
+                    <div class="brand-cell company" t-field="company.name"/>
+                </div>
+                <h1 t-out="report_title"/>
+                <t t-out="0"/>
+            </div>
+        </div>
+        <div
+            class="footer"
+            style="font-family:Roboto,Arial,sans-serif;font-size:10px;color:#637083;border-top:1px solid #d4dce6;padding-top:6px"
+        >
+            <span t-out="'%s | Quản lý Thiết bị &amp; Bảo trì' % company.name"/>
+            <div style="text-align:right">Trang <span class="page"/> / <span class="topage"/></div>
+        </div>
+    </template>
+    <record id="report_equipment" model="ir.actions.report">
+        <field name="name">Hồ sơ thiết bị</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ps_enterprise_asset.equipment_document</field>
+        <field name="binding_model_id" ref="maintenance.model_maintenance_equipment"/>
+        <field name="binding_type">report</field>
+        <field name="binding_view_types">list,form</field>
+        <field name="group_ids" eval="[(4, ref('ps_enterprise_asset.group_eam_user'))]"/>
+        <field name="paperformat_id" ref="ps_enterprise_asset.paperformat_eam_work_order"/>
+    </record>
+    <template id="equipment_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="company" t-value="o.company_id or res_company"/>
+                <t t-call="ps_enterprise_asset.eam_pdf_layout">
+                    <t t-set="report_title">HỒ SƠ THIẾT BỊ</t>
+                    <p class="subtitle"><span t-field="o.eam_code"/> | <span t-field="o.name"/></p>
+                    <h2>1. Thông tin thiết bị</h2>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th style="width:30%">Tên thiết bị</th>
+                                <td>
+                                    <span t-field="o.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Mã / Số sê-ri</th>
+                                <td><span t-field="o.eam_code"/> / <span t-field="o.serial_no"/></td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Cấp tài sản / Tình trạng</th>
+                                <td><span t-field="o.eam_level"/> / <span t-field="o.eam_status"/></td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Thuộc thiết bị / cấp cha</th>
+                                <td>
+                                    <span t-field="o.parent_id"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Vị trí / Ngày sử dụng</th>
+                                <td><span t-field="o.eam_location"/> / <span t-field="o.effective_date"/></td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Kỹ thuật viên / Đội bảo trì</th>
+                                <td><span t-field="o.technician_user_id"/> / <span t-field="o.maintenance_team_id"/></td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Nhà cung cấp</th>
+                                <td>
+                                    <span t-field="o.partner_id"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h2>2. Bảo hành</h2>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th style="width:30%">Bảo hành nhà cung cấp</th>
+                                <td><span t-field="o.warranty_start"/> - <span t-field="o.warranty_date"/></td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Bảo hành khách hàng</th>
+                                <td><span t-field="o.customer_warranty_start"/> - <span t-field="o.customer_warranty_end"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div t-if="o.warranty_terms" t-field="o.warranty_terms"/>
+                    <h2>3. Chỉ số và chi phí đã ghi nhận</h2>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th style="width:30%">Giá mua / Chi phí bảo trì đã đóng</th>
+                                <td><span t-field="o.cost"/> / <span t-field="o.eam_maintenance_cost"/></td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Tổng chi phí sở hữu (TCO)</th>
+                                <td>
+                                    <span t-field="o.eam_tco"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Giữa sự cố / sửa chữa (MTBF / MTTR, giờ)</th>
+                                <td><span t-field="o.eam_mtbf_hours"/> / <span t-field="o.eam_mttr_hours"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h2>4. Kế hoạch bảo trì</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Kế hoạch</th>
+                                <th>Kỳ tiếp theo</th>
+                                <th>Ngân sách</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="o.plan_ids" t-as="p">
+                                <td>
+                                    <span t-field="p.name"/>
+                                </td>
+                                <td>
+                                    <span t-field="p.next_date"/>
+                                </td>
+                                <td>
+                                    <span t-field="p.budget"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p t-if="not o.plan_ids" class="muted">Chưa có kế hoạch bảo trì.</p>
+                    <h2>5. Lịch sử lệnh bảo trì</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Số lệnh / Công việc</th>
+                                <th>Ngày dự kiến</th>
+                                <th>Trạng thái</th>
+                                <th>Chi phí</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                t-foreach="o.maintenance_ids.filtered('eam_managed').sorted('id', reverse=True)"
+                                t-as="r"
+                            >
+                                <td>
+                                    <span t-field="r.eam_number"/>
+                                    <br/>
+                                    <span t-field="r.name"/>
+                                </td>
+                                <td>
+                                    <span t-field="r.schedule_date"/>
+                                </td>
+                                <td>
+                                    <span t-out="{'draft':'Nháp','approved':'Đã duyệt','progress':'Đang thực hiện','done':'Đã nghiệm thu','cancelled':'Đã hủy'}.get(r.eam_state, r.eam_state)"/>
+                                </td>
+                                <td>
+                                    <span t-field="r.eam_total_cost"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p t-if="not o.maintenance_ids.filtered('eam_managed')" class="muted">Chưa có lệnh bảo trì.</p>
+                </t>
+            </t>
+        </t>
+    </template>
+    <record id="report_plan" model="ir.actions.report">
+        <field name="name">Kế hoạch bảo trì định kỳ</field>
+        <field name="model">ps.eam.plan</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ps_enterprise_asset.plan_document</field>
+        <field name="binding_model_id" ref="model_ps_eam_plan"/>
+        <field name="binding_type">report</field>
+        <field name="binding_view_types">list,form</field>
+        <field name="group_ids" eval="[(4, ref('ps_enterprise_asset.group_eam_user'))]"/>
+        <field name="paperformat_id" ref="ps_enterprise_asset.paperformat_eam_work_order"/>
+    </record>
+    <template id="plan_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="company" t-value="o.company_id or res_company"/>
+                <t t-call="ps_enterprise_asset.eam_pdf_layout">
+                    <t t-set="report_title">KẾ HOẠCH BẢO TRÌ ĐỊNH KỲ</t>
+                    <p class="subtitle">
+                        <span t-field="o.name"/>
+                    </p>
+                    <h2>1. Thông tin kế hoạch</h2>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th style="width:30%">Thiết bị</th>
+                                <td>
+                                    <span t-field="o.equipment_id"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Điều kiện / Đang áp dụng</th>
+                                <td><span t-field="o.trigger"/> / <span t-out="'Có' if o.active else 'Không'"/></td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Chu kỳ theo thời gian</th>
+                                <td>
+                                    <t t-if="o.trigger == 'time'">
+                                        <span t-field="o.interval"/>
+                                        <span t-field="o.unit"/>
+                                    </t>
+                                    <t t-else="">Không áp dụng</t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Ngày / Ngưỡng tiếp theo</th>
+                                <td>
+                                    <t t-if="o.trigger == 'time'">
+                                        <span t-field="o.next_date"/>
+                                    </t>
+                                    <t t-else=""><span t-field="o.next_value"/> (<span t-field="o.meter_id"/>)</t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Chu kỳ chỉ số</th>
+                                <td>
+                                    <t t-if="o.trigger == 'usage'">
+                                        <span t-field="o.usage_interval"/>
+                                    </t>
+                                    <t t-else="">Không áp dụng</t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Giờ dự kiến / Ngân sách mỗi lệnh</th>
+                                <td><span t-field="o.estimated_hours"/> giờ / <span t-field="o.budget"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h2>2. Danh sách kiểm tra thực hiện</h2>
+                    <div class="text" t-out="o.checklist or 'Chưa có checklist.'"/>
+                    <h2>3. Hướng dẫn kỹ thuật</h2>
+                    <div t-if="o.instruction" t-field="o.instruction"/>
+                    <p t-if="not o.instruction" class="muted">Chưa có hướng dẫn.</p>
+                    <h2>4. Lệnh đã sinh</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Số lệnh</th>
+                                <th>Lịch dự kiến</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="o.request_ids.sorted('id', reverse=True)" t-as="r">
+                                <td>
+                                    <span t-field="r.eam_number"/>
+                                </td>
+                                <td>
+                                    <span t-field="r.schedule_date"/>
+                                </td>
+                                <td>
+                                    <span t-out="{'draft':'Nháp','approved':'Đã duyệt','progress':'Đang thực hiện','done':'Đã nghiệm thu','cancelled':'Đã hủy'}.get(r.eam_state, r.eam_state)"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p t-if="not o.request_ids" class="muted">Chưa sinh lệnh.</p>
+                </t>
+            </t>
+        </t>
+    </template>
+    <record id="report_claim" model="ir.actions.report">
+        <field name="name">Hồ sơ yêu cầu bảo hành</field>
+        <field name="model">ps.eam.claim</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ps_enterprise_asset.claim_document</field>
+        <field name="binding_model_id" ref="model_ps_eam_claim"/>
+        <field name="binding_type">report</field>
+        <field name="binding_view_types">list,form</field>
+        <field name="group_ids" eval="[(4, ref('ps_enterprise_asset.group_eam_user'))]"/>
+        <field name="paperformat_id" ref="ps_enterprise_asset.paperformat_eam_work_order"/>
+    </record>
+    <template id="claim_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="company" t-value="o.company_id or res_company"/>
+                <t t-call="ps_enterprise_asset.eam_pdf_layout">
+                    <t t-set="report_title">HỒ SƠ YÊU CẦU BẢO HÀNH</t>
+                    <p class="subtitle">
+                        <span t-field="o.name"/>
+                    </p>
+                    <h2>1. Thông tin hồ sơ</h2>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th style="width:30%">Thiết bị / Sê-ri</th>
+                                <td><span t-field="o.equipment_id"/> / <span t-field="o.equipment_id.serial_no"/></td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Loại hồ sơ / Đối tác</th>
+                                <td><span t-field="o.direction"/> / <span t-field="o.partner_id"/></td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Ngày yêu cầu / Trạng thái</th>
+                                <td><span t-field="o.claim_date"/> / <span t-field="o.state"/></td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Trong thời hạn bảo hành</th>
+                                <td>
+                                    <span t-out="'Có' if o.covered else 'Không'"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Lệnh liên quan</th>
+                                <td>
+                                    <span t-field="o.request_id.eam_number"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Số tiền yêu cầu</th>
+                                <td>
+                                    <span t-field="o.requested_amount"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Bồi hoàn ghi nhận</th>
+                                <td>
+                                    <span t-field="o.recovered_amount"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h2>2. Mô tả sự cố / điều khoản</h2>
+                    <div t-if="o.description" t-field="o.description"/>
+                    <p t-if="not o.description" class="muted">Chưa ghi nhận mô tả.</p>
+                    <h2>3. Kết quả xử lý</h2>
+                    <div class="text" t-out="o.resolution or 'Chưa ghi nhận kết quả xử lý.'"/>
+                </t>
+            </t>
+        </t>
+    </template>
+    <record id="report_meter" model="ir.actions.report">
+        <field name="name">Lịch sử đồng hồ và cảm biến</field>
+        <field name="model">ps.eam.meter</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ps_enterprise_asset.meter_document</field>
+        <field name="binding_model_id" ref="model_ps_eam_meter"/>
+        <field name="binding_type">report</field>
+        <field name="binding_view_types">list,form</field>
+        <field name="group_ids" eval="[(4, ref('ps_enterprise_asset.group_eam_user'))]"/>
+        <field name="paperformat_id" ref="ps_enterprise_asset.paperformat_eam_work_order"/>
+    </record>
+    <template id="meter_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="company" t-value="o.company_id or res_company"/>
+                <t t-call="ps_enterprise_asset.eam_pdf_layout">
+                    <t t-set="report_title">ĐỒNG HỒ &amp; CẢM BIẾN</t>
+                    <p class="subtitle">
+                        <span t-field="o.name"/>
+                    </p>
+                    <h2>1. Thông tin đo lường</h2>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th style="width:30%">Thiết bị</th>
+                                <td>
+                                    <span t-field="o.equipment_id"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Loại / Đơn vị</th>
+                                <td><span t-field="o.kind"/> / <span t-field="o.unit"/></td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Chỉ số hiện tại</th>
+                                <td>
+                                    <t t-if="o.reading_ids">
+                                        <span t-field="o.current_value"/>
+                                    </t>
+                                    <t t-else="">Chưa có số đo</t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Ngưỡng dưới / Ngưỡng trên</th>
+                                <td>
+                                    <t t-if="o.kind == 'condition'"><span t-field="o.lower_limit"/> / <span t-field="o.upper_limit"/></t>
+                                    <t t-else="">Không áp dụng cho đồng hồ tích lũy</t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width:30%">Số lần vượt ngưỡng</th>
+                                <td>
+                                    <span t-out="len(o.reading_ids.filtered('abnormal'))"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h2>2. Lịch sử đo</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Thời điểm</th>
+                                <th>Giá trị</th>
+                                <th>Nguồn</th>
+                                <th>Cảnh báo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                t-foreach="o.reading_ids.sorted(lambda x: (x.measured_at, x.id), reverse=True)"
+                                t-as="v"
+                            >
+                                <td>
+                                    <span t-field="v.measured_at"/>
+                                </td>
+                                <td>
+                                    <span t-field="v.value"/>
+                                </td>
+                                <td>
+                                    <span t-field="v.source"/>
+                                </td>
+                                <td>
+                                    <span t-out="'Vượt ngưỡng' if v.abnormal else 'Bình thường'"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p t-if="not o.reading_ids" class="muted">Chưa có số đo.</p>
+                </t>
+            </t>
+        </t>
+    </template>
+    <record id="report_cost" model="ir.actions.report">
+        <field name="name">Tổng hợp chi phí bảo trì</field>
+        <field name="model">maintenance.request</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ps_enterprise_asset.cost_document</field>
+        <field name="binding_model_id" ref="maintenance.model_maintenance_request"/>
+        <field name="binding_type">report</field>
+        <field name="binding_view_types">list,form</field>
+        <field name="group_ids" eval="[(4, ref('ps_enterprise_asset.group_eam_user'))]"/>
+        <field name="paperformat_id" ref="ps_enterprise_asset.paperformat_eam_work_order"/>
+    </record>
+    <template id="cost_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs.mapped('company_id')" t-as="company">
+                <t t-set="lines" t-value="docs.filtered(lambda r: r.company_id == company and r.eam_managed)"/>
+                <t t-if="lines">
+                    <t t-set="o" t-value="lines[0]"/>
+                    <t t-call="ps_enterprise_asset.eam_pdf_layout">
+                        <t t-set="report_title">TỔNG HỢP CHI PHÍ BẢO TRÌ</t>
+                        <p class="subtitle">Đơn vị tiền tệ: <span t-field="company.currency_id.name"/></p>
+                        <h2>1. Tổng hợp</h2>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th style="width:30%">Tổng ngân sách</th>
+                                    <td>
+                                        <span
+                                            t-out="sum(lines.mapped('eam_budget'))"
+                                            t-options="{'widget':'monetary','display_currency':company.currency_id}"
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="width:30%">Tổng nhân công</th>
+                                    <td>
+                                        <span
+                                            t-out="sum(r.actual_hours * r.hourly_rate for r in lines)"
+                                            t-options="{'widget':'monetary','display_currency':company.currency_id}"
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="width:30%">Tổng vật tư thực xuất</th>
+                                    <td>
+                                        <span
+                                            t-out="sum(lines.mapped('eam_parts_cost'))"
+                                            t-options="{'widget':'monetary','display_currency':company.currency_id}"
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="width:30%">Tổng dịch vụ</th>
+                                    <td>
+                                        <span
+                                            t-out="sum(lines.mapped('cost_ids.amount'))"
+                                            t-options="{'widget':'monetary','display_currency':company.currency_id}"
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="width:30%">TỔNG CHI PHÍ</th>
+                                    <td>
+                                        <span
+                                            t-out="sum(lines.mapped('eam_total_cost'))"
+                                            t-options="{'widget':'monetary','display_currency':company.currency_id}"
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="width:30%">Chênh lệch ngân sách</th>
+                                    <td>
+                                        <span
+                                            t-out="sum(lines.mapped('eam_variance'))"
+                                            t-options="{'widget':'monetary','display_currency':company.currency_id}"
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="width:30%">Chi phí lệnh đã nghiệm thu</th>
+                                    <td>
+                                        <span
+                                            t-out="sum(lines.filtered(lambda r: r.eam_state == 'done').mapped('eam_total_cost'))"
+                                            t-options="{'widget':'monetary','display_currency':company.currency_id}"
+                                        />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h2>2. Chi tiết theo lệnh</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Số lệnh / Thiết bị</th>
+                                    <th>Trạng thái</th>
+                                    <th>Ngân sách</th>
+                                    <th>Chi phí</th>
+                                    <th>Chênh lệch</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="lines.sorted('eam_number')" t-as="r">
+                                    <td>
+                                        <span t-field="r.eam_number"/>
+                                        <br/>
+                                        <span t-field="r.equipment_id.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-out="{'draft':'Nháp','approved':'Đã duyệt','progress':'Đang thực hiện','done':'Đã nghiệm thu','cancelled':'Đã hủy'}.get(r.eam_state, r.eam_state)"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="r.eam_budget"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="r.eam_total_cost"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="r.eam_variance"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+    <record id="report_operation" model="ir.actions.report">
+        <field name="name">Nhật ký vận hành và hiệu quả thiết bị</field>
+        <field name="model">ps.eam.operation</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ps_enterprise_asset.operation_document</field>
+        <field name="binding_model_id" ref="model_ps_eam_operation"/>
+        <field name="binding_type">report</field>
+        <field name="binding_view_types">list,form</field>
+        <field name="group_ids" eval="[(4, ref('ps_enterprise_asset.group_eam_user'))]"/>
+        <field name="paperformat_id" ref="ps_enterprise_asset.paperformat_eam_work_order"/>
+    </record>
+    <template id="operation_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs.mapped('company_id')" t-as="company">
+                <t t-set="lines" t-value="docs.filtered(lambda r: r.company_id == company)"/>
+                <t t-if="lines">
+                    <t t-set="o" t-value="lines[0]"/>
+                    <t t-call="ps_enterprise_asset.eam_pdf_layout">
+                        <t t-set="report_title">NHẬT KÝ VẬN HÀNH / HIỆU QUẢ THIẾT BỊ</t>
+                        <p class="subtitle"><span t-out="len(lines)"/> nhật ký được chọn | Từ <span t-out="min(lines.mapped('date'))"/> đến <span t-out="max(lines.mapped('date'))"/></p>
+                        <h2>1. Tổng hợp vận hành</h2>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th style="width:30%">Giờ kế hoạch / Giờ chạy / Giờ dừng</th>
+                                    <td>
+                                        <span t-out="'%.2f / %.2f / %.2f' % (sum(lines.mapped('planned_hours')), sum(lines.mapped('running_hours')), sum(lines.mapped('downtime_hours')))"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="width:30%">Tổng sản phẩm / Sản phẩm đạt</th>
+                                    <td>
+                                        <span t-out="'%.0f / %.0f' % (sum(lines.mapped('total_qty')), sum(lines.mapped('good_qty')))"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="width:30%">OEE trung bình các nhật ký</th>
+                                    <td>
+                                        <span t-out="'%.2f' % (sum(lines.mapped('oee')) / len(lines))"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="muted">OEE tổng hợp ở trên là trung bình cộng các nhật ký, không phải OEE có trọng số cho toàn kỳ. Khả dụng, hiệu suất và chất lượng là ba thành phần của chỉ số OEE.</p>
+                        <h2>2. Thời gian và sản lượng</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Ngày / Thiết bị</th>
+                                    <th>KH (giờ)</th>
+                                    <th>Chạy</th>
+                                    <th>Dừng</th>
+                                    <th>Tổng SP</th>
+                                    <th>SP đạt</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="lines.sorted(lambda r: (r.date, r.equipment_id.id))" t-as="v">
+                                    <td>
+                                        <span t-field="v.date"/>
+                                        <br/>
+                                        <span t-field="v.equipment_id.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="v.planned_hours"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="v.running_hours"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="v.downtime_hours"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="v.total_qty"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="v.good_qty"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h2>3. Hiệu quả thiết bị (%)</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Ngày / Thiết bị</th>
+                                    <th>Khả dụng (%)</th>
+                                    <th>Hiệu suất (%)</th>
+                                    <th>Chất lượng (%)</th>
+                                    <th>OEE (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="lines.sorted(lambda r: (r.date, r.equipment_id.id))" t-as="v">
+                                    <td>
+                                        <span t-field="v.date"/>
+                                        <br/>
+                                        <span t-field="v.equipment_id.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="v.availability" t-options="{'widget':'float','precision':2}"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="v.performance" t-options="{'widget':'float','precision':2}"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="v.quality" t-options="{'widget':'float','precision':2}"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="v.oee" t-options="{'widget':'float','precision':2}"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

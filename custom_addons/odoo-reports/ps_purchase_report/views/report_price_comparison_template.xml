@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Khổ A4 Dọc hoặc Ngang tuỳ chỉnh -->
+    <record id="paperformat_portrait_report_5" model="report.paperformat">
+        <field name="name">Khổ A4 Dọc - So sánh giá mua hàng</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">5</field>
+    </record>
+
+    <!-- Action báo cáo -->
+    <record id="action_report_price_comparison" model="ir.actions.report">
+        <field name="name">Bảng So Sánh Giá Nhà Cung Cấp</field>
+        <field name="model">purchase.report.wizard</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">ps_purchase_report.report_price_comparison_template</field>
+        <field name="report_file">ps_purchase_report.report_price_comparison_template</field>
+        <field name="paperformat_id" ref="ps_purchase_report.paperformat_portrait_report_5"/>
+    </record>
+
+    <!-- QWeb Template -->
+    <template id="report_price_comparison_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-call="ps_purchase_report.report_purchase_shared_styles"/>
+                <div class="page">
+                    <!-- Tiêu đề Báo cáo -->
+                    <div class="report-title">
+                        BẢNG SO SÁNH GIÁ NHÀ CUNG CẤP
+                    </div>
+                    <div class="report-date">
+                        <i>Từ ngày <t t-esc="date_from"/> đến ngày <t t-esc="date_to"/></i>
+                    </div>
+
+                    <!-- Bảng dữ liệu chuẩn gom nhóm theo sản phẩm -->
+                    <table class="tbl-comp">
+                        <thead>
+                            <tr>
+                                <th style="width: 7%;">STT</th>
+                                <th style="width: 13%;">Ngày PO</th>
+                                <th style="width: 15%;">Số PO</th>
+                                <th style="width: 15%;">Số PN</th>
+                                <th style="width: 18%;">Đơn giá</th>
+                                <th style="width: 32%;">Tên nhà cung cấp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Lấy danh sách các sản phẩm duy nhất từ các dòng chi tiết -->
+                            <t t-foreach="lines.mapped('product_id')" t-as="product">
+                                <!-- Dòng tiêu đề: Tên sản phẩm / vật tư -->
+                                <tr class="product-group-row">
+                                    <td colspan="6" style="padding-left: 10px;">
+                                        <t t-esc="product.default_code or '---'"/>: <t t-esc="product.name"/> - <t t-esc="product.uom_id.name or ''"/>
+                                    </td>
+                                </tr>
+
+                                <!-- Các dòng chi tiết lịch sử mua của sản phẩm đó -->
+                                <t t-set="stt" t-value="1"/>
+                                <t t-foreach="lines.filtered(lambda l: l.product_id == product)" t-as="line">
+                                    <tr>
+                                        <td class="text-center"><t t-esc="stt"/></td>
+                                        <td class="text-center"><t t-esc="line.order_id.date_order.strftime('%d/%m/%Y') if line.order_id.date_order else ''"/></td>
+                                        <td class="text-center"><t t-esc="line.order_id.name"/></td>
+                                        <td class="text-center">---</td> <!-- Thay bằng số Phiếu Nhập kho thực tế nếu có liên kết stock.picking -->
+                                        <td class="text-end" style="font-weight: bold; color: #0056b3;">
+                                            <t t-esc="line.price_unit" t-options='{"widget": "float", "precision": 3}'/>
+                                        </td>
+                                        <td><t t-esc="line.order_id.partner_id.name"/></td>
+                                    </tr>
+                                    <t t-set="stt" t-value="stt + 1"/>
+                                </t>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <!-- Chữ ký -->
+                    <div class="row mt-4" style="page-break-inside: avoid; font-family: 'Times New Roman', serif;">
+                        <div class="col-8"></div>
+                        <div class="col-4 text-center">
+                            <i>Ngày ..... tháng ..... năm .....</i><br/>
+                            <strong>Người lập báo cáo</strong>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

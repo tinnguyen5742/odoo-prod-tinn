@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_recruitment_job_positions_list" model="ir.actions.report">
+        <field name="name">Danh sách các vị trí tuyển dụng</field>
+        <field name="model">hr.job</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ps_recruitment_report.report_job_positions_list</field>
+        <field name="report_file">ps_recruitment_report.report_job_positions_list</field>
+        <field name="binding_model_id" ref="hr_recruitment.model_hr_job"/>
+        <field name="binding_type">report</field>
+        <field name="binding_view_types">list,kanban</field>
+        <field name="paperformat_id" ref="ps_recruitment_report.paperformat_recruitment_list_a4"/>
+        <field name="print_report_name">'Danh sach cac vi tri tuyen dung'</field>
+        <field name="group_ids" eval="[(6, 0, [ref('hr_recruitment.group_hr_recruitment_manager')])]"/>
+    </record>
+
+    <template id="report_job_positions_list">
+        <t t-call="web.html_container">
+            <t groups="hr_recruitment.group_hr_recruitment_manager">
+                <t t-set="jobs" t-value="docs.with_context(active_test=False).exists().sorted(key=lambda j: (j.department_id.name or '', j.name or '', j.id))"/>
+                <t t-foreach="jobs.grouped('company_id')" t-as="company_key">
+                    <t t-set="company_jobs" t-value="company_key_value"/>
+                    <t t-set="company" t-value="company_key or res_company"/>
+                    <t t-set="o" t-value="company_jobs[:1]"/>
+                    <t t-call="web.external_layout">
+                        <div class="page rec_job_list">
+                            <t t-call="ps_recruitment_report.report_job_list_style"/>
+                            <h2>DANH SÁCH CÁC VỊ TRÍ TUYỂN DỤNG</h2>
+                            <p class="list_totals">Tổng vị trí: <span t-out="len(company_jobs)"/> · Đang tuyển: <span t-out="len(company_jobs.filtered(lambda j: j.active and j.website_published))"/> · Dừng tuyển: <span t-out="len(company_jobs.filtered(lambda j: j.active and not j.website_published))"/> · Lưu trữ: <span t-out="len(company_jobs.filtered(lambda j: not j.active))"/></p>
+                            <table>
+                                <colgroup>
+                                    <col style="width:4%;"/>
+                                    <col style="width:17%;"/>
+                                    <col style="width:12%;"/>
+                                    <col style="width:15%;"/>
+                                    <col style="width:12%;"/>
+                                    <col style="width:13%;"/>
+                                    <col style="width:7%;"/>
+                                    <col style="width:7%;"/>
+                                    <col style="width:13%;"/>
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th class="number">STT</th>
+                                        <th>Vị trí tuyển dụng</th>
+                                        <th>Phòng ban</th>
+                                        <th>Địa điểm</th>
+                                        <th>Người tuyển dụng</th>
+                                        <th>Người phỏng vấn</th>
+                                        <th class="number">Nhu cầu tuyển</th>
+                                        <th class="number">Số hồ sơ</th>
+                                        <th>Trạng thái</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="company_jobs" t-as="job">
+                                        <td class="number" t-out="job_index + 1"/>
+                                        <td><div><span t-field="job.name"/></div><div t-if="job.contract_type_id">Loại việc làm: <span t-field="job.contract_type_id"/></div></td>
+                                        <td t-out="job.department_id.name or 'Chưa phân phòng ban'"/>
+                                        <td t-out="job.address_id.display_name or 'Chưa khai báo'"/>
+                                        <td t-out="job.user_id.name or 'Chưa phân công'"/>
+                                        <td><t t-if="job.interviewer_ids"><div t-foreach="job.interviewer_ids.sorted('name')" t-as="interviewer" t-out="interviewer.name"/></t><span t-else="">Chưa phân công</span></td>
+                                        <td class="number"><span t-field="job.no_of_recruitment"/></td>
+                                        <td class="number" t-out="len(job.application_ids)"/>
+                                        <td t-out="'Đã lưu trữ' if not job.active else ('Đang tuyển' if job.website_published else 'Dừng/chưa đăng')"/>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+                <t t-if="not jobs">
+                    <t t-set="company" t-value="res_company"/>
+                    <t t-set="o" t-value="False"/>
+                    <t t-call="web.external_layout">
+                        <div class="page rec_job_list">
+                            <t t-call="ps_recruitment_report.report_job_list_style"/>
+                            <h2>DANH SÁCH CÁC VỊ TRÍ TUYỂN DỤNG</h2>
+                            <p class="empty_message">Chưa chọn vị trí tuyển dụng.</p>
+                        </div>
+                    </t>
+                </t>
+            </t>
+            <p groups="!hr_recruitment.group_hr_recruitment_manager">Báo cáo dành cho quản trị Tuyển dụng.</p>
+        </t>
+    </template>
+</odoo>

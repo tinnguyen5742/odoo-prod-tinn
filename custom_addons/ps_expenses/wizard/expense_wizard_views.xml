@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo><record id="view_ps_te_expense_wizard" model="ir.ui.view">
+    <field name="name">ps.te.expense.wizard.form</field><field name="model">ps.te.expense.wizard</field>
+    <field name="arch" type="xml"><form string="Expense Operation"><group>
+        <field name="report_id"/><field name="expected_revision"/><field name="operation"/><field name="currency_id" invisible="1"/>
+        <field name="line_id" domain="[('report_id', '=', report_id)]" invisible="operation not in ['edit', 'upload', 'accepted', 'refused', 'returned', 'reuse']" required="operation in ['edit', 'upload', 'accepted', 'refused', 'returned', 'reuse']"/>
+        <field name="source_evidence_id" invisible="operation != 'reuse'" required="operation == 'reuse'"/>
+        <field name="proof_link_id" domain="[('report_id', '=', report_id)]" invisible="operation != 'supersede_link'" required="operation == 'supersede_link'"/>
+        <field name="description" invisible="operation not in ['add', 'edit']" required="operation in ['add', 'edit']"/>
+        <field name="expense_date" invisible="operation not in ['add', 'edit']" required="operation in ['add', 'edit']"/>
+        <field name="amount" invisible="operation not in ['add', 'edit', 'accepted']" required="operation in ['add', 'edit', 'accepted']"/>
+        <field name="filename" invisible="operation != 'upload'" required="operation == 'upload'"/>
+        <field name="file_data" filename="filename" invisible="operation != 'upload'" required="operation == 'upload'"/>
+        <field name="evidence_id" domain="[('report_id', '=', report_id)]" invisible="operation != 'supersede'" required="operation == 'supersede'"/>
+        <field name="reason" invisible="operation not in ['accepted', 'refused', 'returned', 'revise', 'supersede', 'zero_declare', 'zero_accept', 'zero_return', 'supersede_link']" required="operation in ['accepted', 'refused', 'returned', 'revise', 'supersede', 'zero_declare', 'zero_accept', 'zero_return', 'supersede_link']"/>
+    </group><footer><button name="action_apply" type="object" string="Apply" class="btn-primary"/><button string="Cancel" special="cancel"/></footer></form></field>
+</record></odoo>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_po_not_received" model="ir.actions.report">
+        <field name="name">Báo cáo thống kê PO chưa nhận hàng</field>
+        <field name="model">purchase.report.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ps_purchase_report.report_po_not_received_template</field>
+        <field name="report_file">ps_purchase_report.report_po_not_received_template</field>
+    </record>
+</odoo>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="rule_ps_te_expense_owner" model="ir.rule">
+        <field name="name">PS T&amp;E expenses: current owner</field><field name="model_id" ref="model_ps_te_expense_report"/>
+        <field name="groups" eval="[(4, ref('ps_expenses.group_ps_te_trip_employee'))]"/>
+        <field name="domain_force">[('owner_id', '=', user.id), ('company_id', 'in', company_ids), ('trip_id.employee_id.active', '=', True), ('trip_id.employee_id.user_id', '=', user.id), ('trip_id.employee_mapping_valid', '=', True)]</field>
+    </record>
+    <record id="rule_ps_te_expense_finance" model="ir.rule">
+        <field name="name">PS T&amp;E expenses: assigned finance</field><field name="model_id" ref="model_ps_te_expense_report"/>
+        <field name="groups" eval="[(4, ref('ps_expenses.group_ps_te_finance'))]"/>
+        <field name="domain_force">[('finance_reviewer_id', '=', user.id), ('finance_assignment_valid', '=', True), ('company_id', 'in', company_ids), ('trip_id.employee_id.active', '=', True), ('trip_id.employee_mapping_valid', '=', True)]</field>
+    </record>
+    <record id="rule_ps_te_expense_line_owner" model="ir.rule">
+        <field name="name">PS T&amp;E expense lines: owner</field><field name="model_id" ref="model_ps_te_expense_line"/>
+        <field name="groups" eval="[(4, ref('ps_expenses.group_ps_te_trip_employee'))]"/>
+        <field name="domain_force">[('report_id.owner_id', '=', user.id), ('report_id.company_id', 'in', company_ids), ('report_id.trip_id.employee_id.active', '=', True), ('report_id.trip_id.employee_id.user_id', '=', user.id), ('report_id.trip_id.employee_mapping_valid', '=', True)]</field>
+    </record>
+    <record id="rule_ps_te_expense_line_finance" model="ir.rule">
+        <field name="name">PS T&amp;E expense lines: finance</field><field name="model_id" ref="model_ps_te_expense_line"/>
+        <field name="groups" eval="[(4, ref('ps_expenses.group_ps_te_finance'))]"/>
+        <field name="domain_force">[('report_id.finance_reviewer_id', '=', user.id), ('report_id.finance_assignment_valid', '=', True), ('report_id.company_id', 'in', company_ids), ('report_id.trip_id.employee_id.active', '=', True), ('report_id.trip_id.employee_mapping_valid', '=', True)]</field>
+    </record>
+    <record id="rule_ps_te_expense_evidence_owner" model="ir.rule">
+        <field name="name">PS T&amp;E expense proofs: owner</field><field name="model_id" ref="model_ps_te_expense_evidence"/>
+        <field name="groups" eval="[(4, ref('ps_expenses.group_ps_te_trip_employee'))]"/>
+        <field name="domain_force">[('report_id.owner_id', '=', user.id), ('report_id.company_id', 'in', company_ids), ('report_id.trip_id.employee_id.active', '=', True), ('report_id.trip_id.employee_id.user_id', '=', user.id), ('report_id.trip_id.employee_mapping_valid', '=', True)]</field>
+    </record>
+    <record id="rule_ps_te_expense_evidence_finance" model="ir.rule">
+        <field name="name">PS T&amp;E expense proofs: finance</field><field name="model_id" ref="model_ps_te_expense_evidence"/>
+        <field name="groups" eval="[(4, ref('ps_expenses.group_ps_te_finance'))]"/>
+        <field name="domain_force">[('report_id.finance_reviewer_id', '=', user.id), ('report_id.finance_assignment_valid', '=', True), ('report_id.company_id', 'in', company_ids), ('report_id.trip_id.employee_id.active', '=', True), ('report_id.trip_id.employee_mapping_valid', '=', True)]</field>
+    </record>
+    <record id="rule_ps_te_expense_event_owner" model="ir.rule">
+        <field name="name">PS T&amp;E expense history: owner</field><field name="model_id" ref="model_ps_te_expense_event"/>
+        <field name="groups" eval="[(4, ref('ps_expenses.group_ps_te_trip_employee'))]"/>
+        <field name="domain_force">[('report_id.owner_id', '=', user.id), ('report_id.company_id', 'in', company_ids), ('report_id.trip_id.employee_id.active', '=', True), ('report_id.trip_id.employee_id.user_id', '=', user.id), ('report_id.trip_id.employee_mapping_valid', '=', True)]</field>
+    </record>
+    <record id="rule_ps_te_expense_event_finance" model="ir.rule">
+        <field name="name">PS T&amp;E expense history: finance</field><field name="model_id" ref="model_ps_te_expense_event"/>
+        <field name="groups" eval="[(4, ref('ps_expenses.group_ps_te_finance'))]"/>
+        <field name="domain_force">[('report_id.finance_reviewer_id', '=', user.id), ('report_id.finance_assignment_valid', '=', True), ('report_id.company_id', 'in', company_ids), ('report_id.trip_id.employee_id.active', '=', True), ('report_id.trip_id.employee_mapping_valid', '=', True)]</field>
+    </record>
+    <record id="rule_ps_te_trip_expense_finance" model="ir.rule">
+        <field name="name">PS T&amp;E trip: assigned expense finance</field><field name="model_id" ref="model_ps_te_trip_request"/>
+        <field name="groups" eval="[(4, ref('ps_expenses.group_ps_te_finance'))]"/>
+        <field name="domain_force">[('expense_report_id.finance_reviewer_id', '=', user.id), ('expense_report_id.finance_assignment_valid', '=', True), ('company_id', 'in', company_ids), ('employee_id.active', '=', True), ('employee_mapping_valid', '=', True)]</field>
+        <field name="perm_write" eval="False"/><field name="perm_create" eval="False"/><field name="perm_unlink" eval="False"/>
+    </record>
+</odoo>

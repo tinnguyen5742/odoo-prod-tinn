@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_warranty" model="ir.module.category">
+        <field name="name">Warranty Management</field>
+        <field name="sequence">42</field>
+    </record>
+
+    <record id="privilege_warranty" model="res.groups.privilege">
+        <field name="name">Warranty Management</field>
+        <field name="category_id" ref="module_category_warranty"/>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="group_warranty_user" model="res.groups">
+        <field name="name">Warranty User</field>
+        <field name="privilege_id" ref="privilege_warranty"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_warranty_officer" model="res.groups">
+        <field name="name">Warranty Officer</field>
+        <field name="privilege_id" ref="privilege_warranty"/>
+        <field name="implied_ids" eval="[(4, ref('group_warranty_user'))]"/>
+    </record>
+
+    <record id="group_warranty_manager" model="res.groups">
+        <field name="name">Warranty Manager</field>
+        <field name="privilege_id" ref="privilege_warranty"/>
+        <field name="implied_ids" eval="[(4, ref('group_warranty_officer'))]"/>
+    </record>
+
+    <record id="group_warranty_administrator" model="res.groups">
+        <field name="name">Warranty Administrator</field>
+        <field name="privilege_id" ref="privilege_warranty"/>
+        <field name="implied_ids" eval="[(4, ref('group_warranty_manager'))]"/>
+    </record>
+
+    <record id="rule_warranty_policy_company" model="ir.rule">
+        <field name="name">Warranty policy: allowed companies</field>
+        <field name="model_id" ref="model_ps_warranty_policy"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="rule_warranty_registration_company" model="ir.rule">
+        <field name="name">Warranty registration: allowed companies</field>
+        <field name="model_id" ref="model_ps_warranty_registration"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="rule_warranty_claim_company" model="ir.rule">
+        <field name="name">Warranty claim: allowed companies</field>
+        <field name="model_id" ref="model_ps_warranty_claim"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="rule_warranty_claim_line_company" model="ir.rule">
+        <field name="name">Warranty claim line: allowed companies</field>
+        <field name="model_id" ref="model_ps_warranty_claim_line"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="rule_warranty_rma_company" model="ir.rule">
+        <field name="name">Warranty RMA: allowed companies</field>
+        <field name="model_id" ref="model_ps_warranty_rma"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <record id="rule_warranty_policy_user_active" model="ir.rule">
+        <field name="name">Warranty users: active policies</field>
+        <field name="model_id" ref="model_ps_warranty_policy"/>
+        <field name="groups" eval="[(4, ref('group_warranty_user'))]"/>
+        <field name="domain_force">[('active', '=', True)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="rule_warranty_policy_manager_all" model="ir.rule">
+        <field name="name">Warranty managers: all policies</field>
+        <field name="model_id" ref="model_ps_warranty_policy"/>
+        <field name="groups" eval="[(4, ref('group_warranty_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_warranty_claim_user_own" model="ir.rule">
+        <field name="name">Warranty users: claims created or assigned to them</field>
+        <field name="model_id" ref="model_ps_warranty_claim"/>
+        <field name="groups" eval="[(4, ref('group_warranty_user'))]"/>
+        <field name="domain_force">['|', ('create_uid', '=', user.id), ('user_id', '=', user.id)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="rule_warranty_claim_officer_all" model="ir.rule">
+        <field name="name">Warranty officers: all company claims</field>
+        <field name="model_id" ref="model_ps_warranty_claim"/>
+        <field name="groups" eval="[(4, ref('group_warranty_officer'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_warranty_line_user_own" model="ir.rule">
+        <field name="name">Warranty users: lines on their claims</field>
+        <field name="model_id" ref="model_ps_warranty_claim_line"/>
+        <field name="groups" eval="[(4, ref('group_warranty_user'))]"/>
+        <field name="domain_force">[('claim_id.create_uid', '=', user.id)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="rule_warranty_line_officer_all" model="ir.rule">
+        <field name="name">Warranty officers: all claim lines</field>
+        <field name="model_id" ref="model_ps_warranty_claim_line"/>
+        <field name="groups" eval="[(4, ref('group_warranty_officer'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_warranty_rma_user_own" model="ir.rule">
+        <field name="name">Warranty users: RMAs on their claims</field>
+        <field name="model_id" ref="model_ps_warranty_rma"/>
+        <field name="groups" eval="[(4, ref('group_warranty_user'))]"/>
+        <field name="domain_force">[('claim_id.create_uid', '=', user.id)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="rule_warranty_rma_officer_all" model="ir.rule">
+        <field name="name">Warranty officers: all RMAs</field>
+        <field name="model_id" ref="model_ps_warranty_rma"/>
+        <field name="groups" eval="[(4, ref('group_warranty_officer'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+</odoo>

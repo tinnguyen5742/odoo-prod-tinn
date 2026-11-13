@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ps_te_trip_request_list" model="ir.ui.view">
+        <field name="name">ps.te.trip.request.list</field>
+        <field name="model">ps.te.trip.request</field>
+        <field name="arch" type="xml">
+            <list create="1" edit="1" delete="0" duplicate="0">
+                <field name="reference"/>
+                <field name="purpose"/>
+                <field name="destination"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="preparing_revision"/>
+                <field name="state"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ps_te_trip_request_form" model="ir.ui.view">
+        <field name="name">ps.te.trip.request.form</field>
+        <field name="model">ps.te.trip.request</field>
+        <field name="arch" type="xml">
+            <form create="1" edit="1" delete="0" duplicate="0">
+                <header>
+                    <button name="action_reconcile" type="object" string="Check Displayed Submission" context="{'expected_preparing_revision': preparing_revision}" invisible="not id or owner_id != uid"/>
+                    <button
+                        name="action_submit"
+                        type="object"
+                        string="Submit"
+                        class="btn-primary"
+                        context="{'expected_preparing_revision': preparing_revision}"
+                        invisible="state != 'preparing' or not is_current_owner"
+                    />
+                    <button name="action_open_review_wizard" type="object" string="Review" class="btn-primary" groups="ps_expenses.group_ps_te_trip_manager" invisible="state != 'awaiting_business_review' or approver_id != uid"/>
+                    <field name="state" widget="statusbar" statusbar_visible="preparing,awaiting_business_review,approved,refused"/>
+                    <button name="action_open_advance" type="object" string="Advance" invisible="(state != 'approved' and not advance_id) or owner_id != uid"/>
+                    <button name="action_open_expenses" type="object" string="Expenses" invisible="(state != 'approved' and cancellation_status != 'approved') or owner_id != uid"/>
+                    <button name="action_open_settlement" type="object" string="Settlement" invisible="(state != 'approved' and cancellation_status != 'approved') or owner_id != uid"/>
+                    <button name="action_no_advance" type="object" string="No Advance Requested" invisible="(state != 'approved' and cancellation_status != 'approved') or owner_id != uid or advance_choice == 'not_requested'"/>
+                </header>
+                <sheet>
+                    <field name="is_current_owner" invisible="1"/>
+                    <group string="Next Step" col="1"><field name="workflow_next_step" nolabel="1" readonly="1"/></group>
+                    <group>
+                        <group>
+                            <field name="reference" readonly="1"/>
+                            <field name="owner_id" readonly="1"/>
+                            <field name="employee_id" readonly="1"/>
+                            <field name="company_id" readonly="1"/>
+                            <field name="approver_id" readonly="1"/>
+                            <field name="advance_choice"/><field name="advance_id" invisible="not advance_id"/>
+                            <field name="case_status"/><field name="case_closed_at"/><field name="case_closed_by_id"/>
+                        </group>
+                        <group>
+                            <field name="preparing_revision" readonly="1"/>
+                            <field name="edit_revision_token" invisible="1" force_save="1"/>
+                            <field name="purpose" readonly="state != 'preparing' or not is_current_owner" context="{'expected_preparing_revision': preparing_revision}"/>
+                            <field name="destination" readonly="state != 'preparing' or not is_current_owner" context="{'expected_preparing_revision': preparing_revision}"/>
+                            <field name="start_date" readonly="state != 'preparing' or not is_current_owner" context="{'expected_preparing_revision': preparing_revision}"/>
+                            <field name="end_date" readonly="state != 'preparing' or not is_current_owner" context="{'expected_preparing_revision': preparing_revision}"/>
+                        </group>
+                    </group>
+                    <group string="Confirmed submission" invisible="not submission_receipt">
+                        <field name="submission_receipt" readonly="1"/>
+                        <field name="submitted_revision" readonly="1"/>
+                        <field name="submitted_by_id" readonly="1"/>
+                        <field name="submitted_at" readonly="1"/>
+                    </group>
+                    <group string="Latest Business Decision" invisible="not decision_by_id">
+                        <field name="decision_by_id"/>
+                        <field name="decision_at"/>
+                        <field name="decision_reason"/>
+                    </group>
+                    <notebook>
+                        <page string="Version History">
+                            <field name="event_ids" readonly="1">
+                                <list create="0" edit="0" delete="0">
+                                    <field name="occurred_at"/>
+                                    <field name="event_type"/>
+                                    <field name="revision"/>
+                                    <field name="actor_id"/>
+                                    <field name="reason"/>
+                                    <field name="purpose"/>
+                                    <field name="receipt" optional="hide"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ps_te_trip_request" model="ir.actions.act_window">
+        <field name="name">Trip Requests</field>
+        <field name="res_model">ps.te.trip.request</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('owner_id', '=', uid)]</field>
+        <field name="context">{'default_company_id': allowed_company_ids[0] if allowed_company_ids else False}</field>
+    </record>
+
+    <record id="action_ps_te_trip_review" model="ir.actions.act_window">
+        <field name="name">Trip Requests to Review</field>
+        <field name="res_model">ps.te.trip.request</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('approver_id', '=', uid), ('state', '=', 'awaiting_business_review')]</field>
+    </record>
+</odoo>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_field_service_order_document">
+        <t t-call="web.internal_layout">
+            <t t-set="doc" t-value="doc.with_context(lang=doc.customer_id.lang)"/>
+            <style>
+                .o_report_layout_boxed header, 
+                .o_report_layout_standard header, 
+                .article header,
+                .row.first_page_header,
+                .header {
+                    display: none !important;
+                }
+            </style>
+            <div class="page" style="font-size: 13px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 0 10px;">
+                <div class="oe_structure"/>
+
+                <!-- 1. HEADER DOANH NGHIỆP CỐ ĐỊNH (Hiển thị đồng nhất trên cả Preview và PDF tải về) -->
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; border-bottom: 2px solid #000; padding-bottom: 10px;">
+                    <tr>
+                        <!-- LOGO CÔNG TY -->
+                        <td style="width: 25%; vertical-align: middle; text-align: left;">
+                            <t t-if="doc.env.company.logo">
+                                <img t-att-src="image_data_uri(doc.env.company.logo)" style="max-height: 65px; max-width: 140px;" alt="Logo"/>
+                            </t>
+                        </td>
+                        <!-- THÔNG TIN CÔNG TY -->
+                        <td style="width: 75%; vertical-align: middle; text-align: left;">
+                            <div style="font-size: 16px; font-weight: bold; text-transform: uppercase; color: #000;">
+                                <span t-field="doc.env.company.name"/>
+                            </div>
+                            <div style="font-size: 11px; margin-top: 3px; color: #333;">
+                                <strong>Địa chỉ:</strong> <span t-field="doc.env.company.street"/>, <span t-field="doc.env.company.city"/>
+                            </div>
+                            <div style="font-size: 11px; margin-top: 2px; color: #333;">
+                                <strong>Điện thoại:</strong> <span t-field="doc.env.company.phone"/> 
+                                <span style="margin-left: 15px;" t-if="doc.env.company.email"><strong>Email:</strong> <span t-field="doc.env.company.email"/></span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- 2. TIÊU ĐỀ PHIẾU CÔNG TÁC -->
+                <div style="text-align: center; width: 100%; margin: 15px 0;">
+                    <span style="font-size: 20px; font-weight: bold; text-transform: uppercase;">
+                        PHIẾU CÔNG TÁC DỊCH VỤ - <span t-field="doc.name"/>
+                    </span>
+                </div>
+
+                <!-- 3. THÔNG TIN KHÁCH HÀNG & THÔNG TIN THỰC HIỆN ĐỐI XỨNG 2 BÊN -->
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                    <tr>
+                        <!-- KHỐI BÊN TRÁI: KHÁCH HÀNG -->
+                        <td style="width: 50%; vertical-align: top; padding-right: 15px;">
+                            <strong class="d-block" style="margin-bottom: 5px;">Khách hàng:</strong>
+                            <div t-field="doc.customer_id" t-options='{"widget": "contact", "fields": ["address", "name", "phone", "vat"], "no_marker": True, "phone_icons": True}'/>
+                            <div style="margin-top: 6px;" t-if="doc.asset_id">
+                                <strong>Thiết bị / Máy:</strong> <span t-field="doc.asset_id.name"/> <span t-if="doc.asset_id.serial_no">(Serial: <span t-field="doc.asset_id.serial_no"/>)</span>
+                            </div>
+                        </td>
+
+                        <!-- KHỐI BÊN PHẢI: ĐƠN VỊ THỰC HIỆN & THỜI GIAN -->
+                        <td style="width: 50%; vertical-align: top; padding-left: 15px;">
+                            <strong class="d-block" style="margin-bottom: 5px;">Thông tin thực hiện:</strong>
+                            <div t-if="doc.technician_id">
+                                <strong>Kỹ thuật viên:</strong> <span t-field="doc.technician_id.name"/>
+                            </div>
+                            <div style="margin-top: 4px;" t-if="doc.scheduled_date">
+                                <strong>Thời gian hẹn:</strong> <span t-field="doc.scheduled_date"/>
+                            </div>
+                            <div style="margin-top: 4px;" t-if="doc.sla_deadline">
+                                <strong>Hạn chót SLA:</strong> <span t-field="doc.sla_deadline"/>
+                            </div>
+                            <div style="margin-top: 4px;" t-if="doc.state">
+                                <strong>Trạng thái:</strong> <span t-field="doc.state"/>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- 4. MÔ TẢ SỰ CỐ & YÊU CẦU -->
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; background-color: #f9f9f9; border: 1px solid #ddd;" t-if="doc.description">
+                    <tr>
+                        <td style="padding: 10px;">
+                            <strong>Mô tả chi tiết sự cố:</strong>
+                            <div style="margin-top: 4px;" t-field="doc.description"/>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- 5. BẢNG VẬT TƯ / LINH KIỆN THAY THẾ -->
+                <div style="margin-top: 15px;" t-if="doc.line_ids">
+                    <strong>Danh mục vật tư / linh kiện thay thế:</strong>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 5px;">
+                        <thead>
+                            <tr style="background-color: #eeeeee;">
+                                <th style="border: 1px solid #000; padding: 8px; width: 6%; text-align: center;">STT</th>
+                                <th style="border: 1px solid #000; padding: 8px; text-align: left;">Sản phẩm / Linh kiện</th>
+                                <th style="border: 1px solid #000; padding: 8px; width: 15%; text-align: center;">Số lượng</th>
+                                <th style="border: 1px solid #000; padding: 8px; width: 40%; text-align: left;">Ghi chú kỹ thuật</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="index" t-value="1"/>
+                            <t t-foreach="doc.line_ids" t-as="line">
+                                <tr>
+                                    <td style="border: 1px solid #000; padding: 8px; text-align: center;"><t t-esc="index"/></td>
+                                    <td style="border: 1px solid #000; padding: 8px;"><span t-field="line.product_id.name"/></td>
+                                    <td style="border: 1px solid #000; padding: 8px; text-align: center;"><span t-field="line.quantity"/></td>
+                                    <td style="border: 1px solid #000; padding: 8px;"><span t-field="line.note"/></td>
+                                </tr>
+                                <t t-set="index" t-value="index + 1"/>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 6. BẢNG CHI PHÍ PHÁT SINH TẠI HIỆN TRƯỜNG -->
+                <div style="margin-top: 15px;" t-if="doc.expense_ids">
+                    <strong>Chi phí phát sinh hiện trường:</strong>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 5px;">
+                        <thead>
+                            <tr style="background-color: #eeeeee;">
+                                <th style="border: 1px solid #000; padding: 8px; text-align: left;">Nội dung chi phí</th>
+                                <th style="border: 1px solid #000; padding: 8px; width: 25%; text-align: right;">Số tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="doc.expense_ids" t-as="exp">
+                                <tr>
+                                    <td style="border: 1px solid #000; padding: 8px;"><span t-field="exp.name"/></td>
+                                    <td style="border: 1px solid #000; padding: 8px; text-align: right;"><span t-field="exp.amount"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                    <div style="text-align: right; margin-top: 5px; font-weight: bold;">
+                        Tổng chi phí phát sinh: <span t-field="doc.total_expense"/> đ
+                    </div>
+                </div>
+
+                <!-- KẾT QUẢ XỬ LÝ -->
+                <div style="margin-top: 15px;" t-if="doc.resolution_notes">
+                    <strong>Kết quả xử lý kỹ thuật:</strong>
+                    <div style="margin-top: 4px; padding: 8px; background-color: #f9f9f9; border: 1px solid #ddd;" t-field="doc.resolution_notes"/>
+                </div>
+
+                <!-- 7. KHỐI CHỮ KÝ ĐỐI XỨNG CÂN ĐỐI (CÓ TÍCH HỢP CHỮ KÝ ĐIỆN TỬ) -->
+                <table style="width: 100%; border-collapse: collapse; margin-top: 40px; text-align: center; page-break-inside: avoid;">
+                    <tr>
+                        <td style="width: 50%; border: none; vertical-align: top;">
+                            <strong>Người lập phiếu</strong>
+                            <div style="font-style: italic; margin-top: 5px; font-size: 11px;">(Ký, họ tên)</div>
+                            <div style="height: 50px;"/>
+                            <div style="font-weight: bold; margin-top: 10px;" t-if="doc.technician_id">
+                                <span t-field="doc.technician_id.name"/>
+                            </div>
+                        </td>
+                        <td style="width: 50%; border: none; vertical-align: top;">
+                            <strong>Khách hàng / Đại diện</strong>
+                            <div style="font-style: italic; margin-top: 5px; font-size: 11px;">(Ký, họ tên, đóng dấu)</div>
+                            <div style="height: 50px;" t-if="doc.customer_signature">
+                                <img t-att-src="image_data_uri(doc.customer_signature)" style="max-height: 50px; max-width: 160px; margin: auto;" alt="Chữ ký khách hàng"/>
+                            </div>
+                            <div style="height: 50px;" t-else=""/>
+                            <div style="font-weight: bold; margin-top: 10px;">
+                                <span t-field="doc.customer_id.name"/>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="oe_structure"/>
+            </div>
+        </t>
+    </template>
+
+    <!-- Khung gọi báo cáo chính -->
+    <template id="report_field_service_order">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="my_field_service.report_field_service_order_document" t-lang="doc.customer_id.lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>

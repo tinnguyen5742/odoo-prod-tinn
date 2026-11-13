@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_expense_summary" model="ir.actions.report">
+        <field name="name">Expense Review Summary</field>
+        <field name="model">ps.te.expense.report</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">ps_expenses.expense_summary</field>
+        <field name="binding_model_id" ref="model_ps_te_expense_report"/>
+        <field name="binding_type">report</field>
+        <field name="group_ids" eval="[(4, ref('group_ps_te_trip_employee'))]"/>
+    </record>
+    <record id="action_settlement_summary" model="ir.actions.report">
+        <field name="name">Recorded Settlement Summary</field>
+        <field name="model">ps.te.settlement</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">ps_expenses.settlement_summary</field>
+        <field name="binding_model_id" ref="model_ps_te_settlement"/>
+        <field name="binding_type">report</field>
+        <field name="group_ids" eval="[(4, ref('group_ps_te_trip_employee'))]"/>
+    </record>
+    <template id="expense_summary">
+        <t t-call="web.html_container"><t t-foreach="docs" t-as="o"><div class="page p-4">
+            <h2>Expense Review Summary</h2>
+            <p t-if="o.trip_id.latest_completed_adjustment_id and o.trip_id.effective_expense_report_id != o" class="alert alert-warning">Historical expense version — a completed financial adjustment has established a newer effective basis.</p>
+            <p t-if="o.trip_id.correction_hold" class="alert alert-warning">Active correction hold — do not treat historical review as final clearance.</p>
+            <p><strong>Travel cancellation: </strong><span t-field="o.trip_id.cancellation_status"/></p>
+            <p class="alert alert-info">Internal workflow record — not a tax invoice or accounting certification.</p>
+            <p><strong>Reference: </strong><span t-field="o.reference"/> · <strong>Revision: </strong><span t-field="o.revision"/></p>
+            <p><strong>Trip: </strong><span t-field="o.trip_id.reference"/> · <strong>Owner: </strong><span t-field="o.owner_id"/> · <span t-field="o.company_id"/></p>
+            <p><strong>State: </strong><span t-field="o.state"/> · <strong>Policy: </strong><span t-field="o.policy_reference"/></p>
+            <p><strong>Claimed total: </strong><span t-field="o.claimed_total"/></p>
+            <p><strong>Reviewed accepted subtotal: </strong><span t-field="o.accepted_total"/> · <strong>Refused portion: </strong><span t-field="o.refused_total"/></p>
+            <p><strong>Unresolved portion: </strong><span t-field="o.unresolved_total"/></p>
+            <p t-if="not o.accepted_basis_ready" class="alert alert-warning">Not a final accepted basis. Resolve the current review and policy bindings.</p>
+            <p t-elif="o.zero_expense_declared" class="alert alert-success">Explicit zero-expense declaration reviewed for this revision.</p>
+            <p t-else="" class="alert alert-success">All lines reviewed for the current expense revision.</p>
+            <div t-if="o.zero_expense_declared">
+                <p><strong>No-expense declaration: </strong><span t-field="o.zero_expense_reason"/> · <span t-field="o.zero_expense_declared_by_id"/> · <span t-field="o.zero_expense_declared_at"/></p>
+                <p><strong>Zero-expense review: </strong><span t-field="o.zero_expense_review_reason"/> · <span t-field="o.zero_expense_reviewed_by_id"/> · <span t-field="o.zero_expense_reviewed_at"/></p>
+            </div>
+            <table class="table table-sm table-bordered"><thead><tr>
+                <th>Expense date</th><th>Description</th><th>Employee claim</th><th>Decision</th><th>Accepted portion</th><th>Reason</th>
+            </tr></thead><tbody><tr t-foreach="o.line_ids" t-as="line">
+                <td><span t-field="line.expense_date"/></td><td><span t-field="line.description"/></td>
+                <td><span t-field="line.claimed_amount"/></td><td><span t-field="line.decision"/></td>
+                <td><span t-if="line.reviewed_revision == o.revision and line.decision in ('accepted', 'refused')" t-field="line.accepted_amount"/><span t-else="">Unconfirmed</span></td>
+                <td><span t-field="line.decision_reason"/></td>
+            </tr></tbody></table>
+            <p>Proof files are not embedded. Access to originals requires the current authorized session.</p>
+        </div></t></t>
+    </template>
+    <record id="action_adjustment_summary" model="ir.actions.report">
+        <field name="name">Recorded Financial Adjustment Summary</field><field name="model">ps.te.adjustment</field>
+        <field name="report_type">qweb-html</field><field name="report_name">ps_expenses.adjustment_summary</field>
+        <field name="binding_model_id" ref="model_ps_te_adjustment"/><field name="binding_type">report</field>
+        <field name="group_ids" eval="[(4, ref('group_ps_te_trip_employee'))]"/>
+    </record>
+    <template id="adjustment_summary">
+        <t t-call="web.html_container"><t t-foreach="docs" t-as="o"><div class="page p-4">
+            <h2>Recorded Financial Adjustment Summary</h2>
+            <p class="alert alert-info">Recorded declarations are not bank verification. Workflow closure is not accounting completion.</p>
+            <p><strong>Reference: </strong><span t-field="o.reference"/> · <strong>Revision: </strong><span t-field="o.revision"/></p>
+            <p><strong>Trip: </strong><span t-field="o.trip_id.reference"/> · <strong>Owner: </strong><span t-field="o.owner_id"/> · <span t-field="o.company_id"/></p>
+            <p><strong>State: </strong><span t-field="o.state"/></p>
+            <p t-if="o.trip_id.correction_hold" class="alert alert-warning">Active correction hold — do not treat historical closure as current clearance.</p>
+            <p><span t-field="o.workflow_next_step"/></p>
+            <h3>Saved Adjustment Authorization</h3>
+            <p><strong>Accepted expense snapshot: </strong><span t-field="o.accepted_amount"/></p>
+            <p><strong>Retained cash snapshot: </strong><span t-field="o.retained_amount"/></p>
+            <p><strong>Authorized signed difference: </strong><span t-field="o.difference_amount"/></p>
+            <p><strong>Finance approval: </strong><span t-field="o.approved_by_id"/> · <span t-field="o.approved_at"/></p>
+            <p t-if="not o.money_comparison_current" class="alert alert-warning">Unconfirmed or historical adjustment comparison — do not infer zero or permission to pay/close.</p>
+            <div t-else="" id="current-adjustment-comparison">
+                <p><strong>Verified current retained money: </strong><span t-field="o.current_net_retained"/></p>
+                <p><strong>Outstanding recorded obligation: </strong><span t-field="o.current_remaining_amount"/></p>
+            </div>
+            <h3>Approval and execution</h3>
+            <p><strong>External outcome: </strong><span t-field="o.cash_outcome"/> · <span t-field="o.cash_attempt_reference"/></p>
+            <p t-if="o.cash_event_id"><strong>Recorded movement: </strong><span t-field="o.cash_event_id.kind"/> · <span t-field="o.cash_event_id.amount"/> · <span t-field="o.cash_event_id.external_reference"/> · <span t-field="o.cash_event_id.execution_date"/></p>
+            <p><strong>Workflow closed by: </strong><span t-field="o.closed_by_id"/> · <span t-field="o.closed_at"/></p>
+            <p><strong>Accounting: </strong><span t-field="o.accounting_status"/></p>
+            <p>Expense lines and proof files are deliberately excluded from this monetary summary.</p>
+        </div></t></t>
+    </template>
+    <template id="settlement_summary">
+        <t t-call="web.html_container"><t t-foreach="docs" t-as="o"><div class="page p-4">
+            <h2>Recorded Settlement Summary</h2>
+            <p t-if="o.trip_id.latest_completed_adjustment_id" class="alert alert-warning">Historical settlement — consult the latest completed adjustment for the current financial outcome.</p>
+            <p t-if="o.trip_id.correction_hold" class="alert alert-warning">Active correction hold — do not treat historical closure as current clearance.</p>
+            <p><strong>Travel cancellation: </strong><span t-field="o.trip_id.cancellation_status"/></p>
+            <p class="alert alert-info">Recorded declarations are not bank verification. Workflow closure is not accounting completion.</p>
+            <p><strong>Reference: </strong><span t-field="o.reference"/> · <strong>Revision: </strong><span t-field="o.revision"/></p>
+            <p><strong>Trip: </strong><span t-field="o.trip_id.reference"/> · <strong>Owner: </strong><span t-field="o.owner_id"/> · <span t-field="o.company_id"/></p>
+            <p><strong>State: </strong><span t-field="o.state"/> · <strong>Policy: </strong><span t-field="o.policy_reference"/></p>
+            <p class="alert alert-warning" t-if="not basis_current[o.id]">Unconfirmed or stale comparison basis — do not infer zero or permission to pay/close.</p>
+            <h3>Saved preparation</h3>
+            <p><strong>Expense basis: </strong><span t-field="o.expense_basis_kind"/></p>
+            <p><strong>Expense revision: </strong><span t-field="o.report_revision"/> · <strong>Accepted snapshot: </strong><span t-field="o.accepted_amount"/></p>
+            <p><strong>Funding: </strong><span t-field="o.funding_kind"/>
+                <t t-if="o.funding_known"> · <span t-field="o.funding_amount"/> · <span t-field="o.funding_reference"/></t>
+            </p>
+            <div t-if="basis_current[o.id]" id="current-comparison">
+                <p><strong>Difference: </strong><span t-field="o.difference_amount"/> · <span t-field="o.direction"/></p>
+                <p><strong>Outstanding recorded obligation: </strong><span t-field="o.remaining_amount"/></p>
+            </div>
+            <h3>Approval and execution</h3>
+            <p><strong>Finance approval: </strong><span t-field="o.approved_by_id"/> · <span t-field="o.approved_at"/> · <span t-field="o.approval_reason"/></p>
+            <p><strong>External outcome: </strong><span t-field="o.cash_outcome"/> · <span t-field="o.cash_attempt_reference"/></p>
+            <p t-if="o.cash_event_id"><strong>Recorded movement: </strong><span t-field="o.cash_event_id.kind"/> · <span t-field="o.cash_event_id.amount"/> · <span t-field="o.cash_event_id.external_reference"/> · <span t-field="o.cash_event_id.execution_date"/> · <span t-field="o.cash_event_id.actor_id"/></p>
+            <p t-if="not o.cash_event_id">No settlement cash movement is recorded. This alone does not prove no external payment occurred.</p>
+            <p><strong>Workflow closed by: </strong><span t-field="o.closed_by_id"/> · <span t-field="o.closed_at"/></p>
+            <p><strong>Accounting: </strong><span t-field="o.accounting_status"/></p>
+            <p>Expense lines and proof files are deliberately excluded from this monetary summary.</p>
+        </div></t></t>
+    </template>
+</odoo>

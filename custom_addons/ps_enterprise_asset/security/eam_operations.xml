@@ -1,0 +1,38 @@
+<odoo>
+    <record id="group_eam_operator" model="res.groups">
+        <field name="name">Vận hành EAM — Báo sự cố</field>
+        <field name="privilege_id" ref="privilege_eam"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    <record id="rule_operator_equipment_lookup" model="ir.rule">
+        <field name="name">Vận hành tra cứu thiết bị đang sử dụng theo công ty</field>
+        <field name="model_id" ref="maintenance.model_maintenance_equipment"/>
+        <field name="groups" eval="[(4, ref('group_eam_operator'))]"/>
+        <field name="domain_force">[('company_id', 'in', company_ids), ('active', '=', True), ('eam_status', '!=', 'retired')]</field>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="rule_breakdown_company" model="ir.rule">
+        <field name="name">Báo sự cố theo công ty</field>
+        <field name="model_id" ref="model_ps_eam_breakdown"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_breakdown_own" model="ir.rule">
+        <field name="name">Vận hành xem báo sự cố do mình lập</field>
+        <field name="model_id" ref="model_ps_eam_breakdown"/>
+        <field name="groups" eval="[(4, ref('group_eam_operator'))]"/>
+        <field name="domain_force">[('create_uid', '=', user.id)]</field>
+    </record>
+    <record id="rule_breakdown_eam_staff" model="ir.rule">
+        <field name="name">Nhân viên EAM xem báo sự cố theo công ty</field>
+        <field name="model_id" ref="model_ps_eam_breakdown"/>
+        <field name="groups" eval="[(4, ref('group_eam_user'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_tool_loan_company" model="ir.rule">
+        <field name="name">Cấp phát công cụ theo công ty</field>
+        <field name="model_id" ref="model_ps_eam_tool_loan"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

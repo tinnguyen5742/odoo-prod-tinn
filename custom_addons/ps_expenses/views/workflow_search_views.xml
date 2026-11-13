@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_expense_search" model="ir.ui.view">
+        <field name="name">ps.te.expense.report.search</field><field name="model">ps.te.expense.report</field>
+        <field name="arch" type="xml"><search>
+            <field name="reference"/><field name="trip_id"/><field name="owner_id"/>
+            <filter name="mine" string="My Records" domain="[('owner_id', '=', uid)]"/>
+            <filter name="to_review" string="Awaiting Review" domain="[('state', '=', 'submitted')]"/>
+            <filter name="to_correct" string="Correction Required" domain="[('state', '=', 'returned')]"/>
+            <filter name="group_state" string="State" context="{'group_by': 'state'}"/>
+        </search></field>
+    </record>
+    <record id="view_settlement_search" model="ir.ui.view">
+        <field name="name">ps.te.settlement.search</field><field name="model">ps.te.settlement</field>
+        <field name="arch" type="xml"><search>
+            <field name="reference"/><field name="trip_id"/><field name="owner_id"/>
+            <filter name="mine" string="My Records" domain="[('owner_id', '=', uid)]"/>
+            <filter name="unknown" string="Unconfirmed Funding" domain="[('funding_known', '=', False)]"/>
+            <filter name="to_review" string="Awaiting Review" domain="[('state', '=', 'submitted')]"/>
+            <filter name="open_obligations" string="Approved Open Cases" domain="[('state', '=', 'approved')]"/>
+            <filter name="uncertain" string="Uncertain Cash Outcome" domain="[('cash_outcome', '=', 'uncertain')]"/>
+            <filter name="closed" string="Workflow Closed" domain="[('state', '=', 'closed')]"/>
+            <filter name="group_state" string="State" context="{'group_by': 'state'}"/>
+        </search></field>
+    </record>
+    <record id="view_advance_search" model="ir.ui.view">
+        <field name="name">ps.te.trip.advance.search</field><field name="model">ps.te.trip.advance</field>
+        <field name="arch" type="xml"><search>
+            <field name="reference"/><field name="trip_id"/><field name="owner_id"/>
+            <filter name="mine" string="My Records" domain="[('owner_id', '=', uid)]"/>
+            <filter name="to_review" string="Awaiting Review" domain="[('state', '=', 'submitted')]"/>
+            <filter name="to_pay" string="Approved — Not Disbursed" domain="[('state', '=', 'approved')]"/>
+            <filter name="uncertain" string="Uncertain Cash Outcome" domain="[('payment_outcome', '=', 'uncertain')]"/>
+            <filter name="group_state" string="State" context="{'group_by': 'state'}"/>
+        </search></field>
+    </record>
+    <record id="action_ps_te_expenses" model="ir.actions.act_window"><field name="search_view_id" ref="view_expense_search"/></record>
+    <record id="action_ps_te_settlements" model="ir.actions.act_window"><field name="search_view_id" ref="view_settlement_search"/></record>
+    <record id="action_ps_te_advances" model="ir.actions.act_window"><field name="search_view_id" ref="view_advance_search"/></record>
+</odoo>

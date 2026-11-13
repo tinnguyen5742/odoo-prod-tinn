@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_quality" model="ir.module.category">
+        <field name="name">Quality Management</field>
+        <field name="sequence">43</field>
+    </record>
+    <record id="privilege_quality" model="res.groups.privilege">
+        <field name="name">Quality Management</field>
+        <field name="category_id" ref="module_category_quality"/>
+        <field name="sequence">10</field>
+    </record>
+    <record id="group_quality_user" model="res.groups">
+        <field name="name">Quality User</field>
+        <field name="privilege_id" ref="privilege_quality"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    <record id="group_quality_inspector" model="res.groups">
+        <field name="name">Quality Inspector</field>
+        <field name="privilege_id" ref="privilege_quality"/>
+        <field name="implied_ids" eval="[(4, ref('group_quality_user'))]"/>
+    </record>
+    <record id="group_quality_manager" model="res.groups">
+        <field name="name">Quality Manager</field>
+        <field name="privilege_id" ref="privilege_quality"/>
+        <field name="implied_ids" eval="[(4, ref('group_quality_inspector'))]"/>
+    </record>
+    <record id="group_quality_administrator" model="res.groups">
+        <field name="name">Quality Administrator</field>
+        <field name="privilege_id" ref="privilege_quality"/>
+        <field name="implied_ids" eval="[(4, ref('group_quality_manager'))]"/>
+    </record>
+
+    <record id="rule_quality_standard_company" model="ir.rule">
+        <field name="name">Quality standards: allowed companies</field>
+        <field name="model_id" ref="model_ps_quality_standard"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="rule_quality_standard_line_company" model="ir.rule">
+        <field name="name">Quality standard lines: allowed companies</field>
+        <field name="model_id" ref="model_ps_quality_standard_line"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="rule_quality_plan_company" model="ir.rule">
+        <field name="name">Quality plans: allowed companies</field>
+        <field name="model_id" ref="model_ps_quality_plan"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="rule_quality_inspection_company" model="ir.rule">
+        <field name="name">Quality inspections: allowed companies</field>
+        <field name="model_id" ref="model_ps_quality_inspection"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="rule_quality_inspection_line_company" model="ir.rule">
+        <field name="name">Quality inspection lines: allowed companies</field>
+        <field name="model_id" ref="model_ps_quality_inspection_line"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="rule_quality_ncr_company" model="ir.rule">
+        <field name="name">Quality NCR: allowed companies</field>
+        <field name="model_id" ref="model_ps_quality_ncr"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="rule_quality_capa_company" model="ir.rule">
+        <field name="name">Quality CAPA: allowed companies</field>
+        <field name="model_id" ref="model_ps_quality_capa"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="rule_quality_equipment_company" model="ir.rule">
+        <field name="name">Quality equipment: allowed companies</field>
+        <field name="model_id" ref="model_ps_quality_equipment"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="rule_quality_calibration_company" model="ir.rule">
+        <field name="name">Quality calibrations: allowed companies</field>
+        <field name="model_id" ref="model_ps_quality_calibration"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <record id="rule_quality_standard_user_active" model="ir.rule">
+        <field name="name">Quality users: active standards</field>
+        <field name="model_id" ref="model_ps_quality_standard"/>
+        <field name="groups" eval="[(4, ref('group_quality_user'))]"/>
+        <field name="domain_force">[('state', '=', 'active')]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="rule_quality_standard_manager_all" model="ir.rule">
+        <field name="name">Quality managers: all standards</field>
+        <field name="model_id" ref="model_ps_quality_standard"/>
+        <field name="groups" eval="[(4, ref('group_quality_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_quality_plan_user_active" model="ir.rule">
+        <field name="name">Quality users: active plans</field>
+        <field name="model_id" ref="model_ps_quality_plan"/>
+        <field name="groups" eval="[(4, ref('group_quality_user'))]"/>
+        <field name="domain_force">[('state', '=', 'active')]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="rule_quality_plan_manager_all" model="ir.rule">
+        <field name="name">Quality managers: all plans</field>
+        <field name="model_id" ref="model_ps_quality_plan"/>
+        <field name="groups" eval="[(4, ref('group_quality_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_quality_inspection_user_own" model="ir.rule">
+        <field name="name">Quality users: own or assigned inspections</field>
+        <field name="model_id" ref="model_ps_quality_inspection"/>
+        <field name="groups" eval="[(4, ref('group_quality_user'))]"/>
+        <field name="domain_force">['|', ('create_uid', '=', user.id), ('inspector_id', '=', user.id)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="rule_quality_inspection_inspector_all" model="ir.rule">
+        <field name="name">Quality inspectors: all company inspections</field>
+        <field name="model_id" ref="model_ps_quality_inspection"/>
+        <field name="groups" eval="[(4, ref('group_quality_inspector'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_quality_ncr_user_own" model="ir.rule">
+        <field name="name">Quality users: own or assigned NCR</field>
+        <field name="model_id" ref="model_ps_quality_ncr"/>
+        <field name="groups" eval="[(4, ref('group_quality_user'))]"/>
+        <field name="domain_force">['|', ('create_uid', '=', user.id), ('assigned_id', '=', user.id)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="rule_quality_ncr_inspector_all" model="ir.rule">
+        <field name="name">Quality inspectors: all company NCR</field>
+        <field name="model_id" ref="model_ps_quality_ncr"/>
+        <field name="groups" eval="[(4, ref('group_quality_inspector'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_quality_capa_user_own" model="ir.rule">
+        <field name="name">Quality users: own or assigned CAPA</field>
+        <field name="model_id" ref="model_ps_quality_capa"/>
+        <field name="groups" eval="[(4, ref('group_quality_user'))]"/>
+        <field name="domain_force">['|', ('create_uid', '=', user.id), ('assigned_id', '=', user.id)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="rule_quality_capa_inspector_all" model="ir.rule">
+        <field name="name">Quality inspectors: all company CAPA</field>
+        <field name="model_id" ref="model_ps_quality_capa"/>
+        <field name="groups" eval="[(4, ref('group_quality_inspector'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_quality_equipment_manager_all" model="ir.rule">
+        <field name="name">Quality managers: all company equipment</field>
+        <field name="model_id" ref="model_ps_quality_equipment"/>
+        <field name="groups" eval="[(4, ref('group_quality_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="rule_quality_calibration_manager_all" model="ir.rule">
+        <field name="name">Quality managers: all company calibrations</field>
+        <field name="model_id" ref="model_ps_quality_calibration"/>
+        <field name="groups" eval="[(4, ref('group_quality_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+</odoo>

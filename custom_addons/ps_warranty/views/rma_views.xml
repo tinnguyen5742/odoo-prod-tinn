@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ps_warranty_rma_list" model="ir.ui.view">
+        <field name="name">ps.warranty.rma.list</field>
+        <field name="model">ps.warranty.rma</field>
+        <field name="arch" type="xml">
+            <list string="RMA Records" default_order="create_date desc">
+                <field name="name"/>
+                <field name="claim_id"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="serial_number"/>
+                <field name="date_requested"/>
+                <field name="date_received"/>
+                <field name="condition"/>
+                <field name="state" widget="badge"
+                       decoration-info="state in ['received', 'inspected']"
+                       decoration-success="state in ['returned', 'replaced']"
+                       decoration-muted="state in ['draft', 'cancelled']"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ps_warranty_rma_form" model="ir.ui.view">
+        <field name="name">ps.warranty.rma.form</field>
+        <field name="model">ps.warranty.rma</field>
+        <field name="arch" type="xml">
+            <form string="Warranty RMA">
+                <header>
+                    <button name="action_mark_received" type="object" string="Mark Received"
+                            class="oe_highlight" groups="ps_warranty.group_warranty_officer"
+                            invisible="state != 'draft'"/>
+                    <button name="action_inspect" type="object" string="Complete Inspection"
+                            groups="ps_warranty.group_warranty_officer"
+                            invisible="state != 'received'"/>
+                    <button name="action_return_to_customer" type="object" string="Return to Customer"
+                            groups="ps_warranty.group_warranty_officer"
+                            invisible="state != 'inspected'"/>
+                    <button name="action_mark_replaced" type="object" string="Mark Replaced"
+                            class="oe_highlight" groups="ps_warranty.group_warranty_officer"
+                            invisible="state != 'inspected'"/>
+                    <button name="action_cancel" type="object" string="Cancel"
+                            groups="ps_warranty.group_warranty_manager"
+                            invisible="state not in ['draft', 'received']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,received,inspected,returned,replaced,cancelled"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name"/></h1></div>
+                    <group>
+                        <group string="Returned item">
+                            <field name="claim_id" readonly="state != 'draft'"/>
+                            <field name="partner_id" readonly="state != 'draft'"/>
+                            <field name="product_id" readonly="state != 'draft'"/>
+                            <field name="serial_number" readonly="state != 'draft'"/>
+                            <field name="lot_ref" readonly="state != 'draft'"/>
+                            <field name="date_requested"/>
+                            <field name="date_received"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Inspection and resolution">
+                            <field name="condition"/>
+                            <field name="resolution"/>
+                            <field name="replacement_product_id" invisible="resolution != 'replace'"/>
+                            <field name="replacement_serial" invisible="resolution != 'replace'"/>
+                            <field name="date_closed" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Inspection result">
+                            <field name="inspection_result" widget="html"/>
+                            <field name="description" widget="html" placeholder="Internal RMA notes..."/>
+                        </page>
+                        <page string="Attachments">
+                            <field name="attachment_ids" widget="many2many_binary"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ps_warranty_rma_search" model="ir.ui.view">
+        <field name="name">ps.warranty.rma.search</field>
+        <field name="model">ps.warranty.rma</field>
+        <field name="arch" type="xml">
+            <search string="Search RMA Records">
+                <field name="name"/>
+                <field name="claim_id"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="serial_number"/>
+                <filter name="awaiting_receipt" string="Awaiting Receipt" domain="[('state', '=', 'draft')]"/>
+                <filter name="to_inspect" string="To Inspect" domain="[('state', '=', 'received')]"/>
+                <filter name="replaced" string="Replaced" domain="[('state', '=', 'replaced')]"/>
+                <group>
+                    <filter name="group_by_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_by_condition" string="Condition" context="{'group_by': 'condition'}"/>
+                    <filter name="group_by_company" string="Company" context="{'group_by': 'company_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_ps_warranty_rmas" model="ir.actions.act_window">
+        <field name="name">RMA Records</field>
+        <field name="res_model">ps.warranty.rma</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_ps_warranty_rma_search"/>
+    </record>
+</odoo>

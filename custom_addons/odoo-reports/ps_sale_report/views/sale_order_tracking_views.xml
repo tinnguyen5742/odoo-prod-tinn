@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sale_order_form_ps_tracking"
+            model="ir.ui.view">
+        <field name="name">sale.order.form.ps.tracking</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/list"
+                   position="inside">
+                <field name="ps_tracking_quantity_limit" optional="show"/>
+
+                <field name="ps_requested_delivery_date"
+                       optional="show"/>
+
+                <field name="ps_actual_receipt_date"
+                       optional="hide"/>
+
+                <field name="ps_customer_confirmation_date"
+                       optional="hide"/>
+
+                <field name="ps_tracking_m2_factor"
+                       optional="show"/>
+
+                <field name="ps_tracking_quantity_m2"
+                       optional="show"/>
+
+                <field name="ps_product_structure"
+                       optional="hide"/>
+
+            </xpath>
+        </field>
+    </record>
+    <record id="view_mrp_production_ps_tracking" model="ir.ui.view">
+        <field name="name">mrp.production.form.ps.tracking</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="sale_line_id" string="Dòng SO theo dõi"
+                       domain="[('company_id', '=', company_id), ('product_id', '=', product_id), ('state', '=', 'sale'), ('display_type', '=', False)]"
+                       options="{'no_create': True}" readonly="state != 'draft'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

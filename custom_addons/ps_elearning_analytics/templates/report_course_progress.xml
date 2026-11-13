@@ -1,0 +1,99 @@
+<t t-name="custom_elearning.report_course_progress">
+    <t t-call="web.html_container">
+        <t groups="website_slides.group_website_slides_officer">
+            <t t-foreach="docs.exists()" t-as="o">
+                <t t-set="attendees" t-value="o.channel_partner_all_ids.filtered(lambda a: a.active).sorted(key=lambda a: a.partner_id.name or '')"/>
+                <t t-set="enrolled" t-value="attendees.filtered(lambda a: a.member_status in ('joined', 'ongoing', 'completed'))"/>
+                <t t-set="not_started" t-value="enrolled.filtered(lambda a: a.member_status == 'joined')"/>
+                <t t-set="ongoing" t-value="enrolled.filtered(lambda a: a.member_status == 'ongoing')"/>
+                <t t-set="finished" t-value="enrolled.filtered(lambda a: a.member_status == 'completed')"/>
+                <t t-set="invited" t-value="attendees.filtered(lambda a: a.member_status == 'invited')"/>
+                <t t-call="web.external_layout">
+                    <div class="page ps_course_progress">
+                        <style>
+                            .ps_course_progress { line-height: 1.2; font-size: 14px; }
+                            .ps_course_progress h2 { text-align: center; font-size: 21px; line-height: 1.4; padding: 2px 0 3px; margin: 0 0 8px; }
+                            .ps_course_progress p { margin: 0 0 6px; }
+                            .ps_course_progress table { width: 100%; border-collapse: collapse; table-layout: fixed; margin: 0 0 8px; }
+                            .ps_course_progress .table.table-sm th, .ps_course_progress .table.table-sm td { border: 1px solid #555; padding: 6px 9px !important; line-height: 1.35 !important; letter-spacing: 0.2px; word-spacing: 0.4px; vertical-align: top; height: auto; overflow-wrap: break-word; word-wrap: break-word; font-weight: 400; }
+                            .ps_course_progress th *, .ps_course_progress td * { font-weight: 400; }
+                            .ps_course_progress .table.table-sm.ps_course_progress_summary > tbody > tr > td:first-child { padding: 3px 8px 3px 16px !important; letter-spacing: 0.25px; }
+                            .ps_course_progress table:not(.ps_course_progress_summary) th:first-child,
+                            .ps_course_progress table:not(.ps_course_progress_summary) td:first-child { text-align: left !important; padding-left: 12px !important; }
+                            .ps_course_progress .number { text-align: center; }
+                            .ps_course_progress thead { display: table-header-group; }
+                            .ps_course_progress tfoot { display: table-row-group; }
+                            .ps_course_progress tr { page-break-inside: avoid; }
+                        </style>
+                        <h2>BÁO CÁO TIẾN ĐỘ HỌC VIÊN</h2>
+                        <table class="table table-sm table-bordered ps_course_progress_summary">
+                            <colgroup>
+                                <col style="width: 25%;"/>
+                                <col style="width: 25%;"/>
+                                <col style="width: 25%;"/>
+                                <col style="width: 25%;"/>
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td>Khóa học</td>
+                                    <td colspan="3"><span t-field="o.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Người phụ trách</td>
+                                    <td><span t-field="o.user_id"/></td>
+                                    <td>Đã ghi danh</td>
+                                    <td class="number"><span t-out="len(enrolled)"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Chưa bắt đầu</td>
+                                    <td class="number"><span t-out="len(not_started)"/></td>
+                                    <td>Đang học</td>
+                                    <td class="number"><span t-out="len(ongoing)"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Đã hoàn thành</td>
+                                    <td class="number"><span t-out="len(finished)"/></td>
+                                    <td>Đang được mời</td>
+                                    <td class="number"><span t-out="len(invited)"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width: 8%;">STT</th>
+                                    <th style="width: 22%;">Học viên</th>
+                                    <th style="width: 14%;">Ngày ghi danh</th>
+                                    <th style="width: 14%;">Cập nhật gần nhất</th>
+                                    <th style="width: 12%;">Trạng thái</th>
+                                    <th class="number" style="width: 9%;">Hoàn thành</th>
+                                    <th style="width: 21%;">Bài học tiếp theo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-if="not attendees">
+                                    <td colspan="7" class="text-center">Chưa có học viên hoặc lời mời.</td>
+                                </tr>
+                                <tr t-foreach="attendees" t-as="attendee">
+                                    <td class="number"><span t-out="attendee_index + 1"/></td>
+                                    <td><span t-field="attendee.partner_id"/></td>
+                                    <td><span t-field="attendee.create_date"/></td>
+                                    <td><span t-field="attendee.write_date"/></td>
+                                    <td>
+                                        <t t-if="attendee.member_status == 'invited'">Đã mời</t>
+                                        <t t-elif="attendee.member_status == 'joined'">Chưa bắt đầu</t>
+                                        <t t-elif="attendee.member_status == 'ongoing'">Đang học</t>
+                                        <t t-else="">Đã hoàn thành</t>
+                                    </td>
+                                    <td class="number"><span t-out="attendee.completion"/>%</td>
+                                    <td><span t-field="attendee.next_slide_id"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </t>
+</t>

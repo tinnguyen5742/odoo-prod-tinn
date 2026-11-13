@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_ps_te_trip_employee" model="res.groups">
+        <field name="name">PS T&amp;E Trip Employee</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_ps_te_trip_manager" model="res.groups">
+        <field name="name">PS T&amp;E Trip Manager</field>
+        <field name="implied_ids" eval="[(4, ref('group_ps_te_trip_employee'))]"/>
+    </record>
+
+    <record id="rule_ps_te_trip_request_own_company" model="ir.rule">
+        <field name="name">PS T&amp;E trip request: own current company</field>
+        <field name="model_id" ref="model_ps_te_trip_request"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_trip_employee'))]"/>
+        <field name="domain_force">[('owner_id', '=', user.id), ('company_id', 'in', company_ids), ('employee_id.active', '=', True), ('employee_id.user_id', '=', user.id), ('employee_mapping_valid', '=', True)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="rule_ps_te_trip_request_assigned_manager" model="ir.rule">
+        <field name="name">PS T&amp;E requests: current assigned manager</field>
+        <field name="model_id" ref="model_ps_te_trip_request"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_trip_manager'))]"/>
+        <field name="domain_force">[('approver_id', '=', user.id), ('employee_id.parent_id.user_id', '=', user.id), ('employee_id.active', '=', True), ('employee_id.parent_id.active', '=', True), ('employee_mapping_valid', '=', True), ('manager_mapping_valid', '=', True), ('company_id', 'in', company_ids)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="rule_ps_te_trip_event_owner" model="ir.rule">
+        <field name="name">PS T&amp;E history: own current company</field>
+        <field name="model_id" ref="model_ps_te_trip_event"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_trip_employee'))]"/>
+        <field name="domain_force">[('owner_id', '=', user.id), ('company_id', 'in', company_ids), ('request_id.employee_id.active', '=', True), ('request_id.employee_id.user_id', '=', user.id), ('request_id.employee_mapping_valid', '=', True)]</field>
+    </record>
+
+    <record id="rule_ps_te_trip_event_manager" model="ir.rule">
+        <field name="name">PS T&amp;E history: current assigned manager</field>
+        <field name="model_id" ref="model_ps_te_trip_event"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_trip_manager'))]"/>
+        <field name="domain_force">[('request_id.approver_id', '=', user.id), ('request_id.employee_id.parent_id.user_id', '=', user.id), ('request_id.employee_id.active', '=', True), ('request_id.employee_id.parent_id.active', '=', True), ('request_id.employee_mapping_valid', '=', True), ('request_id.manager_mapping_valid', '=', True), ('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="group_ps_te_finance" model="res.groups">
+        <field name="name">PS T&amp;E Advance Finance Reviewer</field>
+        <field name="implied_ids" eval="[(4, ref('group_ps_te_trip_employee'))]"/>
+    </record>
+    <record id="group_ps_te_cash" model="res.groups">
+        <field name="name">PS T&amp;E Advance Cash Operator</field>
+        <field name="implied_ids" eval="[(4, ref('group_ps_te_trip_employee'))]"/>
+    </record>
+
+    <record id="rule_ps_te_advance_owner" model="ir.rule">
+        <field name="name">PS T&amp;E advance: current owner</field>
+        <field name="model_id" ref="model_ps_te_trip_advance"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_trip_employee'))]"/>
+        <field name="domain_force">[('owner_id', '=', user.id), ('company_id', 'in', company_ids), ('trip_id.employee_id.active', '=', True), ('trip_id.employee_id.user_id', '=', user.id), ('trip_id.employee_mapping_valid', '=', True)]</field>
+    </record>
+    <record id="rule_ps_te_advance_finance" model="ir.rule">
+        <field name="name">PS T&amp;E advance: assigned finance reviewer</field>
+        <field name="model_id" ref="model_ps_te_trip_advance"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_finance'))]"/>
+        <field name="domain_force">[('finance_reviewer_id', '=', user.id), ('finance_assignment_valid', '=', True), ('company_id', 'in', company_ids), ('trip_id.employee_id.active', '=', True), ('trip_id.employee_mapping_valid', '=', True)]</field>
+    </record>
+    <record id="rule_ps_te_advance_cash" model="ir.rule">
+        <field name="name">PS T&amp;E advance: assigned cash operator</field>
+        <field name="model_id" ref="model_ps_te_trip_advance"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_cash'))]"/>
+        <field name="domain_force">[('cash_operator_id', '=', user.id), ('cash_assignment_valid', '=', True), ('company_id', 'in', company_ids), ('trip_id.employee_id.active', '=', True), ('trip_id.employee_mapping_valid', '=', True)]</field>
+    </record>
+
+    <record id="rule_ps_te_advance_event_owner" model="ir.rule">
+        <field name="name">PS T&amp;E advance history: current owner</field>
+        <field name="model_id" ref="model_ps_te_advance_event"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_trip_employee'))]"/>
+        <field name="domain_force">[('advance_id.owner_id', '=', user.id), ('advance_id.company_id', 'in', company_ids), ('advance_id.trip_id.employee_id.active', '=', True), ('advance_id.trip_id.employee_id.user_id', '=', user.id), ('advance_id.trip_id.employee_mapping_valid', '=', True)]</field>
+    </record>
+    <record id="rule_ps_te_advance_event_finance" model="ir.rule">
+        <field name="name">PS T&amp;E advance history: finance reviewer</field>
+        <field name="model_id" ref="model_ps_te_advance_event"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_finance'))]"/>
+        <field name="domain_force">[('advance_id.finance_reviewer_id', '=', user.id), ('advance_id.finance_assignment_valid', '=', True), ('advance_id.company_id', 'in', company_ids), ('advance_id.trip_id.employee_id.active', '=', True), ('advance_id.trip_id.employee_mapping_valid', '=', True)]</field>
+    </record>
+    <record id="rule_ps_te_advance_event_cash" model="ir.rule">
+        <field name="name">PS T&amp;E advance history: cash operator</field>
+        <field name="model_id" ref="model_ps_te_advance_event"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_cash'))]"/>
+        <field name="domain_force">[('advance_id.cash_operator_id', '=', user.id), ('advance_id.cash_assignment_valid', '=', True), ('advance_id.company_id', 'in', company_ids), ('advance_id.trip_id.employee_id.active', '=', True), ('advance_id.trip_id.employee_mapping_valid', '=', True)]</field>
+    </record>
+
+    <record id="rule_ps_te_trip_finance" model="ir.rule">
+        <field name="name">PS T&amp;E trip: assigned advance finance</field>
+        <field name="model_id" ref="model_ps_te_trip_request"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_finance'))]"/>
+        <field name="domain_force">[('advance_id.finance_reviewer_id', '=', user.id), ('advance_id.finance_assignment_valid', '=', True), ('company_id', 'in', company_ids), ('employee_id.active', '=', True), ('employee_mapping_valid', '=', True)]</field>
+        <field name="perm_write" eval="False"/><field name="perm_create" eval="False"/><field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="rule_ps_te_trip_cash" model="ir.rule">
+        <field name="name">PS T&amp;E trip: assigned advance cash operator</field>
+        <field name="model_id" ref="model_ps_te_trip_request"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_cash'))]"/>
+        <field name="domain_force">[('advance_id.cash_operator_id', '=', user.id), ('advance_id.cash_assignment_valid', '=', True), ('company_id', 'in', company_ids), ('employee_id.active', '=', True), ('employee_mapping_valid', '=', True)]</field>
+        <field name="perm_write" eval="False"/><field name="perm_create" eval="False"/><field name="perm_unlink" eval="False"/>
+    </record>
+</odoo>

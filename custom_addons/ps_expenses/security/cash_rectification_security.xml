@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="rule_cash_rectification_owner" model="ir.rule">
+        <field name="name">PS T&amp;E rectification current owner</field><field name="model_id" ref="model_ps_te_cash_rectification"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_trip_employee'))]"/>
+        <field name="domain_force">[('owner_id', '=', user.id), ('trip_id.employee_id.user_id', '=', user.id), ('trip_id.employee_id.active', '=', True), ('trip_id.employee_mapping_valid', '=', True), ('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_cash_rectification_finance" model="ir.rule">
+        <field name="name">PS T&amp;E rectification assigned current finance</field><field name="model_id" ref="model_ps_te_cash_rectification"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_finance'))]"/>
+        <field name="domain_force">[('correction_id.finance_reviewer_id', '=', user.id), ('correction_id.finance_assignment_valid', '=', True), ('trip_id.employee_id.active', '=', True), ('trip_id.employee_mapping_valid', '=', True), ('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_cash_rectification_cash" model="ir.rule">
+        <field name="name">PS T&amp;E rectification assigned current cash</field><field name="model_id" ref="model_ps_te_cash_rectification"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_cash'))]"/>
+        <field name="domain_force">[('correction_id.cash_operator_id', '=', user.id), ('correction_id.cash_assignment_valid', '=', True), ('trip_id.employee_id.active', '=', True), ('trip_id.employee_mapping_valid', '=', True), ('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

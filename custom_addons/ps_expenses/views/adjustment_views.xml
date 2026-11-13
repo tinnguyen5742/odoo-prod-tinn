@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_financial_adjustment_form" model="ir.ui.view">
+        <field name="name">ps.te.adjustment.form</field><field name="model">ps.te.adjustment</field>
+        <field name="arch" type="xml"><form create="0" edit="0" delete="0" duplicate="0">
+            <header><button name="action_open_operation" type="object" string="Financial Adjustment Operation" class="btn-primary"/>
+                <button name="action_open_expenses" type="object" string="Open Adjustment Expenses"/>
+                <field name="state" widget="statusbar" statusbar_visible="draft,cash,finance,approved,closed"/></header>
+            <sheet><div class="alert alert-warning" role="status">Original records remain historical. This adjustment is held until independent checks, exact money resolution and explicit finance closure.</div>
+                <group string="Next Step" col="1"><field name="workflow_next_step" nolabel="1"/></group>
+                <group><group><field name="reference"/><field name="trip_id"/><field name="correction_id"/>
+                    <field name="revision"/><field name="reason"/><field name="owner_id"/><field name="company_id"/>
+                    <field name="previous_report_id"/><field name="carry_report_id"/><field name="report_id"/></group>
+                    <group><field name="finance_reviewer_id"/><field name="cash_operator_id"/><field name="currency_id"/>
+                        <field name="accepted_amount"/><field name="retained_amount"/><field name="difference_amount"/>
+                        <field name="cash_outcome"/><field name="cash_attempt_reference"/><field name="cash_event_id"/>
+                        <field name="no_funding_reference"/><field name="no_funding_confirmed_by_id"/>
+                        <field name="accounting_status"/></group></group>
+                <group string="Current Verified Comparison">
+                    <field name="money_comparison_current"/>
+                    <field name="current_net_retained" invisible="not money_comparison_current"/>
+                    <field name="current_remaining_amount" invisible="not money_comparison_current"/>
+                </group>
+                <group string="Manager-Approved Trip Changes" invisible="not amendment_id">
+                    <field name="amendment_id"/><field name="amendment_manager_id"/>
+                    <field name="amended_purpose"/><field name="amended_destination"/>
+                    <field name="amended_start_date"/><field name="amended_end_date"/>
+                </group>
+                <group string="Existing Attempt Reconciliation" invisible="state not in ['investigate', 'verify', 'reconciled']">
+                    <field name="reconciliation_finance_id"/><field name="reconciliation_cash_id"/>
+                    <field name="observed_outcome"/><field name="observed_amount"/><field name="observed_reference"/>
+                    <field name="observed_date"/><field name="observation_evidence"/><field name="observation_proposed_by_id"/>
+                    <field name="observation_verified_by_id"/><field name="observation_verification_reference"/>
+                    <field name="reconciliation_completed_by_id"/><field name="reconciliation_completed_at"/>
+                </group>
+                <field name="event_ids"><list create="0" edit="0" delete="0"><field name="occurred_at"/>
+                    <field name="actor_id"/><field name="revision"/><field name="event_label"/><field name="kind" optional="hide"/><field name="reason"/>
+                    <field name="snapshot" optional="hide"/></list></field>
+            </sheet></form></field>
+    </record>
+    <record id="view_financial_adjustment_list" model="ir.ui.view">
+        <field name="name">ps.te.adjustment.list</field><field name="model">ps.te.adjustment</field>
+        <field name="arch" type="xml"><list create="0" edit="0" delete="0"><field name="reference"/>
+            <field name="trip_id"/><field name="owner_id"/><field name="state"/><field name="revision"/>
+            <field name="difference_amount"/><field name="cash_outcome"/><field name="accounting_status"/>
+        </list></field>
+    </record>
+    <record id="view_financial_adjustment_wizard" model="ir.ui.view">
+        <field name="name">ps.te.adjustment.wizard.form</field><field name="model">ps.te.adjustment.wizard</field>
+        <field name="arch" type="xml"><form string="Financial Adjustment Operation"><group>
+            <field name="adjustment_id"/><field name="expected_revision"/><field name="operation"/>
+            <field name="currency_id" invisible="1"/>
+            <field name="external_reference" invisible="operation not in ['confirm', 'start', 'record', 'none', 'no_funding', 'observe_recorded', 'verify_old']" required="operation in ['confirm', 'start', 'record', 'none', 'no_funding', 'observe_recorded', 'verify_old']"/>
+            <field name="amount" invisible="operation not in ['record', 'observe_recorded']" required="operation in ['record', 'observe_recorded']"/>
+            <field name="execution_date" invisible="operation not in ['record', 'observe_recorded']" required="operation in ['record', 'observe_recorded']"/>
+            <field name="evidence_reference" invisible="operation not in ['observe_none', 'observe_recorded']" required="operation in ['observe_none', 'observe_recorded']"/>
+            <field name="reason"/></group><footer>
+                <button name="action_apply" type="object" string="Apply" class="btn-primary"/><button string="Cancel" special="cancel"/>
+            </footer></form></field>
+    </record>
+    <record id="view_correction_adjustments" model="ir.ui.view">
+        <field name="name">ps.te.correction.adjustments</field><field name="model">ps.te.correction</field>
+        <field name="inherit_id" ref="view_correction_form"/>
+        <field name="arch" type="xml"><xpath expr="//sheet" position="inside">
+            <group string="Financial Adjustment Versions"><field name="adjustment_ids" readonly="1"/></group>
+        </xpath></field>
+    </record>
+    <record id="view_expense_adjustment_identity" model="ir.ui.view">
+        <field name="name">ps.te.expense.report.adjustment.identity</field><field name="model">ps.te.expense.report</field>
+        <field name="inherit_id" ref="view_ps_te_expense_form"/>
+        <field name="arch" type="xml"><xpath expr="//field[@name='reference']" position="after">
+            <field name="adjustment_id" invisible="not adjustment_id"/>
+        </xpath></field>
+    </record>
+    <record id="view_expense_line_linked_proofs" model="ir.ui.view">
+        <field name="name">ps.te.expense.line.linked.proofs</field><field name="model">ps.te.expense.line</field>
+        <field name="inherit_id" ref="view_ps_te_expense_line_form"/>
+        <field name="arch" type="xml"><xpath expr="//sheet" position="inside">
+            <group string="Retained Proof References"><field name="proof_link_ids"><list create="0" edit="0" delete="0">
+                <field name="filename"/><field name="sha256" optional="hide"/><field name="evidence_id"/>
+                <field name="superseded"/><field name="superseded_reason"/>
+                <button name="action_download" type="object" string="Download"/>
+            </list></field></group>
+        </xpath></field>
+    </record>
+</odoo>

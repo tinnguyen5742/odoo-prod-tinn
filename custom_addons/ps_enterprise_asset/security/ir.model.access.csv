@@ -1,0 +1,24 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_plan_user,EAM plan user,model_ps_eam_plan,group_eam_user,1,0,0,0
+access_plan_manager,EAM plan manager,model_ps_eam_plan,group_eam_manager,1,1,1,1
+access_meter_user,EAM meter user,model_ps_eam_meter,group_eam_user,1,0,0,0
+access_meter_manager,EAM meter manager,model_ps_eam_meter,group_eam_manager,1,1,1,1
+access_reading_user,EAM reading user,model_ps_eam_reading,group_eam_user,1,1,1,0
+access_reading_manager,EAM reading manager,model_ps_eam_reading,group_eam_manager,1,1,1,0
+access_check_user,EAM check user,model_ps_eam_check,group_eam_user,1,1,1,1
+access_check_manager,EAM check manager,model_ps_eam_check,group_eam_manager,1,1,1,1
+access_cost_user,EAM cost user,model_ps_eam_cost,group_eam_user,1,1,1,1
+access_cost_manager,EAM cost manager,model_ps_eam_cost,group_eam_manager,1,1,1,1
+access_part_user,EAM part user,model_ps_eam_part,group_eam_user,1,1,1,1
+access_part_manager,EAM part manager,model_ps_eam_part,group_eam_manager,1,1,1,1
+access_claim_user,EAM claim user,model_ps_eam_claim,group_eam_user,1,1,1,0
+access_claim_manager,EAM claim manager,model_ps_eam_claim,group_eam_manager,1,1,1,1
+access_operation_user,EAM operation user,model_ps_eam_operation,group_eam_user,1,1,1,0
+access_operation_manager,EAM operation manager,model_ps_eam_operation,group_eam_manager,1,1,1,1
+access_workcenter_eam_user,EAM workcenter read,mrp.model_mrp_workcenter,group_eam_user,1,0,0,0
+access_breakdown_operator,Báo sự cố vận hành,model_ps_eam_breakdown,group_eam_operator,1,0,1,0
+access_breakdown_eam_user,Báo sự cố EAM,model_ps_eam_breakdown,group_eam_user,1,0,1,0
+access_tool_loan_eam_user,Cấp phát công cụ EAM,model_ps_eam_tool_loan,group_eam_user,1,1,1,1
+access_eam_requisition_purchase,Yêu cầu mua phụ tùng,model_ps_eam_purchase_requisition,purchase.group_purchase_user,1,0,0,0
+access_eam_depreciation_accountant,Lịch khấu hao EAM,model_ps_eam_depreciation,account.group_account_manager,1,1,1,1
+access_eam_production_lookup,Tra cứu lệnh sản xuất EAM,mrp.model_mrp_production,group_eam_manager,1,0,0,0

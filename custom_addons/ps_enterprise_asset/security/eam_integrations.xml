@@ -1,0 +1,17 @@
+<odoo>
+    <record id="group_eam_mqtt" model="res.groups">
+        <field name="name">Cầu nối MQTT EAM</field>
+        <field name="privilege_id" ref="privilege_eam"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    <record id="rule_requisition_company" model="ir.rule">
+        <field name="name">Yêu cầu mua phụ tùng theo công ty</field>
+        <field name="model_id" ref="model_ps_eam_purchase_requisition"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_depreciation_company" model="ir.rule">
+        <field name="name">Lịch khấu hao EAM theo công ty</field>
+        <field name="model_id" ref="model_ps_eam_depreciation"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

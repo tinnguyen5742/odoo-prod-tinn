@@ -1,0 +1,20 @@
+{
+    "name": "Quality Management",
+    "summary": "Quality standards, inspections, non-conformance and CAPA",
+    "description": "Quality management for Odoo 19 Community: standards, inspections, NCR, CAPA and calibration.",
+    "version": "19.0.1.0.0",
+    "category": "Manufacturing/Quality",
+    "author": "Project Team",
+    "license": "LGPL-3",
+    "depends": ["base", "mail", "product", "web"],
+    "data": [
+        "security/quality_security.xml",
+        "security/ir.model.access.csv",
+        "data/quality_sequence.xml",
+        "data/quality_cron.xml",
+        "reports/quality_reports.xml",
+        "views/quality_views.xml",
+    ],
+    "application": True,
+    "installable": True,
+}

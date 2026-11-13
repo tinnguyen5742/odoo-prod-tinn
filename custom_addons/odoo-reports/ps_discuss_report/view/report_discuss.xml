@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_discuss_all_channels" model="ir.actions.report">
+        <field name="name">Báo cáo tổng hợp Discuss</field>
+        <field name="model">discuss.channel</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ps_discuss_report.report_all_channels</field>
+        <field name="report_file">ps_discuss_report.report_all_channels</field>
+        <field name="binding_model_id" ref="mail.model_discuss_channel"/>
+        <field name="binding_type">report</field>
+        <field name="binding_view_types">list,kanban,form</field>
+        <field name="print_report_name">'Bao_cao_Discuss'</field>
+    </record>
+
+    <record id="mail.discuss_channel_action" model="ir.actions.act_window">
+        <field name="view_mode">kanban,list,form</field>
+    </record>
+
+    <template id="report_all_channels">
+    <t t-call="web.html_container">
+
+        <t t-call="web.external_layout">
+            <div class="page">
+
+                <h2 class="text-center">
+                    BÁO CÁO TỔNG HỢP DISCUSS
+                </h2>
+
+                <!-- Tổng quan -->
+                <table class="table table-bordered" style="width: auto; margin-left: auto; margin-right: auto; border-collapse: collapse;">
+
+                    <tbody>
+                        <tr>
+                            <td style="padding: 5px;">
+                                <strong>Tổng số channel</strong>
+                            </td>
+                            <td style="padding: 5px;">
+                                <span t-out="len(docs)"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <t t-if="not docs">
+                    <p class="text-center">
+                        Không có channel để hiển thị.
+                    </p>
+                </t>
+
+                <!-- Lặp qua tất cả channel được truyền vào -->
+                <t t-foreach="docs" t-as="o">
+
+                    <h3 style="border-bottom: 1px solid #333;                                padding-bottom: 5px;                                margin-top: 30px;">
+                        <span t-field="o.name"/>
+                    </h3>
+
+                    <!-- Thông tin kênh -->
+                    <table class="table table-bordered" style="width: auto; margin-left: auto; margin-right: auto; border-collapse: collapse;">
+
+                        <tbody>
+                            <tr>
+                                <td style="padding: 5px; white-space: nowrap;">
+                                    <strong>Tên kênh</strong>
+                                </td>
+                                <td style="padding: 5px;">
+                                    <span t-field="o.name"/>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="padding: 5px; white-space: nowrap;">
+                                    <strong>Loại hội thoại</strong>
+                                </td>
+                                <td style="padding: 5px;">
+                                    <span t-field="o.channel_type"/>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="padding: 5px; white-space: nowrap;">
+                                    <strong>Số thành viên</strong>
+                                </td>
+                                <td style="padding: 5px;">
+                                    <span t-field="o.member_count"/>
+                                </td>
+                            </tr>
+
+                            <!-- Danh sách người tham gia -->
+                            <tr>
+                                <td style="padding: 5px; white-space: nowrap;">
+                                    <strong>Người tham gia</strong>
+                                </td>
+                                <td style="padding: 5px;">
+                                    <t t-foreach="o.channel_member_ids" t-as="member">
+                                        <div>
+                                            <span t-if="member.partner_id" t-field="member.partner_id.name"/>
+                                            <span t-else="">Khách tham gia</span>
+                                        </div>
+                                    </t>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Lấy 100 tin nhắn gần nhất -->
+                    <t t-set="messages" t-value="o.message_ids.filtered(lambda m: m.message_type == 'comment').sorted('id')[-100:]"/>
+
+                    <h4 class="mt-4">Nội dung trao đổi</h4>
+
+                    <p>
+                        Hiển thị tối đa 100 tin nhắn chat gần nhất,
+                        theo thứ tự từ cũ đến mới.
+                    </p>
+
+                    <table t-if="messages" class="table table-sm table-bordered" style="width: auto; max-width: 100%; margin-left: auto; margin-right: auto; border-collapse: collapse;">
+
+                        <thead>
+                            <tr>
+                                <th style="padding: 5px; white-space: nowrap;">STT</th>
+                                <th style="padding: 5px; white-space: nowrap;">Thời gian</th>
+                                <th style="padding: 5px; white-space: nowrap;">Người gửi</th>
+                                <th style="padding: 5px;">Nội dung</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr t-foreach="messages" t-as="msg">
+
+                                <td style="padding: 5px; white-space: nowrap;">
+                                    <span t-out="msg_index + 1"/>
+                                </td>
+
+                                <td style="padding: 5px; white-space: nowrap;">
+                                    <span t-field="msg.date"/>
+                                </td>
+
+                                <td style="padding: 5px;">
+                                    <span t-if="msg.author_id" t-field="msg.author_id"/>
+                                    <span t-elif="msg.author_guest_id" t-field="msg.author_guest_id.name"/>
+                                    <span t-else="">Không xác định</span>
+                                </td>
+
+                                <td style="padding: 5px; word-wrap: break-word;">
+                                    <div t-field="msg.body"/>
+                                    <em t-if="not msg.body">
+                                        Tin nhắn không có nội dung văn bản.
+                                    </em>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p t-else="">
+                        Chưa có tin nhắn chat để hiển thị.
+                    </p>
+
+                </t>
+            </div>
+        </t>
+    </t>
+    </template>
+</odoo>

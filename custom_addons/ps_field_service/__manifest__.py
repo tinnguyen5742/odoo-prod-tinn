@@ -1,0 +1,28 @@
+{
+    'name': 'Custom Field Service',
+    'version': '19.0.1.0.0',
+    'summary': 'Quản lý dịch vụ hiện trường và điều phối kỹ thuật viên',
+    'sequence': 10,
+    'category': 'Operations/Field Service',
+    'author': 'Your Name',
+    'website': 'https://www.yourcompany.com',
+    'license': 'LGPL-3',
+    'depends': [
+        'base',
+        'mail',
+        'contacts',
+        'account',
+    ],
+    'data': [
+        'security/ir.model.access.csv',
+        'data/sequence_data.xml',
+        'data/field_service_area_data.xml',
+        'views/service_order_views.xml',
+        'reports/service_order_report.xml',
+        'reports/report_actions.xml',
+    ],
+    'demo': [],
+    'installable': True,
+    'application': True,
+    'auto_install': False,
+}

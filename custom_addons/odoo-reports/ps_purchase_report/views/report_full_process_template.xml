@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Khổ A4 Ngang siêu rộng cho 18 cột -->
+    <record id="paperformat_landscape_report_9" model="report.paperformat">
+        <field name="name">Khổ A4 Ngang - Theo dõi YC mua hàng Full QT</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">8</field>
+        <field name="margin_bottom">8</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">5</field>
+    </record>
+
+    <!-- Action báo cáo -->
+    <record id="action_report_full_process" model="ir.actions.report">
+        <field name="name">Báo Cáo Theo Dõi Yêu Cầu Mua Hàng Full Quy Trình</field>
+        <field name="model">purchase.report.wizard</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">ps_purchase_report.report_full_process_template</field>
+        <field name="report_file">ps_purchase_report.report_full_process_template</field>
+        <field name="paperformat_id" ref="ps_purchase_report.paperformat_landscape_report_9"/>
+    </record>
+
+    <!-- QWeb Template -->
+    <template id="report_full_process_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-call="ps_purchase_report.report_purchase_shared_styles"/>
+                <div class="page">
+                    <!-- Tên Công ty -->
+                    <div class="company-title">
+                        <t t-esc="company.name"/>
+                    </div>
+
+                    <!-- Tiêu đề Báo cáo -->
+                    <div class="report-title">
+                        BÁO CÁO THEO DÕI YÊU CẦU MUA HÀNG FULL QUY TRÌNH
+                    </div>
+                    <div class="report-date">
+                        <i>Từ ngày <t t-esc="date_from or ''"/> đến ngày <t t-esc="date_to or ''"/></i>
+                    </div>
+
+                    <!-- Bảng dữ liệu 18 cột chuẩn mẫu -->
+                    <table class="tbl-full">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%;">Số YC</th>
+                                <th style="width: 5%;">Mã VT</th>
+                                <th style="width: 14%;">Tên Hàng</th>
+                                <th style="width: 5%;">Ngày</th>
+                                <th style="width: 3%;">ĐVT</th>
+                                <th style="width: 5%;">Số lượng</th>
+                                <th style="width: 4%;">TT YC</th>
+                                <th style="width: 3%;">Loại YC</th>
+                                <th style="width: 5%;">Số HG/YCTH</th>
+                                <th style="width: 5%;">Số BG</th>
+                                <th style="width: 5%;">Số T Duyệt</th>
+                                <th style="width: 5%;">Mã NCC TD</th>
+                                <th style="width: 5%;">Giá TD</th>
+                                <th style="width: 3%;">Duyệt</th>
+                                <th style="width: 6%;">Số PO</th>
+                                <th style="width: 8%;">Tên NCC</th>
+                                <th style="width: 5%;">SL PO</th>
+                                <th style="width: 6%;">TT PO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="stt" t-value="1"/>
+                            <t t-foreach="lines" t-as="line">
+                                <tr>
+                                    <td class="text-center"><t t-esc="line.order_id.name"/></td>
+                                    <td class="text-center"><t t-esc="line.product_id.default_code or ''"/></td>
+                                    <td><t t-esc="line.name"/></td>
+                                    <td class="text-center"><t t-esc="line.order_id.date_order.strftime('%d/%m/%Y') if line.order_id.date_order else ''"/></td>
+                                    <td class="text-center"><t t-esc="line.product_uom_id.name or ''"/></td>
+                                    <td class="text-end"><t t-esc="line.product_qty" t-options='{"widget": "float", "precision": 2}'/></td>
+                                    <td class="text-center">Đ.duyệt</td>
+                                    <td class="text-center">CT</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-center"><t t-esc="line.order_id.partner_id.ref or ''"/></td>
+                                    <td class="text-end"><t t-esc="line.price_unit" t-options='{"widget": "float", "precision": 0}'/></td>
+                                    <td class="text-center">✓</td>
+                                    <td class="text-center"><strong><t t-esc="line.order_id.name"/></strong></td>
+                                    <td><t t-esc="line.order_id.partner_id.name"/></td>
+                                    <td class="text-end"><t t-esc="line.product_qty" t-options='{"widget": "float", "precision": 2}'/></td>
+                                    <td class="text-center">
+                                        <t t-if="line.order_id.state in ['purchase', 'done']">Đã duyệt</t>
+                                        <t t-else="">Chưa Duyệt</t>
+                                    </td>
+                                </tr>
+                                <t t-set="stt" t-value="stt + 1"/>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <!-- Chữ ký -->
+                    <div class="row mt-4" style="page-break-inside: avoid; font-family: 'Times New Roman', serif;">
+                        <div class="col-10"></div>
+                        <div class="col-2 text-center" style="font-size: 10px;">
+                            <i>Ngày ..... tháng ..... năm .....</i><br/>
+                            <strong>Người lập</strong>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

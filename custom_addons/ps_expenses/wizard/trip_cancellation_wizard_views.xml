@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo><record id="view_trip_cancellation_wizard" model="ir.ui.view">
+    <field name="name">ps.te.trip.cancellation.wizard.form</field><field name="model">ps.te.trip.cancellation.wizard</field>
+    <field name="arch" type="xml"><form string="Trip Cancellation">
+        <div class="alert alert-warning" role="status">Cancellation stops travel, not existing payment or accounting obligations.</div>
+        <group><field name="trip_id"/><field name="expected_revision"/><field name="expected_cancellation_revision"/>
+            <field name="operation"/><field name="reason"/></group>
+        <footer><button name="action_apply" type="object" string="Apply" class="btn-primary"/><button string="Cancel" special="cancel"/></footer>
+    </form></field>
+</record></odoo>

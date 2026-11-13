@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_crm_opportunity_list" model="report.paperformat">
+        <field name="name">CRM - Danh sách cơ hội - A4 ngang</field>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_spacing">5</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_crm_opportunity_list" model="ir.actions.report">
+        <field name="name">Báo cáo danh sách cơ hội CRM</field>
+        <field name="model">crm.lead</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ps_crm_report.report_crm_opportunity_list</field>
+        <field name="report_file">ps_crm_report.report_crm_opportunity_list</field>
+        <field name="binding_model_id" ref="crm.model_crm_lead"/>
+        <field name="binding_type">report</field>
+        <field name="binding_view_types">list,kanban,form</field>
+        <field name="paperformat_id" ref="paperformat_crm_opportunity_list"/>
+        <field name="print_report_name">'Bao_cao_co_hoi_CRM'</field>
+    </record>
+
+    <template id="report_crm_opportunity_list">
+            <t t-call="web.html_container">
+                <t t-set="company" t-value="docs[0].company_id or res_company"/>
+                <t t-set="total_count" t-value="len(docs)"/>
+                <t t-set="total_revenue" t-value="sum(docs.mapped('expected_revenue'))"/>
+                <t t-set="total_mrr" t-value="sum(docs.mapped('recurring_revenue'))"/>
+                <t t-set="date_from" t-value="min(docs.mapped('create_date')).strftime('%d/%m/%Y')"/>
+                <t t-set="date_to" t-value="time.strftime('%d/%m/%Y')"/>
+
+                <div class="page article" style="font-family: 'Times New Roman', Times, serif; font-size: 12px; color: #000;">
+
+                    <style>
+                        .rp-table { width: 100%; border-collapse: collapse; }
+                        .rp-table th, .rp-table td { border: 1px solid #1f2d5a; padding: 4px 6px; vertical-align: middle; }
+                        .rp-table th { background-color: #dbe5f5; text-align: center; font-weight: bold; }
+                        .rp-table tr { page-break-inside: avoid; }
+                        .rp-section { background-color: #dbe5f5; font-weight: bold; font-size: 15px; padding: 5px 8px; margin: 14px 0 6px 0; }
+                        .text-right-r { text-align: right; }
+                        .text-center-r { text-align: center; }
+                    table:not(.rp-table), table:not(.rp-table) &gt; tbody, table:not(.rp-table) tr, table:not(.rp-table) td, table:not(.rp-table) th { border: 0 !important; }
+                    </style>
+
+                    <!-- ===== HEADER CÔNG TY ===== -->
+                    <table style="width:100%; border-bottom: 2px solid #1f2d5a; padding-bottom: 6px;">
+                        <tr>
+                            <td style="width: 18%; vertical-align: middle;">
+                                <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 80px; max-width: 160px;" alt="Logo"/>
+                            </td>
+                            <td style="width: 82%; border-left: 2px solid #1f2d5a; padding-left: 12px; vertical-align: middle;">
+                                <div style="font-size: 20px; font-weight: bold; color: #1f2d5a; text-transform: uppercase;">
+                                    <t t-esc="company.name"/>
+                                </div>
+                                <div style="font-size: 13px;">
+                                    Địa chỉ: <t t-esc="company.partner_id.contact_address.replace('\n', ', ') if company.partner_id.contact_address else ''"/>
+                                </div>
+                                <div style="font-size: 13px;">
+                                    Tax ID: <t t-esc="company.vat or ''"/>
+                                </div>
+                                <div style="font-size: 13px;">
+                                    Điện thoại: <t t-esc="company.phone or ''"/>
+                                      |  
+                                    Email: <t t-esc="company.email or ''"/>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- ===== TIÊU ĐỀ ===== -->
+                    <div style="text-align:center; margin-top: 12px;">
+                        <div style="font-size: 24px; font-weight: bold; text-transform: uppercase;">
+                            BÁO CÁO DANH SÁCH CƠ HỘI CRM
+                        </div>
+                        <div style="font-size: 15px;">
+                            Kỳ báo cáo: <t t-esc="date_from"/> – <t t-esc="date_to"/>
+                        </div>
+                    </div>
+
+                    <!-- ===== I. TỔNG QUAN ===== -->
+                    <div class="rp-section">I. TỔNG QUAN</div>
+                    <table class="rp-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 35%;">Chỉ tiêu</th>
+                                <th style="width: 15%;">Số lượng</th>
+                                <th style="width: 30%;">Giá trị dự kiến (VNĐ)</th>
+                                <th style="width: 20%;">Tỷ lệ (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="font-weight: bold;">
+                                <td>Tổng số cơ hội</td>
+                                <td class="text-center-r"><t t-esc="total_count"/></td>
+                                <td class="text-right-r"><t t-esc="'{:,.0f}'.format(total_revenue).replace(',', '.')"/></td>
+                                <td class="text-center-r">100%</td>
+                            </tr>
+                            <t t-foreach="docs.mapped('stage_id')" t-as="stage">
+                                <t t-set="stage_leads" t-value="docs.filtered(lambda l: l.stage_id == stage)"/>
+                                <tr>
+                                    <td>Cơ hội <t t-esc="stage.name"/></td>
+                                    <td class="text-center-r"><t t-esc="len(stage_leads)"/></td>
+                                    <td class="text-right-r">
+                                        <t t-esc="'{:,.0f}'.format(sum(stage_leads.mapped('expected_revenue'))).replace(',', '.')"/>
+                                    </td>
+                                    <td class="text-center-r">
+                                        <t t-esc="'{:.0f}'.format(len(stage_leads) * 100.0 / total_count)"/>%
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <!-- ===== II. DANH SÁCH CHI TIẾT ===== -->
+                    <div class="rp-section">II. DANH SÁCH CƠ HỘI CHI TIẾT</div>
+                    <table class="rp-table" style="font-size: 11px;">
+                        <thead>
+                            <tr>
+                                <th style="width: 3%;">STT</th>
+                                <th style="width: 8%;">Reference Number</th>
+                                <th style="width: 17%;">Opportunity</th>
+                                <th style="width: 10%;">Contact Name</th>
+                                <th style="width: 12%;">Email</th>
+                                <th style="width: 9%;">Salesperson</th>
+                                <th style="width: 11%;">Activities</th>
+                                <th style="width: 9%;">Expected Revenue (VNĐ)</th>
+                                <th style="width: 7%;">Expected MRR (VNĐ)</th>
+                                <th style="width: 8%;">Stage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="idx" t-value="0"/>
+                            <t t-foreach="docs" t-as="o">
+                                <t t-set="idx" t-value="idx + 1"/>
+                                <tr>
+                                    <td class="text-center-r"><t t-esc="idx"/></td>
+                                    <!-- Nếu bạn có field Reference riêng (vd: o.reference_number) thì thay o.name bên dưới -->
+                                    <td class="text-center-r"><t t-esc="o.reference_number if 'reference_number' in o._fields else o.id"/></td>
+                                    <td><t t-esc="o.name"/></td>
+                                    <td><t t-esc="o.contact_name or o.partner_id.name or '-'"/></td>
+                                    <td style="word-break: break-all;"><t t-esc="o.email_from or '-'"/></td>
+                                    <td><t t-esc="o.user_id.name or ''"/></td>
+                                    <td>
+                                        <t t-esc="', '.join([a.summary or a.activity_type_id.name for a in o.activity_ids])"/>
+                                    </td>
+                                    <td class="text-right-r"><t t-esc="'{:,.0f}'.format(o.expected_revenue).replace(',', '.')"/></td>
+                                    <td class="text-right-r"><t t-esc="'{:,.0f}'.format(o.recurring_revenue).replace(',', '.')"/></td>
+                                    <td class="text-center-r"><t t-esc="o.stage_id.name"/></td>
+                                </tr>
+                            </t>
+                            <tr style="font-weight: bold; background-color: #dbe5f5;">
+                                <td colspan="7" style="padding-left: 20px;">Tổng cộng</td>
+                                <td class="text-right-r"><t t-esc="'{:,.0f}'.format(total_revenue).replace(',', '.')"/></td>
+                                <td class="text-right-r"><t t-esc="'{:,.0f}'.format(total_mrr).replace(',', '.')"/></td>
+                                <td/>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- ===== III. NHẬN XÉT VÀ ĐỀ XUẤT ===== -->
+                    <div style="page-break-inside: avoid;">
+                        <div class="rp-section">III. NHẬN XÉT VÀ ĐỀ XUẤT</div>
+                        <ol style="font-size: 14px; line-height: 1.6;">
+                            <li><b>Cơ hội ưu tiên</b>: ....................................................................</li>
+                            <li><b>Đề xuất</b>: ....................................................................</li>
+                        </ol>
+
+                        <div style="text-align: right; font-style: italic; font-size: 14px; margin-top: 15px; padding-right: 20px;">
+                            <t t-esc="company.city or 'Vĩnh Long'"/>, ngày <t t-esc="time.strftime('%d')"/>
+                            tháng <t t-esc="time.strftime('%m')"/> năm <t t-esc="time.strftime('%Y')"/>
+                        </div>
+
+                        <!-- ===== CHỮ KÝ ===== -->
+                        <table style="width: 100%; margin-top: 10px; text-align: center;">
+                            <tr>
+                                <td style="width: 33%;">
+                                    <div style="font-weight: bold; font-size: 14px;">Người lập báo cáo</div>
+                                    <div style="font-style: italic;">(Ký và ghi rõ họ tên)</div>
+                                </td>
+                                <td style="width: 34%;">
+                                    <div style="font-weight: bold; font-size: 14px;">Trưởng phòng Kinh doanh</div>
+                                    <div style="font-style: italic;">(Ký và ghi rõ họ tên)</div>
+                                </td>
+                                <td style="width: 33%;">
+                                    <div style="font-weight: bold; font-size: 14px;">Giám đốc</div>
+                                    <div style="font-style: italic;">(Ký, đóng dấu và ghi rõ họ tên)</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="height: 70px;"/>
+                                <td/>
+                                <td/>
+                            </tr>
+                            <tr>
+                                <td><div style="border-top: 1px solid #000; width: 60%; margin: 0 auto;"/></td>
+                                <td><div style="border-top: 1px solid #000; width: 60%; margin: 0 auto;"/></td>
+                                <td><div style="border-top: 1px solid #000; width: 60%; margin: 0 auto;"/></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+            </t>
+    </template>
+</odoo>

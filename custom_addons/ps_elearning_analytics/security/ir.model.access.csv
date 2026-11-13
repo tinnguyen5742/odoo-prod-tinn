@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_elearning_training_report_user,elearning.training.report user,model_elearning_training_report,base.group_user,1,0,0,0
+access_elearning_training_report_officer,elearning.training.report officer,model_elearning_training_report,website_slides.group_website_slides_officer,1,0,0,0
+access_elearning_training_report_hr_manager,elearning.training.report hr manager,model_elearning_training_report,group_elearning_hr_manager,1,0,0,0

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_purchase_shared_styles" name="Purchase Report Universal Styles">
+        
+        <!-- BIẾN MÀU ĐỘNG TỪ WIZARD (Mặc định xanh dương nếu không truyền) -->
+        <t t-set="theme_color" t-value="primary_color or '#0056b3'"/>
+
+        <!-- ================= 1. EXECUTIVE (CỔ ĐIỂN - TRANG TRỌNG) ================= -->
+        <t t-if="report_style == 'classic'">
+            <style type="text/css">
+                /* Khung trang chuẩn A4, phủ rộng 100% không bị thu hẹp */
+                .page { width: 100% !important; max-width: 100% !important; padding: 0px 5mm !important; margin: 0 auto !important; font-family: 'Times New Roman', Times, serif; }
+                
+                /* Tự động ép tất cả các loại bảng trong báo cáo trải đều toàn trang */
+                table, .tbl-report { width: 100% !important; border-collapse: collapse !important; font-size: 11px; table-layout: fixed; margin-top: 8px; }
+                
+                th { border: 1px solid #000 !important; background-color: #f2f2f2 !important; color: #000 !important; text-align: center; vertical-align: middle; font-weight: bold; padding: 5px 3px; }
+                td { border: 1px solid #000 !important; padding: 4px 3px; vertical-align: middle; background-color: #fff; color: #000; overflow: hidden; word-wrap: break-word; }
+                
+                .tr-total, tr.tr-total { background-color: #e9ecef !important; font-weight: bold; border: 1px solid #000 !important; }
+                .tr-total td { background-color: #e9ecef !important; border: 1px solid #000 !important; }
+                
+                .vendor-row, tr.vendor-row { background-color: #f8f9fa !important; border: 1px solid #000 !important; font-weight: bold; color: <t t-esc="theme_color"/>; }
+                .vendor-row td { background-color: #f8f9fa !important; color: <t t-esc="theme_color"/> !important; }
+                
+                .po-row, tr.po-row { background-color: #fff !important; border: 1px solid #000 !important; font-weight: bold; color: #9b2c2c; }
+                
+                .company-title { font-weight: bold; font-size: 13px; font-family: Arial, sans-serif; text-transform: uppercase; }
+                .report-title { font-weight: bold; font-size: 18px; font-family: Arial, sans-serif; text-align: center; margin-top: 5px; margin-bottom: 5px; text-transform: uppercase; }
+                .report-date { text-align: center; font-size: 12px; font-style: italic; margin-bottom: 15px; }
+            </style>
+        </t>
+
+        <!-- ================= 2. DYNAMIC CORPORATE (HIỆN ĐẠI - SÁNG SỦA) ================= -->
+        <t t-elif="report_style == 'modern'">
+            <style type="text/css">
+                .page { width: 100% !important; max-width: 100% !important; padding: 0px 5mm !important; margin: 0 auto !important; font-family: Arial, sans-serif; }
+                
+                table, .tbl-report { width: 100% !important; border-collapse: collapse !important; font-size: 11px; table-layout: fixed; margin-top: 8px; }
+                
+                th { background-color: <t t-esc="theme_color"/> !important; color: #ffffff !important; text-align: center; vertical-align: middle; font-weight: bold; padding: 6px 3px; border: none !important; }
+                td { border: none !important; border-bottom: 1px solid #e2e8f0 !important; padding: 5px 3px; vertical-align: middle; background-color: #ffffff; color: #334155; overflow: hidden; word-wrap: break-word; }
+                
+                .tr-total, tr.tr-total { background-color: #eff6ff !important; font-weight: bold; color: <t t-esc="theme_color"/>; border-top: 2px solid <t t-esc="theme_color"/> !important; border-bottom: 2px solid <t t-esc="theme_color"/> !important; }
+                .tr-total td { background-color: #eff6ff !important; color: <t t-esc="theme_color"/> !important; }
+                
+                .vendor-row, tr.vendor-row { background-color: #e0f2fe !important; font-weight: bold; color: <t t-esc="theme_color"/>; border-top: 1px solid #bae6fd; border-bottom: 1px solid #bae6fd; }
+                .vendor-row td { background-color: #e0f2fe !important; color: <t t-esc="theme_color"/> !important; }
+                
+                .po-row, tr.po-row { background-color: #f0fdf4 !important; font-weight: bold; color: #15803d; }
+                
+                .company-title { font-weight: bold; font-size: 13px; color: <t t-esc="theme_color"/>; text-transform: uppercase; }
+                .report-title { font-weight: bold; font-size: 18px; text-align: center; margin-top: 5px; margin-bottom: 5px; color: #0f172a; text-transform: uppercase; }
+                .report-date { text-align: center; font-size: 12px; font-style: italic; margin-bottom: 15px; color: #64748b; }
+            </style>
+        </t>
+
+        <!-- ================= 3. MINIMALIST CLEAN (TỐI GIẢN - TINH TẾ) ================= -->
+        <t t-else="">
+            <style type="text/css">
+                .page { width: 100% !important; max-width: 100% !important; padding: 0px 5mm !important; margin: 0 auto !important; font-family: Arial, sans-serif; }
+                
+                table, .tbl-report { width: 100% !important; border-collapse: collapse !important; font-size: 11px; table-layout: fixed; margin-top: 8px; }
+                
+                th { background-color: #ffffff !important; color: #000000 !important; border-top: 2px solid #000000 !important; border-bottom: 2px solid #000000 !important; border-left: none !important; border-right: none !important; text-align: center; vertical-align: middle; font-weight: bold; padding: 7px 3px; }
+                td { border: none !important; border-bottom: 1px dotted #cbd5e0 !important; padding: 5px 3px; vertical-align: middle; background-color: transparent; color: #2d3748; overflow: hidden; word-wrap: break-word; }
+                
+                .tr-total, tr.tr-total { background-color: #ffffff !important; font-weight: bold; color: #000000; border-top: 2px solid #000000 !important; border-bottom: 2px solid #000000 !important; }
+                .tr-total td { background-color: #ffffff !important; }
+                
+                .vendor-row, tr.vendor-row { background-color: #fafafa !important; font-weight: bold; color: #1a202c; border-bottom: 1px solid #000000 !important; }
+                .vendor-row td { background-color: #fafafa !important; }
+                
+                .po-row, tr.po-row { background-color: transparent !important; font-weight: bold; color: #822727; }
+                
+                .company-title { font-weight: bold; font-size: 12px; color: #4a5568; text-transform: uppercase; }
+                .report-title { font-weight: bold; font-size: 18px; text-align: center; margin-top: 5px; margin-bottom: 5px; color: #1a202c; text-transform: uppercase; }
+                .report-date { text-align: center; font-size: 12px; font-style: italic; margin-bottom: 15px; color: #718096; }
+            </style>
+        </t>
+
+        <!-- KHU VỰC CHỮ KÝ DÙNG CHUNG CHO MỌI BÁO CÁO (CHỐNG RỚT TRANG KHI IN PDF) -->
+        <style>
+            .report-footer-container { 
+                width: 100% !important; 
+                margin-top: 30px; 
+                margin-bottom: 20px;
+                page-break-inside: avoid !important; 
+                break-inside: avoid !important; 
+                font-family: 'Times New Roman', Times, serif; 
+                font-size: 12px; 
+            }
+            th, td { 
+                white-space: nowrap !important; 
+                word-break: keep-all !important; 
+                padding: 4px 2px !important;
+                font-size: 10px !important; /* Thu nhỏ nhẹ font chữ để vừa khít 12 cột tháng */
+            }
+            
+            /* Riêng cột Diễn giải / Tên nhà cung cấp cho phép xuống dòng nếu quá dài */
+            .col-description { 
+                white-space: normal !important; 
+                word-wrap: break-word !important; 
+            }
+        </style>
+
+    </template>
+</odoo>

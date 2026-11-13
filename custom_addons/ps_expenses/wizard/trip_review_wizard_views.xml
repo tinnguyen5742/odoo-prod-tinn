@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ps_te_trip_review_wizard" model="ir.ui.view">
+        <field name="name">ps.te.trip.review.wizard.form</field>
+        <field name="model">ps.te.trip.review.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Review Trip Request">
+                <group>
+                    <field name="request_id"/>
+                    <field name="expected_revision"/>
+                    <field name="decision"/>
+                    <field name="reason"/>
+                </group>
+                <footer>
+                    <button name="action_apply" type="object" string="Apply Decision" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

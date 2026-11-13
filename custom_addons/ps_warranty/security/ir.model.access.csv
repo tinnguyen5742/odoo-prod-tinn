@@ -1,0 +1,16 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_warranty_policy_user,Warranty policy user,model_ps_warranty_policy,group_warranty_user,1,0,0,0
+access_warranty_policy_manager,Warranty policy manager,model_ps_warranty_policy,group_warranty_manager,1,1,1,1
+access_warranty_registration_user,Warranty registration user,model_ps_warranty_registration,group_warranty_user,1,0,0,0
+access_warranty_registration_officer,Warranty registration officer,model_ps_warranty_registration,group_warranty_officer,1,1,1,0
+access_warranty_registration_manager,Warranty registration manager,model_ps_warranty_registration,group_warranty_manager,1,1,1,1
+access_warranty_claim_user,Warranty claim user,model_ps_warranty_claim,group_warranty_user,1,1,1,0
+access_warranty_claim_officer,Warranty claim officer,model_ps_warranty_claim,group_warranty_officer,1,1,1,0
+access_warranty_claim_manager,Warranty claim manager,model_ps_warranty_claim,group_warranty_manager,1,1,1,0
+access_warranty_claim_line_user,Warranty claim line user,model_ps_warranty_claim_line,group_warranty_user,1,0,0,0
+access_warranty_claim_line_officer,Warranty claim line officer,model_ps_warranty_claim_line,group_warranty_officer,1,1,1,0
+access_warranty_claim_line_manager,Warranty claim line manager,model_ps_warranty_claim_line,group_warranty_manager,1,1,1,0
+access_warranty_rma_user,Warranty RMA user,model_ps_warranty_rma,group_warranty_user,1,0,0,0
+access_warranty_rma_officer,Warranty RMA officer,model_ps_warranty_rma,group_warranty_officer,1,1,1,0
+access_warranty_rma_manager,Warranty RMA manager,model_ps_warranty_rma,group_warranty_manager,1,1,1,0
+access_warranty_dashboard_user,Warranty dashboard user,model_ps_warranty_dashboard,group_warranty_user,1,1,1,1

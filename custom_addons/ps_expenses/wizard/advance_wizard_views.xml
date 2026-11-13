@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ps_te_advance_wizard" model="ir.ui.view">
+        <field name="name">ps.te.advance.wizard.form</field><field name="model">ps.te.advance.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Advance Operation">
+                <group>
+                    <field name="trip_id"/><field name="advance_id" invisible="not advance_id"/>
+                    <field name="expected_revision" invisible="not advance_id"/>
+                    <field name="operation"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="amount" invisible="operation not in ['create', 'edit', 'approved', 'disburse']" required="operation in ['create', 'edit', 'approved', 'disburse']"/>
+                    <field name="purpose" invisible="operation not in ['create', 'edit']" required="operation in ['create', 'edit']"/>
+                    <field name="reason" invisible="operation not in ['approved', 'refused', 'returned', 'cancel', 'revise', 'start', 'not_executed']" required="operation in ['approved', 'refused', 'returned', 'cancel', 'revise', 'start', 'not_executed']"/>
+                    <field name="external_reference" invisible="operation not in ['disburse', 'start', 'not_executed']" required="operation in ['disburse', 'start', 'not_executed']"/>
+                    <field name="execution_date" invisible="operation != 'disburse'" required="operation == 'disburse'"/>
+                </group>
+                <footer><button name="action_apply" type="object" string="Apply" class="btn-primary"/><button string="Cancel" special="cancel"/></footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ps_te_advance_list" model="ir.ui.view">
+        <field name="name">ps.te.trip.advance.list</field>
+        <field name="model">ps.te.trip.advance</field>
+        <field name="arch" type="xml">
+            <list create="0" edit="0" delete="0" duplicate="0">
+                <field name="reference"/><field name="trip_id"/><field name="owner_id"/>
+                <field name="requested_amount"/><field name="currency_id"/><field name="state"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_ps_te_advance_form" model="ir.ui.view">
+        <field name="name">ps.te.trip.advance.form</field>
+        <field name="model">ps.te.trip.advance</field>
+        <field name="arch" type="xml">
+            <form create="0" edit="0" delete="0" duplicate="0">
+                <header>
+                    <button name="action_open_operation" type="object" string="Advance Operation" class="btn-primary"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved,disbursed"/>
+                </header>
+                <sheet>
+                    <group string="Next Step" col="1"><field name="workflow_next_step" nolabel="1" readonly="1"/></group>
+                    <group>
+                        <group><field name="reference"/><field name="trip_id"/><field name="owner_id"/><field name="company_id"/><field name="revision"/></group>
+                        <group><field name="currency_id"/><field name="requested_amount"/><field name="purpose"/><field name="policy_reference"/><field name="finance_reviewer_id"/><field name="cash_operator_id"/></group>
+                    </group>
+                    <field name="has_approval" invisible="1"/><field name="has_disbursement" invisible="1"/>
+                    <group string="External Execution Outcome"><field name="payment_outcome"/>
+                        <field name="payment_attempt_reference"/><field name="no_payment_reference"/><field name="cash_event_id"/></group>
+                    <group string="Finance Approval" invisible="not has_approval">
+                        <field name="approved_amount"/><field name="approved_by_id"/><field name="approved_at"/>
+                    </group>
+                    <group string="Latest Review Reason"><field name="decision_reason"/></group>
+                    <group string="Recorded External Disbursement" invisible="not has_disbursement">
+                        <field name="disbursed_amount"/><field name="disbursed_by_id"/><field name="disbursed_at"/>
+                        <field name="disbursement_date"/><field name="cash_reference"/>
+                    </group>
+                    <notebook><page string="Advance History"><field name="event_ids" readonly="1">
+                        <list create="0" edit="0" delete="0">
+                            <field name="occurred_at"/><field name="actor_id"/><field name="event_type"/>
+                            <field name="revision"/><field name="reason"/><field name="purpose" optional="hide"/>
+                            <field name="requested_amount"/><field name="currency_id"/>
+                            <field name="has_approval" optional="hide"/><field name="approved_amount" optional="hide"/>
+                            <field name="has_disbursement" optional="hide"/><field name="disbursed_amount" optional="hide"/>
+                            <field name="cash_reference" optional="hide"/>
+                        </list>
+                    </field></page></notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_ps_te_advances" model="ir.actions.act_window">
+        <field name="name">Advances</field><field name="res_model">ps.te.trip.advance</field><field name="view_mode">list,form</field>
+    </record>
+    <record id="view_company_ps_te_advance" model="ir.ui.view">
+        <field name="name">res.company.ps.te.advance</field><field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="PS T&amp;E" groups="base.group_system">
+                    <group string="Advance Policy and Officers">
+                        <field name="ps_te_advance_policy_reference"/>
+                        <field name="ps_te_finance_reviewer_id" domain="[('company_ids', 'in', [id])]"/>
+                        <field name="ps_te_cash_operator_id" domain="[('company_ids', 'in', [id])]"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

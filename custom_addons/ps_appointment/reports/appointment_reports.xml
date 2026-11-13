@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_appointment" model="ir.actions.report">
+        <field name="name">Appointment Summary</field>
+        <field name="model">ps.appointment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ps_appointment.report_appointment_document</field>
+        <field name="report_file">ps_appointment.report_appointment_document</field>
+        <field name="binding_model_id" ref="model_ps_appointment"/>
+        <field name="binding_type">report</field>
+    </record>
+    <template id="report_appointment_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Appointment Summary</h2>
+                        <table class="table table-sm">
+                            <tr><th>Reference</th><td><span t-field="o.name"/></td></tr>
+                            <tr><th>Service</th><td><span t-field="o.appointment_type_id"/></td></tr>
+                            <tr><th>Customer</th><td><span t-field="o.partner_id"/></td></tr>
+                            <tr><th>Assigned staff</th><td><span t-field="o.user_id"/></td></tr>
+                            <tr><th>Resource</th><td><span t-field="o.resource_id"/></td></tr>
+                            <tr><th>Start</th><td><span t-field="o.start_datetime"/></td></tr>
+                            <tr><th>End</th><td><span t-field="o.end_datetime"/></td></tr>
+                            <tr><th>Status</th><td><span t-field="o.state"/></td></tr>
+                            <tr><th>Price</th><td><span t-field="o.price"/></td></tr>
+                        </table>
+                        <div t-if="o.request_notes"><strong>Customer notes</strong><p t-field="o.request_notes"/></div>
+                        <div t-if="o.cancellation_reason"><strong>Cancellation reason</strong><p t-field="o.cancellation_reason"/></div>
+                        <div t-if="o.rejection_reason"><strong>Rejection reason</strong><p t-field="o.rejection_reason"/></div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

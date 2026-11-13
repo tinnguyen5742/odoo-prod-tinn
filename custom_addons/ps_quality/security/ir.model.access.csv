@@ -1,0 +1,26 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_quality_standard_user,Quality standard user,model_ps_quality_standard,group_quality_user,1,0,0,0
+access_quality_standard_manager,Quality standard manager,model_ps_quality_standard,group_quality_manager,1,0,0,0
+access_quality_standard_admin,Quality standard administrator,model_ps_quality_standard,group_quality_administrator,1,1,1,1
+access_quality_standard_line_user,Quality standard line user,model_ps_quality_standard_line,group_quality_user,1,0,0,0
+access_quality_standard_line_admin,Quality standard line administrator,model_ps_quality_standard_line,group_quality_administrator,1,1,1,1
+access_quality_plan_user,Quality plan user,model_ps_quality_plan,group_quality_user,1,0,0,0
+access_quality_plan_inspector,Quality plan inspector,model_ps_quality_plan,group_quality_inspector,1,0,0,0
+access_quality_plan_manager,Quality plan manager,model_ps_quality_plan,group_quality_manager,1,1,1,0
+access_quality_inspection_user,Quality inspection user,model_ps_quality_inspection,group_quality_user,1,1,1,0
+access_quality_inspection_inspector,Quality inspection inspector,model_ps_quality_inspection,group_quality_inspector,1,1,1,0
+access_quality_inspection_manager,Quality inspection manager,model_ps_quality_inspection,group_quality_manager,1,1,1,0
+access_quality_inspection_line_user,Quality inspection line user,model_ps_quality_inspection_line,group_quality_user,1,1,1,0
+access_quality_inspection_line_manager,Quality inspection line manager,model_ps_quality_inspection_line,group_quality_manager,1,1,1,0
+access_quality_ncr_user,Quality NCR user,model_ps_quality_ncr,group_quality_user,1,0,0,0
+access_quality_ncr_inspector,Quality NCR inspector,model_ps_quality_ncr,group_quality_inspector,1,1,1,0
+access_quality_ncr_manager,Quality NCR manager,model_ps_quality_ncr,group_quality_manager,1,1,1,0
+access_quality_capa_user,Quality CAPA user,model_ps_quality_capa,group_quality_user,1,0,0,0
+access_quality_capa_inspector,Quality CAPA inspector,model_ps_quality_capa,group_quality_inspector,1,1,1,0
+access_quality_capa_manager,Quality CAPA manager,model_ps_quality_capa,group_quality_manager,1,1,1,0
+access_quality_equipment_user,Quality equipment user,model_ps_quality_equipment,group_quality_user,1,0,0,0
+access_quality_equipment_manager,Quality equipment manager,model_ps_quality_equipment,group_quality_manager,1,1,1,0
+access_quality_calibration_user,Quality calibration user,model_ps_quality_calibration,group_quality_user,1,0,0,0
+access_quality_calibration_inspector,Quality calibration inspector,model_ps_quality_calibration,group_quality_inspector,1,1,1,0
+access_quality_calibration_manager,Quality calibration manager,model_ps_quality_calibration,group_quality_manager,1,1,1,0
+access_quality_dashboard_user,Quality dashboard user,model_ps_quality_dashboard,group_quality_user,1,1,1,1

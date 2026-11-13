@@ -1,0 +1,70 @@
+<t t-name="custom_elearning.report_course_summary">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="web.external_layout">
+                <style>
+.ps_compact_report { line-height: 1.2; }
+.ps_compact_report h2 { margin: 0 0 8px !important; }
+.ps_compact_report h4 { margin: 8px 0 5px !important; }
+.ps_compact_report p { margin: 0 0 4px !important; }
+.ps_compact_report table { width: 100%; border-collapse: collapse; table-layout: fixed; margin: 0 0 6px !important; }
+.ps_compact_report table th, .ps_compact_report table td { padding: 3px 6px !important; line-height: 1.2 !important; vertical-align: top; height: auto !important; overflow-wrap: break-word; word-wrap: break-word; }
+.ps_compact_report table th, .ps_compact_report table td, .ps_compact_report table th *, .ps_compact_report table td * { font-weight: 400 !important; }
+.ps_compact_report table td p, .ps_compact_report table td div { margin: 0 !important; padding: 0 !important; line-height: 1.2 !important; }
+.ps_compact_report table td ul, .ps_compact_report table td ol { margin-top: 0; margin-bottom: 0; }
+.ps_compact_report table img { max-width: 100%; height: auto; }
+.ps_compact_report thead { display: table-header-group; }
+.ps_compact_report .ps_description { margin: 0 0 6px; }
+.ps_compact_report .ps_description p { margin: 0 !important; }
+.ps_compact_report .ps_timestamp { white-space: nowrap; }
+</style>
+                <div class="page ps_compact_report">
+                    <h2 class="text-center">
+                        BÁO CÁO KHÓA HỌC ELEARNING
+                    </h2>
+
+                    <table class="table table-bordered">
+                        <colgroup><col style="width:24%;"/><col style="width:26%;"/><col style="width:24%;"/><col style="width:26%;"/></colgroup>
+                        <tbody>
+                            <tr><td>Tên khóa học</td><td colspan="3"><span t-field="o.name"/></td></tr>
+                            <tr><td>Người phụ trách</td><td><span t-field="o.user_id"/></td><td>Nội dung đã xuất bản</td><td><span t-field="o.total_slides"/></td></tr>
+                            <tr><td>Học viên đã ghi danh</td><td><span t-field="o.members_count"/></td><td>Học viên đã hoàn thành</td><td><span t-field="o.members_completed_count"/></td></tr>
+                        </tbody>
+                    </table>
+
+                    <div t-if="not is_html_empty(o.description)" class="ps_description">
+                        <h4>Mô tả khóa học</h4><div t-field="o.description"/>
+                    </div>
+
+                    <h4>Danh sách bài học</h4>
+                    <table class="table table-sm table-bordered">
+                        <colgroup><col style="width:70%;"/><col style="width:18%;"/><col style="width:12%;"/></colgroup>
+                        <thead>
+                            <tr>
+                                <th>Tên bài học</th>
+                                <th>Loại nội dung</th>
+                                <th>Xuất bản</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="o.slide_ids" t-as="lesson">
+                                <tr t-if="not lesson.is_category">
+                                    <td>
+                                        <span t-field="lesson.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="lesson.slide_category"/>
+                                    </td>
+                                    <td>
+                                        <t t-if="lesson.is_published">Có</t>
+                                        <t t-else="">Chưa</t>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </t>
+</t>

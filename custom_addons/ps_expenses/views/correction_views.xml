@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_correction_list" model="ir.ui.view">
+        <field name="name">ps.te.correction.list</field><field name="model">ps.te.correction</field>
+        <field name="arch" type="xml"><list create="0" edit="0" delete="0" duplicate="0">
+            <field name="reference"/><field name="trip_id"/><field name="owner_id"/><field name="category"/>
+            <field name="revision"/><field name="state"/><field name="finance_reviewer_id"/><field name="cash_operator_id"/>
+        </list></field>
+    </record>
+    <record id="view_correction_form" model="ir.ui.view">
+        <field name="name">ps.te.correction.form</field><field name="model">ps.te.correction</field>
+        <field name="arch" type="xml"><form create="0" edit="0" delete="0" duplicate="0">
+            <header><button name="action_open_operation" type="object" string="Correction Operation" class="btn-primary"/><field name="state" widget="statusbar"/></header>
+            <sheet><div class="alert alert-warning" role="status">Source amounts and recorded cash are unchanged. External adjustments remain unresolved until separately authorized.</div>
+                <group><group><field name="reference"/><field name="trip_id"/><field name="owner_id"/><field name="company_id"/>
+                    <field name="category"/><field name="description"/><field name="revision"/><field name="active_trip_id"/>
+                </group><group><field name="finance_reviewer_id"/><field name="cash_operator_id"/>
+                    <field name="proposal_reason"/><field name="proposal_reference"/><field name="proposed_by_id"/>
+                    <field name="cash_confirmation_reference"/><field name="cash_confirmed_by_id"/>
+                    <field name="resolved_by_id"/><field name="resolved_at"/></group></group>
+                <group string="Exact Source Snapshot"><field name="source_digest"/><field name="source_snapshot"/></group>
+                <field name="event_ids"><list create="0" edit="0" delete="0"><field name="occurred_at"/>
+                    <field name="actor_id"/><field name="revision"/><field name="event_label"/><field name="kind" optional="hide"/><field name="reason"/><field name="snapshot" optional="hide"/>
+                </list></field>
+            </sheet>
+        </form></field>
+    </record>
+    <record id="view_trip_correction" model="ir.ui.view">
+        <field name="name">ps.te.trip.request.correction</field><field name="model">ps.te.trip.request</field>
+        <field name="inherit_id" ref="view_ps_te_trip_request_form"/>
+        <field name="arch" type="xml"><xpath expr="//header" position="inside">
+            <button name="action_open_correction" type="object" string="Correction Case" invisible="owner_id != uid"/>
+        </xpath><xpath expr="//field[@name='case_status']" position="after"><field name="correction_case_id"/><field name="correction_hold"/></xpath></field>
+    </record>
+    <record id="action_corrections" model="ir.actions.act_window">
+        <field name="name">Correction Cases</field><field name="res_model">ps.te.correction</field><field name="view_mode">list,form</field>
+    </record>
+    <record id="view_trip_correction_list" model="ir.ui.view">
+        <field name="name">ps.te.trip.request.correction.list</field><field name="model">ps.te.trip.request</field>
+        <field name="inherit_id" ref="view_ps_te_trip_request_list"/>
+        <field name="arch" type="xml"><xpath expr="//field[@name='state']" position="after"><field name="correction_hold"/></xpath></field>
+    </record>
+    <menuitem id="menu_corrections" name="Correction Cases" parent="menu_ps_te_trip_request_root" action="action_corrections" sequence="60" groups="group_ps_te_trip_employee"/>
+</odoo>

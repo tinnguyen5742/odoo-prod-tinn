@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ps_warranty_policy_list" model="ir.ui.view">
+        <field name="name">ps.warranty.policy.list</field>
+        <field name="model">ps.warranty.policy</field>
+        <field name="arch" type="xml">
+            <list string="Warranty Policies">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="duration"/>
+                <field name="duration_unit"/>
+                <field name="coverage_type"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="registration_count"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ps_warranty_policy_form" model="ir.ui.view">
+        <field name="name">ps.warranty.policy.form</field>
+        <field name="model">ps.warranty.policy</field>
+        <field name="arch" type="xml">
+            <form string="Warranty Policy">
+                <header>
+                    <field name="active" widget="boolean_toggle"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_registrations" type="object"
+                                class="oe_stat_button" icon="fa-id-card-o">
+                            <field name="registration_count" widget="statinfo" string="Registrations"/>
+                        </button>
+                    </div>
+                    <div class="oe_title"><h1><field name="name" placeholder="Policy name"/></h1></div>
+                    <group>
+                        <group string="Coverage">
+                            <field name="duration"/>
+                            <field name="duration_unit"/>
+                            <field name="coverage_type"/>
+                            <field name="inspection_fee" invisible="coverage_type != 'chargeable'"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group string="Policy validity">
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="sequence"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Products">
+                            <group>
+                                <field name="product_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                                <field name="product_category_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                            </group>
+                            <p class="text-muted">If no product or category is selected, this policy can apply to every product.</p>
+                        </page>
+                        <page string="Terms and conditions">
+                            <field name="conditions" widget="html"/>
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ps_warranty_policy_search" model="ir.ui.view">
+        <field name="name">ps.warranty.policy.search</field>
+        <field name="model">ps.warranty.policy</field>
+        <field name="arch" type="xml">
+            <search string="Search Warranty Policies">
+                <field name="name"/>
+                <field name="product_ids"/>
+                <field name="product_category_ids"/>
+                <filter name="active_policies" string="Active" domain="[('active', '=', True)]"/>
+                <filter name="chargeable" string="Chargeable" domain="[('coverage_type', '=', 'chargeable')]"/>
+                <group>
+                    <filter name="group_by_coverage" string="Coverage type" context="{'group_by': 'coverage_type'}"/>
+                    <filter name="group_by_company" string="Company" context="{'group_by': 'company_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_ps_warranty_policies" model="ir.actions.act_window">
+        <field name="name">Warranty Policies</field>
+        <field name="res_model">ps.warranty.policy</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_ps_warranty_policy_search"/>
+        <field name="context">{'active_test': False}</field>
+    </record>
+</odoo>

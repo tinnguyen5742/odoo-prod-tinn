@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="rule_correction_owner" model="ir.rule">
+        <field name="name">PS T&amp;E correction owner</field><field name="model_id" ref="model_ps_te_correction"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_trip_employee'))]"/>
+        <field name="domain_force">[('owner_id', '=', user.id), ('trip_id.employee_id.user_id', '=', user.id), ('company_id', 'in', company_ids), ('trip_id.employee_id.active', '=', True), ('trip_id.employee_mapping_valid', '=', True)]</field>
+    </record>
+    <record id="rule_correction_finance" model="ir.rule">
+        <field name="name">PS T&amp;E correction finance</field><field name="model_id" ref="model_ps_te_correction"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_finance'))]"/>
+        <field name="domain_force">[('finance_reviewer_id', '=', user.id), ('finance_assignment_valid', '=', True), ('company_id', 'in', company_ids), ('trip_id.employee_id.active', '=', True), ('trip_id.employee_mapping_valid', '=', True)]</field>
+    </record>
+    <record id="rule_correction_cash" model="ir.rule">
+        <field name="name">PS T&amp;E correction cash</field><field name="model_id" ref="model_ps_te_correction"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_cash'))]"/>
+        <field name="domain_force">[('cash_operator_id', '=', user.id), ('cash_assignment_valid', '=', True), ('company_id', 'in', company_ids), ('trip_id.employee_id.active', '=', True), ('trip_id.employee_mapping_valid', '=', True)]</field>
+    </record>
+    <record id="rule_correction_event_owner" model="ir.rule">
+        <field name="name">PS T&amp;E correction history owner</field><field name="model_id" ref="model_ps_te_correction_event"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_trip_employee'))]"/>
+        <field name="domain_force">[('correction_id.owner_id', '=', user.id), ('correction_id.trip_id.employee_id.user_id', '=', user.id), ('correction_id.company_id', 'in', company_ids), ('correction_id.trip_id.employee_id.active', '=', True), ('correction_id.trip_id.employee_mapping_valid', '=', True)]</field>
+    </record>
+    <record id="rule_correction_event_finance" model="ir.rule">
+        <field name="name">PS T&amp;E correction history finance</field><field name="model_id" ref="model_ps_te_correction_event"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_finance'))]"/>
+        <field name="domain_force">[('correction_id.finance_reviewer_id', '=', user.id), ('correction_id.finance_assignment_valid', '=', True), ('correction_id.company_id', 'in', company_ids), ('correction_id.trip_id.employee_id.active', '=', True), ('correction_id.trip_id.employee_mapping_valid', '=', True)]</field>
+    </record>
+    <record id="rule_correction_event_cash" model="ir.rule">
+        <field name="name">PS T&amp;E correction history cash</field><field name="model_id" ref="model_ps_te_correction_event"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_cash'))]"/>
+        <field name="domain_force">[('correction_id.cash_operator_id', '=', user.id), ('correction_id.cash_assignment_valid', '=', True), ('correction_id.company_id', 'in', company_ids), ('correction_id.trip_id.employee_id.active', '=', True), ('correction_id.trip_id.employee_mapping_valid', '=', True)]</field>
+    </record>
+    <record id="rule_trip_correction_finance" model="ir.rule">
+        <field name="name">PS T&amp;E trip: current correction finance read</field><field name="model_id" ref="model_ps_te_trip_request"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_finance'))]"/>
+        <field name="domain_force">[('correction_case_id.finance_reviewer_id', '=', user.id), ('correction_case_id.finance_assignment_valid', '=', True), ('company_id', 'in', company_ids), ('employee_id.active', '=', True), ('employee_mapping_valid', '=', True)]</field>
+        <field name="perm_write" eval="False"/><field name="perm_create" eval="False"/><field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="rule_trip_correction_cash" model="ir.rule">
+        <field name="name">PS T&amp;E trip: current correction cash read</field><field name="model_id" ref="model_ps_te_trip_request"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_cash'))]"/>
+        <field name="domain_force">[('correction_case_id.cash_operator_id', '=', user.id), ('correction_case_id.cash_assignment_valid', '=', True), ('company_id', 'in', company_ids), ('employee_id.active', '=', True), ('employee_mapping_valid', '=', True)]</field>
+        <field name="perm_write" eval="False"/><field name="perm_create" eval="False"/><field name="perm_unlink" eval="False"/>
+    </record>
+</odoo>
+

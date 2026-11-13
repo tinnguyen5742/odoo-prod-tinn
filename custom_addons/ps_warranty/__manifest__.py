@@ -1,0 +1,23 @@
+{
+    "name": "Warranty Management",
+    "summary": "Manage product warranties, claims, repairs, replacements and RMAs",
+    "version": "19.0.1.0.0",
+    "category": "Services",
+    "author": "Project Team",
+    "license": "LGPL-3",
+    "depends": ["base", "mail", "product", "web"],
+    "data": [
+        "security/warranty_security.xml",
+        "security/ir.model.access.csv",
+        "data/warranty_sequence.xml",
+        "data/warranty_cron.xml",
+        "reports/warranty_reports.xml",
+        "views/policy_views.xml",
+        "views/registration_views.xml",
+        "views/claim_views.xml",
+        "views/rma_views.xml",
+        "views/dashboard_views.xml",
+    ],
+    "application": True,
+    "installable": True,
+}

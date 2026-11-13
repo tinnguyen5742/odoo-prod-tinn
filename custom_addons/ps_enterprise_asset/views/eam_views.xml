@@ -1,0 +1,763 @@
+<odoo>
+    <record id="equipment_list" model="ir.ui.view">
+        <field name="name">equipment_list</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="eam_code"/>
+                <field name="name"/>
+                <field name="eam_level"/>
+                <field name="parent_id"/>
+                <field name="eam_location"/>
+                <field name="eam_status"/>
+                <field name="warranty_date"/>
+                <field name="eam_maintenance_cost"/>
+                <field name="company_id" string="Công ty"/>
+            </list>
+        </field>
+    </record>
+    <record id="equipment_form" model="ir.ui.view">
+        <field name="name">equipment_form</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="action_eam_orders"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-wrench"
+                            string="Lệnh bảo trì"
+                        />
+                    </div>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="eam_code"/>
+                            <field name="serial_no"/>
+                            <field name="model"/>
+                            <field name="category_id"/>
+                            <field name="eam_level"/>
+                            <field name="parent_id"/>
+                            <field name="company_id" string="Công ty"/>
+                        </group>
+                        <group>
+                            <field name="eam_status"/>
+                            <field name="eam_location"/>
+                            <field name="effective_date"/>
+                            <field name="owner_user_id"/>
+                            <field name="technician_user_id"/>
+                            <field name="maintenance_team_id"/>
+                            <field name="partner_id"/>
+                            <field name="customer_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Kỹ thuật &amp; hồ sơ">
+                            <field name="equipment_properties"/>
+                            <field name="note"/>
+                        </page>
+                        <page string="Cây thiết bị">
+                            <field
+                                name="child_ids"
+                                context="{'default_parent_id': id, 'default_company_id': company_id}"
+                            >
+                                <list>
+                                    <field name="eam_code"/>
+                                    <field name="name"/>
+                                    <field name="eam_level"/>
+                                    <field name="eam_status"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Bảo hành">
+                            <group>
+                                <group>
+                                    <field name="warranty_start"/>
+                                    <field name="warranty_date"/>
+                                    <field name="customer_warranty_start"/>
+                                    <field name="customer_warranty_end"/>
+                                </group>
+                            </group>
+                            <field name="warranty_terms"/>
+                            <field name="claim_ids"/>
+                        </page>
+                        <page string="Kế hoạch">
+                            <field name="plan_ids" context="{'default_company_id': company_id}"/>
+                        </page>
+                        <page string="Chỉ số máy">
+                            <field name="meter_ids" context="{'default_company_id': company_id}"/>
+                        </page>
+                        <page string="Vận hành &amp; hiệu quả thiết bị">
+                            <field name="operation_ids" context="{'default_company_id': company_id}"/>
+                        </page>
+                        <page string="Chi phí &amp; độ tin cậy">
+                            <group>
+                                <group>
+                                    <field name="currency_id" string="Tiền tệ"/>
+                                    <field name="cost"/>
+                                    <field name="asset_reference"/>
+                                    <field name="depreciation_recorded"/>
+                                    <field name="eam_maintenance_cost"/>
+                                    <field name="eam_tco" string="Tổng chi phí sở hữu (TCO)"/>
+                                    <field name="eam_mtbf_hours" string="Thời gian trung bình giữa sự cố (MTBF, giờ)"/>
+                                    <field name="eam_mttr_hours" string="Thời gian sửa chữa trung bình (MTTR, giờ)"/>
+                                </group>
+                            </group>
+                            <div class="text-muted">TCO ghi nhận = giá mua + chi phí các lệnh EAM đã nghiệm thu. Khấu hao là thông tin tham chiếu, không cộng thêm vào TCO. MTBF/MTTR lấy toàn bộ nhật ký/lệnh EAM; giá trị 0 khi chưa có sự cố đã đóng không có nghĩa thiết bị không thể hỏng.</div>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="equipment_search" model="ir.ui.view">
+        <field name="name">EAM equipment search</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="eam_code"/>
+                <field name="serial_no"/>
+                <field name="parent_id"/>
+                <field name="category_id"/>
+                <filter name="maintaining" string="Đang bảo trì" domain="[('eam_status','=','maintenance')]"/>
+                <filter name="group_parent" string="Theo cấp cha" context="{'group_by':'parent_id'}"/>
+                <filter name="group_category" string="Theo nhóm" context="{'group_by':'category_id'}"/>
+            </search>
+        </field>
+    </record>
+    <record id="equipment_action" model="ir.actions.act_window">
+        <field name="name">Hồ sơ thiết bị</field>
+        <field name="res_model">maintenance.equipment</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="equipment_list"/>
+        <field name="search_view_id" ref="equipment_search"/>
+    </record>
+    <record id="plan_list" model="ir.ui.view">
+        <field name="name">plan_list</field>
+        <field name="model">ps.eam.plan</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="equipment_id"/>
+                <field name="trigger"/>
+                <field name="next_date"/>
+                <field name="meter_id"/>
+                <field name="next_value"/>
+                <field name="active" string="Đang áp dụng"/>
+                <field name="company_id" string="Công ty"/>
+            </list>
+        </field>
+    </record>
+    <record id="plan_form" model="ir.ui.view">
+        <field name="name">plan_form</field>
+        <field name="model">ps.eam.plan</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        name="action_generate"
+                        type="object"
+                        string="Sinh lệnh đến hạn"
+                        class="oe_highlight"
+                        groups="ps_enterprise_asset.group_eam_manager"
+                    />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="company_id" string="Công ty"/>
+                            <field name="equipment_id"/>
+                            <field name="active" string="Đang áp dụng"/>
+                            <field name="trigger"/>
+                            <field name="estimated_hours"/>
+                            <field name="budget"/>
+                            <field name="currency_id" string="Tiền tệ"/>
+                        </group>
+                        <group>
+                            <field name="interval" invisible="trigger != 'time'"/>
+                            <field name="unit" invisible="trigger != 'time'"/>
+                            <field name="next_date" invisible="trigger != 'time'"/>
+                            <field name="meter_id" invisible="trigger != 'usage'"/>
+                            <field name="usage_interval" invisible="trigger != 'usage'"/>
+                            <field name="next_value" invisible="trigger != 'usage'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Quy trình thao tác chuẩn">
+                            <field name="checklist"/>
+                            <field name="instruction"/>
+                        </page>
+                        <page string="Lệnh đã sinh">
+                            <field name="request_ids" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="plan_action" model="ir.actions.act_window">
+        <field name="name">Kế hoạch bảo trì</field>
+        <field name="res_model">ps.eam.plan</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="meter_list" model="ir.ui.view">
+        <field name="name">meter_list</field>
+        <field name="model">ps.eam.meter</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="equipment_id"/>
+                <field name="kind"/>
+                <field name="unit"/>
+                <field name="current_value"/>
+                <field name="lower_limit"/>
+                <field name="upper_limit"/>
+                <field name="company_id" string="Công ty"/>
+            </list>
+        </field>
+    </record>
+    <record id="meter_form" model="ir.ui.view">
+        <field name="name">meter_form</field>
+        <field name="model">ps.eam.meter</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="equipment_id"/>
+                            <field name="company_id" string="Công ty"/>
+                            <field name="kind"/>
+                            <field name="unit"/>
+                            <field name="current_value"/>
+                        </group>
+                        <group>
+                            <field name="lower_limit"/>
+                            <field name="upper_limit"/>
+                            <field name="auto_request"/>
+                            <field name="alert_request_id"/>
+                        </group>
+                    </group>
+                    <field name="reading_ids">
+                        <list create="0" edit="0" delete="0" decoration-danger="abnormal">
+                            <field name="measured_at"/>
+                            <field name="value"/>
+                            <field name="source"/>
+                            <field name="abnormal"/>
+                        </list>
+                    </field>
+                    <div class="text-muted">Số đo được nhập tại menu Số đo thiết bị hoặc qua API ORM có xác thực của Odoo. Không có endpoint công khai hoặc kết nối PLC mặc định.</div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="meter_action" model="ir.actions.act_window">
+        <field name="name">Đồng hồ &amp; cảm biến</field>
+        <field name="res_model">ps.eam.meter</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="reading_list" model="ir.ui.view">
+        <field name="name">reading_list</field>
+        <field name="model">ps.eam.reading</field>
+        <field name="arch" type="xml">
+            <list edit="0" delete="0" decoration-danger="abnormal">
+                <field name="meter_id"/>
+                <field name="equipment_id"/>
+                <field name="measured_at"/>
+                <field name="value"/>
+                <field name="source"/>
+                <field name="abnormal"/>
+            </list>
+        </field>
+    </record>
+    <record id="reading_form" model="ir.ui.view">
+        <field name="name">reading_form</field>
+        <field name="model">ps.eam.reading</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field
+                            name="meter_id"
+                            domain="[('company_id', 'in', context.get('allowed_company_ids', []))]"
+                            readonly="id"
+                        />
+                        <field name="measured_at" readonly="id"/>
+                        <field name="value" readonly="id"/>
+                        <field name="source" readonly="id"/>
+                        <field name="company_id" readonly="id" string="Công ty"/>
+                        <field name="abnormal" readonly="id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="reading_action" model="ir.actions.act_window">
+        <field name="name">Số đo thiết bị</field>
+        <field name="res_model">ps.eam.reading</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="request_list" model="ir.ui.view">
+        <field name="name">request_list</field>
+        <field name="model">maintenance.request</field>
+        <field name="arch" type="xml">
+            <list decoration-success="eam_state == 'done'" decoration-muted="eam_state == 'cancelled'">
+                <field name="eam_number"/>
+                <field name="name"/>
+                <field name="equipment_id"/>
+                <field name="maintenance_type"/>
+                <field name="user_id"/>
+                <field name="schedule_date"/>
+                <field name="eam_state"/>
+                <field name="eam_budget"/>
+                <field name="eam_total_cost"/>
+                <field name="company_id" string="Công ty"/>
+            </list>
+        </field>
+    </record>
+    <record id="request_form" model="ir.ui.view">
+        <field name="name">request_form</field>
+        <field name="model">maintenance.request</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        name="action_approve"
+                        type="object"
+                        string="Duyệt"
+                        invisible="eam_state != 'draft'"
+                        groups="ps_enterprise_asset.group_eam_manager"
+                        class="oe_highlight"
+                    />
+                    <button
+                        name="action_start"
+                        type="object"
+                        string="Bắt đầu"
+                        invisible="eam_state != 'approved'"
+                        class="oe_highlight"
+                    />
+                    <button
+                        name="action_done"
+                        type="object"
+                        string="Nghiệm thu"
+                        invisible="eam_state != 'progress'"
+                        groups="ps_enterprise_asset.group_eam_manager"
+                        class="oe_highlight"
+                    />
+                    <button
+                        name="action_cancel"
+                        type="object"
+                        string="Hủy"
+                        invisible="eam_state in ('done','cancelled')"
+                        groups="ps_enterprise_asset.group_eam_manager"
+                    />
+                    <field name="eam_state" widget="statusbar" statusbar_visible="draft,approved,progress,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <field name="picking_ids" invisible="1" groups="stock.group_stock_user"/>
+                        <button
+                            name="action_pickings"
+                            type="object"
+                            icon="fa-cubes"
+                            class="oe_stat_button"
+                            string="Phiếu vật tư"
+                            invisible="not picking_ids"
+                            groups="stock.group_stock_user"
+                        />
+                    </div>
+                    <field name="eam_managed" invisible="1"/>
+                    <field name="stage_id" invisible="1"/>
+                    <h2>
+                        <field name="eam_number" readonly="1"/>
+                    </h2>
+                    <h1>
+                        <field name="name" readonly="eam_state in ('done','cancelled')"/>
+                    </h1>
+                    <div class="alert alert-warning" role="status" invisible="not warranty_notice">
+                        <field name="warranty_notice"/>
+                    </div>
+                    <group readonly="eam_state in ('done','cancelled')">
+                        <group>
+                            <field name="equipment_id"/>
+                            <field name="company_id" string="Công ty"/>
+                            <field name="maintenance_type"/>
+                            <field name="priority"/>
+                            <field name="eam_plan_id"/>
+                        </group>
+                        <group>
+                            <field name="maintenance_team_id"/>
+                            <field name="user_id"/>
+                            <field name="schedule_date" string="Thời điểm bắt đầu dự kiến"/>
+                            <field name="schedule_end" string="Thời điểm kết thúc dự kiến"/>
+                            <field name="eam_budget"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Công việc">
+                            <field name="description"/>
+                            <field name="instruction_text"/>
+                            <field name="eam_check_ids" readonly="eam_state in ('done','cancelled')" string="Danh sách kiểm tra">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="required"/>
+                                    <field name="checked"/>
+                                    <field name="result"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Phụ tùng" invisible="1">
+                            <button
+                                name="action_create_picking"
+                                type="object"
+                                string="Tạo phiếu cấp vật tư"
+                                groups="stock.group_stock_user"
+                                invisible="eam_state not in ('approved','progress')"
+                            />
+                            <div class="text-muted">Phiếu được tạo ở trạng thái chờ. Thủ kho ghi lượng dùng thực tế, lô/serial và xác nhận để trừ kho. Giá chi phí EAM được chụp khi lập phiếu, khác với giá trị định giá kho chính thức.</div>
+                            <field name="part_ids" readonly="eam_state in ('done','cancelled')">
+                                <list editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="quantity"/>
+                                    <field name="uom_id"/>
+                                    <field name="vendor_id"/>
+                                    <field name="purchase_id"/>
+                                    <button
+                                        name="action_rfq"
+                                        type="object"
+                                        string="Tạo / mở yêu cầu báo giá"
+                                        groups="purchase.group_purchase_user"
+                                    />
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Chi phí">
+                            <group>
+                                <field name="currency_id" string="Tiền tệ"/>
+                                <field name="actual_hours"/>
+                                <field name="hourly_rate"/>
+                                <field name="eam_parts_cost" invisible="not eam_parts_cost"/>
+                                <field name="eam_total_cost"/>
+                                <field name="eam_variance"/>
+                            </group>
+                            <field name="cost_ids" readonly="eam_state in ('done','cancelled')">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="amount"/>
+                                    <field name="bill_id"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Nghiệm thu">
+                            <group>
+                                <field name="root_cause"/>
+                                <field name="resolution"/>
+                                <field name="work_started"/>
+                                <field name="work_finished"/>
+                                <field name="acceptance_user_id"/>
+                                <field name="acceptance_date"/>
+                            </group>
+                            <field
+                                name="acceptance_signature"
+                                widget="signature"
+                                readonly="eam_state in ('done','cancelled')"
+                            />
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="request_search" model="ir.ui.view">
+        <field name="name">EAM order search</field>
+        <field name="model">maintenance.request</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="eam_number"/>
+                <field name="equipment_id"/>
+                <field name="user_id"/>
+                <filter name="accepted" string="Đã nghiệm thu" domain="[('eam_state','=','done')]"/>
+                <filter name="mine" string="Lệnh của tôi" domain="[('user_id','=',uid)]"/>
+                <filter name="open" string="Đang mở" domain="[('eam_state','not in',['done','cancelled'])]"/>
+                <filter name="corrective" string="Khắc phục" domain="[('maintenance_type','=','corrective')]"/>
+                <filter name="preventive" string="Định kỳ" domain="[('maintenance_type','=','preventive')]"/>
+                <filter name="group_equipment" string="Theo thiết bị" context="{'group_by':'equipment_id'}"/>
+                <filter name="group_state" string="Theo trạng thái" context="{'group_by':'eam_state'}"/>
+            </search>
+        </field>
+    </record>
+    <record id="request_calendar" model="ir.ui.view">
+        <field name="name">Lịch EAM</field>
+        <field name="model">maintenance.request</field>
+        <field name="arch" type="xml">
+            <calendar date_start="schedule_date" date_stop="schedule_end" color="user_id" mode="month">
+                <field name="name"/>
+                <field name="equipment_id"/>
+                <field name="user_id"/>
+                <field name="eam_state"/>
+            </calendar>
+        </field>
+    </record>
+    <record id="request_pivot" model="ir.ui.view">
+        <field name="name">Chi phí EAM</field>
+        <field name="model">maintenance.request</field>
+        <field name="arch" type="xml">
+            <pivot string="Chi phí lệnh bảo trì">
+                <field name="equipment_id" type="row"/>
+                <field name="eam_state" type="col"/>
+                <field name="maintenance_type" type="col"/>
+                <field name="eam_budget" type="measure"/>
+                <field name="eam_total_cost" type="measure"/>
+                <field name="eam_variance" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+    <record id="request_action" model="ir.actions.act_window">
+        <field name="name">Lệnh bảo trì</field>
+        <field name="res_model">maintenance.request</field>
+        <field name="view_mode">list,form,calendar,pivot</field>
+        <field name="domain">[('eam_managed','=',True)]</field>
+        <field name="context">{'default_eam_managed': True}</field>
+        <field name="view_id" ref="request_list"/>
+        <field name="search_view_id" ref="request_search"/>
+    </record>
+    <record id="calendar_action" model="ir.actions.act_window">
+        <field name="name">Lịch bảo trì</field>
+        <field name="res_model">maintenance.request</field>
+        <field name="view_mode">calendar,list,form</field>
+        <field name="domain">[('eam_managed','=',True),('eam_state','!=','cancelled')]</field>
+        <field name="context">{'default_eam_managed': True}</field>
+        <field name="view_id" ref="request_calendar"/>
+    </record>
+    <record id="cost_action" model="ir.actions.act_window">
+        <field name="name">Phân tích chi phí</field>
+        <field name="res_model">maintenance.request</field>
+        <field name="view_mode">pivot,list,form</field>
+        <field name="domain">[('eam_managed','=',True),('eam_state','!=','cancelled')]</field>
+        <field name="view_id" ref="request_pivot"/>
+        <field name="search_view_id" ref="request_search"/>
+    </record>
+    <record id="claim_list" model="ir.ui.view">
+        <field name="name">claim_list</field>
+        <field name="model">ps.eam.claim</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="equipment_id"/>
+                <field name="direction"/>
+                <field name="partner_id"/>
+                <field name="claim_date"/>
+                <field name="covered"/>
+                <field name="state"/>
+                <field name="requested_amount"/>
+                <field name="recovered_amount"/>
+                <field name="company_id" string="Công ty"/>
+            </list>
+        </field>
+    </record>
+    <record id="claim_form" model="ir.ui.view">
+        <field name="name">claim_form</field>
+        <field name="model">ps.eam.claim</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="company_id" string="Công ty"/>
+                            <field name="equipment_id"/>
+                            <field name="request_id"/>
+                            <field name="direction"/>
+                            <field name="partner_id"/>
+                            <field name="claim_date"/>
+                            <field name="covered"/>
+                        </group>
+                        <group>
+                            <field name="state"/>
+                            <field name="currency_id" string="Tiền tệ"/>
+                            <field name="requested_amount"/>
+                            <field name="recovered_amount"/>
+                        </group>
+                    </group>
+                    <field name="description"/>
+                    <field name="resolution"/>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="claim_action" model="ir.actions.act_window">
+        <field name="name">Hồ sơ bảo hành</field>
+        <field name="res_model">ps.eam.claim</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="operation_list" model="ir.ui.view">
+        <field name="name">operation_list</field>
+        <field name="model">ps.eam.operation</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="date"/>
+                <field name="equipment_id"/>
+                <field name="planned_hours"/>
+                <field name="running_hours"/>
+                <field name="downtime_hours"/>
+                <field name="total_qty"/>
+                <field name="good_qty"/>
+                <field name="availability" string="Khả dụng (%)"/>
+                <field name="performance" string="Hiệu suất (%)"/>
+                <field name="quality" string="Chất lượng (%)"/>
+                <field name="oee" string="Hiệu quả thiết bị (OEE, %)"/>
+                <field name="company_id" string="Công ty"/>
+            </list>
+        </field>
+    </record>
+    <record id="operation_form" model="ir.ui.view">
+        <field name="name">operation_form</field>
+        <field name="model">ps.eam.operation</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="company_id" string="Công ty"/>
+                            <field name="equipment_id"/>
+                            <field name="date"/>
+                            <field name="planned_hours"/>
+                            <field name="running_hours"/>
+                            <field name="downtime_hours"/>
+                        </group>
+                        <group>
+                            <field name="ideal_cycle_seconds"/>
+                            <field name="total_qty"/>
+                            <field name="good_qty"/>
+                            <field name="availability" string="Khả dụng (%)"/>
+                            <field name="performance" string="Hiệu suất (%)"/>
+                            <field name="quality" string="Chất lượng (%)"/>
+                            <field name="oee" string="Hiệu quả thiết bị (OEE, %)"/>
+                        </group>
+                    </group>
+                    <div class="text-muted">Khả dụng = giờ chạy / giờ kế hoạch. Hiệu suất = chu kỳ chuẩn × tổng sản phẩm / thời gian chạy (tối đa 100%). Chất lượng = sản phẩm đạt / tổng sản phẩm. Hiệu quả thiết bị (OEE) = khả dụng × hiệu suất × chất lượng. Bảng tổng hợp hiển thị trung bình chỉ số OEE các dòng, không phải giá trị có trọng số cho toàn kỳ.</div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="operation_pivot" model="ir.ui.view">
+        <field name="name">OEE pivot</field>
+        <field name="model">ps.eam.operation</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="equipment_id" type="row"/>
+                <field name="date" type="col" interval="month"/>
+                <field name="oee" type="measure" string="Hiệu quả thiết bị (OEE, %)"/>
+                <field name="running_hours" type="measure"/>
+                <field name="downtime_hours" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+    <record id="operation_graph" model="ir.ui.view">
+        <field name="name">OEE graph</field>
+        <field name="model">ps.eam.operation</field>
+        <field name="arch" type="xml">
+            <graph string="Hiệu quả thiết bị theo ngày" type="line">
+                <field name="date" interval="day"/>
+                <field name="equipment_id"/>
+                <field name="oee" type="measure" string="Hiệu quả thiết bị (OEE, %)"/>
+            </graph>
+        </field>
+    </record>
+    <record id="operation_action" model="ir.actions.act_window">
+        <field name="name">Nhật ký vận hành / OEE</field>
+        <field name="res_model">ps.eam.operation</field>
+        <field name="view_mode">list,form,pivot,graph</field>
+    </record>
+    <record id="location_form_inherit" model="ir.ui.view">
+        <field name="name">Vị trí tiêu hao EAM</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form"/>
+        <field name="arch" type="xml">
+            <field name="usage" position="after">
+                <field name="eam_consumption"/>
+            </field>
+        </field>
+    </record>
+    <record id="picking_form_inherit" model="ir.ui.view">
+        <field name="name">Phiếu kho EAM</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <field name="origin" position="after">
+                <field name="eam_request_id"/>
+            </field>
+        </field>
+    </record>
+    <menuitem id="menu_eam" name="Thiết bị &amp; Bảo trì" sequence="45" groups="ps_enterprise_asset.group_eam_user"/>
+    <menuitem id="menu_equipment" parent="menu_eam" name="Hồ sơ thiết bị" action="equipment_action" sequence="10"/>
+    <menuitem id="menu_request" parent="menu_eam" name="Lệnh bảo trì" action="request_action" sequence="20"/>
+    <menuitem id="menu_calendar" parent="menu_eam" name="Lịch bảo trì" action="calendar_action" sequence="25"/>
+    <menuitem id="menu_plan" parent="menu_eam" name="Kế hoạch định kỳ" action="plan_action" sequence="30"/>
+    <menuitem id="menu_meter" parent="menu_eam" name="Đồng hồ &amp; cảm biến" action="meter_action" sequence="40"/>
+    <menuitem id="menu_reading" parent="menu_eam" name="Số đo thiết bị" action="reading_action" sequence="45"/>
+    <menuitem id="menu_claim" parent="menu_eam" name="Hồ sơ bảo hành" action="claim_action" sequence="50"/>
+    <menuitem id="menu_operation" parent="menu_eam" name="Vận hành &amp; hiệu quả thiết bị" action="operation_action" sequence="60"/>
+    <menuitem id="menu_cost" parent="menu_eam" name="Phân tích chi phí" action="cost_action" sequence="70"/>
+    <record id="form_binding_0" model="ir.actions.act_window.view">
+        <field name="sequence">20</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="equipment_form"/>
+        <field name="act_window_id" ref="equipment_action"/>
+    </record>
+    <record id="form_binding_1" model="ir.actions.act_window.view">
+        <field name="sequence">20</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="request_form"/>
+        <field name="act_window_id" ref="request_action"/>
+    </record>
+    <record id="form_binding_2" model="ir.actions.act_window.view">
+        <field name="sequence">20</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="request_form"/>
+        <field name="act_window_id" ref="calendar_action"/>
+    </record>
+    <record id="form_binding_3" model="ir.actions.act_window.view">
+        <field name="sequence">20</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="request_form"/>
+        <field name="act_window_id" ref="cost_action"/>
+    </record>
+    <record id="initial_view_binding_0" model="ir.actions.act_window.view">
+        <field name="sequence">1</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="equipment_list"/>
+        <field name="act_window_id" ref="equipment_action"/>
+    </record>
+    <record id="initial_view_binding_1" model="ir.actions.act_window.view">
+        <field name="sequence">1</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="request_list"/>
+        <field name="act_window_id" ref="request_action"/>
+    </record>
+    <record id="initial_view_binding_2" model="ir.actions.act_window.view">
+        <field name="sequence">1</field>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="request_calendar"/>
+        <field name="act_window_id" ref="calendar_action"/>
+    </record>
+    <record id="initial_view_binding_3" model="ir.actions.act_window.view">
+        <field name="sequence">1</field>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="request_pivot"/>
+        <field name="act_window_id" ref="cost_action"/>
+    </record>
+</odoo>

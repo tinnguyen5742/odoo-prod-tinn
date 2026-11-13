@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_users_form_ps_sales_code" model="ir.ui.view">
+        <field name="name">res.users.form.ps.sales.code</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group[field[@name='partner_id']]" position="inside">
+                <field name="ps_sales_code"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

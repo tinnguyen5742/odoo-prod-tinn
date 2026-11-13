@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_elearning_training_report_search" model="ir.ui.view">
+        <field name="name">elearning.training.report.search</field>
+        <field name="model">elearning.training.report</field>
+        <field name="arch" type="xml">
+            <search string="Training Progress">
+                <field name="employee_id"/>
+                <field name="course_id"/>
+                <field name="department_id"/>
+                <field name="job_id"/>
+                <field name="manager_id"/>
+                <filter name="overdue" string="Overdue" domain="[('is_overdue', '=', True)]"/>
+                <filter name="not_started" string="Not Started" domain="[('member_status', '=', 'joined')]"/>
+                <filter name="in_progress" string="In Progress" domain="[('member_status', '=', 'ongoing')]"/>
+                <filter name="completed" string="Completed" domain="[('member_status', '=', 'completed')]"/>
+                <group>
+                    <filter name="group_department" string="Department" context="{'group_by': 'department_id'}"/>
+                    <filter name="group_employee" string="Employee" context="{'group_by': 'employee_id'}"/>
+                    <filter name="group_course" string="Course" context="{'group_by': 'course_id'}"/>
+                    <filter name="group_status" string="Status" context="{'group_by': 'member_status'}"/>
+                    <filter name="group_deadline" string="Deadline" context="{'group_by': 'deadline_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_elearning_training_report_list" model="ir.ui.view">
+        <field name="name">elearning.training.report.list</field>
+        <field name="model">elearning.training.report</field>
+        <field name="arch" type="xml">
+            <list string="Employee eLearning Progress" decoration-danger="is_overdue">
+                <field name="employee_id"/>
+                <field name="department_id" optional="show"/>
+                <field name="job_id" optional="hide"/>
+                <field name="course_id"/>
+                <field name="member_status"/>
+                <field name="completion" string="Completion (%)"/>
+                <field name="deadline_date" optional="show"/>
+                <field name="is_overdue" widget="boolean_toggle" optional="show"/>
+                <field name="responsible_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_elearning_training_report_pivot" model="ir.ui.view">
+        <field name="name">elearning.training.report.pivot</field>
+        <field name="model">elearning.training.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Employee eLearning Progress">
+                <field name="department_id" type="row"/>
+                <field name="employee_id" type="row"/>
+                <field name="course_id" type="col"/>
+                <field name="enrollment_count" type="measure"/>
+                <field name="completion" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_elearning_training_report_graph" model="ir.ui.view">
+        <field name="name">elearning.training.report.graph</field>
+        <field name="model">elearning.training.report</field>
+        <field name="arch" type="xml">
+            <graph string="Training Completion" type="bar">
+                <field name="department_id"/>
+                <field name="member_status"/>
+                <field name="enrollment_count" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_elearning_training_report" model="ir.actions.act_window">
+        <field name="name">Employee eLearning Progress</field>
+        <field name="res_model">elearning.training.report</field>
+        <field name="view_mode">list,pivot,graph</field>
+        <field name="search_view_id" ref="view_elearning_training_report_search"/>
+        <field name="context">{'search_default_group_department': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Review employee course progress and deadlines.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_elearning_training_report"
+              name="Employee Progress"
+              parent="website_slides.website_slides_menu_report"
+              action="action_elearning_training_report"
+              sequence="50"
+              groups="base.group_user,website_slides.group_website_slides_officer,ps_elearning_analytics.group_elearning_hr_manager"/>
+</odoo>

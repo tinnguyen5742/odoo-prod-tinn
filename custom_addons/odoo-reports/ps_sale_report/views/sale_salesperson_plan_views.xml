@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ps_salesperson_plan_list" model="ir.ui.view">
+        <field name="name">ps.sale.salesperson.plan.list</field>
+        <field name="model">ps.sale.salesperson.plan</field>
+        <field name="arch" type="xml">
+            <list string="Kế hoạch Sales">
+                <field name="salesperson_id"/><field name="date_from"/><field name="date_to"/>
+                <field name="planned_m2"/><field name="planned_revenue"/><field name="currency_id"/>
+                <field name="company_id"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_ps_salesperson_plan_form" model="ir.ui.view">
+        <field name="name">ps.sale.salesperson.plan.form</field>
+        <field name="model">ps.sale.salesperson.plan</field>
+        <field name="arch" type="xml">
+            <form string="Kế hoạch Sales">
+                <sheet><group>
+                    <group><field name="company_id"/><field name="salesperson_id"/><field name="currency_id" readonly="1"/></group>
+                    <group><field name="date_from"/><field name="date_to"/><field name="planned_m2"/><field name="planned_revenue"/></group>
+                </group></sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_ps_salesperson_plan" model="ir.actions.act_window">
+        <field name="name">Sales Targets</field>
+        <field name="res_model">ps.sale.salesperson.plan</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_ps_salesperson_plan" name="Sales Targets" parent="sale.menu_sale_config" action="action_ps_salesperson_plan" sequence="60" groups="sales_team.group_sale_manager"/>
+</odoo>

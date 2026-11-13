@@ -1,0 +1,71 @@
+<odoo>
+    <template id="report_training_progress">
+        <t t-call="web.html_container">
+            <t groups="ps_elearning_analytics.group_elearning_hr_manager">
+                <t t-set="courses" t-value="docs.exists().filtered(lambda c: c.active and c.is_published).sorted('name')"/>
+                <t t-set="o" t-value="courses[:1]"/>
+                <t t-set="attendees" t-value="courses.mapped('channel_partner_all_ids').filtered(lambda a: a.active).sorted(key=lambda a: (a.employee_id.department_id.name or '', a.employee_id.name or a.partner_id.name or '', a.channel_id.name or ''))"/>
+                <t t-call="web.external_layout">
+                    <div class="page ps_training_progress">
+                        <style>
+                            .ps_training_progress { line-height: 1.2; font-size: 12px; }
+                            .ps_training_progress h2 { text-align: center; font-size: 24px; margin: 0 0 8px; }
+                            .ps_training_progress p { margin: 0 0 6px; }
+                            .ps_training_progress table { width: 100%; border-collapse: collapse; table-layout: fixed; margin: 0 0 8px; }
+                            .ps_training_progress th, .ps_training_progress td { border: 1px solid #555; padding: 3px 5px; line-height: 1.2; vertical-align: top; height: auto; overflow-wrap: break-word; word-wrap: break-word; font-weight: 400; }
+                            .ps_training_progress th *, .ps_training_progress td * { font-weight: 400; }
+                            .ps_training_progress .number { text-align: center; }
+                            .ps_training_progress thead { display: table-header-group; }
+                            .ps_training_progress tfoot { display: table-row-group; }
+                            .ps_training_progress tr { page-break-inside: avoid; }
+                        </style>
+                        <h2>BÁO CÁO TIẾN ĐỘ ĐÀO TẠO NHÂN VIÊN</h2>
+                        <p>Phạm vi: khóa học đã chọn, đang hoạt động và đã công khai. Số liệu tại thời điểm in.</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 18%;">Nhân viên / học viên</th>
+                                    <th style="width: 18%;">Khóa học</th>
+                                    <th style="width: 11%;">Trạng thái</th>
+                                    <th class="number" style="width: 8%;">Hoàn thành</th>
+                                    <th style="width: 10%;">Ngày ghi danh</th>
+                                    <th style="width: 10%;">Cập nhật gần nhất</th>
+                                    <th style="width: 15%;">Bài học tiếp theo</th>
+                                    <th style="width: 10%;">Hạn hoàn thành</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-if="not attendees">
+                                    <td colspan="8" class="text-center">Không có học viên hoặc lời mời trong các khóa đã chọn.</td>
+                                </tr>
+                                <tr t-foreach="attendees" t-as="attendee">
+                                    <td>
+                                        <span t-if="attendee.employee_id" t-field="attendee.employee_id.name"/>
+                                        <span t-else="" t-field="attendee.partner_id"/>
+                                        <div t-if="attendee.employee_id.department_id or attendee.employee_id.job_id" class="text-muted">
+                                            <span t-if="attendee.employee_id.department_id" t-field="attendee.employee_id.department_id"/>
+                                            <span t-if="attendee.employee_id.department_id and attendee.employee_id.job_id"> · </span>
+                                            <span t-if="attendee.employee_id.job_id" t-field="attendee.employee_id.job_id"/>
+                                        </div>
+                                    </td>
+                                    <td><span t-field="attendee.channel_id.name"/></td>
+                                    <td>
+                                        <t t-if="attendee.member_status == 'invited'">Đã mời</t>
+                                        <t t-elif="attendee.member_status == 'joined'">Chưa bắt đầu</t>
+                                        <t t-elif="attendee.member_status == 'ongoing'">Đang học</t>
+                                        <t t-else="">Đã hoàn thành</t>
+                                    </td>
+                                    <td class="number"><span t-out="attendee.completion"/>%</td>
+                                    <td><span t-field="attendee.create_date"/></td>
+                                    <td><span t-field="attendee.write_date"/></td>
+                                    <td><span t-field="attendee.next_slide_id"/></td>
+                                    <td><span t-field="attendee.deadline_date"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

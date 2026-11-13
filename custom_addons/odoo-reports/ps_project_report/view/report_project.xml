@@ -1,0 +1,203 @@
+<odoo>
+    <data>
+        <!-- 1. Khai báo Action Report cho model project.project -->
+        <record id="action_report_project_summary" model="ir.actions.report">
+            <field name="name">Báo cáo tổng kết dự án</field>
+            <field name="model">project.project</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ps_project.report_project_summary_pdf</field>
+            <field name="report_file">ps_project.report_project_summary_pdf</field>
+            <field name="binding_model_id" ref="project.model_project_project"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- 2. Thiết kế Template QWeb View -->
+        <template id="report_project_summary_pdf">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.internal_layout">
+                        <div class="page" style="font-family: 'Times New Roman', Times, serif; color: #000000; font-size: 13px; padding: 0 10mm;">
+                            
+                            <style>
+                                .company-header-table {
+                                    width: 100%;
+                                    border-bottom: 2px solid #000000;
+                                    padding-bottom: 10px;
+                                    margin-bottom: 15px;
+                                }
+                                .report-title {
+                                    text-align: center;
+                                    font-weight: bold;
+                                    font-size: 18px;
+                                    text-transform: uppercase;
+                                    margin-top: 10px;
+                                    margin-bottom: 5px;
+                                }
+                                .custom-bordered-table {
+                                    width: 100%;
+                                    border-collapse: collapse;
+                                    margin-top: 10px;
+                                    margin-bottom: 15px;
+                                }
+                                .custom-bordered-table th, 
+                                .custom-bordered-table td {
+                                    border: 1px solid #000000 !important;
+                                    padding: 6px 8px;
+                                    vertical-align: middle;
+                                }
+                                .signature-section-table {
+                                    width: 100%;
+                                    margin-top: 30px;
+                                    border: none;
+                                }
+                            </style>
+
+                            <!-- HEADER LOGO & CÔNG TY -->
+                            <table class="company-header-table">
+                                <tr>
+                                    <td style="width: 25%; vertical-align: middle;">
+                                        <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-height: 65px; max-width: 100%;" alt="Logo"/>
+                                    </td>
+                                    <td style="width: 75%; vertical-align: top; padding-left: 15px; font-size: 11px;">
+                                        <div style="font-weight: bold; font-size: 13px; text-transform: uppercase;">
+                                            <span t-field="o.company_id.name"/>
+                                        </div>
+                                        <div t-if="o.company_id.street">
+                                            <strong>Địa chỉ:</strong> <span t-field="o.company_id.street"/>, <span t-field="o.company_id.city"/>
+                                        </div>
+                                        <div>
+                                            <span t-if="o.company_id.phone"><strong>Điện thoại:</strong> <span t-field="o.company_id.phone"/></span>
+                                            <span t-if="o.company_id.email" style="margin-left: 15px;"><strong>Email:</strong> <span t-field="o.company_id.email"/></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- TIÊU ĐỀ BÁO CÁO -->
+                            <div class="report-title">
+                                BÁO CÁO TỔNG KẾT &amp; ĐÁNH GIÁ DỰ ÁN
+                            </div>
+                            <div style="text-align: center; font-style: italic; font-size: 11px; margin-bottom: 15px;">
+                                Mã dự án: #<span t-field="o.id"/> | Giai đoạn: <span t-field="o.stage_id.name"/>
+                            </div>
+
+                            <!-- PHẦN 1: THÔNG TIN CHUNG & CÁC TRƯỜNG YÊU CẦU -->
+                            <div style="font-weight: bold; font-size: 14px; margin-top: 10px; margin-bottom: 5px;">I. THÔNG TIN CHUNG &amp; THÔNG SỐ DỰ ÁN</div>
+                            <table class="custom-bordered-table">
+                                <tr>
+                                    <td style="width: 20%; font-weight: bold;">Tên dự án:</td>
+                                    <td style="width: 30%; font-weight: bold;"><span t-field="o.name"/></td>
+                                    <td style="width: 20%; font-weight: bold;">Trưởng nhóm (PM):</td>
+                                    <td style="width: 30%; font-weight: bold;"><span t-field="o.user_id.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold;">Khách hàng (Customer):</td>
+                                    <td><span t-field="o.partner_id.name"/></td>
+                                    <td style="font-weight: bold;">Đơn hàng bán (Sale Item):</td>
+                                    <td><span t-field="o.sale_line_id.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold;">Ngày kế hoạch (Planned Date):</td>
+                                    <td><span t-field="o.date_start"/></td>
+                                    <td style="font-weight: bold;">Trạng thái (Status):</td>
+                                    <td><span t-field="o.last_update_status"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold;">Yêu thích (Favorite):</td>
+                                    <td><span t-if="o.is_favorite">Có (Favorite)</span><span t-else="">Không</span></td>
+                                    <td style="font-weight: bold;">Thẻ (Tags):</td>
+                                    <td>
+                                        <t t-foreach="o.tag_ids" t-as="tag">
+                                            <span t-field="tag.name"/><span> </span>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold;">Số lượng Task:</td>
+                                    <td><span t-esc="len(o.task_ids)"/> nhiệm vụ</td>
+                                    <td style="font-weight: bold;">Số lượng thành viên:</td>
+                                    <td><span t-esc="len(o.message_follower_ids)"/> người tham gia</td>
+                                </tr>
+                            </table>
+
+                            <!-- PHẦN 2: THỐNG KÊ THỜI GIAN -->
+                            <div style="font-weight: bold; font-size: 14px; margin-top: 15px; margin-bottom: 5px;">II. THỐNG KÊ THỜI GIAN &amp; TIẾN ĐỘ</div>
+                            <table class="custom-bordered-table">
+                                <tr>
+                                    <td style="width: 25%; font-weight: bold;">Thời gian phân bổ (Allocated):</td>
+                                    <td style="width: 25%;"><span t-field="o.allocated_hours"/> giờ</td>
+                                    <td style="width: 25%; font-weight: bold;">Thời gian thực tế (Spent):</td>
+                                    <td style="width: 25%;"><span t-field="o.effective_hours"/> giờ</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold;">Thời gian còn lại (Remaining):</td>
+                                    <td colspan="3"><span t-field="o.remaining_hours"/> giờ</td>
+                                </tr>
+                            </table>
+
+                            <!-- PHẦN 3: ĐÁNH GIÁ CHUYÊN MÔN -->
+                            <div style="font-weight: bold; font-size: 14px; margin-top: 15px; margin-bottom: 5px;">III. ĐÁNH GIÁ KẾT QUẢ THỰC HIỆN</div>
+                            <table class="custom-bordered-table">
+                                <thead>
+                                    <tr style="background-color: #f2f2f2; text-align: center;">
+                                        <th style="width: 35%;">Tiêu chí đánh giá</th>
+                                        <th style="width: 45%;">Nhận xét chi tiết</th>
+                                        <th style="width: 20%;">Kết quả (Đạt / Không)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="font-weight: bold;">1. Hoàn thành phạm vi &amp; Task:</td>
+                                        <td style="height: 40px;"/>
+                                        <td/>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold;">2. Chất lượng kỹ thuật bàn giao:</td>
+                                        <td style="height: 40px;"/>
+                                        <td/>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold;">3. Kiểm soát thời gian (Timesheet):</td>
+                                        <td style="height: 40px;"/>
+                                        <td/>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <!-- PHẦN 4: KẾT LUẬN & CHỮ KÝ -->
+                            <div style="font-weight: bold; font-size: 14px; margin-top: 15px; margin-bottom: 5px;">IV. KẾT LUẬN &amp; PHÊ DUYỆT</div>
+                            <table class="custom-bordered-table">
+                                <tr>
+                                    <td style="height: 60px; vertical-align: top;">
+                                        <div><strong>Đánh giá chung:</strong> [  ] Hoàn thành xuất sắc      [  ] Đạt yêu cầu      [  ] Cần bổ sung bảo trì</div>
+                                        <div style="margin-top: 5px;"><strong>Ý kiến Ban Giám Đốc / Khách hàng:</strong> ................................................................</div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- CHỮ KÝ -->
+                            <table class="signature-section-table">
+                                <tr>
+                                    <td style="width: 50%; text-align: center; vertical-align: top;">
+                                        <strong>Quản lý dự án (PM)</strong><br/>
+                                        <span style="font-size: 11px; font-style: italic;">(Ký, ghi rõ họ tên)</span>
+                                        <div style="height: 50px;"/>
+                                        <strong><span t-field="o.user_id.name"/></strong>
+                                    </td>
+                                    <td style="width: 50%; text-align: center; vertical-align: top;">
+                                        <strong>Đại diện Khách hàng / Ban Giám Đốc</strong><br/>
+                                        <span style="font-size: 11px; font-style: italic;">(Ký, ghi rõ họ tên, đóng dấu)</span>
+                                        <div style="height: 50px;"/>
+                                        <strong><span t-field="o.partner_id.name"/></strong>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div class="oe_structure"/>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

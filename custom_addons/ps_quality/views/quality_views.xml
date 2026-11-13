@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dashboard -->
+    <record id="view_ps_quality_dashboard_form" model="ir.ui.view">
+        <field name="name">ps.quality.dashboard.form</field>
+        <field name="model">ps.quality.dashboard</field>
+        <field name="arch" type="xml">
+            <form string="Quality Management Dashboard">
+                <header>
+                    <button name="action_new_inspection" type="object" string="New Inspection" class="oe_highlight" groups="ps_quality.group_quality_user"/>
+                    <button name="action_new_ncr" type="object" string="New NCR" groups="ps_quality.group_quality_inspector"/>
+                    <button name="action_new_capa" type="object" string="New CAPA" groups="ps_quality.group_quality_manager"/>
+                    <button name="action_new_plan" type="object" string="New Plan" groups="ps_quality.group_quality_manager"/>
+                    <button name="action_new_equipment" type="object" string="New Equipment" groups="ps_quality.group_quality_manager"/>
+                    <button name="action_new_standard" type="object" string="New Standard" groups="ps_quality.group_quality_administrator"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Quality Overview</h1>
+                        <div class="text-muted">Inspection performance, non-conformance and calibration status</div>
+                    </div>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_inspections" type="object" class="oe_stat_button" icon="fa-check-square-o">
+                            <field name="inspection_count" widget="statinfo" string="Inspections"/>
+                        </button>
+                        <button name="action_open_passed" type="object" class="oe_stat_button" icon="fa-check-circle">
+                            <field name="passed_count" widget="statinfo" string="Passed"/>
+                        </button>
+                        <button name="action_open_failed" type="object" class="oe_stat_button" icon="fa-times-circle">
+                            <field name="failed_count" widget="statinfo" string="Failed"/>
+                        </button>
+                        <button name="action_open_ncr" type="object" class="oe_stat_button" icon="fa-exclamation-triangle">
+                            <field name="open_ncr_count" widget="statinfo" string="Open NCR"/>
+                        </button>
+                        <button name="action_open_capa" type="object" class="oe_stat_button" icon="fa-wrench">
+                            <field name="open_capa_count" widget="statinfo" string="Open CAPA"/>
+                        </button>
+                        <button name="action_open_due_equipment" type="object" class="oe_stat_button" icon="fa-clock-o">
+                            <field name="overdue_equipment_count" widget="statinfo" string="Calibration Due"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group string="Inspection performance">
+                            <field name="pass_rate" widget="percentage" readonly="1"/>
+                            <field name="company_id" readonly="1"/>
+                        </group>
+                        <group string="Issue resolution">
+                            <field name="avg_ncr_resolution_days" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Quality standards -->
+    <record id="view_ps_quality_standard_list" model="ir.ui.view">
+        <field name="name">ps.quality.standard.list</field>
+        <field name="model">ps.quality.standard</field>
+        <field name="arch" type="xml">
+            <list decoration-success="state == 'active'" decoration-muted="state == 'obsolete'">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="version"/>
+                <field name="product_id"/>
+                <field name="valid_from"/>
+                <field name="valid_until"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_ps_quality_standard_form" model="ir.ui.view">
+        <field name="name">ps.quality.standard.form</field>
+        <field name="model">ps.quality.standard</field>
+        <field name="arch" type="xml">
+            <form string="Quality Standard">
+                <header>
+                    <button name="action_activate" type="object" string="Activate" class="oe_highlight" groups="ps_quality.group_quality_administrator" invisible="state != 'draft'"/>
+                    <button name="action_new_version" type="object" string="New Version" groups="ps_quality.group_quality_administrator" invisible="state != 'active'"/>
+                    <button name="action_obsolete" type="object" string="Obsolete" groups="ps_quality.group_quality_administrator" invisible="state != 'active'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active,obsolete"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_inspections" type="object" class="oe_stat_button" icon="fa-check-square-o">
+                            <field name="inspection_count" widget="statinfo" string="Inspections"/>
+                        </button>
+                    </div>
+                    <div class="oe_title"><label for="name"/><h1><field name="name"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="code" readonly="1"/>
+                            <field name="version" readonly="1"/>
+                            <field name="supersedes_id" readonly="1"/>
+                            <field name="product_id" readonly="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="valid_from" readonly="state != 'draft'"/>
+                            <field name="valid_until" readonly="state != 'draft'"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="state != 'draft'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Inspection criteria">
+                            <field name="line_ids" readonly="state != 'draft'">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="criterion_type"/>
+                                    <field name="has_minimum"/>
+                                    <field name="min_value" invisible="criterion_type != 'numeric'"/>
+                                    <field name="has_maximum"/>
+                                    <field name="max_value" invisible="criterion_type != 'numeric'"/>
+                                    <field name="unit"/>
+                                    <field name="method"/>
+                                    <field name="required"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Description"><field name="description" readonly="state != 'draft'"/></page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="view_ps_quality_standard_search" model="ir.ui.view">
+        <field name="name">ps.quality.standard.search</field>
+        <field name="model">ps.quality.standard</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="product_id"/>
+                <filter name="active" string="Active" domain="[('state','=','active')]"/>
+                <group><filter name="product" string="Product" context="{'group_by':'product_id'}"/><filter name="state" string="Status" context="{'group_by':'state'}"/></group>
+            </search>
+        </field>
+    </record>
+    <record id="action_ps_quality_standards" model="ir.actions.act_window">
+        <field name="name">Quality Standards</field><field name="res_model">ps.quality.standard</field>
+        <field name="view_mode">list,form</field><field name="search_view_id" ref="view_ps_quality_standard_search"/>
+    </record>
+
+    <!-- Inspection plans -->
+    <record id="view_ps_quality_plan_list" model="ir.ui.view">
+        <field name="name">ps.quality.plan.list</field><field name="model">ps.quality.plan</field>
+        <field name="arch" type="xml">
+            <list decoration-success="state == 'active'" decoration-muted="state == 'archived'">
+                <field name="code"/><field name="name"/><field name="inspection_type" widget="badge"/>
+                <field name="product_id"/><field name="standard_id"/><field name="frequency"/>
+                <field name="sample_size"/><field name="next_date"/><field name="inspector_id"/>
+                <field name="company_id" groups="base.group_multi_company"/><field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_ps_quality_plan_form" model="ir.ui.view">
+        <field name="name">ps.quality.plan.form</field><field name="model">ps.quality.plan</field>
+        <field name="arch" type="xml">
+            <form string="Inspection Plan">
+                <header>
+                    <button name="action_activate" type="object" string="Activate" class="oe_highlight" groups="ps_quality.group_quality_manager" invisible="state != 'draft'"/>
+                    <button name="action_archive" type="object" string="Archive" groups="ps_quality.group_quality_manager" invisible="state != 'active'"/>
+                    <button name="action_create_inspection" type="object" string="Create Inspection" class="oe_highlight" groups="ps_quality.group_quality_inspector" invisible="state != 'active'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active,archived"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box"><button name="action_create_inspection" type="object" class="oe_stat_button" icon="fa-check-square-o" groups="ps_quality.group_quality_inspector"><field name="inspection_count" widget="statinfo" string="Inspections"/></button></div>
+                    <div class="oe_title"><label for="name"/><h1><field name="name"/></h1></div>
+                    <group>
+                        <group><field name="code" readonly="1"/><field name="inspection_type" readonly="state != 'draft'"/><field name="product_id" readonly="state != 'draft'"/><field name="standard_id" readonly="state != 'draft'"/></group>
+                        <group><field name="frequency" readonly="state != 'draft'"/><field name="frequency_interval" invisible="frequency in ['per_receipt','per_lot']" readonly="state != 'draft'"/><field name="sample_size" readonly="state != 'draft'"/><field name="next_date" readonly="state != 'draft'"/><field name="inspector_id" readonly="state != 'draft'"/><field name="company_id" groups="base.group_multi_company" readonly="state != 'draft'"/></group>
+                    </group>
+                    <field name="description"/>
+                </sheet><chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="view_ps_quality_plan_search" model="ir.ui.view">
+        <field name="name">ps.quality.plan.search</field><field name="model">ps.quality.plan</field>
+        <field name="arch" type="xml"><search><field name="name"/><field name="product_id"/><field name="inspection_type"/><field name="inspector_id"/><filter name="active" string="Active" domain="[('state','=','active')]"/><group><filter name="type" string="Inspection Type" context="{'group_by':'inspection_type'}"/><filter name="product" string="Product" context="{'group_by':'product_id'}"/><filter name="state" string="Status" context="{'group_by':'state'}"/></group></search></field>
+    </record>
+    <record id="action_ps_quality_plans" model="ir.actions.act_window">
+        <field name="name">Inspection Plans</field><field name="res_model">ps.quality.plan</field><field name="view_mode">list,form</field><field name="search_view_id" ref="view_ps_quality_plan_search"/>
+    </record>
+
+    <!-- Inspections -->
+    <record id="view_ps_quality_inspection_list" model="ir.ui.view">
+        <field name="name">ps.quality.inspection.list</field><field name="model">ps.quality.inspection</field>
+        <field name="arch" type="xml">
+            <list decoration-success="result == 'pass'" decoration-danger="result == 'fail'">
+                <field name="name"/><field name="inspection_date"/><field name="inspection_type" widget="badge"/>
+                <field name="product_id"/><field name="partner_id"/><field name="standard_id"/>
+                <field name="inspector_id"/><field name="result" widget="badge"/><field name="state" widget="badge"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_ps_quality_inspection_kanban" model="ir.ui.view">
+        <field name="name">ps.quality.inspection.kanban</field><field name="model">ps.quality.inspection</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state">
+                <field name="name"/><field name="product_id"/><field name="partner_id"/><field name="inspection_type"/><field name="result"/><field name="inspection_date"/><field name="inspector_id"/>
+                <templates><t t-name="card"><div class="oe_kanban_global_click">
+                    <strong><field name="name"/></strong><div><field name="product_id"/></div>
+                    <div><field name="inspection_type"/> · <field name="inspection_date"/></div>
+                    <div t-if="record.partner_id.value"><field name="partner_id"/></div>
+                    <div class="mt8"><field name="result" widget="badge"/></div>
+                    <div><field name="inspector_id"/></div>
+                </div></t></templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="view_ps_quality_inspection_form" model="ir.ui.view">
+        <field name="name">ps.quality.inspection.form</field><field name="model">ps.quality.inspection</field>
+        <field name="arch" type="xml">
+            <form string="Quality Inspection">
+                <header>
+                    <button name="action_confirm" type="object" string="Confirm" class="oe_highlight" groups="ps_quality.group_quality_inspector" invisible="state != 'draft'"/>
+                    <button name="action_start" type="object" string="Start Inspection" class="oe_highlight" groups="ps_quality.group_quality_inspector" invisible="state != 'confirmed'"/>
+                    <button name="action_complete" type="object" string="Complete" class="oe_highlight" groups="ps_quality.group_quality_inspector" invisible="state != 'in_progress'"/>
+                    <button name="action_approve" type="object" string="Approve Result" groups="ps_quality.group_quality_manager" invisible="state not in ['passed','failed']"/>
+                    <button name="action_close" type="object" string="Close" groups="ps_quality.group_quality_inspector" invisible="state != 'approved'"/>
+                    <button name="action_create_ncr" type="object" string="Open NCR" groups="ps_quality.group_quality_inspector" invisible="state != 'failed'"/>
+                    <button name="action_request_reinspection" type="object" string="Request Reinspection" groups="ps_quality.group_quality_inspector" invisible="state != 'failed'"/>
+                    <button name="action_release_outgoing" type="object" string="Release OQC Transfer" groups="ps_quality.group_quality_manager" invisible="inspection_type != 'oqc' or result != 'pass' or state not in ['approved','closed']"/>
+                    <button name="action_refuse_outgoing" type="object" string="Record Shipment Hold / Refusal" groups="ps_quality.group_quality_inspector" invisible="inspection_type != 'oqc' or (result != 'fail' and disposition not in ['quarantine','return_supplier','hold'])"/>
+                    <button name="action_cancel" type="object" string="Cancel" groups="ps_quality.group_quality_manager" invisible="state not in ['draft','confirmed']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,in_progress,passed,failed,approved,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_ncrs" type="object" class="oe_stat_button" icon="fa-exclamation-triangle"><field name="ncr_count" widget="statinfo" string="NCR"/></button>
+                        <button name="action_view_capas" type="object" class="oe_stat_button" icon="fa-wrench"><field name="capa_count" widget="statinfo" string="CAPA"/></button>
+                        <button name="action_open_source" type="object" class="oe_stat_button" icon="fa-external-link" invisible="not purchase_order_ref and not production_ref and not sale_order_ref and not picking_ref"><div class="o_stat_info"><span class="o_stat_text">Source Document</span></div></button>
+                    </div>
+                    <div class="oe_title"><h1><field name="name"/></h1></div>
+                    <group>
+                        <group string="Inspection">
+                            <field name="inspection_type" readonly="state != 'draft'"/><field name="plan_id" readonly="state != 'draft'"/>
+                            <field name="standard_id" readonly="state != 'draft'"/><field name="product_id" readonly="state != 'draft'"/>
+                            <field name="partner_id" readonly="state not in ['draft','confirmed']"/><field name="lot_ref" readonly="state not in ['draft','confirmed']"/>
+                            <field name="inspection_date" readonly="state not in ['draft','confirmed']"/><field name="planned_date" readonly="state != 'draft'"/>
+                        </group>
+                        <group string="Assignment and quantity">
+                            <field name="inspector_id" readonly="state not in ['draft','confirmed']"/>
+                            <field name="quantity_to_inspect" readonly="state not in ['draft','confirmed']"/>
+                            <field name="quantity_sampled" readonly="state not in ['draft','confirmed']"/>
+                            <field name="quantity_passed" readonly="state not in ['draft','in_progress']"/>
+                            <field name="quantity_failed" readonly="state not in ['draft','in_progress']"/>
+                            <field name="disposition" readonly="state in ['approved','closed','cancelled']"/>
+                            <field name="release_refusal_reason" invisible="inspection_type != 'oqc'" readonly="state in ['closed','cancelled']"/>
+                            <field name="result" widget="badge" readonly="1"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="state != 'draft'"/>
+                        </group>
+                    </group>
+                    <group string="Optional ERP references">
+                        <group><field name="purchase_order_ref" readonly="state not in ['draft','confirmed']"/><field name="production_ref" readonly="state not in ['draft','confirmed']"/><field name="sale_order_ref" readonly="state not in ['draft','confirmed']"/></group>
+                        <group><field name="picking_ref" readonly="state not in ['draft','confirmed']"/><field name="reinspection_of_id" readonly="1"/></group>
+                    </group>
+                    <notebook>
+                        <page string="Inspection results">
+                            <field name="line_ids" readonly="state not in ['confirmed','in_progress']">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/><field name="standard_line_id" readonly="1"/>
+                                    <field name="criterion_type"/><field name="min_value"/><field name="max_value"/><field name="unit"/>
+                                    <field name="observed_value"/><field name="result" widget="badge"/><field name="remarks"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Attachments"><field name="attachment_ids" widget="many2many_binary"/></page>
+                        <page string="Description"><field name="description"/></page>
+                    </notebook>
+                </sheet><chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="view_ps_quality_inspection_search" model="ir.ui.view">
+        <field name="name">ps.quality.inspection.search</field><field name="model">ps.quality.inspection</field>
+        <field name="arch" type="xml"><search>
+            <field name="name"/><field name="product_id"/><field name="partner_id"/><field name="inspector_id"/><field name="inspection_type"/><field name="result"/>
+            <filter name="failed" string="Failed" domain="[('result','=','fail')]"/><filter name="passed" string="Passed" domain="[('result','=','pass')]"/>
+            <group><filter name="type" string="Type" context="{'group_by':'inspection_type'}"/><filter name="product" string="Product" context="{'group_by':'product_id'}"/><filter name="partner" string="Supplier / Customer" context="{'group_by':'partner_id'}"/><filter name="date" string="Inspection Date" context="{'group_by':'inspection_date:month'}"/><filter name="state" string="Status" context="{'group_by':'state'}"/></group>
+        </search></field>
+    </record>
+    <record id="view_ps_quality_inspection_graph" model="ir.ui.view">
+        <field name="name">ps.quality.inspection.graph</field><field name="model">ps.quality.inspection</field>
+        <field name="arch" type="xml"><graph string="Inspection Results" type="bar"><field name="inspection_date" interval="month"/><field name="result" type="row"/><field name="quantity_sampled" type="measure"/></graph></field>
+    </record>
+    <record id="view_ps_quality_inspection_pivot" model="ir.ui.view">
+        <field name="name">ps.quality.inspection.pivot</field><field name="model">ps.quality.inspection</field>
+        <field name="arch" type="xml"><pivot string="Quality Analysis"><field name="product_id" type="row"/><field name="inspection_type" type="col"/><field name="quantity_sampled" type="measure"/><field name="quantity_failed" type="measure"/><field name="quantity_passed" type="measure"/></pivot></field>
+    </record>
+    <record id="action_ps_quality_inspections" model="ir.actions.act_window">
+        <field name="name">Quality Inspections</field><field name="res_model">ps.quality.inspection</field><field name="view_mode">kanban,list,form,graph,pivot</field><field name="search_view_id" ref="view_ps_quality_inspection_search"/>
+    </record>
+    <record id="action_ps_quality_reports" model="ir.actions.act_window">
+        <field name="name">Quality Reports</field><field name="res_model">ps.quality.inspection</field><field name="view_mode">graph,pivot,list</field><field name="search_view_id" ref="view_ps_quality_inspection_search"/>
+    </record>
+
+    <!-- NCR -->
+    <record id="view_ps_quality_ncr_list" model="ir.ui.view">
+        <field name="name">ps.quality.ncr.list</field><field name="model">ps.quality.ncr</field>
+        <field name="arch" type="xml"><list decoration-danger="severity == 'critical'" decoration-warning="severity == 'major'" decoration-success="state == 'closed'"><field name="name"/><field name="title"/><field name="source_type"/><field name="product_id"/><field name="partner_id"/><field name="severity" widget="badge"/><field name="assigned_id"/><field name="due_date"/><field name="state" widget="badge"/><field name="company_id" groups="base.group_multi_company"/></list></field>
+    </record>
+    <record id="view_ps_quality_ncr_kanban" model="ir.ui.view">
+        <field name="name">ps.quality.ncr.kanban</field><field name="model">ps.quality.ncr</field>
+        <field name="arch" type="xml"><kanban default_group_by="state"><field name="name"/><field name="title"/><field name="severity"/><field name="assigned_id"/><field name="due_date"/><templates><t t-name="card"><div class="oe_kanban_global_click"><strong><field name="name"/></strong><div><field name="title"/></div><div><field name="severity" widget="badge"/></div><div><field name="assigned_id"/> · <field name="due_date"/></div></div></t></templates></kanban></field>
+    </record>
+    <record id="view_ps_quality_ncr_form" model="ir.ui.view">
+        <field name="name">ps.quality.ncr.form</field><field name="model">ps.quality.ncr</field>
+        <field name="arch" type="xml"><form string="Non-Conformance Report"><header>
+            <button name="action_start_analysis" type="object" string="Start Analysis" class="oe_highlight" groups="ps_quality.group_quality_inspector" invisible="state != 'new'"/>
+            <button name="action_plan_actions" type="object" string="Plan Actions" class="oe_highlight" groups="ps_quality.group_quality_manager" invisible="state != 'analysis'"/>
+            <button name="action_create_capa" type="object" string="Create CAPA" groups="ps_quality.group_quality_manager" invisible="state not in ['analysis','action']"/>
+            <button name="action_verify" type="object" string="Verify" groups="ps_quality.group_quality_inspector" invisible="state != 'action'"/>
+            <button name="action_close" type="object" string="Close NCR" class="oe_highlight" groups="ps_quality.group_quality_manager" invisible="state != 'verification'"/>
+            <button name="action_cancel" type="object" string="Cancel" groups="ps_quality.group_quality_manager" invisible="state not in ['new','analysis']"/>
+            <field name="state" widget="statusbar" statusbar_visible="new,analysis,action,verification,closed"/>
+        </header><sheet>
+            <div class="oe_button_box" name="button_box"><button name="action_view_inspection" type="object" class="oe_stat_button" icon="fa-check-square-o" invisible="not inspection_id"><div class="o_stat_info"><span class="o_stat_text">Inspection</span></div></button><button name="action_create_capa" type="object" class="oe_stat_button" icon="fa-wrench" groups="ps_quality.group_quality_manager"><field name="capa_count" widget="statinfo" string="CAPA"/></button></div>
+            <div class="oe_title"><h1><field name="name"/></h1></div>
+            <group><group><field name="title"/><field name="inspection_id"/><field name="source_type"/><field name="severity"/><field name="product_id"/><field name="partner_id"/><field name="lot_ref"/></group><group><field name="assigned_id"/><field name="due_date"/><field name="disposition"/><field name="company_id" groups="base.group_multi_company"/></group></group>
+            <notebook><page string="Analysis and containment"><group><field name="root_cause"/><field name="containment_action"/><field name="description"/></group></page><page string="CAPA"><field name="capa_ids" readonly="1"><list><field name="name"/><field name="action_type"/><field name="assigned_id"/><field name="due_date"/><field name="state" widget="badge"/></list></field></page><page string="Attachments"><field name="attachment_ids" widget="many2many_binary"/></page></notebook>
+        </sheet><chatter/></form></field>
+    </record>
+    <record id="view_ps_quality_ncr_search" model="ir.ui.view"><field name="name">ps.quality.ncr.search</field><field name="model">ps.quality.ncr</field><field name="arch" type="xml"><search><field name="name"/><field name="title"/><field name="product_id"/><field name="partner_id"/><field name="assigned_id"/><filter name="open" string="Open" domain="[('state','not in',['closed','cancelled'])]"/><group><filter name="severity" string="Severity" context="{'group_by':'severity'}"/><filter name="source" string="Source" context="{'group_by':'source_type'}"/><filter name="state" string="Status" context="{'group_by':'state'}"/></group></search></field></record>
+    <record id="action_ps_quality_ncr" model="ir.actions.act_window"><field name="name">Non-Conformance (NCR)</field><field name="res_model">ps.quality.ncr</field><field name="view_mode">kanban,list,form</field><field name="search_view_id" ref="view_ps_quality_ncr_search"/></record>
+
+    <!-- CAPA -->
+    <record id="view_ps_quality_capa_list" model="ir.ui.view"><field name="name">ps.quality.capa.list</field><field name="model">ps.quality.capa</field><field name="arch" type="xml"><list decoration-success="state == 'closed'" decoration-warning="state == 'ineffective'"><field name="name"/><field name="ncr_id"/><field name="action_type"/><field name="assigned_id"/><field name="due_date"/><field name="effectiveness_result" widget="badge"/><field name="state" widget="badge"/><field name="company_id" groups="base.group_multi_company"/></list></field></record>
+    <record id="view_ps_quality_capa_form" model="ir.ui.view">
+        <field name="name">ps.quality.capa.form</field><field name="model">ps.quality.capa</field>
+        <field name="arch" type="xml"><form string="Corrective and Preventive Action"><header>
+            <button name="action_start" type="object" string="Start / Retry CAPA" class="oe_highlight" groups="ps_quality.group_quality_inspector" invisible="state not in ['draft','ineffective']"/>
+            <button name="action_submit_effectiveness" type="object" string="Submit for Review" groups="ps_quality.group_quality_inspector" invisible="state != 'open'"/>
+            <button name="action_evaluate_effectiveness" type="object" string="Evaluate Effectiveness" class="oe_highlight" groups="ps_quality.group_quality_manager" invisible="state != 'verification'"/>
+            <button name="action_close" type="object" string="Close CAPA" groups="ps_quality.group_quality_manager" invisible="state != 'effective'"/>
+            <button name="action_cancel" type="object" string="Cancel" groups="ps_quality.group_quality_manager" invisible="state not in ['draft','open']"/>
+            <field name="state" widget="statusbar" statusbar_visible="draft,open,verification,effective,closed"/>
+        </header><sheet><div class="oe_button_box" name="button_box"><button name="action_open_ncr" type="object" class="oe_stat_button" icon="fa-exclamation-triangle"><div class="o_stat_info"><span class="o_stat_text">NCR</span></div></button></div><div class="oe_title"><h1><field name="name"/></h1></div>
+            <group><group><field name="ncr_id" readonly="state != 'draft'"/><field name="action_type" readonly="state not in ['draft','open']"/><field name="root_cause" readonly="state not in ['draft','open']"/><field name="assigned_id" readonly="state not in ['draft','open']"/></group><group><field name="due_date" readonly="state not in ['draft','open']"/><field name="company_id" groups="base.group_multi_company" readonly="state != 'draft'"/><field name="effectiveness_result" readonly="state != 'verification'"/><field name="evaluated_by_id" readonly="1"/><field name="evaluated_date" readonly="1"/></group></group>
+            <notebook><page string="Actions"><group><field name="corrective_action" readonly="state not in ['draft','open']"/><field name="preventive_action" readonly="state not in ['draft','open']"/></group></page><page string="Effectiveness"><group><field name="effectiveness_note" readonly="state != 'verification'"/><field name="closed_date" readonly="1"/></group></page><page string="Evidence"><field name="evidence_attachment_ids" widget="many2many_binary" readonly="state in ['closed','cancelled']"/></page><page string="Description"><field name="description"/></page></notebook>
+        </sheet><chatter/></form></field>
+    </record>
+    <record id="action_ps_quality_capa" model="ir.actions.act_window"><field name="name">Corrective &amp; Preventive Actions</field><field name="res_model">ps.quality.capa</field><field name="view_mode">list,form</field></record>
+
+    <!-- Measurement equipment and calibration -->
+    <record id="view_ps_quality_equipment_list" model="ir.ui.view"><field name="name">ps.quality.equipment.list</field><field name="model">ps.quality.equipment</field><field name="arch" type="xml"><list decoration-danger="calibration_state == 'overdue' or calibration_state == 'out_of_service'" decoration-warning="calibration_state == 'due'"><field name="code"/><field name="name"/><field name="manufacturer"/><field name="model_number"/><field name="serial_number"/><field name="last_calibration_date"/><field name="next_calibration_date"/><field name="calibration_state" widget="badge"/><field name="responsible_id"/><field name="company_id" groups="base.group_multi_company"/></list></field></record>
+    <record id="view_ps_quality_equipment_form" model="ir.ui.view"><field name="name">ps.quality.equipment.form</field><field name="model">ps.quality.equipment</field><field name="arch" type="xml"><form string="Measurement Equipment"><header><button name="action_schedule_calibration" type="object" string="New Calibration" class="oe_highlight" groups="ps_quality.group_quality_inspector"/><field name="calibration_state" widget="statusbar" statusbar_visible="not_calibrated,valid,due,overdue,out_of_service"/></header><sheet><div class="oe_button_box" name="button_box"><button name="action_view_calibrations" type="object" class="oe_stat_button" icon="fa-history"><field name="calibration_count" widget="statinfo" string="Calibrations"/></button><button name="action_open_maintenance" type="object" class="oe_stat_button" icon="fa-wrench" invisible="not maintenance_ref"><div class="o_stat_info"><span class="o_stat_text">Maintenance Record</span></div></button></div><div class="oe_title"><label for="name"/><h1><field name="name"/></h1></div><group><group><field name="code" readonly="1"/><field name="manufacturer"/><field name="model_number"/><field name="serial_number"/><field name="technical_details"/></group><group><field name="calibration_interval_days"/><field name="warning_days"/><field name="last_calibration_date" readonly="1"/><field name="next_calibration_date" readonly="1"/><field name="responsible_id"/><field name="out_of_service" groups="ps_quality.group_quality_manager"/><field name="company_id" groups="base.group_multi_company"/></group></group><group string="Maintenance integration"><field name="maintenance_ref"/></group><notebook><page string="Calibration history"><field name="calibration_ids" readonly="1"><list><field name="name"/><field name="calibration_date"/><field name="result" widget="badge"/><field name="next_due_date"/><field name="calibrated_by_id"/><field name="state" widget="badge"/></list></field></page><page string="Description"><field name="description"/></page></notebook></sheet><chatter/></form></field></record>
+    <record id="view_ps_quality_calibration_list" model="ir.ui.view"><field name="name">ps.quality.calibration.list</field><field name="model">ps.quality.calibration</field><field name="arch" type="xml"><list decoration-danger="result == 'fail'" decoration-success="result == 'pass'"><field name="name"/><field name="equipment_id"/><field name="calibration_date"/><field name="result" widget="badge"/><field name="next_due_date"/><field name="calibrated_by_id"/><field name="state" widget="badge"/><field name="company_id" groups="base.group_multi_company"/></list></field></record>
+    <record id="view_ps_quality_calibration_form" model="ir.ui.view"><field name="name">ps.quality.calibration.form</field><field name="model">ps.quality.calibration</field><field name="arch" type="xml"><form string="Equipment Calibration"><header><button name="action_confirm" type="object" string="Confirm Calibration" class="oe_highlight" groups="ps_quality.group_quality_inspector" invisible="state != 'draft'"/><button name="action_cancel" type="object" string="Cancel" groups="ps_quality.group_quality_manager" invisible="state != 'draft'"/><field name="state" widget="statusbar" statusbar_visible="draft,confirmed,cancelled"/></header><sheet><div class="oe_title"><h1><field name="name"/></h1></div><group><group><field name="equipment_id" readonly="state != 'draft'"/><field name="calibration_date" readonly="state != 'draft'"/><field name="result" readonly="state != 'draft'"/><field name="next_due_date" readonly="state != 'draft'"/></group><group><field name="calibrated_by_id" readonly="state != 'draft'"/><field name="provider" readonly="state != 'draft'"/><field name="certificate_reference" readonly="state != 'draft'"/><field name="company_id" groups="base.group_multi_company" readonly="state != 'draft'"/></group></group><notebook><page string="Evidence"><field name="attachment_ids" widget="many2many_binary"/></page><page string="Notes"><field name="notes"/></page></notebook></sheet><chatter/></form></field></record>
+    <record id="action_ps_quality_equipment" model="ir.actions.act_window"><field name="name">Measurement Equipment</field><field name="res_model">ps.quality.equipment</field><field name="view_mode">list,form</field></record>
+    <record id="action_ps_quality_calibrations" model="ir.actions.act_window"><field name="name">Calibration</field><field name="res_model">ps.quality.calibration</field><field name="view_mode">list,form</field></record>
+
+    <!-- Menus -->
+    <record id="action_ps_quality_dashboard" model="ir.actions.act_window"><field name="name">Dashboard</field><field name="res_model">ps.quality.dashboard</field><field name="view_mode">form</field><field name="view_id" ref="view_ps_quality_dashboard_form"/></record>
+    <menuitem id="menu_ps_quality_root" name="Quality Management" sequence="36" groups="ps_quality.group_quality_user"/>
+    <menuitem id="menu_ps_quality_dashboard" name="Dashboard" parent="menu_ps_quality_root" action="action_ps_quality_dashboard" sequence="5" groups="ps_quality.group_quality_user"/>
+    <menuitem id="menu_ps_quality_inspections" name="Quality Inspections" parent="menu_ps_quality_root" action="action_ps_quality_inspections" sequence="10" groups="ps_quality.group_quality_user"/>
+    <menuitem id="menu_ps_quality_ncr" name="Non-Conformance (NCR)" parent="menu_ps_quality_root" action="action_ps_quality_ncr" sequence="20" groups="ps_quality.group_quality_inspector"/>
+    <menuitem id="menu_ps_quality_capa" name="Corrective &amp; Preventive Actions (CAPA)" parent="menu_ps_quality_root" action="action_ps_quality_capa" sequence="30" groups="ps_quality.group_quality_inspector"/>
+    <menuitem id="menu_ps_quality_configuration" name="Configuration" parent="menu_ps_quality_root" sequence="80" groups="ps_quality.group_quality_user"/>
+    <menuitem id="menu_ps_quality_standards" name="Quality Standards" parent="menu_ps_quality_configuration" action="action_ps_quality_standards" sequence="10" groups="ps_quality.group_quality_user"/>
+    <menuitem id="menu_ps_quality_plans" name="Inspection Plans" parent="menu_ps_quality_configuration" action="action_ps_quality_plans" sequence="20" groups="ps_quality.group_quality_user"/>
+    <menuitem id="menu_ps_quality_equipment" name="Measurement Equipment" parent="menu_ps_quality_configuration" action="action_ps_quality_equipment" sequence="30" groups="ps_quality.group_quality_user"/>
+    <menuitem id="menu_ps_quality_calibrations" name="Calibration" parent="menu_ps_quality_configuration" action="action_ps_quality_calibrations" sequence="40" groups="ps_quality.group_quality_inspector"/>
+    <menuitem id="menu_ps_quality_reports" name="Reports" parent="menu_ps_quality_root" action="action_ps_quality_reports" sequence="90" groups="ps_quality.group_quality_manager"/>
+</odoo>

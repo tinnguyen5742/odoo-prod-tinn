@@ -1,0 +1,38 @@
+# Vietnamese terminology for EAM and its linked inventory forms.
+msgid ""
+msgstr ""
+"Project-Id-Version: PS EAM 19.0\n"
+"Language: vi_VN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: ps_eam
+#: model_terms:ir.ui.view,arch_db:product.product_template_form_view
+#: model_terms:ir.ui.view,arch_db:product.product_variant_easy_edit_view
+#: model_terms:ir.ui.view,arch_db:stock.view_location_form
+#: model_terms:ir.ui.view,arch_db:stock.product_category_form_view_inherit
+#: model_terms:ir.ui.view,arch_db:stock_account.view_category_property_form_stock
+msgid "Logistics"
+msgstr "Kho vận"
+
+#. module: ps_eam
+#: model_terms:ir.ui.view,arch_db:stock.view_template_property_form
+msgid "View Diagram"
+msgstr "Xem sơ đồ"
+
+#. module: ps_eam
+#: model_terms:ir.ui.view,arch_db:stock.view_location_form
+msgid "e.g. Shelf 1"
+msgstr "VD: Kệ phụ tùng số 1"
+
+#. module: ps_eam
+#: model_terms:ir.ui.view,arch_db:stock.view_location_form
+msgid "e.g. Aisle 1"
+msgstr "VD: Dãy kệ số 1"
+
+#. module: ps_eam
+#: model:ir.model.fields.selection,name:product.selection__product_template__type__combo
+msgid "Combo"
+msgstr "Bộ sản phẩm"

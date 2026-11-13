@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="rule_amendment_owner" model="ir.rule">
+        <field name="name">PS T&amp;E amendment current owner</field><field name="model_id" ref="model_ps_te_trip_amendment"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_trip_employee'))]"/>
+        <field name="domain_force">[('owner_id', '=', user.id), ('trip_id.employee_id.user_id', '=', user.id), ('trip_id.employee_id.active', '=', True), ('trip_id.employee_mapping_valid', '=', True), ('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_amendment_manager" model="ir.rule">
+        <field name="name">PS T&amp;E amendment current assigned manager</field><field name="model_id" ref="model_ps_te_trip_amendment"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_trip_manager'))]"/>
+        <field name="domain_force">[('manager_id', '=', user.id), ('trip_id.approver_id', '=', user.id), ('trip_id.employee_id.parent_id.user_id', '=', user.id), ('trip_id.employee_id.active', '=', True), ('trip_id.employee_id.parent_id.active', '=', True), ('trip_id.employee_mapping_valid', '=', True), ('manager_mapping_valid', '=', True), ('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

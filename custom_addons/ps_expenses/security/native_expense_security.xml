@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_ps_te_finance" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('hr_expense.group_hr_expense_team_approver'))]"/>
+    </record>
+    <!-- Global AND rule prevents broad native approver roles from exposing PS claims. -->
+    <record id="rule_ps_native_expense_privacy" model="ir.rule">
+        <field name="name">PS native Expenses: current owner or assigned finance only</field>
+        <field name="model_id" ref="hr_expense.model_hr_expense"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|', ('ps_report_id', '=', False), '&amp;', '&amp;', '&amp;', ('company_id', 'in', company_ids), ('ps_trip_id.employee_id.active', '=', True), ('ps_trip_id.employee_mapping_valid', '=', True), '|', ('ps_owner_id', '=', user.id) if user.active and user.has_group('ps_expenses.group_ps_te_trip_employee') else ('id', '=', 0), '&amp;', ('ps_finance_id', '=', user.id) if user.active and user.has_group('ps_expenses.group_ps_te_finance') and user.has_group('hr_expense.group_hr_expense_team_approver') else ('id', '=', 0), ('ps_finance_valid', '=', True)]</field>
+    </record>
+    <record id="rule_ps_native_expense_owner_read" model="ir.rule">
+        <field name="name">PS native Expenses: owner retains submitted history</field>
+        <field name="model_id" ref="hr_expense.model_hr_expense"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_trip_employee'))]"/>
+        <field name="domain_force">[('ps_owner_id', '=', user.id)]</field>
+        <field name="perm_write" eval="False"/><field name="perm_create" eval="False"/><field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="rule_ps_native_expense_finance_read" model="ir.rule">
+        <field name="name">PS native Expenses: assigned finance reads draft evidence</field>
+        <field name="model_id" ref="hr_expense.model_hr_expense"/>
+        <field name="groups" eval="[(4, ref('group_ps_te_finance'))]"/>
+        <field name="domain_force">[('ps_finance_id', '=', user.id), ('ps_finance_valid', '=', True)]</field>
+        <field name="perm_write" eval="False"/><field name="perm_create" eval="False"/><field name="perm_unlink" eval="False"/>
+    </record>
+</odoo>

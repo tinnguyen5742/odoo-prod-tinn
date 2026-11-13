@@ -1,0 +1,124 @@
+<odoo>
+    <record id="breakdown_list" model="ir.ui.view">
+        <field name="name">ps.eam.breakdown.list</field>
+        <field name="model">ps.eam.breakdown</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="urgent and state not in ('done', 'cancelled')">
+                <field name="create_date" string="Thời điểm báo sự cố"/>
+                <field name="name"/>
+                <field name="equipment_id"/>
+                <field name="urgent"/>
+                <field name="state"/>
+                <field name="request_id" groups="ps_enterprise_asset.group_eam_user"/>
+            </list>
+        </field>
+    </record>
+    <record id="breakdown_form" model="ir.ui.view">
+        <field name="name">ps.eam.breakdown.form</field>
+        <field name="model">ps.eam.breakdown</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" readonly="1"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="company_id" invisible="1"/>
+                        <field name="equipment_id" domain="[('company_id', '=', company_id), ('eam_status', '!=', 'retired')]"
+                               options="{'no_create': True, 'no_open': True}"/>
+                        <field name="urgent"/>
+                        <field name="request_id" groups="ps_enterprise_asset.group_eam_user"/>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="breakdown_action" model="ir.actions.act_window">
+        <field name="name">Báo sự cố thiết bị</field>
+        <field name="res_model">ps.eam.breakdown</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_operator" name="Báo sự cố thiết bị" action="breakdown_action" sequence="46"
+              groups="ps_enterprise_asset.group_eam_operator"/>
+
+    <record id="equipment_form_operations" model="ir.ui.view">
+        <field name="name">maintenance.equipment.eam.operations</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="equipment_form"/>
+        <field name="arch" type="xml">
+            <field name="eam_level" position="after">
+                <field name="eam_is_tool"/>
+            </field>
+            <field name="warranty_terms" position="after">
+                <field name="eam_customer_warranty_terms"/>
+            </field>
+            <field name="depreciation_recorded" position="after">
+                <field name="eam_depreciation_total"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="request_form_operations" model="ir.ui.view">
+        <field name="name">maintenance.request.eam.operations</field>
+        <field name="model">maintenance.request</field>
+        <field name="inherit_id" ref="request_form"/>
+        <field name="priority">40</field>
+        <field name="arch" type="xml">
+            <field name="schedule_end" position="after">
+                <field name="eam_breakdown_stop" invisible="not eam_breakdown_stop"/>
+            </field>
+            <xpath expr="//notebook" position="inside">
+                <page name="eam_tools" string="Công cụ dụng cụ">
+                    <field name="eam_tool_ids" readonly="eam_state in ('done', 'cancelled')">
+                        <list editable="bottom">
+                            <field name="state"/>
+                            <field name="tool_id" readonly="state != 'planned'" options="{'no_create': True}"/>
+                            <field name="note"/>
+                            <field name="issued_by_id" optional="hide"/>
+                            <field name="issued_at"/>
+                            <field name="returned_by_id" optional="hide"/>
+                            <field name="returned_at"/>
+                            <button name="action_issue" type="object" string="Cấp phát"
+                                    invisible="state != 'planned' or parent.eam_state not in ('approved', 'progress')"/>
+                            <button name="action_return" type="object" string="Thu hồi" invisible="state != 'issued'"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+            <xpath expr="//page[field[@name='part_ids']]" position="attributes">
+                <attribute name="invisible">not context.get('eam_stock_workflow')</attribute>
+                <attribute name="groups">stock.group_stock_user</attribute>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_eam_stock_workflow" type="object" string="Cấp phát phụ tùng"
+                        icon="fa-cubes" class="oe_stat_button" invisible="context.get('eam_stock_workflow')"
+                        groups="stock.group_stock_user"/>
+            </xpath>
+            <field name="eam_budget" position="after">
+                <field name="eam_accounting_mode" readonly="eam_state in ('done', 'cancelled')"
+                       groups="ps_enterprise_asset.group_eam_manager"/>
+                <field name="eam_production_id" invisible="eam_accounting_mode != 'production'"
+                       readonly="eam_state in ('done', 'cancelled')"
+                       domain="[('company_id', '=', company_id), ('state', 'not in', ('done', 'cancel'))]"
+                       options="{'no_create': True, 'no_open': True}" groups="ps_enterprise_asset.group_eam_manager"/>
+                <field name="eam_posted_entry_id" invisible="not eam_posted_entry_id"
+                       groups="account.group_account_readonly,account.group_account_manager"/>
+                <field name="eam_capitalized_amount" invisible="not eam_capitalized_amount"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="meter_form_mqtt" model="ir.ui.view">
+        <field name="name">ps.eam.meter.mqtt.form</field>
+        <field name="model">ps.eam.meter</field>
+        <field name="inherit_id" ref="meter_form"/>
+        <field name="arch" type="xml">
+            <field name="unit" position="after">
+                <field name="eam_mqtt_topic" placeholder="VD: nha-may/line-1/may-01/nhiet-do"/>
+            </field>
+        </field>
+    </record>
+</odoo>

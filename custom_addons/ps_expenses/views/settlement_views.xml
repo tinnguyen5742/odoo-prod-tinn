@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ps_te_settlement_list" model="ir.ui.view">
+        <field name="name">ps.te.settlement.list</field><field name="model">ps.te.settlement</field>
+        <field name="arch" type="xml"><list create="0" edit="0" delete="0" duplicate="0">
+            <field name="reference"/><field name="trip_id"/><field name="owner_id"/><field name="state"/>
+            <field name="correction_hold"/>
+            <field name="funding_known"/><field name="direction"/><field name="remaining_amount"/><field name="currency_id"/>
+        </list></field>
+    </record>
+    <record id="view_ps_te_settlement_form" model="ir.ui.view">
+        <field name="name">ps.te.settlement.form</field><field name="model">ps.te.settlement</field>
+        <field name="arch" type="xml"><form create="0" edit="0" delete="0" duplicate="0">
+            <header><button name="action_open_operation" type="object" string="Settlement Operation" class="btn-primary"/>
+                <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved,closed"/></header>
+            <sheet><group string="Next Step" col="1"><field name="workflow_next_step" nolabel="1" readonly="1"/></group><group>
+                <group><field name="reference"/><field name="trip_id"/><field name="owner_id"/><field name="company_id"/>
+                    <field name="revision"/><field name="finance_reviewer_id"/><field name="cash_operator_id"/><field name="policy_reference"/></group>
+                <group><field name="report_id"/><field name="report_revision"/><field name="accepted_amount"/><field name="currency_id"/>
+                    <field name="expense_basis_kind"/>
+                    <field name="funding_kind"/><field name="funding_known"/><field name="funding_amount" invisible="not funding_known"/>
+                    <field name="funding_reference"/><field name="direction"/><field name="difference_known" invisible="1"/>
+                    <field name="difference_amount" invisible="not difference_known"/><field name="remaining_amount" invisible="not difference_known"/></group>
+            </group><group string="Approval and Recorded Cash"><field name="approved_by_id"/><field name="approved_at"/>
+                <field name="approval_reason"/><field name="cash_outcome"/><field name="cash_attempt_reference"/><field name="cash_event_id"/>
+                <field name="closed_by_id"/><field name="closed_at"/><field name="accounting_status"/></group>
+            <field name="event_ids"><list create="0" edit="0" delete="0">
+                <field name="occurred_at"/><field name="actor_id"/><field name="revision"/><field name="event_label"/><field name="event_type" optional="hide"/><field name="reason"/>
+                <field name="snapshot" optional="hide"/>
+            </list></field></sheet>
+        </form></field>
+    </record>
+    <record id="action_ps_te_settlements" model="ir.actions.act_window">
+        <field name="name">Settlements</field><field name="res_model">ps.te.settlement</field><field name="view_mode">list,form</field>
+    </record>
+    <record id="view_company_ps_te_settlement" model="ir.ui.view">
+        <field name="name">res.company.ps.te.settlement</field><field name="model">res.company</field>
+        <field name="inherit_id" ref="ps_expenses.view_company_ps_te_expense"/>
+        <field name="arch" type="xml"><xpath expr="//field[@name='ps_te_expense_policy_reference']" position="after">
+            <field name="ps_te_settlement_policy_reference"/>
+        </xpath></field>
+    </record>
+</odoo>

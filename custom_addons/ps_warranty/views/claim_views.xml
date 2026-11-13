@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ps_warranty_claim_kanban" model="ir.ui.view">
+        <field name="name">ps.warranty.claim.kanban</field>
+        <field name="model">ps.warranty.claim</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column" quick_create="false">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="claim_date"/>
+                <field name="priority"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_record_top">
+                                <strong><field name="name"/></strong>
+                                <field name="priority" widget="priority"/>
+                            </div>
+                            <div><field name="partner_id"/></div>
+                            <div><field name="product_id"/></div>
+                            <div class="text-muted"><field name="claim_date"/></div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_ps_warranty_claim_list" model="ir.ui.view">
+        <field name="name">ps.warranty.claim.list</field>
+        <field name="model">ps.warranty.claim</field>
+        <field name="arch" type="xml">
+            <list string="Warranty Claims" default_order="claim_date desc">
+                <field name="name"/>
+                <field name="claim_date"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="serial_number" optional="show"/>
+                <field name="registration_id" optional="hide"/>
+                <field name="priority" widget="priority"/>
+                <field name="user_id" optional="show"/>
+                <field name="cost_total" sum="Total cost" optional="show"/>
+                <field name="state" widget="badge"
+                       decoration-info="state in ['submitted', 'under_review']"
+                       decoration-success="state in ['approved', 'in_progress', 'resolved', 'closed']"
+                       decoration-danger="state == 'rejected'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ps_warranty_claim_form" model="ir.ui.view">
+        <field name="name">ps.warranty.claim.form</field>
+        <field name="model">ps.warranty.claim</field>
+        <field name="arch" type="xml">
+            <form string="Warranty Claim">
+                <header>
+                    <button name="action_submit" type="object" string="Submit"
+                            class="oe_highlight" groups="ps_warranty.group_warranty_user"
+                            invisible="state not in ['draft', 'rejected']"/>
+                    <button name="action_start_review" type="object" string="Start Review"
+                            class="oe_highlight" groups="ps_warranty.group_warranty_officer"
+                            invisible="state != 'submitted'"/>
+                    <button name="action_approve" type="object" string="Approve"
+                            class="oe_highlight" groups="ps_warranty.group_warranty_manager"
+                            invisible="state != 'under_review'"/>
+                    <button name="action_reject" type="object" string="Reject"
+                            groups="ps_warranty.group_warranty_manager"
+                            invisible="state != 'under_review'"/>
+                    <button name="action_start_work" type="object" string="Start Repair"
+                            class="oe_highlight" groups="ps_warranty.group_warranty_officer"
+                            invisible="state != 'approved'"/>
+                    <button name="action_resolve" type="object" string="Resolve"
+                            groups="ps_warranty.group_warranty_officer"
+                            invisible="state != 'in_progress'"/>
+                    <button name="action_close" type="object" string="Close Claim"
+                            groups="ps_warranty.group_warranty_officer"
+                            invisible="state != 'resolved'"/>
+                    <button name="action_create_rma" type="object" string="Create RMA"
+                            groups="ps_warranty.group_warranty_officer"
+                            invisible="state not in ['approved', 'in_progress', 'resolved']"/>
+                    <button name="action_open_fsm_task" type="object" string="Field Service Task"
+                            icon="fa-wrench" groups="ps_warranty.group_warranty_officer"
+                            invisible="not fsm_available or state not in ['approved', 'in_progress']"/>
+                    <button name="action_create_replacement_delivery" type="object"
+                            string="Replacement Delivery" icon="fa-truck"
+                            groups="ps_warranty.group_warranty_officer"
+                            invisible="not inventory_available or state not in ['approved', 'in_progress']"/>
+                    <button name="%(ps_warranty.action_report_warranty_claim)d" type="action"
+                            string="Print Claim" icon="fa-print"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,submitted,under_review,approved,rejected,in_progress,resolved,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name"/></h1></div>
+                    <group>
+                        <group string="Customer and product">
+                            <field name="registration_id"/>
+                            <field name="partner_id"/>
+                            <field name="product_id"/>
+                            <field name="serial_number"/>
+                            <field name="lot_ref"/>
+                            <field name="eligibility" widget="badge"/>
+                            <field name="source_ref"/>
+                            <field name="document_ref"/>
+                        </group>
+                        <group string="Claim handling">
+                            <field name="claim_date"/>
+                            <field name="priority" widget="priority"/>
+                            <field name="user_id"/>
+                            <field name="coverage_type"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Problem and attachments">
+                            <field name="description" widget="html" placeholder="Describe the issue reported by the customer..."/>
+                            <field name="attachment_ids" widget="many2many_binary"/>
+                            <field name="review_note" placeholder="Review note or rejection reason..."/>
+                        </page>
+                        <page string="Repair / replacement" name="repair_lines">
+                            <field name="line_ids" readonly="state not in ['approved', 'in_progress']">
+                                <list editable="bottom" create="1" delete="0">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="line_type"/>
+                                    <field name="product_id"/>
+                                    <field name="name"/>
+                                    <field name="quantity"/>
+                                    <field name="unit_cost"/>
+                                    <field name="subtotal" readonly="1" sum="Total"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                            <group class="oe_subtotal_footer">
+                                <field name="cost_total" readonly="1"/>
+                            </group>
+                            <field name="replacement_delivery_ref" readonly="1"/>
+                        </page>
+                        <page string="Resolution">
+                            <group>
+                                <field name="approved_by_id" readonly="1"/>
+                                <field name="approved_date" readonly="1"/>
+                                <field name="resolved_date" readonly="1"/>
+                                <field name="closed_date" readonly="1"/>
+                                <field name="resolution_days" readonly="1"/>
+                            </group>
+                            <field name="resolution_note" widget="html"/>
+                            <field name="fsm_task_ref" readonly="1"/>
+                        </page>
+                        <page string="RMA records">
+                            <field name="rma_ids" readonly="1">
+                                <list create="0" edit="0" delete="0">
+                                    <field name="name"/>
+                                    <field name="date_requested"/>
+                                    <field name="date_received"/>
+                                    <field name="product_id"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ps_warranty_claim_search" model="ir.ui.view">
+        <field name="name">ps.warranty.claim.search</field>
+        <field name="model">ps.warranty.claim</field>
+        <field name="arch" type="xml">
+            <search string="Search Warranty Claims">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="serial_number"/>
+                <field name="registration_id"/>
+                <field name="user_id"/>
+                <field name="source_ref"/>
+                <filter name="my_claims" string="My Claims" domain="[('create_uid', '=', uid)]"/>
+                <filter name="waiting" string="Waiting Review" domain="[('state', 'in', ['submitted', 'under_review'])]"/>
+                <filter name="in_progress" string="In Progress" domain="[('state', '=', 'in_progress')]"/>
+                <filter name="approved" string="Approved" domain="[('state', '=', 'approved')]"/>
+                <filter name="rejected" string="Rejected" domain="[('state', '=', 'rejected')]"/>
+                <group>
+                    <filter name="group_by_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_by_product" string="Product" context="{'group_by': 'product_id'}"/>
+                    <filter name="group_by_customer" string="Customer" context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_by_date" string="Claim month" context="{'group_by': 'claim_date:month'}"/>
+                    <filter name="group_by_company" string="Company" context="{'group_by': 'company_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_ps_warranty_claim_graph" model="ir.ui.view">
+        <field name="name">ps.warranty.claim.graph</field>
+        <field name="model">ps.warranty.claim</field>
+        <field name="arch" type="xml">
+            <graph string="Warranty Claims and Cost" type="bar">
+                <field name="product_id"/>
+                <field name="cost_total" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_ps_warranty_claim_pivot" model="ir.ui.view">
+        <field name="name">ps.warranty.claim.pivot</field>
+        <field name="model">ps.warranty.claim</field>
+        <field name="arch" type="xml">
+            <pivot string="Warranty Claim Analysis">
+                <field name="claim_date" type="row" interval="month"/>
+                <field name="product_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="cost_total" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_ps_warranty_claims" model="ir.actions.act_window">
+        <field name="name">Warranty Claims</field>
+        <field name="res_model">ps.warranty.claim</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="view_ps_warranty_claim_search"/>
+    </record>
+    <record id="action_ps_warranty_claim_analysis" model="ir.actions.act_window">
+        <field name="name">Warranty Claim Analysis</field>
+        <field name="res_model">ps.warranty.claim</field>
+        <field name="view_mode">pivot,graph</field>
+        <field name="search_view_id" ref="view_ps_warranty_claim_search"/>
+    </record>
+</odoo>

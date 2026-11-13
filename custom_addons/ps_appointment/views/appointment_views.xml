@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_appointment_search" model="ir.ui.view">
+        <field name="name">ps.appointment.search</field>
+        <field name="model">ps.appointment</field>
+        <field name="arch" type="xml">
+            <search string="Appointments">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="appointment_type_id"/>
+                <field name="user_id"/>
+                <field name="resource_id"/>
+                <field name="start_datetime"/>
+                <filter name="mine" string="My Appointments" domain="[('user_id', '=', uid)]"/>
+                <filter name="upcoming" string="Upcoming" domain="[('start_datetime', '&gt;=', context_today())]"/>
+                <filter name="open" string="Open" domain="[('state', 'in', ['requested', 'confirmed', 'in_progress'])]"/>
+                <filter name="done" string="Completed" domain="[('state', '=', 'done')]"/>
+                <separator/>
+                <filter name="start_today" string="Today" date="start_datetime"/>
+                <group>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_service" string="Service" context="{'group_by': 'appointment_type_id'}"/>
+                    <filter name="group_staff" string="Staff" context="{'group_by': 'user_id'}"/>
+                    <filter name="group_resource" string="Resource" context="{'group_by': 'resource_id'}"/>
+                    <filter name="group_date" string="Start Date" context="{'group_by': 'start_datetime:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_appointment_list" model="ir.ui.view">
+        <field name="name">ps.appointment.list</field>
+        <field name="model">ps.appointment</field>
+        <field name="arch" type="xml">
+            <list string="Appointments" decoration-success="state == 'done'" decoration-warning="state == 'requested'" decoration-danger="state in ('cancelled', 'rejected', 'no_show')">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="appointment_type_id"/>
+                <field name="start_datetime"/>
+                <field name="end_datetime" optional="hide"/>
+                <field name="user_id"/>
+                <field name="resource_id" optional="hide"/>
+                <field name="state" widget="badge"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_appointment_kanban" model="ir.ui.view">
+        <field name="name">ps.appointment.kanban</field>
+        <field name="model">ps.appointment</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" sample="1">
+                <field name="name"/><field name="partner_id"/><field name="appointment_type_id"/>
+                <field name="start_datetime"/><field name="user_id"/><field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="d-flex justify-content-between">
+                            <strong><field name="name"/></strong><field name="state" widget="badge"/>
+                        </div>
+                        <div><field name="appointment_type_id"/></div>
+                        <div><field name="partner_id"/></div>
+                        <div><i class="fa fa-clock-o" title="Start time"/> <field name="start_datetime"/></div>
+                        <div><i class="fa fa-user" title="Assigned staff"/> <field name="user_id"/></div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_appointment_calendar" model="ir.ui.view">
+        <field name="name">ps.appointment.calendar</field>
+        <field name="model">ps.appointment</field>
+        <field name="arch" type="xml">
+            <calendar string="Appointment Calendar" date_start="start_datetime" date_stop="end_datetime" color="user_id" mode="week">
+                <field name="name"/><field name="partner_id"/><field name="appointment_type_id"/>
+                <field name="user_id"/><field name="resource_id"/><field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="view_appointment_graph" model="ir.ui.view">
+        <field name="name">ps.appointment.graph</field>
+        <field name="model">ps.appointment</field>
+        <field name="arch" type="xml">
+            <graph string="Appointments by Service and Month" type="bar">
+                <field name="start_datetime" interval="month"/>
+                <field name="appointment_type_id"/>
+                <field name="duration_minutes" type="measure" operator="avg"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_appointment_pivot" model="ir.ui.view">
+        <field name="name">ps.appointment.pivot</field>
+        <field name="model">ps.appointment</field>
+        <field name="arch" type="xml">
+            <pivot string="Appointment Analysis">
+                <field name="start_datetime" type="row" interval="month"/>
+                <field name="appointment_type_id" type="row"/>
+                <field name="user_id" type="col"/>
+                <field name="duration_minutes" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_appointment_form" model="ir.ui.view">
+        <field name="name">ps.appointment.form</field>
+        <field name="model">ps.appointment</field>
+        <field name="arch" type="xml">
+            <form string="Appointment">
+                <header>
+                    <button name="action_request" type="object" string="Submit Request" class="btn-primary" invisible="state != 'draft'" groups="ps_appointment.group_appointment_user"/>
+                    <button name="action_confirm" type="object" string="Confirm" class="btn-primary" invisible="state != 'requested'" groups="ps_appointment.group_appointment_manager"/>
+                    <button name="action_reject" type="object" string="Reject" invisible="state != 'requested'" groups="ps_appointment.group_appointment_receptionist"/>
+                    <button name="action_start" type="object" string="Start" class="btn-primary" invisible="state != 'confirmed'"/>
+                    <button name="action_done" type="object" string="Mark Done" class="btn-primary" invisible="state != 'in_progress'"/>
+                    <button name="action_no_show" type="object" string="No Show" invisible="state != 'confirmed'" groups="ps_appointment.group_appointment_receptionist"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state not in ['draft', 'requested', 'confirmed']" groups="ps_appointment.group_appointment_user"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,requested,confirmed,in_progress,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_history" type="object" class="oe_stat_button" icon="fa-history"><field name="history_count" widget="statinfo" string="History"/></button>
+                        <button name="action_view_reminders" type="object" class="oe_stat_button" icon="fa-bell"><field name="reminder_count" widget="statinfo" string="Reminders"/></button>
+                        <button name="action_view_partner_appointments" type="object" class="oe_stat_button" icon="fa-calendar"><field name="customer_appointment_count" widget="statinfo" string="Customer Appointments"/></button>
+                        <button name="action_open_calendar_event" type="object" class="oe_stat_button" icon="fa-calendar-check-o" invisible="not calendar_event_ref"><span>Calendar Event</span></button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group string="Appointment">
+                            <field name="appointment_type_id" readonly="state not in ['draft', 'requested']"/>
+                            <field name="partner_id" readonly="state not in ['draft', 'requested']"/>
+                            <field name="slot_id" domain="[('state', '=', 'available'), ('appointment_type_id', '=', appointment_type_id)]" readonly="state not in ['draft', 'requested']"/>
+                            <field name="start_datetime" readonly="state not in ['draft', 'requested']"/>
+                            <field name="end_datetime" readonly="state not in ['draft', 'requested']"/>
+                            <field name="duration_minutes"/>
+                            <field name="state_date"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="state != 'draft'"/>
+                        </group>
+                        <group string="Assignment">
+                            <field name="user_id" readonly="state not in ['draft', 'requested']"/>
+                            <field name="employee_ref" readonly="state not in ['draft', 'requested']"/>
+                            <field name="resource_id" readonly="state not in ['draft', 'requested']"/>
+                            <field name="price"/>
+                            <field name="confirmed_by_id" invisible="not confirmed_by_id"/>
+                            <field name="confirmed_date" invisible="not confirmed_date"/>
+                            <field name="started_by_id" invisible="not started_by_id"/>
+                            <field name="completed_by_id" invisible="not completed_by_id"/>
+                        </group>
+                    </group>
+                    <group string="Customer Notes">
+                        <field name="request_notes" nolabel="1" placeholder="Customer's request or instructions..." readonly="state in ['done', 'cancelled', 'rejected', 'no_show']"/>
+                        <field name="description" nolabel="1" placeholder="Internal notes..."/>
+                    </group>
+                    <group string="Resolution" invisible="state not in ['cancelled', 'rejected']">
+                        <field name="cancellation_reason" invisible="state != 'cancelled'"/>
+                        <field name="rejection_reason" invisible="state != 'rejected'"/>
+                    </group>
+                    <group string="Customer Notification" groups="ps_appointment.group_appointment_manager">
+                        <field name="notification_status"/>
+                        <field name="notification_date"/>
+                        <field name="notification_error" invisible="not notification_error"/>
+                    </group>
+                    <notebook>
+                        <page string="Workflow History">
+                            <field name="history_ids" readonly="1">
+                                <list create="false" delete="false"><field name="create_date"/><field name="event_type"/><field name="user_id"/><field name="description"/></list>
+                            </field>
+                        </page>
+                        <page string="Reminders">
+                            <field name="reminder_ids" readonly="1">
+                                <list create="false" delete="false"><field name="reminder_datetime"/><field name="channel"/><field name="state"/><field name="sent_date"/><field name="failure_reason"/></list>
+                            </field>
+                        </page>
+                        <page string="ERP Links">
+                            <group>
+                                <field name="crm_lead_ref"/>
+                                <field name="sale_order_ref"/>
+                                <field name="field_service_ref"/>
+                                <field name="calendar_event_ref" readonly="1"/>
+                            </group>
+                            <button name="action_create_sale_order" type="object" string="Create Sales Order" groups="ps_appointment.group_appointment_manager"/>
+                            <button name="action_create_field_service_task" type="object" string="Create Field Service Task" groups="ps_appointment.group_appointment_manager"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_appointments" model="ir.actions.act_window">
+        <field name="name">Appointments</field><field name="res_model">ps.appointment</field>
+        <field name="view_mode">list,calendar,kanban,form,graph,pivot</field>
+        <field name="search_view_id" ref="view_appointment_search"/>
+    </record>
+
+    <record id="view_appointment_type_list" model="ir.ui.view">
+        <field name="name">ps.appointment.type.list</field><field name="model">ps.appointment.type</field>
+        <field name="arch" type="xml">
+            <list string="Appointment Services"><field name="name"/><field name="code"/><field name="duration_minutes"/><field name="buffer_minutes"/><field name="price"/><field name="company_id" groups="base.group_multi_company"/><field name="active" widget="boolean_toggle"/></list>
+        </field>
+    </record>
+    <record id="view_appointment_type_form" model="ir.ui.view">
+        <field name="name">ps.appointment.type.form</field><field name="model">ps.appointment.type</field>
+        <field name="arch" type="xml">
+            <form string="Appointment Service">
+                <header><button name="action_open_slots" type="object" string="Generate Availability" class="btn-primary" groups="ps_appointment.group_appointment_manager"/><field name="active" widget="boolean_toggle"/></header>
+                <sheet>
+                    <div class="oe_button_box"><button name="action_view_appointments" type="object" class="oe_stat_button" icon="fa-calendar"><field name="appointment_count" widget="statinfo" string="Appointments"/></button></div>
+                    <div class="oe_title"><label for="name"/><h1><field name="name"/></h1></div>
+                    <group><group><field name="code"/><field name="duration_minutes"/><field name="buffer_minutes"/><field name="price"/><field name="currency_id"/></group>
+                        <group><field name="company_id" groups="base.group_multi_company"/><field name="min_notice_hours"/><field name="booking_window_days"/><field name="reminder_lead_hours"/><field name="email_template_id"/></group></group>
+                    <notebook><page string="Description"><field name="description"/></page>
+                        <page string="Staff and Resources"><group><field name="user_ids" widget="many2many_tags"/><field name="group_ids" widget="many2many_tags"/><field name="resource_ids" widget="many2many_tags"/></group></page>
+                        <page string="Optional Sales Link"><field name="service_product_ref"/></page>
+                    </notebook>
+                </sheet><chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="action_appointment_types" model="ir.actions.act_window">
+        <field name="name">Service Types</field><field name="res_model">ps.appointment.type</field><field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_appointment_resource_list" model="ir.ui.view">
+        <field name="name">ps.appointment.resource.list</field><field name="model">ps.appointment.resource</field>
+        <field name="arch" type="xml"><list string="Resources"><field name="name"/><field name="code"/><field name="resource_type"/><field name="company_id" groups="base.group_multi_company"/><field name="active" widget="boolean_toggle"/></list></field>
+    </record>
+    <record id="view_appointment_resource_form" model="ir.ui.view">
+        <field name="name">ps.appointment.resource.form</field><field name="model">ps.appointment.resource</field>
+        <field name="arch" type="xml"><form string="Appointment Resource"><sheet>
+            <div class="oe_button_box"><button name="action_view_bookings" type="object" class="oe_stat_button" icon="fa-book"><field name="booking_count" widget="statinfo" string="Bookings"/></button></div>
+            <div class="oe_title"><label for="name"/><h1><field name="name"/></h1></div>
+            <group><field name="code"/><field name="resource_type"/><field name="company_id" groups="base.group_multi_company"/><field name="active"/></group><field name="description"/>
+        </sheet><chatter/></form></field>
+    </record>
+    <record id="action_appointment_resources" model="ir.actions.act_window"><field name="name">Resources</field><field name="res_model">ps.appointment.resource</field><field name="view_mode">list,form</field></record>
+
+    <record id="view_appointment_schedule_list" model="ir.ui.view">
+        <field name="name">ps.appointment.schedule.list</field><field name="model">ps.appointment.schedule</field>
+        <field name="arch" type="xml"><list string="Staff Schedules"><field name="user_id"/><field name="weekday"/><field name="start_hour" widget="float_time"/><field name="end_hour" widget="float_time"/><field name="break_start_hour" widget="float_time"/><field name="break_end_hour" widget="float_time"/><field name="resource_id"/><field name="valid_from"/><field name="valid_until"/><field name="company_id" groups="base.group_multi_company"/><field name="active" widget="boolean_toggle"/></list></field>
+    </record>
+    <record id="view_appointment_schedule_form" model="ir.ui.view">
+        <field name="name">ps.appointment.schedule.form</field><field name="model">ps.appointment.schedule</field>
+        <field name="arch" type="xml"><form string="Staff Schedule"><sheet><group>
+            <group><field name="user_id"/><field name="weekday"/><field name="resource_id"/></group>
+            <group><field name="start_hour" widget="float_time"/><field name="end_hour" widget="float_time"/><field name="break_start_hour" widget="float_time"/><field name="break_end_hour" widget="float_time"/></group>
+            <group><field name="valid_from"/><field name="valid_until"/><field name="company_id" groups="base.group_multi_company"/><field name="active"/></group>
+        </group></sheet></form></field>
+    </record>
+    <record id="action_appointment_schedules" model="ir.actions.act_window"><field name="name">Staff Schedules</field><field name="res_model">ps.appointment.schedule</field><field name="view_mode">list,form</field></record>
+
+    <record id="view_appointment_holiday_list" model="ir.ui.view">
+        <field name="name">ps.appointment.holiday.list</field><field name="model">ps.appointment.holiday</field>
+        <field name="arch" type="xml"><list string="Staff and Resource Leave"><field name="name"/><field name="date_from"/><field name="date_to"/><field name="user_id"/><field name="resource_id"/><field name="company_id" groups="base.group_multi_company"/></list></field>
+    </record>
+    <record id="view_appointment_holiday_form" model="ir.ui.view">
+        <field name="name">ps.appointment.holiday.form</field><field name="model">ps.appointment.holiday</field>
+        <field name="arch" type="xml"><form string="Staff or Resource Leave"><sheet><group>
+            <field name="name"/><field name="date_from"/><field name="date_to"/><field name="user_id"/><field name="resource_id"/><field name="company_id" groups="base.group_multi_company"/><field name="description"/>
+        </group></sheet></form></field>
+    </record>
+    <record id="action_appointment_holidays" model="ir.actions.act_window"><field name="name">Staff and Resource Leave</field><field name="res_model">ps.appointment.holiday</field><field name="view_mode">list,form</field></record>
+
+    <record id="view_appointment_slot_list" model="ir.ui.view">
+        <field name="name">ps.appointment.slot.list</field><field name="model">ps.appointment.slot</field>
+        <field name="arch" type="xml"><list string="Available Time Slots" decoration-muted="state != 'available'"><field name="start_datetime"/><field name="end_datetime"/><field name="appointment_type_id"/><field name="user_id"/><field name="resource_id"/><field name="state" widget="badge"/><field name="appointment_id"/><button name="action_book" type="object" string="Request" icon="fa-plus" invisible="state != 'available'"/></list></field>
+    </record>
+    <record id="view_appointment_slot_calendar" model="ir.ui.view">
+        <field name="name">ps.appointment.slot.calendar</field><field name="model">ps.appointment.slot</field>
+        <field name="arch" type="xml"><calendar string="Availability" date_start="start_datetime" date_stop="end_datetime" color="user_id" mode="week"><field name="appointment_type_id"/><field name="user_id"/><field name="resource_id"/><field name="state"/></calendar></field>
+    </record>
+    <record id="action_appointment_slots" model="ir.actions.act_window"><field name="name">Availability</field><field name="res_model">ps.appointment.slot</field><field name="view_mode">calendar,list,form</field></record>
+
+    <record id="view_appointment_slot_generator_form" model="ir.ui.view">
+        <field name="name">ps.appointment.slot.generator.form</field><field name="model">ps.appointment.slot.generator</field>
+        <field name="arch" type="xml"><form string="Generate Availability"><group><field name="appointment_type_id"/><field name="date_from"/><field name="date_to"/><field name="generated_count" readonly="1"/></group><footer><button name="action_generate" type="object" string="Generate Slots" class="btn-primary"/><button string="Cancel" special="cancel"/></footer></form></field>
+    </record>
+
+    <record id="view_appointment_reminder_list" model="ir.ui.view">
+        <field name="name">ps.appointment.reminder.list</field><field name="model">ps.appointment.reminder</field>
+        <field name="arch" type="xml"><list string="Appointment Reminders"><field name="appointment_id"/><field name="reminder_datetime"/><field name="channel"/><field name="state" widget="badge"/><field name="sent_date"/><field name="failure_reason"/></list></field>
+    </record>
+    <record id="action_appointment_reminders" model="ir.actions.act_window"><field name="name">Reminders</field><field name="res_model">ps.appointment.reminder</field><field name="view_mode">list,form</field></record>
+
+    <record id="view_appointment_history_list" model="ir.ui.view">
+        <field name="name">ps.appointment.history.list</field><field name="model">ps.appointment.history</field>
+        <field name="arch" type="xml"><list string="Appointment History" create="false" edit="false" delete="false"><field name="create_date"/><field name="appointment_id"/><field name="event_type"/><field name="user_id"/><field name="old_start_datetime"/><field name="new_start_datetime"/><field name="description"/></list></field>
+    </record>
+    <record id="action_appointment_history" model="ir.actions.act_window"><field name="name">History</field><field name="res_model">ps.appointment.history</field><field name="view_mode">list</field></record>
+    <record id="view_appointment_booking_list" model="ir.ui.view">
+        <field name="name">ps.appointment.resource.booking.list</field><field name="model">ps.appointment.resource.booking</field>
+        <field name="arch" type="xml"><list string="Resource Bookings" create="false" edit="false" delete="false"><field name="appointment_id"/><field name="resource_id"/><field name="start_datetime"/><field name="end_datetime"/><field name="state"/><field name="company_id" groups="base.group_multi_company"/></list></field>
+    </record>
+    <record id="action_appointment_bookings" model="ir.actions.act_window"><field name="name">Resource Bookings</field><field name="res_model">ps.appointment.resource.booking</field><field name="view_mode">list</field></record>
+
+    <record id="view_appointment_dashboard_form" model="ir.ui.view">
+        <field name="name">ps.appointment.dashboard.form</field><field name="model">ps.appointment.dashboard</field>
+        <field name="arch" type="xml"><form string="Appointment Overview" create="true" edit="true" delete="false">
+            <header><button name="action_new_appointment" type="object" string="New Appointment" class="btn-primary"/><button name="action_new_type" type="object" string="New Service Type" groups="ps_appointment.group_appointment_administrator"/></header>
+            <sheet><div class="oe_title"><h1>Appointment Overview</h1></div>
+                <group><field name="company_id" groups="base.group_multi_company"/><field name="date_from"/><field name="date_to"/></group>
+                <div class="oe_button_box" name="button_box">
+                    <button name="action_open_all" type="object" class="oe_stat_button" icon="fa-calendar"><field name="appointment_count" widget="statinfo" string="All"/></button>
+                    <button name="action_open_requested" type="object" class="oe_stat_button" icon="fa-hourglass-half"><field name="requested_count" widget="statinfo" string="Requested"/></button>
+                    <button name="action_open_confirmed" type="object" class="oe_stat_button" icon="fa-check"><field name="confirmed_count" widget="statinfo" string="Confirmed"/></button>
+                    <button name="action_open_completed" type="object" class="oe_stat_button" icon="fa-check-circle"><field name="completed_count" widget="statinfo" string="Completed"/></button>
+                    <button name="action_open_cancelled" type="object" class="oe_stat_button" icon="fa-times"><field name="cancelled_count" widget="statinfo" string="Cancelled"/></button>
+                    <button name="action_open_no_show" type="object" class="oe_stat_button" icon="fa-user-times"><field name="no_show_count" widget="statinfo" string="No Show"/></button>
+                </div>
+                <group string="Performance"><field name="no_show_rate" widget="percentage"/><field name="resource_utilization" widget="percentage"/></group>
+                <p class="text-muted">Metrics cover the selected date range and active company. Resource utilization compares booked slots with generated slots.</p>
+            </sheet>
+        </form></field>
+    </record>
+    <record id="action_appointment_dashboard" model="ir.actions.act_window"><field name="name">Overview</field><field name="res_model">ps.appointment.dashboard</field><field name="view_mode">form</field><field name="view_id" ref="view_appointment_dashboard_form"/></record>
+
+    <menuitem id="menu_appointment_root" name="Appointments" sequence="35" groups="ps_appointment.group_appointment_user"/>
+    <menuitem id="menu_appointment_overview" name="Overview" parent="menu_appointment_root" action="action_appointment_dashboard" sequence="1"/>
+    <menuitem id="menu_appointment_records" name="Appointments" parent="menu_appointment_root" action="action_appointments" sequence="5"/>
+    <menuitem id="menu_appointment_availability" name="Availability" parent="menu_appointment_root" action="action_appointment_slots" sequence="10" groups="ps_appointment.group_appointment_manager"/>
+    <menuitem id="menu_appointment_configuration" name="Configuration" parent="menu_appointment_root" sequence="90" groups="ps_appointment.group_appointment_manager"/>
+    <menuitem id="menu_appointment_types" name="Service Types" parent="menu_appointment_configuration" action="action_appointment_types" sequence="1"/>
+    <menuitem id="menu_appointment_resources" name="Resources" parent="menu_appointment_configuration" action="action_appointment_resources" sequence="5"/>
+    <menuitem id="menu_appointment_schedules" name="Staff Schedules" parent="menu_appointment_configuration" action="action_appointment_schedules" sequence="10"/>
+    <menuitem id="menu_appointment_holidays" name="Staff and Resource Leave" parent="menu_appointment_configuration" action="action_appointment_holidays" sequence="15"/>
+    <menuitem id="menu_appointment_reminders" name="Reminders" parent="menu_appointment_configuration" action="action_appointment_reminders" sequence="20" groups="ps_appointment.group_appointment_manager"/>
+    <menuitem id="menu_appointment_history" name="Audit History" parent="menu_appointment_configuration" action="action_appointment_history" sequence="25" groups="ps_appointment.group_appointment_manager"/>
+    <menuitem id="menu_appointment_bookings" name="Resource Bookings" parent="menu_appointment_configuration" action="action_appointment_bookings" sequence="30" groups="ps_appointment.group_appointment_manager"/>
+</odoo>

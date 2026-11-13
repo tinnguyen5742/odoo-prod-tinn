@@ -1,0 +1,57 @@
+<odoo>
+    <record id="privilege_eam" model="res.groups.privilege">
+        <field name="name">Quản lý Thiết bị &amp; Bảo trì</field>
+        <field name="category_id" ref="base.module_category_supply_chain"/>
+    </record>
+    <record id="group_eam_user" model="res.groups">
+        <field name="name">Kỹ thuật viên EAM</field>
+        <field name="privilege_id" ref="privilege_eam"/>
+        <field name="implied_ids" eval="[(4, ref('maintenance.group_equipment_manager'))]"/>
+    </record>
+    <record id="group_eam_manager" model="res.groups">
+        <field name="name">Quản lý EAM</field>
+        <field name="privilege_id" ref="privilege_eam"/>
+        <field name="implied_ids" eval="[(4, ref('group_eam_user'))]"/>
+        <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
+    </record>
+    <record id="rule_plan_company" model="ir.rule">
+        <field name="name">EAM plan: công ty đang chọn</field>
+        <field name="model_id" ref="model_ps_eam_plan"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_meter_company" model="ir.rule">
+        <field name="name">EAM meter: công ty đang chọn</field>
+        <field name="model_id" ref="model_ps_eam_meter"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_reading_company" model="ir.rule">
+        <field name="name">EAM reading: công ty đang chọn</field>
+        <field name="model_id" ref="model_ps_eam_reading"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_check_company" model="ir.rule">
+        <field name="name">EAM check: công ty đang chọn</field>
+        <field name="model_id" ref="model_ps_eam_check"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_cost_company" model="ir.rule">
+        <field name="name">EAM cost: công ty đang chọn</field>
+        <field name="model_id" ref="model_ps_eam_cost"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_part_company" model="ir.rule">
+        <field name="name">EAM part: công ty đang chọn</field>
+        <field name="model_id" ref="model_ps_eam_part"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_claim_company" model="ir.rule">
+        <field name="name">EAM claim: công ty đang chọn</field>
+        <field name="model_id" ref="model_ps_eam_claim"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record id="rule_operation_company" model="ir.rule">
+        <field name="name">EAM operation: công ty đang chọn</field>
+        <field name="model_id" ref="model_ps_eam_operation"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

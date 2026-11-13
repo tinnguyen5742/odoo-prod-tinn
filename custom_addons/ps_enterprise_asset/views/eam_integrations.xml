@@ -1,0 +1,201 @@
+<odoo>
+    <record id="requisition_list" model="ir.ui.view">
+        <field name="name">ps.eam.purchase.requisition.list</field>
+        <field name="model">ps.eam.purchase.requisition</field>
+        <field name="arch" type="xml">
+            <list create="0" edit="0">
+                <field name="name"/>
+                <field name="create_date" string="Ngày tạo"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="product_id"/>
+                <field name="quantity"/>
+                <field name="uom_id"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+    <record id="requisition_form" model="ir.ui.view">
+        <field name="name">ps.eam.purchase.requisition.form</field>
+        <field name="model">ps.eam.purchase.requisition</field>
+        <field name="arch" type="xml">
+            <form create="0" edit="0">
+                <header>
+                    <button name="action_approve" type="object" string="Duyệt và tạo RFQ" class="oe_highlight"
+                            invisible="state != 'submitted'" groups="purchase.group_purchase_manager"/>
+                    <button name="action_cancel" type="object" string="Hủy yêu cầu" invisible="state != 'submitted'"
+                            groups="purchase.group_purchase_manager"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="orderpoint_id" options="{'no_open': True}"/>
+                        <field name="product_id"/>
+                        <field name="quantity"/>
+                        <field name="uom_id"/>
+                        <field name="purchase_ids" readonly="1">
+                            <list>
+                                <field name="name"/>
+                                <field name="partner_id"/>
+                                <field name="state"/>
+                            </list>
+                        </field>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="requisition_action" model="ir.actions.act_window">
+        <field name="name">Yêu cầu mua phụ tùng EAM</field>
+        <field name="res_model">ps.eam.purchase.requisition</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_requisition_purchase" name="Yêu cầu mua phụ tùng EAM" parent="purchase.menu_purchase_root"
+              action="requisition_action" sequence="15" groups="purchase.group_purchase_user"/>
+    <menuitem id="menu_eam_spares_inventory" name="Phụ tùng bảo trì" parent="stock.menu_stock_inventory_control"
+              action="spare_action" sequence="25" groups="stock.group_stock_user"/>
+    <menuitem id="menu_eam_minmax_inventory" name="Định mức phụ tùng bảo trì" parent="stock.menu_stock_inventory_control"
+              action="reorder_action" sequence="26" groups="stock.group_stock_manager"/>
+    <record id="eam_consumption_action" model="ir.actions.act_window">
+        <field name="name">Vị trí tiêu hao bảo trì</field>
+        <field name="res_model">stock.location</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('eam_consumption', '=', True)]</field>
+        <field name="context">{'default_eam_consumption': True, 'default_usage': 'inventory'}</field>
+    </record>
+    <menuitem id="menu_eam_consumption_inventory" name="Vị trí tiêu hao bảo trì" parent="stock.menu_stock_config_settings"
+              action="eam_consumption_action" sequence="55" groups="stock.group_stock_manager"/>
+    <record id="purchase_form_eam" model="ir.ui.view">
+        <field name="name">purchase.order.eam.requisition.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <field name="partner_ref" position="after">
+                <field name="eam_requisition_id" invisible="not eam_requisition_id"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="eam_workcenter_status_list" model="ir.ui.view">
+        <field name="name">mrp.workcenter.eam.status.list</field>
+        <field name="model">mrp.workcenter</field>
+        <field name="arch" type="xml">
+            <list create="0" edit="0" delete="0" decoration-danger="eam_availability_state == 'breakdown'"
+                  decoration-warning="eam_availability_state == 'maintenance'">
+                <field name="name"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="eam_availability_state"/>
+            </list>
+        </field>
+    </record>
+    <record id="eam_workcenter_status_action" model="ir.actions.act_window">
+        <field name="name">Trạng thái máy theo EAM</field>
+        <field name="res_model">mrp.workcenter</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="eam_workcenter_status_list"/>
+    </record>
+    <menuitem id="menu_eam_workcenter_status" name="Trạng thái máy theo EAM" parent="mrp.mrp_planning_menu_root"
+              action="eam_workcenter_status_action" sequence="24" groups="mrp.group_mrp_user"/>
+
+    <record id="eam_manufacturing_stop_list" model="ir.ui.view">
+        <field name="name">resource.calendar.leaves.eam.manufacturing.list</field>
+        <field name="model">resource.calendar.leaves</field>
+        <field name="arch" type="xml">
+            <list create="0" edit="0" delete="0" default_order="date_from desc">
+                <field name="name"/>
+                <field name="resource_id" string="Tài nguyên sản xuất"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+            </list>
+        </field>
+    </record>
+    <record id="eam_manufacturing_stop_action" model="ir.actions.act_window">
+        <field name="name">Lịch dừng máy bảo trì</field>
+        <field name="res_model">resource.calendar.leaves</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="eam_manufacturing_stop_list"/>
+        <field name="domain">[('eam_request_id', '!=', False)]</field>
+    </record>
+    <menuitem id="menu_eam_manufacturing_stop" name="Lịch dừng máy bảo trì" parent="mrp.mrp_planning_menu_root"
+              action="eam_manufacturing_stop_action" sequence="25" groups="mrp.group_mrp_user"/>
+
+    <record id="depreciation_list" model="ir.ui.view">
+        <field name="name">ps.eam.depreciation.list</field>
+        <field name="model">ps.eam.depreciation</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="equipment_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="first_date"/>
+                <field name="months"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+    <record id="depreciation_form" model="ir.ui.view">
+        <field name="name">ps.eam.depreciation.form</field>
+        <field name="model">ps.eam.depreciation</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_activate" type="object" string="Kích hoạt lịch" class="oe_highlight"
+                            invisible="state != 'draft'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name" readonly="state != 'draft'"/>
+                        <field name="company_id" readonly="state != 'draft'"/>
+                        <field name="equipment_id" readonly="state != 'draft'"/>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="acquisition_value" readonly="state != 'draft'"/>
+                        <field name="salvage_value" readonly="state != 'draft'"/>
+                        <field name="opening_depreciation" readonly="state != 'draft'"/>
+                        <field name="months" readonly="state != 'draft'"/>
+                        <field name="first_date" readonly="state != 'draft'"/>
+                        <field name="expense_account_id" readonly="state != 'draft'"/>
+                        <field name="accumulated_account_id" readonly="state != 'draft'"/>
+                    </group>
+                    <field name="entry_ids" readonly="1">
+                        <list>
+                            <field name="name"/>
+                            <field name="date"/>
+                            <field name="eam_depreciation_date"/>
+                            <field name="amount_total"/>
+                            <field name="state"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="depreciation_action" model="ir.actions.act_window">
+        <field name="name">Khấu hao thiết bị EAM</field>
+        <field name="res_model">ps.eam.depreciation</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_eam_depreciation" name="Khấu hao thiết bị EAM" parent="account.menu_finance_configuration"
+              action="depreciation_action" sequence="80" groups="account.group_account_manager"/>
+    <record id="company_form_eam_integrations" model="ir.ui.view">
+        <field name="name">res.company.eam.integration.form</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="eam_settings" string="Thiết bị &amp; Bảo trì">
+                    <group string="Mua phụ tùng">
+                        <field name="eam_purchase_reviewer_id"/>
+                    </group>
+                    <group string="Hạch toán EAM" groups="account.group_account_manager">
+                        <field name="eam_journal_id"/>
+                        <field name="eam_overhead_account_id"/>
+                        <field name="eam_labor_clearing_id"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

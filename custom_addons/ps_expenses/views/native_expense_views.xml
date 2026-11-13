@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ps_native_expense_form" model="ir.ui.view">
+        <field name="name">hr.expense.PS.native.form</field><field name="model">hr.expense</field>
+        <field name="inherit_id" ref="hr_expense.hr_expense_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="Cơ sở công tác PS — tách số kê khai và số chấp nhận" invisible="not ps_report_id">
+                    <field name="ps_report_id"/><field name="ps_trip_id"/><field name="ps_basis_status"/>
+                    <field name="ps_revision"/><field name="ps_claimed_amount"/>
+                    <field name="ps_expected_revision" force_save="1" invisible="id"/>
+                    <field name="ps_decision"/><field name="ps_accepted_amount"/>
+                    <field name="ps_refused_amount"/><field name="ps_decision_reason"/>
+                    <field name="ps_basis_ready"/>
+                </group>
+                <div class="alert alert-info" role="status" invisible="not ps_report_id">Số Tổng/Approved chuẩn là số nhân viên kê khai, không phải số PS chấp nhận. Theo dõi thu chi tại hồ sơ PS; bản demo không ghi sổ và không giả trạng thái Paid.</div>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="action_ps_operation" type="object" string="Thao tác PS theo phiên" class="btn-primary" invisible="not ps_report_id"/>
+                <button name="action_ps_basis" type="object" string="Cơ sở quyết toán PS" invisible="not ps_report_id"/>
+            </xpath>
+            <xpath expr="//button[@name='action_approve']" position="attributes"><attribute name="invisible">ps_report_id or not can_approve or state != 'submitted'</attribute></xpath>
+            <xpath expr="(//button[@name='action_approve'])[2]" position="attributes"><attribute name="invisible">ps_report_id or nb_attachment &gt;= 1 or not can_approve or state != 'submitted'</attribute></xpath>
+            <xpath expr="(//button[@name='action_submit'])[1]" position="attributes"><attribute name="invisible">ps_report_id or nb_attachment == 0 or state != 'draft'</attribute></xpath>
+            <xpath expr="(//button[@name='action_submit'])[2]" position="attributes"><attribute name="invisible">ps_report_id or nb_attachment &gt;= 1 or state != 'draft'</attribute></xpath>
+            <xpath expr="//button[@name='action_post']" position="attributes"><attribute name="invisible">ps_report_id or state != 'approved'</attribute></xpath>
+            <xpath expr="(//button[@name='action_post'])[2]" position="attributes"><attribute name="invisible">ps_report_id or nb_attachment &gt;= 1 or state != 'approved'</attribute></xpath>
+            <xpath expr="//button[@name='action_reset']" position="attributes"><attribute name="invisible">ps_report_id or not can_reset or state == 'draft'</attribute></xpath>
+            <xpath expr="(//button[@name='action_reset'])[2]" position="attributes"><attribute name="invisible">ps_report_id or not can_reset or state in ('draft','posted','in_payment','paid')</attribute></xpath>
+            <xpath expr="//button[@name='action_refuse']" position="attributes"><attribute name="invisible">ps_report_id or state not in ['submitted','approved']</attribute></xpath>
+            <xpath expr="//button[@name='action_split_wizard']" position="attributes"><attribute name="invisible">ps_report_id or state != 'draft' or product_has_cost</attribute></xpath>
+            <xpath expr="(//button[@name='action_split_wizard'])[2]" position="attributes"><attribute name="invisible">ps_report_id or state in ('in_payment','paid','refused','posted') or product_has_cost</attribute></xpath>
+            <xpath expr="//widget[@name='attach_document']" position="attributes"><attribute name="invisible">ps_report_id or nb_attachment &gt;= 1</attribute></xpath>
+            <xpath expr="(//widget[@name='attach_document'])[2]" position="attributes"><attribute name="invisible">ps_report_id or nb_attachment == 0</attribute></xpath>
+            <xpath expr="//field[@name='name']" position="attributes"><attribute name="readonly">not is_editable or (ps_report_id and id)</attribute></xpath>
+            <xpath expr="//field[@name='total_amount_currency']" position="attributes"><attribute name="readonly">not is_editable or (ps_report_id and id)</attribute></xpath>
+            <xpath expr="//field[@name='date']" position="attributes"><attribute name="readonly">not is_editable or (ps_report_id and id)</attribute></xpath>
+            <xpath expr="//field[@name='product_id']" position="attributes"><attribute name="readonly">ps_report_id or not is_editable</attribute></xpath>
+            <xpath expr="//field[@name='employee_id']" position="attributes"><attribute name="readonly">ps_report_id or not is_editable</attribute></xpath>
+            <xpath expr="//field[@name='manager_id']" position="attributes"><attribute name="readonly">ps_report_id or state != 'draft'</attribute></xpath>
+            <xpath expr="//field[@name='payment_mode']" position="attributes"><attribute name="readonly">ps_report_id or state != 'draft'</attribute></xpath>
+            <xpath expr="//field[@name='tax_ids']" position="attributes"><attribute name="readonly">ps_report_id or not is_editable</attribute></xpath>
+            <xpath expr="//field[@name='description']" position="attributes"><attribute name="readonly">ps_report_id or not is_editable</attribute></xpath>
+        </field>
+    </record>
+    <record id="view_ps_native_expense_list" model="ir.ui.view">
+        <field name="name">hr.expense.PS.native.list</field><field name="model">hr.expense</field>
+        <field name="inherit_id" ref="hr_expense.hr_expense_view_expenses_analysis_tree"/>
+        <field name="arch" type="xml"><xpath expr="//field[@name='state']" position="before">
+            <field name="ps_trip_id" optional="show"/><field name="ps_revision" optional="hide"/>
+            <field name="ps_decision" optional="show"/><field name="ps_accepted_amount" optional="show"/>
+            <field name="ps_basis_status" optional="show"/>
+        </xpath></field>
+    </record>
+    <record id="action_ps_native_expenses" model="ir.actions.act_window">
+        <field name="name">Chi phí — Expenses chuẩn</field><field name="res_model">hr.expense</field>
+        <field name="view_mode">list,form</field><field name="domain">[('ps_report_id', '!=', False)]</field>
+        <field name="context">{'create': False}</field>
+    </record>
+</odoo>

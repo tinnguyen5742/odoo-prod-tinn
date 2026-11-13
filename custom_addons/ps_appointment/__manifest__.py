@@ -1,0 +1,21 @@
+{
+    "name": "Appointment Management",
+    "summary": "Appointment booking, staff scheduling and resource coordination",
+    "description": "Manage appointment services, availability, customer requests, staff and resources.",
+    "version": "19.0.1.0.0",
+    "category": "Services/Appointment",
+    "author": "Project Team",
+    "license": "LGPL-3",
+    "depends": ["base", "mail", "web"],
+    "data": [
+        "security/appointment_security.xml",
+        "security/ir.model.access.csv",
+        "data/appointment_sequence.xml",
+        "data/appointment_mail_template.xml",
+        "data/appointment_cron.xml",
+        "reports/appointment_reports.xml",
+        "views/appointment_views.xml",
+    ],
+    "application": True,
+    "installable": True,
+}

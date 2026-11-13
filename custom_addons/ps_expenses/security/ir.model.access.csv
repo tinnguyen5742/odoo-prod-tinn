@@ -1,0 +1,29 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ps_te_trip_request_employee,PS T&E trip request employee,model_ps_te_trip_request,group_ps_te_trip_employee,1,1,1,0
+access_ps_te_trip_event_employee,PS T&E trip history employee,model_ps_te_trip_event,group_ps_te_trip_employee,1,0,0,0
+access_ps_te_trip_review_wizard_manager,PS T&E trip review wizard manager,model_ps_te_trip_review_wizard,group_ps_te_trip_manager,1,1,1,1
+access_ps_te_advance_employee,PS T&E advance employee,model_ps_te_trip_advance,group_ps_te_trip_employee,1,1,1,0
+access_ps_te_advance_event_employee,PS T&E advance history employee,model_ps_te_advance_event,group_ps_te_trip_employee,1,0,0,0
+access_ps_te_advance_wizard_employee,PS T&E advance wizard employee,model_ps_te_advance_wizard,group_ps_te_trip_employee,1,1,1,1
+access_ps_te_expense_report_employee,PS T&E expense report employee,model_ps_te_expense_report,group_ps_te_trip_employee,1,1,1,0
+access_ps_te_expense_line_employee,PS T&E expense line employee,model_ps_te_expense_line,group_ps_te_trip_employee,1,0,0,0
+access_ps_te_expense_evidence_employee,PS T&E expense evidence employee,model_ps_te_expense_evidence,group_ps_te_trip_employee,1,0,0,0
+access_ps_te_expense_event_employee,PS T&E expense history employee,model_ps_te_expense_event,group_ps_te_trip_employee,1,0,0,0
+access_ps_te_expense_wizard_employee,PS T&E expense wizard employee,model_ps_te_expense_wizard,group_ps_te_trip_employee,1,1,1,1
+access_ps_te_settlement_employee,PS T&E settlement employee,model_ps_te_settlement,group_ps_te_trip_employee,1,1,1,0
+access_ps_te_settlement_event_employee,PS T&E settlement history employee,model_ps_te_settlement_event,group_ps_te_trip_employee,1,0,0,0
+access_ps_te_cash_event_employee,PS T&E cash records employee,model_ps_te_cash_event,group_ps_te_trip_employee,1,0,0,0
+access_ps_te_settlement_wizard_employee,PS T&E settlement wizard employee,model_ps_te_settlement_wizard,group_ps_te_trip_employee,1,1,1,1
+access_ps_te_trip_cancellation_wizard,PS T&E trip cancellation wizard,model_ps_te_trip_cancellation_wizard,group_ps_te_trip_employee,1,1,1,1
+access_ps_te_correction,PS T&E correction case,model_ps_te_correction,group_ps_te_trip_employee,1,1,1,0
+access_ps_te_correction_event,PS T&E correction history,model_ps_te_correction_event,group_ps_te_trip_employee,1,0,0,0
+access_ps_te_correction_wizard,PS T&E correction wizard,model_ps_te_correction_wizard,group_ps_te_trip_employee,1,1,1,1
+access_ps_te_trip_amendment,PS T&E trip amendment,model_ps_te_trip_amendment,group_ps_te_trip_employee,1,1,1,0
+access_ps_te_amendment_wizard,PS T&E amendment wizard,model_ps_te_amendment_wizard,group_ps_te_trip_employee,1,1,1,1
+access_ps_te_cash_rectification,PS T&E cash fact rectification,model_ps_te_cash_rectification,group_ps_te_trip_employee,1,1,1,0
+access_ps_te_cash_rectification_wizard,PS T&E cash rectification wizard,model_ps_te_cash_rectification_wizard,group_ps_te_trip_employee,1,1,1,1
+access_ps_te_cash_reference_claim_none,PS T&E private reference registry,model_ps_te_cash_reference_claim,group_ps_te_trip_employee,0,0,0,0
+access_ps_te_adjustment,PS T&E financial adjustment,model_ps_te_adjustment,group_ps_te_trip_employee,1,1,1,0
+access_ps_te_adjustment_event,PS T&E adjustment history,model_ps_te_adjustment_event,group_ps_te_trip_employee,1,0,0,0
+access_ps_te_expense_proof_link,PS T&E private proof reference,model_ps_te_expense_proof_link,group_ps_te_trip_employee,1,0,0,0
+access_ps_te_adjustment_wizard,PS T&E adjustment wizard,model_ps_te_adjustment_wizard,group_ps_te_trip_employee,1,1,1,1

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_trip_cancellation" model="ir.ui.view">
+        <field name="name">ps.te.trip.request.cancellation</field><field name="model">ps.te.trip.request</field>
+        <field name="inherit_id" ref="view_ps_te_trip_request_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_submit']" position="attributes">
+                <attribute name="invisible">state != 'preparing' or cancellation_status != 'none' or not is_current_owner</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_open_review_wizard']" position="attributes">
+                <attribute name="invisible">state != 'awaiting_business_review' or approver_id != uid or cancellation_status != 'none'</attribute>
+            </xpath>
+            <xpath expr="//field[@name='purpose']" position="attributes">
+                <attribute name="readonly">state != 'preparing' or cancellation_status != 'none' or not is_current_owner</attribute>
+            </xpath>
+            <xpath expr="//field[@name='destination']" position="attributes">
+                <attribute name="readonly">state != 'preparing' or cancellation_status != 'none' or not is_current_owner</attribute>
+            </xpath>
+            <xpath expr="//field[@name='start_date']" position="attributes">
+                <attribute name="readonly">state != 'preparing' or cancellation_status != 'none' or not is_current_owner</attribute>
+            </xpath>
+            <xpath expr="//field[@name='end_date']" position="attributes">
+                <attribute name="readonly">state != 'preparing' or cancellation_status != 'none' or not is_current_owner</attribute>
+            </xpath>
+            <xpath expr="//header" position="inside"><button name="action_open_cancellation" type="object" string="Trip Cancellation" invisible="case_status != 'open'"/></xpath>
+            <xpath expr="//notebook" position="before"><group string="Travel Cancellation — Financial Obligations Separate">
+                <field name="cancellation_status"/><field name="cancellation_revision"/>
+                <field name="cancellation_next_step" invisible="cancellation_status == 'none'"/>
+                <field name="cancellation_reason"/><field name="cancellation_requested_by_id"/><field name="cancellation_requested_at"/>
+                <field name="cancellation_decision_reason"/><field name="cancellation_decided_by_id"/><field name="cancellation_decided_at"/>
+            </group></xpath>
+            <xpath expr="//field[@name='event_ids']/list" position="inside">
+                <field name="cancellation_revision" optional="hide"/><field name="cancellation_snapshot" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="action_trip_cancellations_to_review" model="ir.actions.act_window">
+        <field name="name">Trip Cancellations to Review</field><field name="res_model">ps.te.trip.request</field><field name="view_mode">list,form</field>
+        <field name="domain">[('approver_id', '=', uid), ('cancellation_status', '=', 'requested')]</field>
+    </record>
+    <menuitem id="menu_trip_cancellations" name="Trip Cancellations to Review" parent="menu_ps_te_trip_request_root"
+        action="action_trip_cancellations_to_review" sequence="25" groups="group_ps_te_trip_manager"/>
+</odoo>

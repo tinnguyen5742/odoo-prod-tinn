@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_warranty_claim" model="ir.actions.report">
+        <field name="name">Warranty Claim</field>
+        <field name="model">ps.warranty.claim</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ps_warranty.report_warranty_claim</field>
+        <field name="report_file">ps_warranty.report_warranty_claim</field>
+        <field name="print_report_name">'Warranty Claim - %s' % (object.name)</field>
+    </record>
+
+    <template id="report_warranty_claim">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Warranty Claim <span t-field="o.name"/></h2>
+                        <table class="table table-sm">
+                            <tbody>
+                                <tr><th>Customer</th><td><span t-field="o.partner_id"/></td>
+                                    <th>Product</th><td><span t-field="o.product_id"/></td></tr>
+                                <tr><th>Serial number</th><td><span t-field="o.serial_number"/></td>
+                                    <th>Claim date</th><td><span t-field="o.claim_date"/></td></tr>
+                                <tr><th>Warranty registration</th><td><span t-field="o.registration_id"/></td>
+                                    <th>Status</th><td><span t-field="o.state"/></td></tr>
+                                <tr><th>Responsible</th><td><span t-field="o.user_id"/></td>
+                                    <th>Priority</th><td><span t-field="o.priority"/></td></tr>
+                            </tbody>
+                        </table>
+                        <h4>Reported problem</h4>
+                        <div t-field="o.description"/>
+                        <h4>Repair and replacement lines</h4>
+                        <table class="table table-sm">
+                            <thead><tr><th>Operation</th><th>Product</th><th>Description</th>
+                                <th class="text-end">Quantity</th><th class="text-end">Unit cost</th>
+                                <th class="text-end">Subtotal</th></tr></thead>
+                            <tbody>
+                                <tr t-foreach="o.line_ids" t-as="line">
+                                    <td><span t-field="line.line_type"/></td>
+                                    <td><span t-field="line.product_id"/></td>
+                                    <td><span t-field="line.name"/></td>
+                                    <td class="text-end"><span t-field="line.quantity"/></td>
+                                    <td class="text-end"><span t-field="line.unit_cost"/></td>
+                                    <td class="text-end"><span t-field="line.subtotal"/></td>
+                                </tr>
+                            </tbody>
+                            <tfoot><tr><td colspan="5" class="text-end"><strong>Total cost</strong></td>
+                                <td class="text-end"><span t-field="o.cost_total"/></td></tr></tfoot>
+                        </table>
+                        <h4>Resolution</h4>
+                        <div t-field="o.resolution_note"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,144 @@
+<odoo>
+    <record id="equipment_form_extensions" model="ir.ui.view">
+        <field name="name">eam.equipment.integrations</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="equipment_form"/>
+        <field name="arch" type="xml">
+            <field name="eam_location" position="after">
+                <field name="eam_workcenter_id"/>
+            </field>
+            <field name="depreciation_recorded" position="after">
+                <field name="eam_book_value"/>
+            </field>
+            <xpath expr="//field[@name='operation_ids']" position="before">
+                <group string="Chỉ số tổng hợp toàn bộ nhật ký của thiết bị">
+                    <field name="eam_availability"/>
+                    <field name="eam_performance"/>
+                    <field name="eam_quality"/>
+                    <field name="eam_oee" string="Hiệu quả thiết bị tổng hợp (OEE, %)"/>
+                </group>
+                <p class="text-muted">Tổng hợp từ tổng giờ và sản lượng của nhật ký thiết bị. So sánh trong cùng phạm vi vận hành; MTTR dùng thời gian từ bắt đầu đến nghiệm thu, tách khỏi giờ công.</p>
+            </xpath>
+        </field>
+    </record>
+    <record id="request_form_extensions" model="ir.ui.view">
+        <field name="name">eam.request.integrations</field>
+        <field name="model">maintenance.request</field>
+        <field name="inherit_id" ref="request_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button
+                    name="action_eam_claim"
+                    type="object"
+                    icon="fa-shield"
+                    class="oe_stat_button"
+                    string="Hồ sơ bảo hành"
+                />
+            </xpath>
+            <field name="equipment_id" position="after">
+                <field name="eam_workcenter_id" readonly="1"/>
+            </field>
+            <field name="work_finished" position="after">
+                <field name="eam_repair_hours"/>
+            </field>
+            <xpath expr="//field[@name='cost_ids']/list/field[@name='bill_id']" position="before">
+                <field name="vendor_id"/>
+            </xpath>
+            <xpath expr="//field[@name='cost_ids']/list" position="inside">
+                <button
+                    name="action_vendor_bill"
+                    type="object"
+                    string="Tạo / mở hóa đơn nhà cung cấp"
+                    groups="account.group_account_invoice"
+                />
+            </xpath>
+            <field name="description" position="attributes">
+                <attribute name="readonly">eam_state in ('done','cancelled')</attribute>
+            </field>
+            <field name="instruction_text" position="attributes">
+                <attribute name="readonly">eam_state in ('done','cancelled')</attribute>
+            </field>
+            <field name="actual_hours" position="attributes">
+                <attribute name="readonly">eam_state in ('done','cancelled')</attribute>
+            </field>
+            <field name="hourly_rate" position="attributes">
+                <attribute name="readonly">eam_state in ('done','cancelled')</attribute>
+            </field>
+            <field name="root_cause" position="attributes">
+                <attribute name="readonly">eam_state in ('done','cancelled')</attribute>
+            </field>
+            <field name="resolution" position="attributes">
+                <attribute name="readonly">eam_state in ('done','cancelled')</attribute>
+            </field>
+        </field>
+    </record>
+    <record id="claim_form_extensions" model="ir.ui.view">
+        <field name="name">eam.claim.followup</field>
+        <field name="model">ps.eam.claim</field>
+        <field name="inherit_id" ref="claim_form"/>
+        <field name="arch" type="xml">
+            <field name="claim_date" position="after">
+                <field name="partner_reference"/>
+                <field name="expected_date"/>
+                <field name="return_picking_id"/>
+            </field>
+        </field>
+    </record>
+    <record id="request_search_extensions" model="ir.ui.view">
+        <field name="name">eam.request.search.extensions</field>
+        <field name="model">maintenance.request</field>
+        <field name="inherit_id" ref="request_search"/>
+        <field name="arch" type="xml">
+            <filter name="open" position="after">
+                <filter
+                    name="overdue"
+                    string="Quá hạn"
+                    domain="[('eam_state','not in',['done','cancelled']),('schedule_end','&lt;', datetime.datetime.now())]"
+                />
+                <filter name="over_budget" string="Vượt ngân sách" domain="[('eam_variance','&gt;',0)]"/>
+                <filter name="group_type" string="Theo loại bảo trì" context="{'group_by':'maintenance_type'}"/>
+            </filter>
+        </field>
+    </record>
+    <record id="spare_action" model="ir.actions.act_window">
+        <field name="name">Danh mục phụ tùng bảo trì</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('type','=','consu'),('eam_mro','=',True)]</field>
+        <field name="context">{'default_type':'consu','default_is_storable': True,'default_eam_mro': True,'form_view_ref':'ps_enterprise_asset.spare_product_form'}</field>
+    </record>
+    <record id="spare_product_form" model="ir.ui.view">
+        <field name="name">product.product.eam.spare.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="placeholder">VD: Vòng bi 6205, lọc dầu máy nén khí</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="spare_product_list_binding" model="ir.actions.act_window.view">
+        <field name="sequence">1</field>
+        <field name="view_mode">list</field>
+        <field name="act_window_id" ref="spare_action"/>
+    </record>
+    <record id="spare_action" model="ir.actions.act_window">
+        <field name="view_id" ref="spare_product_form"/>
+    </record>
+    <record id="spare_product_form_binding" model="ir.actions.act_window.view">
+        <field name="sequence">20</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="spare_product_form"/>
+        <field name="act_window_id" ref="spare_action"/>
+    </record>
+    <record id="reorder_action" model="ir.actions.act_window">
+        <field name="name">Định mức bổ sung phụ tùng</field>
+        <field name="res_model">stock.warehouse.orderpoint</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('product_id.eam_mro','=',True)]</field>
+    </record>
+    <menuitem id="menu_mro" parent="menu_eam" name="Kho phụ tùng bảo trì" sequence="80" groups="stock.group_stock_user"/>
+    <menuitem id="menu_spares" parent="menu_mro" name="Danh mục phụ tùng" action="spare_action" sequence="10"/>
+    <menuitem id="menu_reorder" parent="menu_mro" name="Định mức min/max" action="reorder_action" sequence="20"/>
+</odoo>

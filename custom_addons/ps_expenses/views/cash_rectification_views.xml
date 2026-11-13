@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cash_rectification_form" model="ir.ui.view">
+        <field name="name">ps.te.cash.rectification.form</field><field name="model">ps.te.cash.rectification</field>
+        <field name="arch" type="xml"><form create="0" edit="0" delete="0" duplicate="0">
+            <header><button name="action_open_operation" type="object" string="Rectification Operation"/><field name="state" widget="statusbar"/></header>
+            <sheet><div class="alert alert-warning" role="status">This corrects a recorded fact, not a payment. Full financial adjustment must still resolve the held case.</div>
+                <group><group><field name="reference"/><field name="correction_id"/><field name="root_event_id"/><field name="previous_id"/>
+                    <field name="trip_id"/><field name="owner_id"/><field name="company_id"/>
+                </group><group><field name="proposed_amount"/><field name="currency_id"/><field name="proposed_reference"/><field name="proposed_date"/><field name="reason"/></group></group>
+                <group><field name="approved_by_id"/><field name="approved_at"/><field name="approval_reason"/>
+                    <field name="verification_reference"/><field name="verified_by_id"/><field name="verified_at"/></group>
+            </sheet>
+        </form></field>
+    </record>
+    <record id="view_cash_rectification_wizard" model="ir.ui.view">
+        <field name="name">ps.te.cash.rectification.wizard.form</field><field name="model">ps.te.cash.rectification.wizard</field>
+        <field name="arch" type="xml"><form><group><field name="correction_id"/><field name="trip_id"/><field name="rectification_id" invisible="not rectification_id"/><field name="expected_revision"/>
+            <field name="operation" invisible="not rectification_id" required="rectification_id"/>
+            <field name="root_event_id" domain="[('trip_id', '=', trip_id)]" invisible="rectification_id" required="not rectification_id"/>
+            <field name="amount" invisible="rectification_id"/><field name="currency_id" invisible="1"/>
+            <field name="external_reference" invisible="rectification_id and operation != 'verify'"/>
+            <field name="execution_date" invisible="rectification_id"/><field name="reason"/>
+        </group><footer><button name="action_apply" type="object" string="Apply" class="btn-primary"/><button special="cancel" string="Cancel"/></footer></form></field>
+    </record>
+    <record id="view_correction_cash_rectifications" model="ir.ui.view">
+        <field name="name">ps.te.correction.cash.rectifications</field><field name="model">ps.te.correction</field><field name="inherit_id" ref="view_correction_form"/>
+        <field name="arch" type="xml"><xpath expr="//header" position="inside">
+            <button name="action_open_cash_rectification" type="object" string="Propose Cash Fact Rectification" invisible="owner_id != uid or not active_trip_id or category != 'funding'"/>
+        </xpath><xpath expr="//sheet" position="inside"><field name="rectification_ids"><list create="0" edit="0" delete="0">
+            <field name="reference"/><field name="root_event_id"/><field name="proposed_amount"/><field name="currency_id"/>
+            <field name="proposed_reference"/><field name="state"/>
+        </list></field></xpath></field>
+    </record>
+</odoo>
