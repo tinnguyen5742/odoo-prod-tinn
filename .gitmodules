@@ -38,3 +38,7 @@
 	path = custom_addons/ps_external_url
 	url = git@github.com:patsoft-dev/ps_external_url.git
 	branch = main
+[submodule "custom_addons/ps_helpdesk_management"]
+	path = custom_addons/ps_helpdesk_management
+	url = git@github.com:patsoft-dev/ps_helpdesk_management.git
+	branch = main
